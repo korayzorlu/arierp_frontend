@@ -1,0 +1,92 @@
+{
+  "name": "marswide_frontend",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:8000",
+  "dependencies": {
+    "@datatables.net/editor-dt": "^2.3.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/inter": "^5.1.1",
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@mui/icons-material": "^7.1.0",
+    "@mui/joy": "^5.0.0-beta.51",
+    "@mui/lab": "^7.0.0-beta.12",
+    "@mui/material": "^7.1.0",
+    "@mui/x-data-grid": "^8.3.1",
+    "@mui/x-data-grid-generator": "^8.3.1",
+    "@mui/x-data-grid-pro": "^8.3.1",
+    "@mui/x-tree-view": "^8.3.1",
+    "@reduxjs/toolkit": "^2.5.0",
+    "ag-grid-community": "^33.0.4",
+    "ag-grid-enterprise": "^33.0.4",
+    "ag-grid-react": "^33.0.4",
+    "axios": "^1.7.9",
+    "bootstrap": "^5.3.3",
+    "cra-template": "1.2.0",
+    "datatables.net-buttons-bs5": "^3.2.0",
+    "datatables.net-colreorder-bs5": "^2.0.4",
+    "datatables.net-dt": "^2.1.8",
+    "datatables.net-fixedcolumns-bs5": "^5.0.4",
+    "datatables.net-fixedheader-bs5": "^4.0.1",
+    "datatables.net-keytable-bs5": "^2.12.1",
+    "datatables.net-responsive-bs5": "^3.0.3",
+    "datatables.net-rowgroup-bs5": "^1.5.1",
+    "datatables.net-rowreorder-bs5": "^1.5.0",
+    "datatables.net-scroller-bs5": "^2.4.3",
+    "datatables.net-searchbuilder-bs5": "^1.8.1",
+    "datatables.net-searchpanes-bs5": "^2.3.3",
+    "datatables.net-select-bs5": "^2.1.0",
+    "datatables.net-staterestore-bs5": "^1.4.1",
+    "firebase": "^11.4.0",
+    "font-awesome": "^4.7.0",
+    "formik": "^2.4.6",
+    "install": "^0.13.0",
+    "jquery": "^3.7.1",
+    "js-cookie": "^3.0.5",
+    "json-server": "^1.0.0-beta.3",
+    "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
+    "mdb-ui-kit": "git+https://oauth2:VcJ7qAiVg5c-6wY4kRhA@git.mdbootstrap.com/mdb/standard/mdb-ui-kit-pro-advanced",
+    "npm": "^11.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0",
+    "react-pro-sidebar": "^1.1.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.1.1",
+    "react-scripts": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "web-vitals": "^4.2.4",
+    "yup": "^1.6.1"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false ./node_modules/.bin/react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+
+//body
+$body-bg: #F4F2EE;
+$font-size-base: 0.875rem;
+
+//progress
+//progress-height: 2px;
+
+//button
+$btn-border-radius: 0px;
+
+//dropdown
+$dropdown-divider-border-top-width: 1px;
+.dropdown-divider{border-top-width: $dropdown-divider-border-top-width!important;};
+$dropdown-border-radius: 0px;
+$dropdown-item-border-radius: 0px;
+//tabs
+$nav-tabs-link-font-size: 10px;
+$nav-tabs-link-border-bottom-width: 0px;
+
+//pill
+$nav-pills-link-border-radius: 0px;
+// $nav-pills-margin: 0.2rem;
+// $nav-pills-link-padding-top: 11px;
+// $nav-pills-link-padding-bottom: 10px;
+// $nav-pills-link-hover-bg: #E0E0E0;
+// $nav-pills-link-color: rgb(96, 103, 109);
+// $nav-pills-link-active-bg: #bbd3eb; //#bbd3eb
+// $nav-pills-link-active-color: #5f46a1; //#5f46a1
+
+//datepicker
+$datepicker-header-background-color: #263238;
+
+//card
+$card-border-radius: 0;
+$card-header-border-width: 1px;
+$card-footer-border-width: 1px;
+
+//modal
+$modal-xl: 1200px;
+$modal-content-border-radius: 0px;
+
+//alert
+$alert-border-radius: 0px;
+
+//table
+$table-bg: transparent;
+
+//datatable
+$pagination-border-radius: 0px;
+$pagination-padding-y: 0.1rem;
+
+@import './variables-dark-custom';
+
+@import '../../../../node_modules/mdb-ui-kit/src/mdb/scss/mdb.pro.scss';
+
+
+//color
+
+@import "../../../../node_modules/mdb-ui-kit/src/mdb/scss/bootstrap/functions";
+@import "../../../../node_modules/mdb-ui-kit/src/mdb/scss/bootstrap/variables";
+@import "../../../../node_modules/mdb-ui-kit/src/mdb/scss/bootstrap/mixins";
+@import "../../../../node_modules/mdb-ui-kit/src/mdb/scss/bootstrap/utilities";
+
+$blue-esms: #003865 !default;
+$red-esms: #9d2235 !default;
+$mocha-mousse:  #a47864  !default;
+$viva-magenta:  #be3455  !default;
+$peach-fuzz: #FFBE98 !default;
+$classic-blue: #0F4C81!default;
+$living-coral: #ff6f61!default;
+$ultra-violet: #5f4b8b!default;
+$greenery: #88b04b!default;
+$mui-blue: #90caf9!default;
+
+$esms-colors: (
+  'blue-esms': $blue-esms,
+  'red-esms': $red-esms,
+  'mocha-mousse': $mocha-mousse,
+  'peach-fuzz': $peach-fuzz,
+  'classic-blue': $classic-blue,
+  'living-coral': $living-coral,
+  'ultra-violet': $ultra-violet,
+  'greenery': $greenery,
+  'mui-blue': $mui-blue,
+) !default;
+
+$all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $limes, $ambers, $greens, $teals, $cyans, $blue-grays, $esms-colors);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "color": map-merge(
+      map-get($utilities, "color"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "color"), "values"),
+          (
+            $all-colors
+          ),
+        ),
+      ),
+    ),
+    "background-color": map-merge(
+      map-get($utilities, "background-color"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "background-color"), "values"),
+          (
+            $all-colors
+          ),
+        ),
+      ),
+    ),
+  )
+);
+
+@import "../../../../node_modules/mdb-ui-kit/src/mdb/scss/bootstrap/utilities/api";

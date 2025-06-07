@@ -1,0 +1,12 @@
+
+
+.homeContent{
+  height: calc(100vh - 40px);
+  position: relative;
+  top: 40px;
+  padding: 0;
+}
+
+a{
+  color: inherit!important;
+}

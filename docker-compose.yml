@@ -1,0 +1,20 @@
+services:
+  web:
+    container_name: marswide_frontend
+    image: marswide_frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - ./build:/usr/share/nginx/html
+    command: ["npm", "start"]
+    #command: ["npm", "run", "build"]
+    restart: always
+    networks:
+      - marswide_network
+networks:
+  marswide_network:
+    external: true

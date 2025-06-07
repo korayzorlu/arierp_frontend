@@ -1,0 +1,11 @@
+#loadingBlock{
+    width:100%;height:100vh;z-index:9999;position:relative;background-color:#000
+}
+
+#loadingBlock .loading-col-1{
+    height:100vh!important;align-content: center;
+}
+
+#loadingBlock img{
+    width:auto;max-height:120px;
+}

@@ -1,0 +1,68 @@
+
+:root {
+    --sidebar-icon-color: #000;
+    /* --sidebar-icon-active-color: #1976d2; */
+    --sidebar-icon-active-color: #000;
+    --sidebar-background-color: #fff;
+    --sidebar-submenu-background-color: #f7f7f7;
+    --sidebar-menu-button-background-color: #EBEBEB;
+    --sidebar-menu-button-active-background-color: #e7dddd;
+}
+  
+[data-mdb-theme="dark"] {
+    --sidebar-icon-color: #fff;
+    /* --sidebar-icon-active-color: #90caf9; */
+    --sidebar-icon-active-color: #efe237;
+    --sidebar-background-color: #111;
+    --sidebar-submenu-background-color: #151515;
+    --sidebar-menu-button-background-color: #44474B;
+    --sidebar-menu-button-active-background-color: #2c2a2a;
+}
+
+.sidebarContent .ps-sidebar-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--sidebar-background-color);
+}
+
+.sidebarContent .ps-submenu-content{
+    background-color: var(--sidebar-submenu-background-color);
+}
+
+.sidebarContent .ps-menuitem-root .ps-menu-button:hover{
+    background-color: var(--sidebar-menu-button-background-color);
+}
+
+.sidebarContent .ps-sidebar-root.ps-broken{
+    top: 40px;
+    height: calc(100% - 40px);
+}
+
+.sidebarContent a{
+    color: inherit;
+}
+
+.sidebarContent a.active{
+   font-weight: bold;
+}
+
+.sidebarContent .ps-toggled .ps-submenu-expand-icon{
+    /*display: none;*/
+}
+
+
+  
+.sideBarIcon {
+    fill: var(--sidebar-icon-color);
+}
+
+.sidebarContent .ps-menuitem-root.active .sideBarIcon {
+    fill: var(--sidebar-icon-active-color);
+}
+
+.sidebarContent .ps-menuitem-root.active {
+    /*background-color: var(--sidebar-menu-button-active-background-color); 1976d2*/
+    color: var(--sidebar-icon-active-color);
+    font-weight: 600;
+}
