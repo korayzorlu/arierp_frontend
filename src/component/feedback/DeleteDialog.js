@@ -29,12 +29,12 @@ function DeleteDialog(props) {
         };
         dispatch(setDeleteDialog(false));
         dispatch(setAlert({status:"info",text:"Removing items.."}));
-
+        
         try {
 
             const response = await axios.post(deleteURL,
                 {
-                    uuids : selectedItems || []
+                    uuids : Array.from(selectedItems.ids) || []
                 },
                 { withCredentials: true},
             );

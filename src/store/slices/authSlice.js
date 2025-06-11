@@ -16,7 +16,7 @@ const initialState = {
     wrongPath:false,
     dark:false,
     theme:theme,
-    logo:require(`../../images/logo/light/marswide-logo-full.png`),
+    logo:require(`../../images/logo/light/ari-logo-full.png`),
     loading:true,
     authMessage:{color:"",icon:"",text:""},
     userInformation:{},
@@ -145,7 +145,7 @@ const authSlice = createSlice({
         fetchTheme: (state,action) => {
             document.documentElement.setAttribute("data-mdb-theme", action.payload);
             state.theme = action.payload;
-            state.logo = require(`../../images/logo/${action.payload}/marswide-logo-full.png`);
+            state.logo = require(`../../images/logo/${action.payload}/ari-logo-full.png`);
             document.cookie = `theme=${action.payload}; path=/; ${process.env.REACT_APP_SAME_SITE}`;
 
         },

@@ -138,7 +138,7 @@ function ImportDialog(props) {
                     variant="outlined"
                     >   
                         <DialogTitle id="alert-dialog-title">
-                            Import partners from xls file
+                            Import items from xls file
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">
@@ -172,7 +172,7 @@ function ImportDialog(props) {
                     variant="outlined"
                     >
                         <DialogTitle id="alert-dialog-title">
-                            Import partners from xls file
+                            Import items from xls file
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">

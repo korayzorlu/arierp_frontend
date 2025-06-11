@@ -62,6 +62,8 @@ import Capital from './features/accounting/account/components/Capital.js';
 import Categories from './features/products/category/pages/Categories.js';
 import AddCategory from './features/products/category/components/AddCategory.js';
 import UpdateCategory from './features/products/category/components/UpdateCategory.js';
+import BankaTahsilatlari from './features/converters/pages/BankaTahsilatlari.js';
+import BankaTahsilatlariOdoo from './features/converters/pages/BankaTahsilatlariOdoo.js';
 
 export const NumberContext = React.createContext();
 
@@ -181,9 +183,8 @@ function App() {
                   <Route path='/payments/add-payment/:type' element={<AddPayment></AddPayment>}></Route>
                   <Route path='/payments/update/:type/:uuid' element={<UpdatePayment></UpdatePayment>}></Route>
 
-                  <Route path='/cari-hesap-hareketleri' element={<CariHesapHareketleri></CariHesapHareketleri>}></Route>
-                  <Route path='/personeller' element={<Personeller></Personeller>}></Route>
-                  <Route path='/personel_tahakkuklari' element={<PersonelTahakkuklari></PersonelTahakkuklari>}></Route>
+                  <Route path='/banka-tahsilatlari' element={<BankaTahsilatlari></BankaTahsilatlari>}></Route>
+                  <Route path='/banka--tahsilatlari-odoo' element={<BankaTahsilatlariOdoo></BankaTahsilatlariOdoo>}></Route>
 
                   <Route path='auth' element={<Dashboard></Dashboard>}>
                     <Route path='login'></Route>

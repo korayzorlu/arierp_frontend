@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState, useTransition } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
 import MUIToolbar from './MUIToolbar';
@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useDispatch } from 'react-redux';
 import { setPartnersParams } from '../../store/slices/partners/partnerSlice';
+import { debounce } from 'lodash';
 
 function ListTableServer(props) {
   const {
@@ -33,7 +34,11 @@ function ListTableServer(props) {
 
   const dispatch = useDispatch();
 
+  const [isPending, startTransition] = useTransition();
+
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 50 })
+
+  const debouncedSetParams = useCallback(debounce(setParams, 700), []);
 
   const handlePaginationModelChange = (model) => {
     setPaginationModel(model);
@@ -76,20 +81,20 @@ function ListTableServer(props) {
 
   const handleFilterModelChange = (model) => {
     if(model.items.length > 0){
-        model.items.forEach((item) => {
-            if (item.value) {
-              //dispatch(setPartnersParams({[item.columnField]:item.value}));
-              setParams({[item.columnField]:item.value});
-            }
-        });
+      model.items.forEach((item) => {
+          if (item.value) {
+            //dispatch(setPartnersParams({[item.columnField]:item.value}));
+            setParams({[item.columnField]:item.value});
+          }
+      });
     } else if(model.quickFilterValues.length > 0){
-        model.quickFilterValues.forEach((item) => {
-            //dispatch(setPartnersParams({"search[value]":item}));
-            setParams({"search[value]":item});
-        });
+      model.quickFilterValues.forEach((item) => {
+          //dispatch(setPartnersParams({"search[value]":item}));
+          debouncedSetParams({"search[value]":item});
+      });
     } else if(model.items.length === 0 && model.quickFilterValues.length === 0){
-        //dispatch(setPartnersParams({"search[value]":""}));
-        setParams({"search[value]":""});
+      //dispatch(setPartnersParams({"search[value]":""}));
+      setParams({"search[value]":""});
     };
   };
 

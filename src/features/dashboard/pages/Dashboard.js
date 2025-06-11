@@ -30,10 +30,10 @@ function Dashboard() {
                 >
                     {/* <EagleIcon2 height={120} fill={dark ? "#204E93" : "#204E93"} opacity={1}/> */}
                     {/* <img src={ctuIcon} alt="" height={120} style={{opacity:0.6}}/> */}
-                    <EagleIcon sx={{ fontSize: 120, color:"#204E93" }}/>
+                    {/* <EagleIcon sx={{ fontSize: 120, color:"#204E93" }}/>
                     <Typography variant='body1' sx={{color:'text.secondary'}}>
-                        Welcome to Marswide
-                    </Typography>
+                        Welcome
+                    </Typography> */}
                 </Stack>
             </Grid>
         </Stack>

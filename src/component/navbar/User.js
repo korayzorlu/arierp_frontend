@@ -82,9 +82,6 @@ function User(props) {
                         <Typography variant="body2" sx={{ color: 'text.secondary',textAlign:"center" }}>
                             {user.name}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary',textAlign:"center" }}>
-                            {user.subscription}
-                        </Typography>
                     </ListItemText>
                 </MenuItem>
                 <Divider/>

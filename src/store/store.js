@@ -18,6 +18,8 @@ import settingsReducer from './slices/settings/settingsSlice';
 import commonReducer from './slices/common/commonSlice';
 import productReducer from './slices/products/productSlice';
 import categoryReducer from './slices/products/categorySlice';
+import bankaTahsilatiReducer from './slices/converters/bankaTahsilatlariSlice';
+import bankaTahsilatiOdooReducer from './slices/converters/bankaTahsilatlariOdooSlice';
 
 let navigate;
 
@@ -46,6 +48,8 @@ export const store = configureStore({
         payment: paymentReducer,
         product: productReducer,
         category: categoryReducer,
+        bankaTahsilati: bankaTahsilatiReducer,
+        bankaTahsilatiOdoo: bankaTahsilatiOdooReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

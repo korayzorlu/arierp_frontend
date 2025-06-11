@@ -9,7 +9,7 @@ function WrongPath() {
 
                 <div className="row mb-5">
                     <div className="col-md-12 text-center">
-                        <img src={require(`../../../images/logo/${theme}/marswide-logo-full.png`)} height="40" alt=""/>
+                        <img src={require(`../../../images/logo/${theme}/ari-logo-full.png`)} height="40" alt=""/>
                     </div>
                 </div>
                 <div className="row">
