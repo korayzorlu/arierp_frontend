@@ -18,6 +18,7 @@ import settingsReducer from './slices/settings/settingsSlice';
 import commonReducer from './slices/common/commonSlice';
 import productReducer from './slices/products/productSlice';
 import categoryReducer from './slices/products/categorySlice';
+import bankaHareketiReducer from './slices/converters/bankaHareketleriSlice';
 import bankaTahsilatiReducer from './slices/converters/bankaTahsilatlariSlice';
 import bankaTahsilatiOdooReducer from './slices/converters/bankaTahsilatlariOdooSlice';
 
@@ -48,6 +49,7 @@ export const store = configureStore({
         payment: paymentReducer,
         product: productReducer,
         category: categoryReducer,
+        bankaHareketi: bankaHareketiReducer,
         bankaTahsilati: bankaTahsilatiReducer,
         bankaTahsilatiOdoo: bankaTahsilatiOdooReducer,
     },

@@ -29,7 +29,9 @@ function ListTableServer(props) {
     density,
     autoRowHeight,
     title,
-    backButton
+    backButton,
+    getRowClassName,
+    sx
   } = props;
 
   const dispatch = useDispatch();
@@ -154,7 +156,9 @@ function ListTableServer(props) {
       hideFooter={hideFooter}
       autoHeight
       getRowHeight={() => autoRowHeight ? 'auto' : 'false'}
+      getRowClassName = {getRowClassName}
       sx={{
+          ...sx,
           [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
             outline: 'none',
           },
