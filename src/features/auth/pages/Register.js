@@ -110,7 +110,7 @@ function Register() {
     return ( 
         <>
             <form className="card-body text-center needs-validation" onSubmit={handleRegisterAuth} novalidate>
-                <h5 className="card-title mb-3">Sign up to Marswide</h5>
+                <h5 className="card-title mb-3">Sign up to Arınet</h5>
                 <div className="row">
                     <div className="col-md-6">
                         <Input type="text" name="firstName" label={"First Name"} onChange={handleChange} id="formOutline-user-register-firstName" required={true}>{form.firstName}</Input>
