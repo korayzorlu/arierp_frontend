@@ -1,5 +1,5 @@
 import { Badge, Box, Divider, Grid, IconButton, InputAdornment, styled, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton } from '@mui/x-data-grid'
+import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel } from '@mui/x-data-grid-premium'
 import React, { useRef } from 'react'
 import { useSelector } from 'react-redux';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
@@ -11,9 +11,10 @@ import PrintIcon from '@mui/icons-material/Print';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate } from 'react-router-dom';
 import CustomTableButton from './CustomTableButton';
+import AssistantIcon from '@mui/icons-material/Assistant';
 
 function MUIToolbar(props) {
-  const {children,title,backButton} = props;
+  const {children,title,backButton,excelOptions} = props;
 
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
@@ -48,6 +49,8 @@ function MUIToolbar(props) {
     opacity: ownerState.expanded ? 1 : 0,
     transition: theme.transitions.create(['width', 'opacity']),
   }));
+
+
 
   return (
     // <div style={{ display: "flex", justifyContent: "space-between", padding: "0.5rem" }}>
@@ -108,12 +111,19 @@ function MUIToolbar(props) {
             sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
           />
         </Tooltip>
+          
+        <Tooltip title="AI Assistant">
+          <AiAssistantPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
+            <AssistantIcon fontSize="small" />
+          </AiAssistantPanelTrigger>
+        </Tooltip>
 
         <Tooltip title="Download as CSV">
-          <ExportCsv render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
+          <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
             <FileDownloadIcon fontSize="small" />
-          </ExportCsv>
+          </ExportExcel>
         </Tooltip>
+        
 
         <Tooltip title="Print">
           <ExportPrint render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>

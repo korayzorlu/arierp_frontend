@@ -66,6 +66,10 @@ import BankaTahsilatlari from './features/converters/pages/BankaTahsilatlari.js'
 import BankaTahsilatlariOdoo from './features/converters/pages/BankaTahsilatlariOdoo.js';
 import BankaHareketleri from './features/converters/pages/BankaHareketleri.js';
 
+import { LicenseInfo } from '@mui/x-license';
+
+LicenseInfo.setLicenseKey('a5faffcdbde873caab7e6ddb959235b2Tz0xMTQ1NDQsRT0xNzgxMzk1MTk5MDAwLFM9cHJlbWl1bSxMTT1wZXJwZXR1YWwsUFY9aW5pdGlhbCxLVj0y');
+
 export const NumberContext = React.createContext();
 
 function App() {

@@ -40,26 +40,27 @@ function BankaHareketleri() {
     }, [activeCompany,bankaHareketleriParams,dispatch]);
 
     const columns = [
-        { field: 'gonderen_unvani', headerName: 'Gönderen Ünvanı', width: 400, editable: true, renderCell: (params) => (
-                <Link
-                to={`/banka-hareketleri/update/${params.row.uuid}/`}
-                style={{textDecoration:"underline"}}
-                >
-                    {params.value}
-                </Link>
+        // { field: 'gonderen_unvani', headerName: 'Gönderen Ünvanı', width: 400, editable: true, renderCell: (params) => (
+        //         <Link
+        //         to={`/banka-hareketleri/update/${params.row.uuid}/`}
+        //         style={{textDecoration:"underline"}}
+        //         >
+        //             {params.value}
+        //         </Link>
                 
-            )
-        },
-        { field: 'musteri_unvani', headerName: 'Müşteri Ünvanı', flex: 1 },
+        //     )
+        // },
+        // { field: 'musteri_unvani', headerName: 'Müşteri Ünvanı', flex: 1 },
         { field: 'aciklama', headerName: 'Açıklama', flex: 4 },
-        { field: 'ucuncu_sahis_mi', headerName: 'Üçüncü Şahıs mı?', flex: 1, renderCell: (params) => (
-                params.value === true
-                ?
-                <Typography>Evet</Typography>
-                :
-                <></>
-            )
-        },
+        // { field: 'ucuncu_sahis_mi', headerName: 'Üçüncü Şahıs mı?', flex: 1, renderCell: (params) => (
+        //         params.value === true
+        //         ?
+        //         <Typography>Evet</Typography>
+        //         :
+        //         <></>
+        //     )
+        // },
+        { field: 'ucuncu_sahis_mi_str', headerName: 'Üçüncü Şahıs mı?', flex: 1 },
     ]
 
     const handleAllDelete = async () => {
@@ -128,6 +129,25 @@ function BankaHareketleri() {
                 '&:hover': {
                     backgroundColor: 'warning.main', // hover efekti
                 },
+                },
+            }}
+            excelExportOptions={{
+                getCellValue: (params) => {
+                    if (params.field === 'ucuncu_sahis_mi') {
+                        return params.value ? true : '';
+                    }
+                    return params.value;
+                },
+            }}
+            excelOptions={{
+                columnsStyles: {
+                    ucuncu_sahis_mi: { font: { fgColor:{argb:'FFFFFF00'}, bgColor:{argb:'FF0000FF'} } },
+                },
+                getCellValue: (params) => {
+                    if (params.field === 'ucuncu_sahis_mi') {
+                        return params.value ? true : '';
+                    }
+                    return params.value;
                 },
             }}
             />

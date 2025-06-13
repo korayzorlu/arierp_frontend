@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useTransition } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
+import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel } from '@mui/x-data-grid-premium';
 import MUIToolbar from './MUIToolbar';
 import { Box, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
@@ -31,7 +32,9 @@ function ListTableServer(props) {
     title,
     backButton,
     getRowClassName,
-    sx
+    sx,
+    excelExportOptions,
+    excelOptions
   } = props;
 
   const dispatch = useDispatch();
@@ -109,12 +112,22 @@ function ListTableServer(props) {
     </Box>
   );
 
+  function processPrompt(prompt, context, conversationId) {
+    return promptResolver(
+      'https://backend.mui.com/api/datagrid/prompt',
+      prompt,
+      context,
+      conversationId,
+    );
+  }
+
   return (
     <TableContent height={height}>
-      <DataGrid
+      <DataGridPremium
       slots={{
         toolbar: MUIToolbar,
-        ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay })
+        ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
+        aiAssistantPanel: GridAiAssistantPanel,
       }}
       showToolbar
       slotProps={{
@@ -123,6 +136,7 @@ function ListTableServer(props) {
               children: customButtons,
               title: title,
               backButton: backButton,
+              excelOptions: excelOptions,
           },
           loadingOverlay: {
             variant: 'linear-progress',
@@ -167,6 +181,9 @@ function ListTableServer(props) {
           },
           '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
       }}
+      aiAssistant
+      onPrompt={processPrompt}
+      excelExportOptions={excelExportOptions}
       />
     </TableContent>
   )
