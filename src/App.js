@@ -67,6 +67,9 @@ import BankaTahsilatlariOdoo from './features/converters/pages/BankaTahsilatlari
 import BankaHareketleri from './features/converters/pages/BankaHareketleri.js';
 
 import { LicenseInfo } from '@mui/x-license';
+import Sectors from './features/partners/pages/Sectors.js';
+import AddSector from './features/partners/pages/AddSector.js';
+import UpdateSector from './features/partners/pages/UpdateSector.js';
 
 LicenseInfo.setLicenseKey('a5faffcdbde873caab7e6ddb959235b2Tz0xMTQ1NDQsRT0xNzgxMzk1MTk5MDAwLFM9cHJlbWl1bSxMTT1wZXJwZXR1YWwsUFY9aW5pdGlhbCxLVj0y');
 
@@ -157,6 +160,10 @@ function App() {
                   <Route path='/companies/add-company' element={<AddCompany></AddCompany>}></Route>
                   <Route path='/companies/update/:name' element={<UpdateCompany></UpdateCompany>}></Route>
                   <Route path='/invitations' element={<Invitations></Invitations>}></Route>
+
+                  <Route path='/sectors' element={<Sectors></Sectors>}></Route>
+                  <Route path='/partners/add-sector' element={<AddSector></AddSector>}></Route>
+                  <Route path='/partners/update-sector/:uuid' element={<UpdateSector></UpdateSector>}></Route>
 
                   <Route path='/partners' element={<Partners></Partners>}></Route>
                   <Route path='/partners/add-partner' element={<AddPartner></AddPartner>}></Route>

@@ -7,6 +7,7 @@ import tableReducer from './slices/tableSlice';
 import themeReducer from './slices/themeSlice';
 import subscriptionsReducer from './slices/subscriptionsSlice';
 import organizationReducer from './slices/organizationSlice';
+import sectorReducer from './slices/partners/sectorSlice';
 import partnerReducer from './slices/partners/partnerSlice';
 import websocketReducer from './slices/websocketSlice';
 import dataReducer from './slices/dataSlice';
@@ -36,6 +37,7 @@ export const store = configureStore({
         organization: organizationReducer,
         data: dataReducer,
         notification: notificationReducer,
+        sector: sectorReducer,
         partner: partnerReducer,
         process: processReducer,
         sidebar: sidebarReduce,

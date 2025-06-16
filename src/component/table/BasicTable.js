@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import TableContent from './TableContent';
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
 import MUIToolbar from './MUIToolbar';
+import { DataGridPremium } from '@mui/x-data-grid-premium';
 
 function BasicTable(props) {
     const {rows,columns,loading,customButtons,hiddenColumns,checkboxSelection,disableRowSelectionOnClick,title} = props;
@@ -14,7 +15,7 @@ function BasicTable(props) {
 
     return (
         <TableContent height="auto">
-            <DataGrid
+            <DataGridPremium
             slots={{ toolbar: MUIToolbar}}
             showToolbar
             slotProps={{

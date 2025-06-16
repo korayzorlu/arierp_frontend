@@ -11,6 +11,7 @@ import { grey } from '@mui/material/colors';
 import { Box, Typography } from '@mui/material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
+import { DataGridPremium } from '@mui/x-data-grid-premium';
 
 function ListTable(props) {
   const {
@@ -45,7 +46,7 @@ function ListTable(props) {
 
   return (
     <TableContent>
-      <DataGrid
+      <DataGridPremium
       slots={{
         toolbar: MUIToolbar,
         noRowsOverlay: NoRowsOverlay
