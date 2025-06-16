@@ -72,7 +72,7 @@ function ImportProcesses(props) {
                                                 </Box>
                                             </Col>
                                             <Col size="6">
-                                                Processing partner items...
+                                                Veriler sisteme yükleniyor...
                                             </Col>
                                         </Row>
                                         

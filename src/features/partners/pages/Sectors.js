@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 
 function Sectors() {
+    const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {sectors,sectorsCount,sectorsParams,sectorsLoading} = useSelector((store) => store.sector);
 
@@ -108,7 +109,7 @@ function Sectors() {
                     <CustomTableButton
                     title="Delete All"
                     onClick={handleAllDelete}
-                    disabled={sectors.length > 0 ? false : true}
+                    disabled={user.email === "koray.zorlu@arileasing.com.tr" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 

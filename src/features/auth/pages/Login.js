@@ -61,32 +61,32 @@ function Login() {
     return ( 
         <>
             <form className="card-body text-center"onSubmit={handleLoginAuth}>
-                <h5 className="card-title mb-3">Log in</h5>
+                <h5 className="card-title mb-3">Oturum Aç</h5>
                 <div data-mdb-input-init className="form-outline mb-3">
                     <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} id="formOutline-user-login-email" className="form-control" required />
-                    <label className="form-label" htmlFor="formOutline-user-login-email-">Email address</label>
+                    <label className="form-label" htmlFor="formOutline-user-login-email-">Kullanıcı Adı</label>
                 </div>
                 <div data-mdb-input-init className="form-outline mb-3">
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="formOutline-user-login-password" className="form-control" required />
-                    <label className="form-label" htmlFor="formOutline-user-login-password-">Password</label>
+                    <label className="form-label" htmlFor="formOutline-user-login-password-">Parola</label>
                 </div>
                 <div className="row mb-3">
                     <div className="col d-flex justify-content-center">
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" checked={remember} onChange={handleRemember} id="formOutline-user-rememberMe"/>
-                        <label className="form-check-label" htmlFor="formOutline-user-rememberMe"> Remember me </label>
+                        <label className="form-check-label" htmlFor="formOutline-user-rememberMe"> Beni hatırla </label>
                     </div>
                     </div>
 
                     <div className="col">
-                    <Link to="/auth/forgot-password" className="text-blue-500 fw-bold">Forgot password?</Link>
+                    <Link to="/auth/forgot-password" className="text-blue-500 fw-bold">Şifremi unuttum</Link>
                     </div>
                 </div>
-                <button data-mdb-ripple-init type="submit" className="btn btn-primary btn-block">Sign in</button>
+                <button data-mdb-ripple-init type="submit" className="btn btn-primary btn-block">Giriş</button>
                 <span className={`text-start btn-block ${authMessage.color}`}><i className={authMessage.icon}></i> {authMessage.text}</span>
             </form>
-            <div className="card-footer">
-            Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Sign up</Link>
+            <div className="card-footer d-none">
+            Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Kayıt Ol</Link>
             </div>
         </>
     );

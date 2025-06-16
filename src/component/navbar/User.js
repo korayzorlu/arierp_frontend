@@ -89,26 +89,26 @@ function User(props) {
                     <ListItemIcon>
                         <AccountCircleIcon />
                     </ListItemIcon>
-                    <ListItemText>Profile</ListItemText>
+                    <ListItemText>Profil</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={() => {navigate(`/settings/auth`);setAnchorEl(null);}}>
                     <ListItemIcon>
                         <SettingsIcon />
                     </ListItemIcon>
-                    <ListItemText>Settings</ListItemText>
+                    <ListItemText>Ayarlar</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleToggleTheme}>
                     <ListItemIcon>
                         {theme === "dark" ? <><LightModeIcon/></>: <><DarkModeIcon/></>}
                     </ListItemIcon>
-                    <ListItemText>{theme === "dark" ? "Light" : "Dark"}</ListItemText>
+                    <ListItemText>{theme === "dark" ? "Aydınlık Tema" : "Karanlık Tema"}</ListItemText>
                 </MenuItem>
                 <Divider/>
                 <MenuItem onClick={handleLogoutAuth}>
                     <ListItemIcon>
                         <LogoutIcon />
                     </ListItemIcon>
-                    <ListItemText>Logout</ListItemText>
+                    <ListItemText>Çıkış</ListItemText>
                 </MenuItem>
             </Menu> 
         </>

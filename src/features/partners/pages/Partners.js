@@ -23,6 +23,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 function Partners() {
+    const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {partners,partnersCount,partnersParams,partnersLoading} = useSelector((store) => store.partner);
 
@@ -108,7 +109,7 @@ function Partners() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Partners"
+            title="Partner Listesi"
             rows={partners}
             columns={columns}
             getRowId={(row) => row.uuid}
@@ -139,7 +140,7 @@ function Partners() {
                     <CustomTableButton
                     title="Delete All"
                     onClick={handleAllDelete}
-                    disabled={partners.length > 0 ? false : true}
+                    disabled={user.email === "koray.zorlu@arileasing.com.tr" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 

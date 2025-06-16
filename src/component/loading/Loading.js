@@ -6,7 +6,7 @@ function Loading() {
         <div className="row w-100 vh-100">
             <div className="col-md-12 text-center d-flex justify-content-center align-items-center">
 
-                <img src={require(`../../images/logo/${theme}/marswide-icon.png`)} height="120" alt=""/>
+                <img src={require(`../../images/logo/${theme}/ari-logo-full.png`)} height="120" alt=""/>
 
             </div>
         </div>

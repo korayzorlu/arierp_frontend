@@ -18,8 +18,8 @@ function Auth({children}) {
                         
                         <div className="card-header">
                             <div className="row justify-content-center">
-                                <div className="col-md-4 text-center">
-                                    <img src={require(`../../../images/logo/${theme}/marswide-icon.png`)} className="" height="60" alt="Marswide"/>
+                                <div className="col-md-8 text-center">
+                                    <img src={require(`../../../images/logo/${theme}/ari-logo-full.png`)} className="" height="60" alt="Marswide"/>
                                 </div>
                             </div>
                         </div>
