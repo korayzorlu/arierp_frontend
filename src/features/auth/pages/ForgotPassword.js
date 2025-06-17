@@ -53,8 +53,8 @@ function ForgotPassword() {
                 <button data-mdb-ripple-init type="submit" className="btn btn-primary btn-block">Send Password Reset Link</button>
                 <span className={`text-start btn-block ${authMessage.color}`}><i className={authMessage.icon}></i> {authMessage.text}</span>
             </form>
-            <div className="card-footer text-center">
-            Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Sign up</Link>
+            <div className="card-footer text-center d-none">
+                Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Sign up</Link>
             </div>
         </>
     );

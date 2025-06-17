@@ -86,7 +86,7 @@ function Login() {
                 <span className={`text-start btn-block ${authMessage.color}`}><i className={authMessage.icon}></i> {authMessage.text}</span>
             </form>
             <div className="card-footer d-none">
-            Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Kayıt Ol</Link>
+                Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Kayıt Ol</Link>
             </div>
         </>
     );

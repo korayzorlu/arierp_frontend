@@ -40,18 +40,18 @@ function Partners() {
     }, [activeCompany,partnersParams,dispatch]);
       
     const columns = [
-        { field: 'types', headerName: 'Type', flex: 1.5, renderCell: (params) => (
+        { field: 'types', headerName: 'Tip', flex: 1.5, renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
                         params.value.map((value,index) => {
                                 return (
                                         value === "customer"
                                         ?   
-                                            <Chip key={index} variant='contained' color="mars" icon={<PeopleIcon />} label={capitalize(value)} size='small'/>
+                                            <Chip key={index} variant='contained' color="mars" icon={<PeopleIcon />} label="Müşteri" size='small'/>
                                         :
                                         value === "supplier"
                                         ?
-                                            <Chip key={index} variant='contained' color="primary" icon={<LocalShippingIcon />} label={capitalize(value)} size='small'/>
+                                            <Chip key={index} variant='contained' color="primary" icon={<LocalShippingIcon />} label="Tedarikçi" size='small'/>
                                         :
                                             <Chip key={index} variant='contained' color="success" icon={<BusinessCenterIcon />} label={capitalize(value)} size='small'/>
                                 )
@@ -60,7 +60,7 @@ function Partners() {
                 </Stack>
             ) 
         },
-        { field: 'name', headerName: 'Name', width: 400, editable: true, renderCell: (params) => (
+        { field: 'name', headerName: 'İsim', width: 400, editable: true, renderCell: (params) => (
                 <Link
                 to={`/partners/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
@@ -70,9 +70,10 @@ function Partners() {
                 
             )
         },
-        { field: 'country_name', headerName: 'Country', flex: 1 },
-        { field: 'city_name', headerName: 'City', flex: 1 },
-        { field: 'address', headerName: 'Address', flex: 4, renderCell: (params) => (
+        { field: 'tcVknNo', headerName: 'TC/VKN No', flex: 1 },
+        { field: 'country_name', headerName: 'Ülke', flex: 1 },
+        { field: 'city_name', headerName: 'Şehir', flex: 1 },
+        { field: 'address', headerName: 'Adres', flex: 4, renderCell: (params) => (
             <>
                 {params.value} {params.row.address2}
             </>
