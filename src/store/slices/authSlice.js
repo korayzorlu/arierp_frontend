@@ -214,8 +214,8 @@ const authSlice = createSlice({
                 state.dark = action.payload;
                 state.theme = action.payload ? "dark" : "light";
                 state.logo = action.payload
-                    ? require(`../../images/logo/dark/marswide-logo-full.png`)
-                    : require(`../../images/logo/light/marswide-logo-full.png`)
+                    ? require(`../../images/logo/dark/ari-logo-full.png`)
+                    : require(`../../images/logo/light/ari-logo-full.png`)
                 document.cookie = action.payload
                     ? `theme=dark; path=/; ${process.env.REACT_APP_SAME_SITE}`
                     : `theme=light; path=/; ${process.env.REACT_APP_SAME_SITE}`

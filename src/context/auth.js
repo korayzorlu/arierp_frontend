@@ -28,7 +28,7 @@ function AuthProvider(props){
 
     const [dark, setDark] = useState(false);
     const [theme, setTheme] = useState(Cookies.get("theme") ? Cookies.get("theme") : "light");
-    const [logo, setLogo] = useState(require(`../images/logo/light/marswide-logo-full.png`));
+    const [logo, setLogo] = useState(require(`../images/logo/light/ari-logo-full.png`));
 
     // useEffect(() => {
     //     const handleStorageChange = (event) => {
@@ -62,7 +62,7 @@ function AuthProvider(props){
         
         document.documentElement.setAttribute("data-mdb-theme", theme);
         setTheme(theme);
-        setLogo(require(`../images/logo/${theme}/marswide-logo-full.png`));
+        setLogo(require(`../images/logo/${theme}/ari-logo-full.png`));
         document.cookie = `theme=${theme}; path=/; ${process.env.REACT_APP_SAME_SITE}`
     };
 
@@ -71,11 +71,11 @@ function AuthProvider(props){
 
         if(darkTerm){
             setTheme("dark");
-            setLogo(require(`../images/logo/dark/marswide-logo-full.png`));
+            setLogo(require(`../images/logo/dark/ari-logo-full.png`));
             document.cookie = `theme=dark; path=/; ${process.env.REACT_APP_SAME_SITE}`
         }else{
             setTheme("light");
-            setLogo(require(`../images/logo/light/marswide-logo-full.png`));
+            setLogo(require(`../images/logo/light/ari-logo-full.png`));
             document.cookie = `theme=light; path=/; ${process.env.REACT_APP_SAME_SITE}`
         };
 
