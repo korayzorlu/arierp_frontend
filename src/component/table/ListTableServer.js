@@ -85,17 +85,20 @@ function ListTableServer(props) {
   };
 
   const handleFilterModelChange = (model) => {
-    if(model.items.length > 0){
-      model.items.forEach((item) => {
-          if (item.value) {
-            //dispatch(setPartnersParams({[item.columnField]:item.value}));
-            setParams({[item.columnField]:item.value});
-          }
-      });
-    } else if(model.quickFilterValues.length > 0){
+    console.log(model)
+    if(model.quickFilterValues.length > 0){
       model.quickFilterValues.forEach((item) => {
           //dispatch(setPartnersParams({"search[value]":item}));
           debouncedSetParams({"search[value]":item});
+      });
+    }else if(model.quickFilterValues.length === 0 && model.items.length > 0){
+      model.items.forEach((item) => {
+          if (item.value) {
+            console.log("filtre değişti")
+            //dispatch(setPartnersParams({[item.columnField]:item.value}));
+            //setParams({[item.columnField]:item.value});
+            debouncedSetParams({[item.field]:item.value});
+          }
       });
     } else if(model.items.length === 0 && model.quickFilterValues.length === 0){
       //dispatch(setPartnersParams({"search[value]":""}));

@@ -30,7 +30,7 @@ function PasswordReset() {
     return ( 
         <Stack spacing={2}>
             <FormHeader
-            title="PASSWORD RESET"
+            title="ŞİFRE SIFIRLAMA"
             loadingSave={disabled}
             disabledSave={buttonDisabled}
             onClickSave={() => handleSubmit()}
@@ -43,7 +43,7 @@ function PasswordReset() {
                         <TextField
                         type="password"
                         size="small"
-                        label={"Current Password"}
+                        label={"Mevcut Parola"}
                         variant='outlined'
                         value={data.password}
                         onChange={(e) => handleChangeField("password",e.target.value)}
@@ -55,7 +55,7 @@ function PasswordReset() {
                         <TextField
                         type="password"
                         size="small"
-                        label={"New Password"}
+                        label={"Yeni Parola"}
                         variant='outlined'
                         value={data.newPassword}
                         onChange={(e) => handleChangeField("newPassword",e.target.value)}
@@ -67,7 +67,7 @@ function PasswordReset() {
                         <TextField
                         type="password"
                         size="small"
-                        label={"New Password Confirm"}
+                        label={"Yeni Parola Doğrula"}
                         variant='outlined'
                         value={data.newPasswordConfirmation}
                         onChange={(e) => handleChangeField("newPasswordConfirmation",e.target.value)}

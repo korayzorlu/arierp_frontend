@@ -62,14 +62,14 @@ function PhoneNumberVerify() {
                                 <Row>
                                     <Col size="8" addClass="mb-3 ms-auto me-auto">
                                         <Typography>
-                                            Enter verification code
+                                            Doğrulama kodunu gir
                                         </Typography>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col size="8" addClass="mb-3 ms-auto me-auto">
                                         <Typography variant="body2" sx={{color:"text.secondary"}}>
-                                            A text message with a verification code has been sent to {phoneNumber}
+                                            Doğrulama kodu kısa mesaj ile bu numaraya gönderildi; {phoneNumber}
                                         </Typography>
                                     </Col>
                                 </Row>
@@ -80,7 +80,7 @@ function PhoneNumberVerify() {
                                         id="settings-auth-phone-number"
                                         size="small"
                                         variant='outlined'
-                                        placeholder="SMS CODE"
+                                        placeholder="SMS KODU"
                                         onChange={(e) => setVerifyCode(e.target.value)}
                                         fullWidth
                                         >
@@ -90,7 +90,7 @@ function PhoneNumberVerify() {
                                 </Row>
                                 <Row>
                                     <Col size="6" addClass="mb-3 ms-auto me-auto">
-                                        <Button type="submit" variant="contained" color="primary" startIcon={<VerifiedIcon />} fullWidth>Verify</Button>
+                                        <Button type="submit" variant="contained" color="primary" startIcon={<VerifiedIcon />} fullWidth>Doğrula</Button>
                                     </Col>
                                 </Row>
                             </Form>

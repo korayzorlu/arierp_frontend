@@ -70,6 +70,14 @@ function Partners() {
                 
             )
         },
+        { field: 'customerCode', headerName: 'Müşteri Kodu', flex: 1, renderCell: (params) => (
+                params.value === "nan"
+                ?
+                    <Typography></Typography>
+                :
+                    <Typography>{Number(params.value).toFixed(0)}</Typography>
+            )
+        },
         { field: 'tcVknNo', headerName: 'TC/VKN No', flex: 1 },
         { field: 'country_name', headerName: 'Ülke', flex: 1 },
         { field: 'city_name', headerName: 'Şehir', flex: 1 },

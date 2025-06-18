@@ -33,6 +33,9 @@ function Sidenav() {
         payment: require("../../images/icons/sidebar/light/payments-filled.svg").ReactComponent,
         box: require("../../images/icons/sidebar/light/box-filled.svg").ReactComponent,
         inventory: require("../../images/icons/sidebar/light/inventory-filled.svg").ReactComponent,
+        cottage: require("../../images/icons/sidebar/light/cottage-filled.svg").ReactComponent,
+        description: require("../../images/icons/sidebar/light/description-filled.svg").ReactComponent,
+        contract: require("../../images/icons/sidebar/light/contract-filled.svg").ReactComponent,
     
     };
 

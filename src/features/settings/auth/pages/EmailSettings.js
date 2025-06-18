@@ -47,7 +47,7 @@ function EmailSettings() {
     return ( 
         <Stack spacing={2}>
             <FormHeader
-            title="EMAIL"
+            title="E-POSTA"
             loadingSave={disabled}
             disabledSave={buttonDisabled}
             noBackButton
@@ -63,7 +63,7 @@ function EmailSettings() {
                             </Grid>
                             <Grid container spacing={2} sx={{justifyContent:'center',textAlign:'center'}}>
                                 <Typography>
-                                    Check your mailbox
+                                    E-posta kutunu kontrol et
                                 </Typography>
                             </Grid>
                         </Stack>
@@ -79,11 +79,11 @@ function EmailSettings() {
                                                     user.is_email_verified
                                                     ?
                                                         <>
-                                                            <VerifiedIcon/> This email address verified!
+                                                            <VerifiedIcon/> Bu e-posta adresi doğrulandı!
                                                         </>
                                                     :
                                                         <>
-                                                            <NewReleasesIcon/> This email address not verified!
+                                                            <NewReleasesIcon/> Bu e-posta adresi doğrulanmadı!
                                                         </>
                                                 }
                                             </Typography>
@@ -95,7 +95,7 @@ function EmailSettings() {
                                                 <Typography  sx={{textAlign:'center'}}>
                                                     {user.email}
                                                 </Typography>
-                                                <Button type="button" variant="contained" color="primary" onClick={() => setEdit(true)} disabled={buttonDisabled} fullWidth>Change Email</Button>
+                                                <Button type="button" variant="contained" color="primary" onClick={() => setEdit(true)} disabled={buttonDisabled} fullWidth>E-posta Düzenle</Button>
                                             </Stack>
                                         </Grid>
                                     </Grid>
@@ -115,10 +115,10 @@ function EmailSettings() {
                                         />
                                     </Grid>
                                     <Grid size={{xs:12,sm:12}}>
-                                        <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>Send Verification Email</Button>
+                                        <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>Doğrulama Kodu Gönder</Button>
                                     </Grid>
                                     <Grid size={{xs:12,sm:12}}>
-                                        <Button  variant="contained" color="error" onClick={() => setEdit(false)} fullWidth>Cancel</Button>
+                                        <Button  variant="contained" color="error" onClick={() => setEdit(false)} fullWidth>Vazgeç</Button>
                                     </Grid>
                                 </Grid>
                         )

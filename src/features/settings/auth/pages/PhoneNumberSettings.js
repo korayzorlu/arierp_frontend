@@ -68,7 +68,7 @@ function PhoneNumberSettings() {
         
         <Stack spacing={2}>
             <FormHeader
-            title="PHONE NUMBER"
+            title="TELEFON NUMARASI"
             loadingSave={disabled}
             disabledSave={buttonDisabled}
             noBackButton
@@ -78,7 +78,7 @@ function PhoneNumberSettings() {
                 <Grid container spacing={2}>
                     <Grid size={{xs:12,sm:5}}>
                         <CountrySelect
-                        label="Phone Code"
+                        label="Ülke Kodu"
                         emptyValue={true}
                         value={data.phoneCountry || user.location.country}
                         onChange={(value) => handleChangeField("phoneCountry",value)}
@@ -89,7 +89,7 @@ function PhoneNumberSettings() {
                         <TextField
                         type="number"
                         size="small"
-                        label={"Phone Number"}
+                        label={"Numara"}
                         variant='outlined'
                         value={data.phoneNumber || ""}
                         onChange={(e) => handleChangeField("phoneNumber",e.target.value)}
@@ -99,7 +99,7 @@ function PhoneNumberSettings() {
                     </Grid>
                 </Grid>
             </Stack>
-            <Button variant="contained" color="primary" onClick={handleSubmit} disabled={buttonDisabled} fullWidth>Send SMS With Code</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit} disabled={buttonDisabled} fullWidth>SMS İle Doğrulama kodu Gönder</Button>
         </Stack>
             
     )

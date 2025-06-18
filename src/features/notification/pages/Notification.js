@@ -34,7 +34,7 @@ function Notification() {
                 <Paper elevation={0} sx={{p:2}} square>
                     <Stack spacing={2}>
                         <FormHeader
-                        title="NOTIFICATIONS"
+                        title="BİLDİRİMLER"
                         />
                     </Stack>
                     <Divider></Divider>
@@ -84,7 +84,7 @@ function Notification() {
                                         <ListItemText
                                         primary={
                                             <Typography variant='body2' sx={{color: "text.secondary",textAlign:"center"}}>
-                                                No notifications
+                                                Bildirim yok
                                             </Typography>
                                         }
                                         />

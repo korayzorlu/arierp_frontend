@@ -27,7 +27,7 @@ function InformationTab(props) {
                     <TextField
                     type="text"
                     size="small"
-                    label={"Name * "}
+                    label={"İsim * "}
                     variant='outlined'
                     value={valueName}
                     onChange={(e) => onChangeName(e.target.value)}
@@ -39,7 +39,7 @@ function InformationTab(props) {
                     <TextField
                     type="text"
                     size="small"
-                    label={"Formal Name * "}
+                    label={"Ünvan * "}
                     variant='outlined'
                     value={valueFormalName}
                     onChange={(e) => onChangeFormalName(e.target.value)}
@@ -53,7 +53,7 @@ function InformationTab(props) {
                     <TextField
                     type="text"
                     size="small"
-                    label={"Vat Office"}
+                    label={"Vergi Dairesi"}
                     variant='outlined'
                     value={valueVatOffice}
                     onChange={(e) => onChangeVatOffice(e.target.value)}
@@ -65,7 +65,7 @@ function InformationTab(props) {
                     <TextField
                     type="text"
                     size="small"
-                    label={"Vat No"}
+                    label={"Vergi Np"}
                     variant='outlined'
                     value={valueVatNo}
                     onChange={(e) => onChangeVatNo(e.target.value)}
@@ -81,7 +81,7 @@ function InformationTab(props) {
                     size="small"
                     multiline
                     rows={8}
-                    label={"About"}
+                    label={"Hakkında"}
                     variant='outlined'
                     value={valueAbout}
                     onChange={(e) => onChangeAbout(e.target.value)}

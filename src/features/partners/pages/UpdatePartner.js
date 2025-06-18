@@ -78,11 +78,11 @@ function UpdatePartner() {
         <Paper elevation={0} sx={{p:2}} square>
             <Stack spacing={2}>
                 <FormHeader
-                title="PARTNER DETAILS"
+                title="PARTNER DETAYI"
                 loadingSave={disabled}
                 disabledSave={buttonDisabled}
-                onClickSave={() => handleSubmit()}
-                onClickDelete={() => dispatch(setDialog(true))}
+                //onClickSave={() => handleSubmit()}
+                //onClickDelete={() => dispatch(setDialog(true))}
                 />
                 <Divider></Divider>
                 <Stack spacing={2}>
@@ -100,27 +100,27 @@ function UpdatePartner() {
                             scrollButtons="auto"
                             onChange={handleChangeTabValue}
                             >
-                                <Tab label="Information" value={0} icon={<InfoIcon/>} iconPosition="start"/>
-                                <Tab label="Address" value={1} icon={<LocationOnIcon/>} iconPosition="start"/>
-                                <Tab label="Contact" value={2} icon={<CallIcon/>} iconPosition="start"/>
-                                <Tab label="Accounts" value={3} icon={<MonetizationOnIcon/>} iconPosition="start"/>
+                                <Tab label="Hakkında" value={0} icon={<InfoIcon/>} iconPosition="start"/>
+                                <Tab label="Adres" value={1} icon={<LocationOnIcon/>} iconPosition="start"/>
+                                <Tab label="iletişim" value={2} icon={<CallIcon/>} iconPosition="start"/>
+                                <Tab label="Cari Hesaplar" value={3} icon={<MonetizationOnIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                         <Grid>
                             <AndroidSwitch
-                            label="Customer"
+                            label="Müşteri"
                             checked={data.customer}
                             onChange={(value) => handleChangeField("customer",value)}
                             disabled={switchDisabled}
                             />
                             <AndroidSwitch
-                            label="Supplier"
+                            label="Tedarikçi"
                             checked={data.supplier}
                             onChange={(value) => handleChangeField("supplier",value)}
                             disabled={switchDisabled}
                             />
                             <AndroidSwitch
-                            label="Shareholder"
+                            label="Hissedar"
                             checked={data.shareholder}
                             onChange={(value) => {handleChangeField("shareholder",value);handleChangeShareholder(value);}}
                             />

@@ -87,7 +87,7 @@ function Settings() {
                     <Paper elevation={0} sx={{p:2}} square>
                         <Stack spacing={2}>
                             <FormHeader
-                            title="SETTINGS"
+                            title="AYARLAR"
                             />
                             <Divider></Divider>
                             <Stack spacing={2}>
@@ -105,8 +105,8 @@ function Settings() {
                                         scrollButtons="auto"
                                         onChange={handleChangeTabValue}
                                         >
-                                            <Tab label="Auth" value={0} icon={<PersonIcon/>} iconPosition="start"/>
-                                            <Tab label="Organization" value={1} icon={<ApartmentIcon/>} iconPosition="start"/>
+                                            <Tab label="Hesap" value={0} icon={<PersonIcon/>} iconPosition="start"/>
+                                            <Tab label="Organizasyon" value={1} icon={<ApartmentIcon/>} iconPosition="start"/>
                                         </Tabs>
                                     </Grid>
                                 </Grid>

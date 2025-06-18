@@ -51,7 +51,7 @@ function PersonalSettings() {
     return ( 
         <Stack spacing={2}>
             <FormHeader
-            title="PERSONAL"
+            title="KİŞİSEL"
             loadingSave={disabled}
             disabledSave={buttonDisabled}
             onClickSave={() => handleSubmit()}
@@ -64,7 +64,7 @@ function PersonalSettings() {
                         <TextField
                         type="text"
                         size="small"
-                        label={"First Name * "}
+                        label={"Ad * "}
                         variant='outlined'
                         value={data.first_name}
                         onChange={(e) => handleChangeField("first_name",e.target.value)}
@@ -76,7 +76,7 @@ function PersonalSettings() {
                         <TextField
                         type="text"
                         size="small"
-                        label={"Last Name * "}
+                        label={"Soyad * "}
                         variant='outlined'
                         value={data.last_name}
                         onChange={(e) => handleChangeField("last_name",e.target.value)}

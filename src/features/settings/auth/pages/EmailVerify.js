@@ -55,14 +55,14 @@ function EmailVerify() {
                             <Row>
                                 <Col size="8" addClass="mb-3 ms-auto me-auto text-center">
                                     <Typography>
-                                        Verification required
+                                        Doğrulama gerekli
                                     </Typography>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col size="8" addClass="mb-3 ms-auto me-auto text-center">
                                     <Typography variant="body2" sx={{color:"text.secondary"}}>
-                                    Your account ({user.email}) has not been verified yet. Please verify your account to log in. If you haven’t received the verification email, you can request a new one below.
+                                    Hesabın ({user.email}) henüz doğrulanmadı. Giriş yapmak için lütfen hesabını doğrula. Eğer doğrulama mesajı almadıysan, yeni bir istek oluşturabilirsin.
                                     </Typography>
                                 </Col>
                             </Row>
@@ -77,7 +77,7 @@ function EmailVerify() {
                                     disabled={buttonDisabled}
                                     fullWidth
                                     >
-                                        Resend Verification Email
+                                        Doğrulama Mesajını Tekrar Gönder
                                     </Button>
                                 </Col>
                             </Row>
@@ -91,7 +91,7 @@ function EmailVerify() {
                                     disabled={buttonDisabled}
                                     fullWidth
                                     >
-                                        Back To Homepage
+                                        Anasayfaya Dön
                                     </Button>
                                 </Col>
                             </Row>

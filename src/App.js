@@ -70,6 +70,7 @@ import { LicenseInfo } from '@mui/x-license';
 import Sectors from './features/partners/pages/Sectors.js';
 import AddSector from './features/partners/pages/AddSector.js';
 import UpdateSector from './features/partners/pages/UpdateSector.js';
+import Contracts from './features/contracts/pages/Contracts.js';
 
 LicenseInfo.setLicenseKey('a5faffcdbde873caab7e6ddb959235b2Tz0xMTQ1NDQsRT0xNzgxMzk1MTk5MDAwLFM9cHJlbWl1bSxMTT1wZXJwZXR1YWwsUFY9aW5pdGlhbCxLVj0y');
 
@@ -175,6 +176,8 @@ function App() {
                   </Route>
                   
                   <Route path='/products/update/:uuid' element={<UpdateCategory></UpdateCategory>}></Route>
+
+                  <Route path='/contracts' element={<Contracts></Contracts>}></Route>
 
                   <Route path='/accounts' element={<Accounts></Accounts>}></Route>
                   <Route path='/accounts/accounts-receivable' element={<Receivable></Receivable>}></Route>

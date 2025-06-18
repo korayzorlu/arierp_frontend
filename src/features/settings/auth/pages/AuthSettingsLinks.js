@@ -18,7 +18,7 @@ function AuthSettingsLinks() {
                     size="large"
                     fullWidth
                     >
-                        Profile
+                        Profil
                     </Button>
                     <Divider></Divider>
                 </Grid>
@@ -34,7 +34,7 @@ function AuthSettingsLinks() {
                     size="large"
                     fullWidth
                     >
-                        Personal
+                        Kişisel
                     </Button>
                     <Divider></Divider>
                 </Grid>
@@ -50,7 +50,7 @@ function AuthSettingsLinks() {
                     size="large"
                     fullWidth
                     >
-                        Email
+                        E-posta
                     </Button>
                     <Divider></Divider>
                 </Grid>
@@ -66,7 +66,7 @@ function AuthSettingsLinks() {
                     size="large"
                     fullWidth
                     >
-                        Phone Number
+                        Telefon
                     </Button>
                     <Divider></Divider>
                 </Grid>
@@ -82,7 +82,7 @@ function AuthSettingsLinks() {
                     size="large"
                     fullWidth
                     >
-                        Password Reset
+                        Parola Sıfırlama
                     </Button>
                 </Grid>
             </Grid>

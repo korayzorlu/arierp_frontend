@@ -60,7 +60,7 @@ function Profile() {
     return (
         <Stack spacing={2}>
             <FormHeader
-            title="PROFILE"
+            title="PROFIL"
             loadingSave={disabled}
             disabledSave={buttonDisabled}
             onClickSave={() => handleSubmit()}
