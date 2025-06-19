@@ -50,6 +50,8 @@ function Leases() {
         { field: 'quotation', headerName: 'Teklif No', flex: 1 },
         { field: 'kof', headerName: 'KOF No', flex: 1 },
         { field: 'project', headerName: 'Proje', flex: 3 },
+        { field: 'block', headerName: 'Blok', flex: 1 },
+        { field: 'unit', headerName: 'Bağımsız Bölüm', flex: 1 },
         { field: 'vade', headerName: 'Vade', flex: 1, type: 'number' },
         { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
         { field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', flex: 1, type: 'number' },

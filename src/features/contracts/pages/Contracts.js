@@ -60,6 +60,7 @@ function Contracts() {
         },
         { field: 'partner', headerName: 'Müşteri', flex: 2 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
+        { field: 'quotation', headerName: 'Teklif', flex: 1 },
         { field: 'kof_tan_sozlesmeye_aktarim_tarihi', headerName: "Kof'tan Sözleşmeye Aktarım Tarihi", flex: 1 },
         { field: 'supplier', headerName: "Satıcı", flex: 3 },
         { field: 'project', headerName: "Proje", flex: 3 },
