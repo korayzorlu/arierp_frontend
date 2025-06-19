@@ -1,12 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchContracts, setContractsLoading, setContractsParams } from '../../../store/slices/contracts/contractSlice';
-import { Chip, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { fetchLeases, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
-import axios from 'axios';
-import { capitalize } from 'lodash';
-import DeleteIcon from '@mui/icons-material/Delete';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
@@ -16,11 +11,14 @@ import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-function Contracts() {
+function Leases() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {contracts,contractsCount,contractsParams,contractsLoading} = useSelector((store) => store.contract);
+    const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
 
@@ -30,27 +28,14 @@ function Contracts() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchContracts({activeCompany,params:contractsParams}));
+            dispatch(fetchLeases({activeCompany,params:leasesParams}));
         });
-    }, [activeCompany,contractsParams,dispatch]);
-
-    const handleAllDelete = async () => {
-        dispatch(setAlert({status:"info",text:"Removing items.."}));
-
-        try {
-
-            const response = await axios.post(`/contracts/delete_all_contracts/`,
-                { withCredentials: true},
-            );
-        } catch (error) {
-            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        };
-    };
-
+    }, [activeCompany,leasesParams,dispatch]);
+      
     const columns = [
-        { field: 'code', headerName: 'Sözleşme Kodu', flex:1, editable: true, renderCell: (params) => (
+        { field: 'code', headerName: 'Kira Planı Kodu', flex:1, editable: true, renderCell: (params) => (
                 <Link
-                to={`/contracts/update/${params.row.uuid}/`}
+                to={`/leasing/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
@@ -60,21 +45,30 @@ function Contracts() {
         },
         { field: 'partner', headerName: 'Müşteri', flex: 2 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
-        { field: 'kof_tan_sozlesmeye_aktarim_tarihi', headerName: "Kof'tan Sözleşmeye Aktarım Tarihi", flex: 1 },
-        { field: 'supplier', headerName: "Satıcı", flex: 3 },
-        { field: 'project', headerName: "Proje", flex: 3 },
-        { field: 'customer_representative', headerName: "Müşteri Temsilcisi", flex: 1 },
-        { field: 'status', headerName: "Statü", flex: 1 },
+        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', flex: 1 },
     ]
+
+    const handleAllDelete = async () => {
+        dispatch(setAlert({status:"info",text:"Removing items.."}));
+
+        try {
+
+            const response = await axios.post(`/leasing/delete_all_leases/`,
+                { withCredentials: true},
+            );
+        } catch (error) {
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        };
+    };
 
     return (
         <PanelContent>
             <ListTableServer
-            title="Sözleşme Listesi"
-            rows={contracts}
+            title="Kira Planları Listesi"
+            rows={leases}
             columns={columns}
             getRowId={(row) => row.uuid}
-            loading={contractsLoading}
+            loading={leasesLoading}
             customButtons={
                 <>  
 
@@ -86,7 +80,7 @@ function Contracts() {
 
                     <CustomTableButton
                     title="New"
-                    link="/contracts/add-contract"
+                    link="/leasing/add-lease"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
                     />
@@ -94,7 +88,7 @@ function Contracts() {
                     <CustomTableButton
                     title="Delete"
                     onClick={() => dispatch(setDeleteDialog(true))}
-                    disabled={contracts.length > 0 ? false : true}
+                    disabled={leases.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
@@ -107,7 +101,7 @@ function Contracts() {
 
                     <CustomTableButton
                     title="Reload"
-                    onClick={() => dispatch(fetchContracts({activeCompany,params:contractsParams})).unwrap()}
+                    onClick={() => dispatch(fetchLeases({activeCompany,params:leasesParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
 
@@ -117,28 +111,28 @@ function Contracts() {
             onRowSelectionModelChange={(newRowSelectionModel) => {
                 setSelectedItems(newRowSelectionModel);
             }}
-            rowCount={contractsCount}
+            rowCount={leasesCount}
             checkboxSelection
-            setParams={(value) => dispatch(setContractsParams(value))}
+            setParams={(value) => dispatch(setLeasesParams(value))}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
-            templateURL="/contracts/contracts_template"
-            importURL="/contracts/import_contracts/"
-            startEvent={() => dispatch(setContractsLoading(true))}
-            finalEvent={() => {dispatch(fetchContracts({activeCompany}));dispatch(setContractsLoading(false));}}
+            templateURL="/leasing/leases_template"
+            importURL="/leasing/import_leases/"
+            startEvent={() => dispatch(setLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchLeases({activeCompany}));dispatch(setLeasesLoading(false));}}
             >
 
             </ImportDialog>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/contracts/delete_contracts/"
+            deleteURL="/leasing/delete_leases/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setContractsLoading(true))}
-            finalEvent={() => {dispatch(fetchContracts({activeCompany}));dispatch(setContractsLoading(false));}}
+            startEvent={() => dispatch(setLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchLeases({activeCompany}));dispatch(setLeasesLoading(false));}}
             />
         </PanelContent>
     )
 }
 
-export default Contracts
+export default Leases

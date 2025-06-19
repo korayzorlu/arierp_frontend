@@ -71,6 +71,7 @@ import Sectors from './features/partners/pages/Sectors.js';
 import AddSector from './features/partners/pages/AddSector.js';
 import UpdateSector from './features/partners/pages/UpdateSector.js';
 import Contracts from './features/contracts/pages/Contracts.js';
+import Leases from './features/leasing/pages/Leases.js';
 
 LicenseInfo.setLicenseKey('a5faffcdbde873caab7e6ddb959235b2Tz0xMTQ1NDQsRT0xNzgxMzk1MTk5MDAwLFM9cHJlbWl1bSxMTT1wZXJwZXR1YWwsUFY9aW5pdGlhbCxLVj0y');
 
@@ -178,6 +179,8 @@ function App() {
                   <Route path='/products/update/:uuid' element={<UpdateCategory></UpdateCategory>}></Route>
 
                   <Route path='/contracts' element={<Contracts></Contracts>}></Route>
+
+                  <Route path='/leases' element={<Leases></Leases>}></Route>
 
                   <Route path='/accounts' element={<Accounts></Accounts>}></Route>
                   <Route path='/accounts/accounts-receivable' element={<Receivable></Receivable>}></Route>
