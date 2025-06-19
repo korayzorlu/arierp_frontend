@@ -167,7 +167,7 @@ function ListTableServer(props) {
       rowCount={rowCount}
       loading={loading}
       checkboxSelection={checkboxSelection}
-      disableRowSelectionOnClick={disableRowSelectionOnClick}
+      disableRowSelectionOnClick={true}
       onRowSelectionModelChange={onRowSelectionModelChange}
       apiRef={apiRef}
       hideFooter={hideFooter}
@@ -187,6 +187,7 @@ function ListTableServer(props) {
       aiAssistant
       onPrompt={processPrompt}
       excelExportOptions={excelExportOptions}
+      cellSelection
       />
     </TableContent>
   )

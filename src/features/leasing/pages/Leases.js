@@ -43,9 +43,18 @@ function Leases() {
                 
             )
         },
-        { field: 'partner', headerName: 'Müşteri', flex: 2 },
+        { field: 'contract', headerName: 'Sözleşme Kodu', flex: 1 },
+        { field: 'partner', headerName: 'Müşteri', flex: 3 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', flex: 1 },
+        { field: 'quotation', headerName: 'Teklif No', flex: 1 },
+        { field: 'kof', headerName: 'KOF No', flex: 1 },
+        { field: 'project', headerName: 'Proje', flex: 3 },
+        { field: 'vade', headerName: 'Vade', flex: 1, type: 'number' },
+        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
+        { field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', flex: 1, type: 'number' },
+        { field: 'currency', headerName: 'PB', flex: 1 },
+        { field: 'lease_status', headerName: 'Statü', flex: 2 },
     ]
 
     const handleAllDelete = async () => {

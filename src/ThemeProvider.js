@@ -1,6 +1,7 @@
 import React, { createContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { trTR } from '@mui/x-data-grid/locales';
 
 const commonTheme = {
     typography: {
@@ -133,7 +134,7 @@ export const ThemeProvider = ({ children }) => {
                 },
             },
         },
-    })
+    },trTR)
     const muiDarkTheme = () => createTheme({
         ...commonTheme,
         palette: {
@@ -190,7 +191,7 @@ export const ThemeProvider = ({ children }) => {
                 },
             },
         },
-    })
+    },trTR)
 
     return (
         <ThemeContext.Provider value={{ theme }}>
