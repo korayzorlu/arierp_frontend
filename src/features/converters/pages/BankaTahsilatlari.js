@@ -82,26 +82,26 @@ function BankaTahsilatlari() {
                 <>  
 
                     <CustomTableButton
-                    title="Import"
+                    title="İçe Aktar"
                     onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
                     icon={<UploadFileIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchBankaTahsilatlari({activeCompany,params:bankaTahsilatlariParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     disabled={bankaTahsilatlari.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete All"
+                    title="Tümünü Sil"
                     onClick={handleAllDelete}
                     disabled={bankaTahsilatlari.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}

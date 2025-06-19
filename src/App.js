@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Landing from './features/layout/pages/Landing.js';
 import Panel from './features/layout/pages/Panel.js';
@@ -72,6 +72,8 @@ import AddSector from './features/partners/pages/AddSector.js';
 import UpdateSector from './features/partners/pages/UpdateSector.js';
 import Contracts from './features/contracts/pages/Contracts.js';
 import Leases from './features/leasing/pages/Leases.js';
+import { setAlert } from './store/slices/notificationSlice.js';
+import QuickQuotations from './features/quotations/pages/QuickQuotations.js';
 
 LicenseInfo.setLicenseKey('a5faffcdbde873caab7e6ddb959235b2Tz0xMTQ1NDQsRT0xNzgxMzk1MTk5MDAwLFM9cHJlbWl1bSxMTT1wZXJwZXR1YWwsUFY9aW5pdGlhbCxLVj0y');
 
@@ -124,6 +126,28 @@ function App() {
     };
   }, [dispatch]);
 
+  //session kontrolü
+  // const [timeoutWarningTime, setTimeoutWarningTime] = useState(10);
+  // const [sessionTimeout, setSessionTimeout] = useState(15);
+
+  // const warningTimer = setTimeout(() => {
+  //   dispatch(setAlert({status:"warning",text:"Removing items.."}));
+  // },timeoutWarningTime);
+
+  //   const logoutTimer = setTimeout(() => {
+  //   dispatch(setAlert({status:"warning",text:"Removing items.."}));
+  // },sessionTimeout);
+
+  // document.addEventListener("mousemove", () => {
+  //   clearTimeout(warningTimer);
+  //   clearTimeout(logoutTimer);
+  // });
+
+  // document.addEventListener("keydown", () => {
+  //   clearTimeout(warningTimer);
+  //   clearTimeout(logoutTimer);
+  // });
+
   if (loading) return <Loading></Loading>;
 
   if (user && !user.is_email_verified) return (
@@ -131,6 +155,8 @@ function App() {
       <EmailVerify></EmailVerify>
     </ThemeProvider>
   );
+
+ 
 
   return (
     <ThemeProvider>
@@ -181,6 +207,8 @@ function App() {
                   <Route path='/contracts' element={<Contracts></Contracts>}></Route>
 
                   <Route path='/leases' element={<Leases></Leases>}></Route>
+
+                  <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
 
                   <Route path='/accounts' element={<Accounts></Accounts>}></Route>
                   <Route path='/accounts/accounts-receivable' element={<Receivable></Receivable>}></Route>

@@ -50,15 +50,15 @@ function IncomingPayments() {
             loading={incomingPaymentsLoading}
             customButtons={
                 <>
-                    <CustomTableButton title="New" link="/payments/add-payment/incoming" icon={<AddBoxIcon fontSize="small"/>}/>
+                    <CustomTableButton title="Yeni" link="/payments/add-payment/incoming" icon={<AddBoxIcon fontSize="small"/>}/>
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     icon={<DeleteIcon fontSize="small"/>}
                     disabled={incomingPayments.length > 0 ? false : true}
                     />
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchincomingPayments({activeCompany,params:incomingPaymentsParams}))}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

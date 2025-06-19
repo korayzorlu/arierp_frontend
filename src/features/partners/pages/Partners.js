@@ -127,27 +127,27 @@ function Partners() {
                 <>  
 
                     <CustomTableButton
-                    title="Import"
+                    title="İçe Aktar"
                     onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
                     icon={<UploadFileIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="New"
+                    title="Yeni"
                     link="/partners/add-partner"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     disabled={partners.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete All"
+                    title="Tümünü Sil"
                     onClick={handleAllDelete}
                     disabled={user.email === "koray.zorlu@arileasing.com.tr" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
@@ -160,7 +160,7 @@ function Partners() {
                     />
 
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchPartners({activeCompany,params:partnersParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

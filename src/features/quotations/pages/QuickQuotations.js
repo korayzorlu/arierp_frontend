@@ -1,26 +1,25 @@
-import { Stack } from '@mui/material';
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchSectors, setSectorsLoading, setSectorsParams } from '../../../store/slices/partners/sectorSlice';
+import { fetchQuickQuotations } from '../../../store/slices/quotations/quickQuotationSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchImportProcess } from '../../../store/slices/processSlice';
 import ImportDialog from '../../../component/feedback/ImportDialog';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
-import KeyIcon from '@mui/icons-material/Key';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { setQuickQuotationsLoading, setQuickQuotationsParams } from '../../../store/slices/quotations/quickQuotationSlice';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from 'axios';
 
-function Sectors() {
+function QuickQuotations() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {sectors,sectorsCount,sectorsParams,sectorsLoading} = useSelector((store) => store.sector);
+    const {quickQuotations,quickQuotationsCount,quickQuotationsParams,quickQuotationsLoading} = useSelector((store) => store.quickQuotation);
 
     const dispatch = useDispatch();
 
@@ -28,16 +27,16 @@ function Sectors() {
 
     const [selectedItems, setSelectedItems] = useState([]);
 
-     useEffect(() => {
+    useEffect(() => {
         startTransition(() => {
-            dispatch(fetchSectors({activeCompany,params:sectorsParams}));
+            dispatch(fetchQuickQuotations({activeCompany,params:quickQuotationsParams}));
         });
-    }, [activeCompany,sectorsParams,dispatch]);
+    }, [activeCompany,quickQuotationsParams,dispatch]);
       
     const columns = [
-        { field: 'name', headerName: 'Name', flex: 5, editable: true, renderCell: (params) => (
+        { field: 'code', headerName: 'Hızlı Teklif Kodu', flex:1, editable: true, renderCell: (params) => (
                 <Link
-                to={`/partners/update-sector/${params.row.uuid}/`}
+                to={`/quotations/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
@@ -45,18 +44,21 @@ function Sectors() {
                 
             )
         },
-        { field: 'code', headerName: 'Kod', flex: 1, type: 'number' },
-        { field: 'mainSectorCode', headerName: 'Ana Sektör Kodu', flex: 1, type: 'number' },
-        { field: 'matchCode', headerName: 'Kod', flex: 1 },
-        { field: 'kkbmbSectorCode', headerName: 'Kod', flex: 1 },
+        { field: 'partner', headerName: 'Müşteri', flex: 3 },
+        { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
+        { field: 'project', headerName: 'Proje', flex: 3 },
+        { field: 'block', headerName: 'Blok', flex: 1 },
+        { field: 'unit', headerName: 'Bağımsız Bölüm', flex: 1 },
+        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
+        { field: 'price', headerName: 'KDV Hariç tutar', flex: 1, type: 'number' },
+        { field: 'currency', headerName: 'PB', flex: 1 },
     ]
 
     const handleAllDelete = async () => {
         dispatch(setAlert({status:"info",text:"Removing items.."}));
 
         try {
-
-            const response = await axios.post(`/partners/delete_all_sectors/`,
+            const response = await axios.post(`/quotations/delete_all_quick_quotations/`,
                 { withCredentials: true},
             );
         } catch (error) {
@@ -64,25 +66,14 @@ function Sectors() {
         };
     };
 
-    const handleTest = async () => {
-        try {
-            const response = await axios.post(`/partners/test/`,
-                { withCredentials: true},
-            );
-            //dispatch(setAlert({status:response.data.status,text:response.data.message}));
-        } catch (error) {
-            //dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        };
-    };
-
     return (
         <PanelContent>
             <ListTableServer
-            title="Sektörler"
-            rows={sectors}
+            title="Hızlı Teklif Listesi"
+            rows={quickQuotations}
             columns={columns}
             getRowId={(row) => row.uuid}
-            loading={sectorsLoading}
+            loading={quickQuotationsLoading}
             customButtons={
                 <>  
 
@@ -94,7 +85,7 @@ function Sectors() {
 
                     <CustomTableButton
                     title="Yeni"
-                    link="/partners/add-sector"
+                    link="/quotations/add-quickQuotation"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
                     />
@@ -102,26 +93,20 @@ function Sectors() {
                     <CustomTableButton
                     title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
-                    disabled={sectors.length > 0 ? false : true}
+                    disabled={quickQuotations.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
                     title="Tümünü Sil"
                     onClick={handleAllDelete}
-                    disabled={user.email === "koray.zorlu@arileasing.com.tr" ? false : true}
+                    disabled={user.email === "korayzorllu@gmail.com" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Permissions"
-                    onClick={handleTest}
-                    icon={<KeyIcon fontSize="small"/>}
-                    />
-
-                    <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchSectors({activeCompany,params:sectorsParams})).unwrap()}
+                    onClick={() => dispatch(fetchQuickQuotations({activeCompany,params:quickQuotationsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
 
@@ -131,28 +116,28 @@ function Sectors() {
             onRowSelectionModelChange={(newRowSelectionModel) => {
                 setSelectedItems(newRowSelectionModel);
             }}
-            rowCount={sectorsCount}
+            rowCount={quickQuotationsCount}
             checkboxSelection
-            setParams={(value) => dispatch(setSectorsParams(value))}
+            setParams={(value) => dispatch(setQuickQuotationsParams(value))}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
-            templateURL="/partners/sectors_template"
-            importURL="/partners/import_sectors/"
-            startEvent={() => dispatch(setSectorsLoading(true))}
-            finalEvent={() => {dispatch(fetchSectors({activeCompany}));dispatch(setSectorsLoading(false));}}
+            templateURL="/quotations/quick_quotations_template"
+            importURL="/quotations/import_quick_quotations/"
+            startEvent={() => dispatch(setQuickQuotationsLoading(true))}
+            finalEvent={() => {dispatch(fetchQuickQuotations({activeCompany}));dispatch(setQuickQuotationsLoading(false));}}
             >
 
             </ImportDialog>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/partners/delete_sectors/"
+            deleteURL="/quotations/delete_quick_quotations/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setSectorsLoading(true))}
-            finalEvent={() => {dispatch(fetchSectors({activeCompany}));dispatch(setSectorsLoading(false));}}
+            startEvent={() => dispatch(setQuickQuotationsLoading(true))}
+            finalEvent={() => {dispatch(fetchQuickQuotations({activeCompany}));dispatch(setQuickQuotationsLoading(false));}}
             />
         </PanelContent>
     )
 }
 
-export default Sectors
+export default QuickQuotations

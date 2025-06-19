@@ -24,6 +24,7 @@ import bankaTahsilatiReducer from './slices/converters/bankaTahsilatlariSlice';
 import bankaTahsilatiOdooReducer from './slices/converters/bankaTahsilatlariOdooSlice';
 import contractReducer from './slices/contracts/contractSlice';
 import leaseReducer from './slices/leasing/leaseSlice';
+import quickQuotationReducer from './slices/quotations/quickQuotationSlice';
 
 let navigate;
 
@@ -55,6 +56,7 @@ export const store = configureStore({
         category: categoryReducer,
         contract: contractReducer,
         lease: leaseReducer,
+        quickQuotation: quickQuotationReducer,
         bankaHareketi: bankaHareketiReducer,
         bankaTahsilati: bankaTahsilatiReducer,
         bankaTahsilatiOdoo: bankaTahsilatiOdooReducer,

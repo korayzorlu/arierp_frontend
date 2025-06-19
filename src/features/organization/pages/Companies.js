@@ -160,7 +160,7 @@ function Companies() {
                 getRowId={(row) => row.id}
                 loading={companiesLoading}
                 customButtons={
-                    <CustomTableButton link="/companies/add-company" icon={<AddBoxIcon fontSize="small"/>} title="New"/>
+                    <CustomTableButton link="/companies/add-company" icon={<AddBoxIcon fontSize="small"/>} title="Yeni"/>
                 }
                 ></ListTable>
             </PanelContent>

@@ -79,34 +79,34 @@ function Contracts() {
                 <>  
 
                     <CustomTableButton
-                    title="Import"
+                    title="İçe Aktar"
                     onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
                     icon={<UploadFileIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="New"
+                    title="Yeni"
                     link="/contracts/add-contract"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     disabled={contracts.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete All"
+                    title="Tümünü Sil"
                     onClick={handleAllDelete}
                     disabled={user.email === "korayzorllu@gmail.com" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchContracts({activeCompany,params:contractsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

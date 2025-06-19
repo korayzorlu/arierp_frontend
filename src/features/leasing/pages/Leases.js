@@ -82,34 +82,34 @@ function Leases() {
                 <>  
 
                     <CustomTableButton
-                    title="Import"
+                    title="İçe Aktar"
                     onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
                     icon={<UploadFileIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="New"
+                    title="Yeni"
                     link="/leasing/add-lease"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     disabled={leases.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Delete All"
+                    title="Tümünü Sil"
                     onClick={handleAllDelete}
                     disabled={user.email === "korayzorllu@gmail.com" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchLeases({activeCompany,params:leasesParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

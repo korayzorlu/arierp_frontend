@@ -76,15 +76,15 @@ function Receivable() {
                 loading={receivableAccountsLoading}
                 customButtons={
                     <>
-                        <CustomTableButton title="New" link="/accounts/add-account/receivable" icon={<AddBoxIcon fontSize="small"/>}/>
+                        <CustomTableButton title="Yeni" link="/accounts/add-account/receivable" icon={<AddBoxIcon fontSize="small"/>}/>
                         <CustomTableButton
-                        title="Delete"
+                        title="Sil"
                         onClick={() => dispatch(setDeleteDialog(true))}
                         icon={<DeleteIcon fontSize="small"/>}
                         disabled={receivableAccounts.length > 0 ? false : true}
                         />
                         <CustomTableButton
-                        title="Reload"
+                        title="Yenile"
                         onClick={() => dispatch(fetchReceivableAccounts({activeCompany,params:receivableAccountsParams}))}
                         icon={<RefreshIcon fontSize="small"/>}
                         />

@@ -68,15 +68,15 @@ function Payable() {
             loading={payableAccountsLoading}
             customButtons={
                 <>
-                    <CustomTableButton title="New" link="/accounts/add-account/payable" icon={<AddBoxIcon fontSize="small"/>}/>
+                    <CustomTableButton title="Yeni" link="/accounts/add-account/payable" icon={<AddBoxIcon fontSize="small"/>}/>
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     icon={<DeleteIcon fontSize="small"/>}
                     disabled={payableAccounts.length > 0 ? false : true}
                     />
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchPayableAccounts({activeCompany,params:payableAccountsParams}))}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

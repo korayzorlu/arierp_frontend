@@ -36,6 +36,8 @@ function Sidenav() {
         cottage: require("../../images/icons/sidebar/light/cottage-filled.svg").ReactComponent,
         description: require("../../images/icons/sidebar/light/description-filled.svg").ReactComponent,
         contract: require("../../images/icons/sidebar/light/contract-filled.svg").ReactComponent,
+        article: require("../../images/icons/sidebar/light/article_shortcut-filled.svg").ReactComponent,
+        unknown: require("../../images/icons/sidebar/light/unknown_document-filled.svg").ReactComponent,
     
     };
 

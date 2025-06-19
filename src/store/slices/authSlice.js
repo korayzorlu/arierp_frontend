@@ -23,13 +23,14 @@ const initialState = {
     verifyPhoneNumber:""
 }
 
-export const fetchUser = createAsyncThunk('auth/fetchUser', async (_,{ rejectWithValue,dispatch }) => {
+export const fetchUser = createAsyncThunk('auth/fetchUser', async (_,{ dispatch,rejectWithValue,extra: { navigate } }) => {
     try {
         const sessionResponse = await axios.get(`/users/session/`, {withCredentials: true});
         if(sessionResponse.status === 200 && sessionResponse.data.authenticated){
             const response = await axios.get(`/users/api/users/type_current/`, {withCredentials: true});
             return response.data[0];
         };
+        navigate("/auth/login");
         return null;
     } catch (error) {
         return rejectWithValue(null);

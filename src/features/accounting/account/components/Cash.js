@@ -56,15 +56,15 @@ function Cash() {
             loading={accountsLoading}
             customButtons={
                 <>
-                    <CustomTableButton title="New" link="/accounts/add-account/cash" icon={<AddBoxIcon fontSize="small"/>}/>
+                    <CustomTableButton title="Yeni" link="/accounts/add-account/cash" icon={<AddBoxIcon fontSize="small"/>}/>
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     icon={<DeleteIcon fontSize="small"/>}
                     disabled={data.length > 0 ? false : true}
                     />
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchAccounts({activeCompany,type:"cash",params:accountsParams}))}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

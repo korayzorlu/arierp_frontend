@@ -62,12 +62,12 @@ function DeleteDialog(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete selected items? You cant't undo this action.
+                    Seçili öğeleri silmek istediğine emin misin? Bu işlem geri alınamaz.
                 </DialogContentText>
             </DialogContent>
             <DialogActions className=''>
-                <Button color="neutral" onClick={handleClose}>Cancel</Button>
-                <Button variant="outlined" color="error" onClick={handleDelete} autoFocus>Delete</Button>
+                <Button color="neutral" onClick={handleClose}>Vazgeç</Button>
+                <Button variant="outlined" color="error" onClick={handleDelete} autoFocus>Sil</Button>
             </DialogActions>
         </MUIDialog>
     )

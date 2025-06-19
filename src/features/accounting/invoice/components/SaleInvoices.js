@@ -64,15 +64,15 @@ function SaleInvoices() {
             loading={saleInvoicesLoading}
             customButtons={
                 <>
-                    <CustomTableButton title="New" link="/invoices/add-invoice/sale" icon={<AddBoxIcon fontSize="small"/>}/>
+                    <CustomTableButton title="Yeni" link="/invoices/add-invoice/sale" icon={<AddBoxIcon fontSize="small"/>}/>
                     <CustomTableButton
-                    title="Delete"
+                    title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     icon={<DeleteIcon fontSize="small"/>}
                     disabled={saleInvoices.length > 0 ? false : true}
                     />
                     <CustomTableButton
-                    title="Reload"
+                    title="Yenile"
                     onClick={() => dispatch(fetchSaleInvoices({activeCompany,params:saleInvoicesParams}))}
                     icon={<RefreshIcon fontSize="small"/>}
                     />

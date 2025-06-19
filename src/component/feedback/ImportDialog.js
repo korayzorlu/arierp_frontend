@@ -138,7 +138,7 @@ function ImportDialog(props) {
                     variant="outlined"
                     >   
                         <DialogTitle id="alert-dialog-title">
-                            Import items from xls file
+                            Excel dosyasından öğeleri içe aktar
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">
@@ -150,14 +150,14 @@ function ImportDialog(props) {
                                 <Row>
                                     <Col>
                                         <Typography>
-                                            There is another ongoing import process. Please wait for it to finish and try again.
+                                            Başka bir içe aktarma işlemi devam ediyor. Lütfen bitmesini bekleyin ve tekrar deneyin.
                                         </Typography>
                                     </Col>
                                 </Row>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions className=''>
-                            <Button color="neutral" onClick={handleClose}>Cancel</Button>
+                            <Button color="neutral" onClick={handleClose}>Vazgeç</Button>
                         </DialogActions>
                     </MUIDialog>
 
@@ -172,14 +172,14 @@ function ImportDialog(props) {
                     variant="outlined"
                     >
                         <DialogTitle id="alert-dialog-title">
-                            Import items from xls file
+                            Excel dosyasından öğeleri içe aktar
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">
                                 <Row className="mb-3">
                                     <Col>
                                         <Typography>
-                                            You can download template or select a file and upload it.
+                                            Şablon indirebilir veya bir dosya seçip yükleyebilirsin.
                                         </Typography>
                                     </Col>
                                 </Row>
@@ -192,7 +192,7 @@ function ImportDialog(props) {
                                         onClick={fetchTemplate}
                                         fullWidth
                                         >
-                                            Download Template
+                                            Şablon İndir
                                         </Button>
                                     </Col>
                                 </Row>
@@ -207,7 +207,7 @@ function ImportDialog(props) {
                                         startIcon={ !selectedFileText ? <CloudUploadIcon /> : <InsertDriveFileIcon/>}
                                         fullWidth
                                         >
-                                            {selectedFileText || "Select File"}
+                                            {selectedFileText || "Dosya Seç"}
                                             <VissuallyHiddenInput onChange={handleSelectFile} />
                                         </Button>
                                     </Col>
@@ -215,8 +215,8 @@ function ImportDialog(props) {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions className=''>
-                            <Button variant="text" color="neutral" onClick={handleClose}>Cancel</Button>
-                            <Button variant="outlined" color="primary" onClick={handleImport} autoFocus>Start</Button>
+                            <Button variant="text" color="neutral" onClick={handleClose}>Vazgeç</Button>
+                            <Button variant="outlined" color="primary" onClick={handleImport} autoFocus>Başlat</Button>
                         </DialogActions>
                     </MUIDialog>
                 )

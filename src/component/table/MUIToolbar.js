@@ -93,13 +93,13 @@ function MUIToolbar(props) {
       </Grid>
 
       <Grid container spacing={0}>
-        <Tooltip title="Columns">
+        <Tooltip title="Sütunlar">
           <ColumnsPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
             <ViewColumnIcon fontSize="small" />
           </ColumnsPanelTrigger>
         </Tooltip>
 
-        <Tooltip title="Filters">
+        <Tooltip title="Filtreler">
           <FilterPanelTrigger
             render={(props, state) => (
               <ToolbarButton {...props} color="default">
@@ -112,20 +112,20 @@ function MUIToolbar(props) {
           />
         </Tooltip>
           
-        <Tooltip title="AI Assistant">
+        <Tooltip title="AI Asistanı">
           <AiAssistantPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
             <AssistantIcon fontSize="small" />
           </AiAssistantPanelTrigger>
         </Tooltip>
 
-        <Tooltip title="Download as CSV">
+        <Tooltip title="Exel İndir">
           <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
             <FileDownloadIcon fontSize="small" />
           </ExportExcel>
         </Tooltip>
         
 
-        <Tooltip title="Print">
+        <Tooltip title="Yazdır">
           <ExportPrint render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
             <PrintIcon fontSize="small" />
           </ExportPrint>
@@ -138,7 +138,7 @@ function MUIToolbar(props) {
         <StyledQuickFilter>
           <QuickFilterTrigger
             render={(triggerProps, state) => (
-              <Tooltip title="Search" enterDelay={0}>
+              <Tooltip title="Ara" enterDelay={0}>
                 <StyledToolbarButton
                   {...triggerProps}
                   ownerState={{ expanded: state.expanded }}
