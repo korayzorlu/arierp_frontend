@@ -74,8 +74,9 @@ import Contracts from './features/contracts/pages/Contracts.js';
 import Leases from './features/leasing/pages/Leases.js';
 import { setAlert } from './store/slices/notificationSlice.js';
 import QuickQuotations from './features/quotations/pages/QuickQuotations.js';
+import Quotations from './features/quotations/pages/Quotations.js';
 
-LicenseInfo.setLicenseKey('a5faffcdbde873caab7e6ddb959235b2Tz0xMTQ1NDQsRT0xNzgxMzk1MTk5MDAwLFM9cHJlbWl1bSxMTT1wZXJwZXR1YWwsUFY9aW5pdGlhbCxLVj0y');
+LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
 export const NumberContext = React.createContext();
 
@@ -209,6 +210,7 @@ function App() {
                   <Route path='/leases' element={<Leases></Leases>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
+                  <Route path='/quotations' element={<Quotations></Quotations>}></Route>
 
                   <Route path='/accounts' element={<Accounts></Accounts>}></Route>
                   <Route path='/accounts/accounts-receivable' element={<Receivable></Receivable>}></Route>
