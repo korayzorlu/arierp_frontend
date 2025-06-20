@@ -47,6 +47,9 @@ function Quotations() {
         { field: 'quick_quotation', headerName: 'Hızlı Teklif No', flex: 1 },
         { field: 'partner', headerName: 'Müşteri', flex: 3 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
+        { field: 'kbm', headerName: 'KBM', flex: 1, type: 'number' },
+        { field: 'currency', headerName: 'PB', flex: 1 },
+        { field: 'status', headerName: 'Statü', flex: 1 },
     ]
 
     const handleAllDelete = async () => {

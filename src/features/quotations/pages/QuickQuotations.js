@@ -52,6 +52,7 @@ function QuickQuotations() {
         { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
         { field: 'price', headerName: 'KDV Hariç tutar', flex: 1, type: 'number' },
         { field: 'currency', headerName: 'PB', flex: 1 },
+        { field: 'status', headerName: 'Statü', flex: 1 },
     ]
 
     const handleAllDelete = async () => {
