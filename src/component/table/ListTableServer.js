@@ -24,6 +24,7 @@ function ListTableServer(props) {
     onRowSelectionModelChange,
     rowCount,
     setParams,
+    resetParams,
     apiRef,
     hideFooter,
     noOverlay,
@@ -43,7 +44,12 @@ function ListTableServer(props) {
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 50 })
 
+  const [filterParams, setFilterParams] = useState({});
+
   const debouncedSetParams = useCallback(debounce(setParams, 700), []);
+  const debouncedSetFilterParams = useCallback(debounce(setFilterParams, 600), []);
+
+ 
 
   const handlePaginationModelChange = (model) => {
     setPaginationModel(model);
@@ -89,20 +95,26 @@ function ListTableServer(props) {
     if(model.quickFilterValues.length > 0){
       model.quickFilterValues.forEach((item) => {
           //dispatch(setPartnersParams({"search[value]":item}));
+          debouncedSetFilterParams({...filterParams,"search[value]":item})
           debouncedSetParams({"search[value]":item});
-      });
+      });                                                                                                                                                 
     }else if(model.quickFilterValues.length === 0 && model.items.length > 0){
       model.items.forEach((item) => {
           if (item.value) {
             console.log("filtre değişti")
             //dispatch(setPartnersParams({[item.columnField]:item.value}));
             //setParams({[item.columnField]:item.value});
+            debouncedSetFilterParams({...filterParams,[item.field]:item.value})
             debouncedSetParams({[item.field]:item.value});
-          }
+          } else {
+            debouncedSetFilterParams({...filterParams,[item.field]:""})
+            debouncedSetParams({[item.field]:""});
+          };
       });
     } else if(model.items.length === 0 && model.quickFilterValues.length === 0){
       //dispatch(setPartnersParams({"search[value]":""}));
-      setParams({"search[value]":""});
+      setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
+      debouncedSetParams({...filterParams})
     };
   };
 

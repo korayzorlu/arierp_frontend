@@ -134,6 +134,13 @@ const leaseSlice = createSlice({
                 ...action.payload
             };
         },
+        resetLeasesParams: (state,action) => {
+            state.leasesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
         deleteLeases: (state,action) => {
             state.leases = [];
         },
@@ -155,5 +162,5 @@ const leaseSlice = createSlice({
   
 })
 
-export const {setLeasesLoading,setLeasesParams,deleteLeases} = leaseSlice.actions;
+export const {setLeasesLoading,setLeasesParams,resetLeasesParams,deleteLeases} = leaseSlice.actions;
 export default leaseSlice.reducer;

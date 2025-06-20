@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLeases, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
+import { fetchLeases, resetLeasesParams, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
