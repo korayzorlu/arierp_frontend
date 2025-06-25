@@ -75,6 +75,7 @@ import Leases from './features/leasing/pages/Leases.js';
 import { setAlert } from './store/slices/notificationSlice.js';
 import QuickQuotations from './features/quotations/pages/QuickQuotations.js';
 import Quotations from './features/quotations/pages/Quotations.js';
+import Installment from './features/leasing/pages/Installment.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -208,6 +209,7 @@ function App() {
                   <Route path='/contracts' element={<Contracts></Contracts>}></Route>
 
                   <Route path='/leases' element={<Leases></Leases>}></Route>
+                  <Route path='/installments' element={<Installment></Installment>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>

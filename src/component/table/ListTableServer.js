@@ -1,9 +1,9 @@
-import React, { useCallback, useState, useTransition } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
-import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel } from '@mui/x-data-grid-premium';
+import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel, GridColumnMenuFilterItem } from '@mui/x-data-grid-premium';
 import MUIToolbar from './MUIToolbar';
-import { Box, Typography } from '@mui/material';
+import { Box, InputBase, styled, TextField, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useDispatch } from 'react-redux';
 import { setPartnersParams } from '../../store/slices/partners/partnerSlice';
@@ -48,8 +48,6 @@ function ListTableServer(props) {
 
   const debouncedSetParams = useCallback(debounce(setParams, 700), []);
   const debouncedSetFilterParams = useCallback(debounce(setFilterParams, 600), []);
-
- 
 
   const handlePaginationModelChange = (model) => {
     setPaginationModel(model);
@@ -162,10 +160,10 @@ function ListTableServer(props) {
       rows={rows}
       getRowId={getRowId || ((row) => row.uuid)}
       initialState={{
-          columns: {
-            columnVisibilityModel: hiddenColumns,
-          },
-        }}
+        columns: {
+          columnVisibilityModel: hiddenColumns,
+        },
+      }}
       pageSizeOptions={[25, 50, 100]}
       pagination
       paginationModel={paginationModel}

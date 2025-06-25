@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLeases, resetLeasesParams, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
+import { fetchInstallment, fetchInstallments, setInstallmentsLoading, setInstallmentsParams } from '../../../store/slices/leasing/installmentSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
@@ -15,10 +15,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-function Leases() {
+function Installment() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
+    const {installments,installmentsCount,installmentsParams,installmentsLoading} = useSelector((store) => store.installment);
 
     const dispatch = useDispatch();
 
@@ -28,9 +28,9 @@ function Leases() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchLeases({activeCompany,params:leasesParams}));
+            dispatch(fetchInstallment({activeCompany,params:installmentsParams}));
         });
-    }, [activeCompany,leasesParams,dispatch]);
+    }, [activeCompany,installmentsParams,dispatch]);
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', flex:1, editable: true, renderCell: (params) => (
@@ -43,20 +43,14 @@ function Leases() {
                 
             )
         },
-        { field: 'contract', headerName: 'Sözleşme Kodu', flex: 1 },
-        { field: 'partner', headerName: 'Müşteri', flex: 3 },
-        { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
-        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', flex: 1 },
-        { field: 'quotation', headerName: 'Teklif No', flex: 1 },
-        { field: 'kof', headerName: 'KOF No', flex: 1 },
-        { field: 'project', headerName: 'Proje', flex: 3 },
-        { field: 'block', headerName: 'Blok', flex: 1 },
-        { field: 'unit', headerName: 'Bağımsız Bölüm', flex: 1 },
-        { field: 'vade', headerName: 'Vade', flex: 1, type: 'number' },
-        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
-        { field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', flex: 1, type: 'number'},
-        { field: 'currency', headerName: 'PB', flex: 1 },
-        { field: 'lease_status', headerName: 'Statü', flex: 2 },
+        { field: 'lease', headerName: 'Kira Planı Kodu', flex: 1 },
+        { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1 },
+        { field: 'vat', headerName: 'Vergi Oranı', flex: 1, type: 'number' },
+        { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
+        { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
+        { field: 'principle', headerName: 'Ana Para', flex: 1, type: 'number' },
+        { field: 'interest', headerName: 'Faiz', flex: 1, type: 'number' },
+        { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
     ]
 
     const handleAllDelete = async () => {
@@ -64,7 +58,7 @@ function Leases() {
 
         try {
 
-            const response = await axios.post(`/leasing/delete_all_leases/`,
+            const response = await axios.post(`/leasing/delete_all_installments/`,
                 { withCredentials: true},
             );
         } catch (error) {
@@ -75,11 +69,11 @@ function Leases() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Kira Planları Listesi"
-            rows={leases}
+            title="Kira Planları Taksit Listesi"
+            rows={installments}
             columns={columns}
             getRowId={(row) => row.uuid}
-            loading={leasesLoading}
+            loading={installmentsLoading}
             customButtons={
                 <>  
 
@@ -91,7 +85,7 @@ function Leases() {
 
                     <CustomTableButton
                     title="Yeni"
-                    link="/leasing/add-lease"
+                    link="/leasing/add-installment"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
                     />
@@ -99,7 +93,7 @@ function Leases() {
                     <CustomTableButton
                     title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
-                    disabled={leases.length > 0 ? false : true}
+                    disabled={installments.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
@@ -112,7 +106,7 @@ function Leases() {
 
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchLeases({activeCompany,params:leasesParams})).unwrap()}
+                    onClick={() => dispatch(fetchInstallment({activeCompany,params:installmentsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
 
@@ -122,28 +116,28 @@ function Leases() {
             onRowSelectionModelChange={(newRowSelectionModel) => {
                 setSelectedItems(newRowSelectionModel);
             }}
-            rowCount={leasesCount}
+            rowCount={installmentsCount}
             checkboxSelection
-            setParams={(value) => dispatch(setLeasesParams(value))}
+            setParams={(value) => dispatch(setInstallmentsParams(value))}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
-            templateURL="/leasing/leases_template"
-            importURL="/leasing/import_leases/"
-            startEvent={() => dispatch(setLeasesLoading(true))}
-            finalEvent={() => {dispatch(fetchLeases({activeCompany}));dispatch(setLeasesLoading(false));}}
+            templateURL="/leasing/installments_template"
+            importURL="/leasing/import_installments/"
+            startEvent={() => dispatch(setInstallmentsLoading(true))}
+            finalEvent={() => {dispatch(fetchInstallments({activeCompany}));dispatch(setInstallmentsLoading(false));}}
             >
 
             </ImportDialog>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_leases/"
+            deleteURL="/leasing/delete_installments/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setLeasesLoading(true))}
-            finalEvent={() => {dispatch(fetchLeases({activeCompany}));dispatch(setLeasesLoading(false));}}
+            startEvent={() => dispatch(setInstallmentsLoading(true))}
+            finalEvent={() => {dispatch(fetchInstallments({activeCompany}));dispatch(setInstallmentsLoading(false));}}
             />
         </PanelContent>
     )
 }
 
-export default Leases
+export default Installment
