@@ -27,7 +27,7 @@ export const connectWebsocket = (dispatch,getState) => {
     wsMain.onclose = function (event) {
         console.log(`Websocket kapatıldı! Kod: ${event.code}`);
         setTimeout(function() {
-            connectWebsocket();
+            connectWebsocket(dispatch, getState);
         }, 1000);
     };
 

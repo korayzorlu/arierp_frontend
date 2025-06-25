@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInstallment, fetchInstallments, setInstallmentsLoading, setInstallmentsParams } from '../../../store/slices/leasing/installmentSlice';
+import { fetchInstallments, setInstallmentsLoading, setInstallmentsParams } from '../../../store/slices/leasing/installmentSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
@@ -28,12 +28,12 @@ function Installment() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchInstallment({activeCompany,params:installmentsParams}));
+            dispatch(fetchInstallments({activeCompany,params:installmentsParams}));
         });
     }, [activeCompany,installmentsParams,dispatch]);
 
     const columns = [
-        { field: 'code', headerName: 'Kira Planı Kodu', flex:1, editable: true, renderCell: (params) => (
+        { field: 'lease', headerName: 'Kira Planı Kodu', flex:1, editable: true, renderCell: (params) => (
                 <Link
                 to={`/leasing/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
@@ -43,12 +43,11 @@ function Installment() {
                 
             )
         },
-        { field: 'lease', headerName: 'Kira Planı Kodu', flex: 1 },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1 },
         { field: 'vat', headerName: 'Vergi Oranı', flex: 1, type: 'number' },
         { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
         { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
-        { field: 'principle', headerName: 'Ana Para', flex: 1, type: 'number' },
+        { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
         { field: 'interest', headerName: 'Faiz', flex: 1, type: 'number' },
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
     ]
@@ -106,7 +105,7 @@ function Installment() {
 
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchInstallment({activeCompany,params:installmentsParams})).unwrap()}
+                    onClick={() => dispatch(fetchInstallments({activeCompany,params:installmentsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
 
