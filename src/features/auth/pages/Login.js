@@ -70,18 +70,6 @@ function Login() {
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="formOutline-user-login-password" className="form-control" required />
                     <label className="form-label" htmlFor="formOutline-user-login-password-">Parola</label>
                 </div>
-                <div className="row mb-3">
-                    <div className="col d-flex justify-content-center">
-                    <div className="form-check">
-                        <input className="form-check-input" type="checkbox" checked={remember} onChange={handleRemember} id="formOutline-user-rememberMe"/>
-                        <label className="form-check-label" htmlFor="formOutline-user-rememberMe"> Beni hatırla </label>
-                    </div>
-                    </div>
-
-                    <div className="col">
-                    <Link to="/auth/forgot-password" className="text-blue-500 fw-bold">Şifremi unuttum</Link>
-                    </div>
-                </div>
                 <button data-mdb-ripple-init type="submit" className="btn btn-primary btn-block">Giriş</button>
                 <span className={`text-start btn-block ${authMessage.color}`}><i className={authMessage.icon}></i> {authMessage.text}</span>
             </form>

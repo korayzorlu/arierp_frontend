@@ -1,7 +1,7 @@
 services:
   web:
-    container_name: marswide_frontend
-    image: marswide_frontend
+    container_name: arinet_frontend
+    image: arinet_frontend
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,7 +14,7 @@ services:
     #command: ["npm", "run", "build"]
     restart: always
     networks:
-      - marswide_network
+      - arinet_network
 networks:
-  marswide_network:
+  arinet_network:
     external: true
