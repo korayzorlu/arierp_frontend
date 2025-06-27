@@ -43,6 +43,13 @@ function Installment() {
                 
             )
         },
+        { field: 'contract', headerName: 'Sözleşme No', flex: 1 },
+        { field: 'partner', headerName: 'Müşteri', flex: 1 },
+        { field: 'partner_tc', headerName: 'TC/VKN', flex: 1 },
+        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', flex: 1 },
+        { field: 'project', headerName: 'Proje', flex: 1 },
+        { field: 'block', headerName: 'Blok', flex: 1 },
+        { field: 'unit', headerName: 'Bağ. Bölüm', flex: 1 },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1 },
         { field: 'vat', headerName: 'Vergi Oranı', flex: 1, type: 'number' },
         { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
