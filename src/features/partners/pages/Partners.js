@@ -89,6 +89,7 @@ function Partners() {
         )
         },
         { field: 'email', headerName: 'Email', flex: 1 },
+        { field: 'phoneNumber', headerName: 'Tel', flex: 1 },
     ]
 
     const handleAllDelete = async () => {
