@@ -76,6 +76,8 @@ import { setAlert } from './store/slices/notificationSlice.js';
 import QuickQuotations from './features/quotations/pages/QuickQuotations.js';
 import Quotations from './features/quotations/pages/Quotations.js';
 import Installment from './features/leasing/pages/Installment.js';
+import TradeAccounts from './features/trade/pages/TradeAccounts.js';
+import LedgerAccounts from './features/ledger/pages/LedgerAccounts.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -213,6 +215,10 @@ function App() {
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>
+
+                  <Route path='/trade-accounts' element={<TradeAccounts></TradeAccounts>}></Route>
+
+                  <Route path='/ledger-accounts' element={<LedgerAccounts></LedgerAccounts>}></Route>
 
                   <Route path='/accounts' element={<Accounts></Accounts>}></Route>
                   <Route path='/accounts/accounts-receivable' element={<Receivable></Receivable>}></Route>

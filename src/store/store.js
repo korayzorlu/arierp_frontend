@@ -27,6 +27,8 @@ import leaseReducer from './slices/leasing/leaseSlice';
 import installmentReducer from './slices/leasing/installmentSlice';
 import quickQuotationReducer from './slices/quotations/quickQuotationSlice';
 import quotationReducer from './slices/quotations/quotationSlice';
+import tradeAccountReducer from './slices/trade/tradeAccountSlice';
+import ledgerAccountReducer from './slices/ledger/ledgerAccountSlice';
 
 let navigate;
 
@@ -64,6 +66,8 @@ export const store = configureStore({
         bankaHareketi: bankaHareketiReducer,
         bankaTahsilati: bankaTahsilatiReducer,
         bankaTahsilatiOdoo: bankaTahsilatiOdooReducer,
+        tradeAccount: tradeAccountReducer,
+        ledgerAccount: ledgerAccountReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

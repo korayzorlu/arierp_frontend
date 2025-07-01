@@ -38,6 +38,8 @@ function Sidenav() {
         contract: require("../../images/icons/sidebar/light/contract-filled.svg").ReactComponent,
         article: require("../../images/icons/sidebar/light/article_shortcut-filled.svg").ReactComponent,
         unknown: require("../../images/icons/sidebar/light/unknown_document-filled.svg").ReactComponent,
+        checkbook: require("../../images/icons/sidebar/light/checkbook-filled.svg").ReactComponent,
+        price_change: require("../../images/icons/sidebar/light/price_change-filled.svg").ReactComponent,
     
     };
 
