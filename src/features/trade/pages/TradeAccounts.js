@@ -35,7 +35,7 @@ function TradeAccounts() {
     const columns = [
         { field: 'account_id', headerName: 'Kart No', flex: 1 },
         { field: 'crm_id', headerName: 'CRM No', flex: 1 },
-        { field: 'name', headerName: 'İsim', flex: 4 },
+        { field: 'name', headerName: 'Hesap İsmi', flex: 4 },
         { field: 'crm_type', headerName: 'CRM Kart Tipi', flex: 1 },
     ]
 

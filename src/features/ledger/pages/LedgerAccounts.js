@@ -34,7 +34,7 @@ function LedgerAccounts() {
 
     const columns = [
         { field: 'code', headerName: 'Hesap Kodu', flex: 1 },
-        { field: 'name', headerName: 'İsim', flex: 4 },
+        { field: 'name', headerName: 'Hesap İsmi', flex: 4 },
         { field: 'currency', headerName: 'Para Birimi', flex: 1 },
     ]
 
