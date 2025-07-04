@@ -14,6 +14,10 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import { darken, Grid, lighten, styled, Typography } from '@mui/material';
+import { DataGridPremium } from '@mui/x-data-grid-premium';
+import './Installments.css';
 
 function Installment() {
     const {user} = useSelector((store) => store.auth);
@@ -25,12 +29,18 @@ function Installment() {
     const [isPending, startTransition] = useTransition();
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [switchDisabled, setSwitchDisabled] = useState(false);
+    const [switchPosition, setSwitchPosition] = useState(false);
 
     useEffect(() => {
+        console.log(installmentsParams)
         startTransition(() => {
             dispatch(fetchInstallments({activeCompany,params:installmentsParams}));
         });
     }, [activeCompany,installmentsParams,dispatch]);
+
+    
+
 
     const columns = [
         { field: 'lease', headerName: 'Kira Planı Kodu', flex:1, editable: true, renderCell: (params) => (
@@ -54,6 +64,7 @@ function Installment() {
         { field: 'vat', headerName: 'Vergi Oranı', flex: 1, type: 'number' },
         { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
         { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number'},
         { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
         { field: 'interest', headerName: 'Faiz', flex: 1, type: 'number' },
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
@@ -72,6 +83,11 @@ function Installment() {
         };
     };
 
+    const handleChangeOverdue = async (value) => {
+        dispatch(setInstallmentsParams({overdue_amount:value}))
+        setSwitchPosition(value);
+    };
+
     return (
         <PanelContent>
             <ListTableServer
@@ -82,7 +98,6 @@ function Installment() {
             loading={installmentsLoading}
             customButtons={
                 <>  
-
                     <CustomTableButton
                     title="İçe Aktar"
                     onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
@@ -115,8 +130,16 @@ function Installment() {
                     onClick={() => dispatch(fetchInstallments({activeCompany,params:installmentsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
-
-                    
+                </>
+            }
+            customFilters={
+                <>
+                    <AndroidSwitch
+                    label="Tahsilatı Beklenenler"
+                    checked={switchPosition}
+                    onChange={(value) => handleChangeOverdue(value)}
+                    disabled={switchDisabled}
+                    />
                 </>
             }
             onRowSelectionModelChange={(newRowSelectionModel) => {
@@ -125,6 +148,7 @@ function Installment() {
             rowCount={installmentsCount}
             checkboxSelection
             setParams={(value) => dispatch(setInstallmentsParams(value))}
+            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}

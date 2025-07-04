@@ -3,7 +3,7 @@ import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
 import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel, GridColumnMenuFilterItem } from '@mui/x-data-grid-premium';
 import MUIToolbar from './MUIToolbar';
-import { Box, InputBase, styled, TextField, Typography } from '@mui/material';
+import { Box, darken, InputBase, lighten, styled, TextField, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useDispatch } from 'react-redux';
 import { setPartnersParams } from '../../store/slices/partners/partnerSlice';
@@ -35,7 +35,8 @@ function ListTableServer(props) {
     getRowClassName,
     sx,
     excelExportOptions,
-    excelOptions
+    excelOptions,
+    customFilters,
   } = props;
 
   const dispatch = useDispatch();
@@ -134,9 +135,31 @@ function ListTableServer(props) {
     );
   }
 
+  const getBackgroundColor = (color, theme, coefficient) => ({
+    backgroundColor: darken(color, coefficient),
+    ...theme.applyStyles('light', {
+      backgroundColor: lighten(color, coefficient),
+    }),
+  });
+
+  const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
+    '& .super-app-theme--overdue': {
+      ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.6),
+      },
+      '&.Mui-selected': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.5),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.error.main, theme, 0.4),
+        },
+      },
+    },
+  }));
+
   return (
     <TableContent height={height}>
-      <DataGridPremium
+      <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,
         ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
@@ -150,6 +173,7 @@ function ListTableServer(props) {
               title: title,
               backButton: backButton,
               excelOptions: excelOptions,
+              customFilters: customFilters,
           },
           loadingOverlay: {
             variant: 'linear-progress',

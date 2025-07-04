@@ -12,9 +12,10 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate } from 'react-router-dom';
 import CustomTableButton from './CustomTableButton';
 import AssistantIcon from '@mui/icons-material/Assistant';
+import AndroidSwitch from '../switch/AndroidSwitch';
 
 function MUIToolbar(props) {
-  const {children,title,backButton,excelOptions} = props;
+  const {children,title,backButton,excelOptions,customFilters,} = props;
 
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
@@ -70,127 +71,154 @@ function MUIToolbar(props) {
     //   <ToolbarQuickFilter></ToolbarQuickFilter>
     // </ToolbarContainer>
 
+
     <Toolbar sx={{padding:"0.5rem",flexDirection: mobile ? 'column' : 'row',justifyContent:'space-between'}}>
+      <Grid
+      container
+      sx={{
+        justifyContent: "space-between",
+        width: "100%"
+      }}
+      direction="column"
+      >
+        <Grid
+        container direction="row"
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+        >
+          <Grid container spacing={0} sx={{alignItems:'center',justifyContent:'space-between',width:mobile ? '100%' : 'unset'}}>
       
-      <Grid container spacing={0} sx={{alignItems:'center',justifyContent:'space-between',width:mobile ? '100%' : 'unset'}}>
-      
-        {
-          backButton
-          ?
-            <CustomTableButton
-            title="Back"
-            onClick={() => navigate(-1)}
-            icon={<ArrowBackIosNewIcon fontSize="small"/>}
-            sx={{marginRight:4}}
-            />
-          :
-            null
-        }
+            {
+              backButton
+              ?
+                <CustomTableButton
+                title="Back"
+                onClick={() => navigate(-1)}
+                icon={<ArrowBackIosNewIcon fontSize="small"/>}
+                sx={{marginRight:4}}
+                />
+              :
+                null
+            }
 
-        <Typography fontWeight="medium" sx={{ flex: 1, mx: 0.5, textAlign:mobile ? 'end' : 'unset' }}>
-          {title}
-        </Typography>
-      </Grid>
+            <Typography fontWeight="medium" sx={{ flex: 1, mx: 0.5, textAlign:mobile ? 'end' : 'unset' }}>
+              {title}
+            </Typography>
+          </Grid>
 
-      <Grid container spacing={0}>
-        <Tooltip title="Sütunlar">
-          <ColumnsPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
-            <ViewColumnIcon fontSize="small" />
-          </ColumnsPanelTrigger>
-        </Tooltip>
+          <Grid container spacing={0}>
+            <Tooltip title="Sütunlar">
+              <ColumnsPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
+                <ViewColumnIcon fontSize="small" />
+              </ColumnsPanelTrigger>
+            </Tooltip>
 
-        <Tooltip title="Filtreler">
-          <FilterPanelTrigger
-            render={(props, state) => (
-              <ToolbarButton {...props} color="default">
-                <Badge badgeContent={state.filterCount} color="primary" variant="dot">
-                  <FilterListIcon fontSize="small" />
-                </Badge>
-              </ToolbarButton>
-            )}
-            sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
-          />
-        </Tooltip>
-          
-        <Tooltip title="AI Asistanı">
-          <AiAssistantPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
-            <AssistantIcon fontSize="small" />
-          </AiAssistantPanelTrigger>
-        </Tooltip>
-
-        <Tooltip title="Exel İndir">
-          <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
-            <FileDownloadIcon fontSize="small" />
-          </ExportExcel>
-        </Tooltip>
-        
-
-        <Tooltip title="Yazdır">
-          <ExportPrint render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
-            <PrintIcon fontSize="small" />
-          </ExportPrint>
-        </Tooltip>
-
-        {children}
-
-        <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
-
-        <StyledQuickFilter>
-          <QuickFilterTrigger
-            render={(triggerProps, state) => (
-              <Tooltip title="Ara" enterDelay={0}>
-                <StyledToolbarButton
-                  {...triggerProps}
-                  ownerState={{ expanded: state.expanded }}
-                  color="default"
-                  aria-disabled={state.expanded}
-                >
-                  <SearchIcon fontSize="small" />
-                </StyledToolbarButton>
-              </Tooltip>
-            )}
-            sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
-          />
-          <QuickFilterControl
-            render={({ ref, ...controlProps }, state) => (
-              <StyledTextField
-                {...controlProps}
-                ownerState={{ expanded: state.expanded }}
-                inputRef={ref}
-                aria-label="Search"
-                placeholder="Search..."
-                size="small"
-                autoFocus={true}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: state.value ? (
-                      <InputAdornment position="end">
-                        <QuickFilterClear
-                          edge="end"
-                          size="small"
-                          aria-label="Clear search"
-                          material={{ sx: { marginRight: -0.75 } }}
-                        >
-                          <CancelIcon fontSize="small" />
-                        </QuickFilterClear>
-                      </InputAdornment>
-                    ) : null,
-                    ...controlProps.slotProps?.input,
-                  },
-                  ...controlProps.slotProps,
-                }}
+            <Tooltip title="Filtreler">
+              <FilterPanelTrigger
+                render={(props, state) => (
+                  <ToolbarButton {...props} color="default">
+                    <Badge badgeContent={state.filterCount} color="primary" variant="dot">
+                      <FilterListIcon fontSize="small" />
+                    </Badge>
+                  </ToolbarButton>
+                )}
+                sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
               />
-            )}
-            sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
-          />
-        </StyledQuickFilter>
+            </Tooltip>
+              
+            <Tooltip title="AI Asistanı">
+              <AiAssistantPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
+                <AssistantIcon fontSize="small" />
+              </AiAssistantPanelTrigger>
+            </Tooltip>
+
+            <Tooltip title="Exel İndir">
+              <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
+                <FileDownloadIcon fontSize="small" />
+              </ExportExcel>
+            </Tooltip>
+            
+
+            <Tooltip title="Yazdır">
+              <ExportPrint render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
+                <PrintIcon fontSize="small" />
+              </ExportPrint>
+            </Tooltip>
+
+            {children}
+
+            <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
+
+            <StyledQuickFilter>
+              <QuickFilterTrigger
+                render={(triggerProps, state) => (
+                  <Tooltip title="Ara" enterDelay={0}>
+                    <StyledToolbarButton
+                      {...triggerProps}
+                      ownerState={{ expanded: state.expanded }}
+                      color="default"
+                      aria-disabled={state.expanded}
+                    >
+                      <SearchIcon fontSize="small" />
+                    </StyledToolbarButton>
+                  </Tooltip>
+                )}
+                sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
+              />
+              <QuickFilterControl
+                render={({ ref, ...controlProps }, state) => (
+                  <StyledTextField
+                    {...controlProps}
+                    ownerState={{ expanded: state.expanded }}
+                    inputRef={ref}
+                    aria-label="Search"
+                    placeholder="Search..."
+                    size="small"
+                    autoFocus={true}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="small" />
+                          </InputAdornment>
+                        ),
+                        endAdornment: state.value ? (
+                          <InputAdornment position="end">
+                            <QuickFilterClear
+                              edge="end"
+                              size="small"
+                              aria-label="Clear search"
+                              material={{ sx: { marginRight: -0.75 } }}
+                            >
+                              <CancelIcon fontSize="small" />
+                            </QuickFilterClear>
+                          </InputAdornment>
+                        ) : null,
+                        ...controlProps.slotProps?.input,
+                      },
+                      ...controlProps.slotProps,
+                    }}
+                  />
+                )}
+                sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
+              />
+            </StyledQuickFilter>
+          </Grid>
+        </Grid>
+        <Grid
+        container direction="row"
+        sx={{
+          justifyContent: "end",
+        }}
+        >
+          {customFilters}
+        </Grid>
       </Grid>
+      
     </Toolbar>
+    
   )
 }
 

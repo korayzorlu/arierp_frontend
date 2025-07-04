@@ -48,16 +48,8 @@ function Contracts() {
     };
 
     const columns = [
-        { field: 'code', headerName: 'Sözleşme Kodu', flex:1, editable: true, renderCell: (params) => (
-                <Link
-                to={`/contracts/update/${params.row.uuid}/`}
-                style={{textDecoration:"underline"}}
-                >
-                    {params.value}
-                </Link>
-                
-            )
-        },
+        { field: 'contract_id', headerName: 'ID', flex: 1 },
+        { field: 'code', headerName: 'Sözleşme No', flex: 1 },
         { field: 'partner', headerName: 'Müşteri', flex: 2 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
         { field: 'quotation', headerName: 'Teklif', flex: 1 },

@@ -14,6 +14,9 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import './Installments.css';
+
 
 function Leases() {
     const {user} = useSelector((store) => store.auth);
@@ -25,6 +28,8 @@ function Leases() {
     const [isPending, startTransition] = useTransition();
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [switchDisabled, setSwitchDisabled] = useState(false);
+    const [switchPosition, setSwitchPosition] = useState(false);
 
     useEffect(() => {
         startTransition(() => {
@@ -56,6 +61,10 @@ function Leases() {
         { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
         { field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', flex: 1, type: 'number'},
         { field: 'currency', headerName: 'PB', flex: 1 },
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number', cellClassName: (params) => {
+                return params.value > 0 ? 'bg-red' : '';
+            }
+        },
         { field: 'lease_status', headerName: 'Statü', flex: 2 },
     ]
 
@@ -70,6 +79,11 @@ function Leases() {
         } catch (error) {
             dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
         };
+    };
+
+    const handleChangeOverdue = async (value) => {
+        dispatch(setLeasesParams({overdue_amount:value}));
+        setSwitchPosition(value);
     };
 
     return (
@@ -119,12 +133,23 @@ function Leases() {
                     
                 </>
             }
+            customFilters={
+                <>
+                    <AndroidSwitch
+                    label="Tahsilatı Beklenenler"
+                    checked={switchPosition}
+                    onChange={(value) => handleChangeOverdue(value)}
+                    disabled={switchDisabled}
+                    />
+                </>
+            }
             onRowSelectionModelChange={(newRowSelectionModel) => {
                 setSelectedItems(newRowSelectionModel);
             }}
             rowCount={leasesCount}
             checkboxSelection
             setParams={(value) => dispatch(setLeasesParams(value))}
+            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
