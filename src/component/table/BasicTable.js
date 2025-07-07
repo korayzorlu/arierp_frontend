@@ -4,18 +4,42 @@ import TableContent from './TableContent';
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
 import MUIToolbar from './MUIToolbar';
 import { DataGridPremium } from '@mui/x-data-grid-premium';
+import { darken, lighten } from '@mui/material';
+import { styled } from '@mui/system';
 
 function BasicTable(props) {
-    const {rows,columns,loading,customButtons,hiddenColumns,checkboxSelection,disableRowSelectionOnClick,title} = props;
+    const {rows,columns,loading,customButtons,hiddenColumns,checkboxSelection,disableRowSelectionOnClick,title,getRowClassName} = props;
 
     const [paginationModel, setPaginationModel] = useState({
         pageSize: 50,
         page: 0,
     });
 
+    const getBackgroundColor = (color, theme, coefficient) => ({
+      backgroundColor: darken(color, coefficient),
+      ...theme.applyStyles('light', {
+        backgroundColor: lighten(color, coefficient),
+      }),
+    });
+  
+    const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
+      '& .super-app-theme--overdue': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.error.main, theme, 0.6),
+        },
+        '&.Mui-selected': {
+          ...getBackgroundColor(theme.palette.error.main, theme, 0.5),
+          '&:hover': {
+            ...getBackgroundColor(theme.palette.error.main, theme, 0.4),
+          },
+        },
+      },
+    }));
+
     return (
         <TableContent height="auto">
-            <DataGridPremium
+            <StyledDataGridPremium
             slots={{ toolbar: MUIToolbar}}
             showToolbar
             slotProps={{
@@ -53,6 +77,7 @@ function BasicTable(props) {
                     outline: 'none',
                   },
             }}
+            getRowClassName = {getRowClassName}
             />
         </TableContent>
     )

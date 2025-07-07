@@ -8,6 +8,7 @@ import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useDispatch } from 'react-redux';
 import { setPartnersParams } from '../../store/slices/partners/partnerSlice';
 import { debounce } from 'lodash';
+import { trTR } from '@mui/x-data-grid/locales';
 
 function ListTableServer(props) {
   const {
@@ -37,6 +38,7 @@ function ListTableServer(props) {
     excelExportOptions,
     excelOptions,
     customFilters,
+    headerFilters,
   } = props;
 
   const dispatch = useDispatch();
@@ -46,6 +48,7 @@ function ListTableServer(props) {
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 50 })
 
   const [filterParams, setFilterParams] = useState({});
+  const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
 
   const debouncedSetParams = useCallback(debounce(setParams, 700), []);
   const debouncedSetFilterParams = useCallback(debounce(setFilterParams, 600), []);
@@ -90,15 +93,15 @@ function ListTableServer(props) {
   };
 
   const handleFilterModelChange = (model) => {
-    console.log(model)
-    if(model.quickFilterValues.length > 0){
+    setFilterModel(model);
+    if(model.quickFilterValues && model.quickFilterValues.length > 0){
       model.quickFilterValues.forEach((item) => {
           //dispatch(setPartnersParams({"search[value]":item}));
           setFilterParams({...filterParams,"search[value]":item})
           setParams({"search[value]":item});
 
       });                                                                                                                                                 
-    }else if(model.quickFilterValues.length === 0 && model.items.length > 0){
+    }else if(model.quickFilterValues && model.quickFilterValues.length === 0 && model.items.length > 0){
       model.items.forEach((item) => {
           if (item.value) {
             console.log("filtre değişti")
@@ -107,18 +110,24 @@ function ListTableServer(props) {
             setFilterParams({...filterParams,[item.field]:item.value})
             setParams({[item.field]:item.value});
           } else {
-            setFilterParams({...filterParams,[item.field]:""})
+           // setFilterParams({...filterParams,[item.field]:""})
             setParams({[item.field]:""});
           };
       });
-    } else if(model.items.length === 0 && model.quickFilterValues.length === 0){
+    } else if(model.items && model.items.length === 0 && model.quickFilterValues.length === 0){
       //dispatch(setPartnersParams({"search[value]":""}));
       setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
-      setParams({...filterParams})
-    };
+      const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
+        acc[key] = "";
+        return acc;
+      }, {});
+      setParams(emptyParams);
+    } else {
+      setParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})});
+    }
   };
 
-  const debouncedHandleFilterModelChange = useCallback(debounce(handleFilterModelChange, 900), []);
+  const debouncedHandleFilterModelChange =debounce(handleFilterModelChange, 600);
 
   const NoRowsOverlay = () => (
     <Box sx={{mt: 2,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%'}}>
@@ -166,7 +175,7 @@ function ListTableServer(props) {
       slots={{
         toolbar: MUIToolbar,
         ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
-        aiAssistantPanel: GridAiAssistantPanel,
+        //aiAssistantPanel: GridAiAssistantPanel,
         headerFilterMenu: null,
       }}
       showToolbar
@@ -178,6 +187,12 @@ function ListTableServer(props) {
               backButton: backButton,
               excelOptions: excelOptions,
               customFilters: customFilters,
+              apiRef: apiRef,
+              quickFilterProps: {
+                quickFilterParser: (searchInput) => searchInput.split(',').map((value) => value.trim()),
+                quickFilterFormatter: (quickFilterValues) => quickFilterValues.join(', '),
+                debounceMs: 200,
+              },
           },
           // loadingOverlay: {
           //   variant: 'linear-progress',
@@ -185,6 +200,7 @@ function ListTableServer(props) {
           // },
           headerFilterCell: {
             showClearIcon: true,
+            InputComponentProps: { label: "Filter" }
           },
         }}
       columns={columns}
@@ -202,11 +218,12 @@ function ListTableServer(props) {
       paginationMode="server"
       sortingMode="server"
       filterMode="server"
-      headerFilters
+      filterModel={filterModel}   
+      headerFilters={headerFilters}
       disableColumnFilter
-      onPaginationModelChange={(model) => debouncedHandleFilterModelChange(model)}
+      onPaginationModelChange={(model) => handlePaginationModelChange(model)}
       onSortModelChange={(model) => handleSortModelChange(model)}
-      onFilterModelChange={(model) => handleFilterModelChange(model)}
+      onFilterModelChange={(model) => debouncedHandleFilterModelChange(model)}
       rowCount={rowCount}
       loading={loading}
       checkboxSelection={checkboxSelection}
@@ -228,10 +245,15 @@ function ListTableServer(props) {
           '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
           [`.${gridClasses['columnHeader--filter']}`]: { px: 1 },
       }}
-      aiAssistant
-      onPrompt={processPrompt}
+      //aiAssistant
+      //onPrompt={processPrompt}
       excelExportOptions={excelExportOptions}
       cellSelection
+      ignoreDiacritics
+      localeText={{
+        ...trTR.components.MuiDataGrid.defaultProps.localeText,
+        filterOperatorContains: 'Ara', // "Şunu içerir" yazısını kaldır
+      }}
       />
     </TableContent>
   )

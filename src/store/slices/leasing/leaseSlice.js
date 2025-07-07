@@ -12,6 +12,8 @@ const initialState = {
         format: 'datatables'
     },
     leasesLoading:false,
+    installmentsInLease:[],
+    installmentsLoading:false
 }
 
 export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCompany,serverModels=null,params=null}) => {
@@ -121,6 +123,12 @@ export const deleteLease = createAsyncThunk('auth/deleteLease', async ({data=nul
     }
 });
 
+export const fetchInstallmentsInLease = createAsyncThunk('organization/fetchInstallmentsInLease', async ({activeCompany,lease_id}) => {
+    const response = await axios.get(`/leasing/installments/?active_company=${activeCompany.id}&lease_id=${lease_id}`, {withCredentials: true});
+    console.log(response);
+    return response.data;
+});
+
 const leaseSlice = createSlice({
     name:"lease",
     initialState,
@@ -157,6 +165,17 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchLeases.rejected, (state,action) => {
                 state.leasesLoading = false
+            })
+            //fetch installemnts in lease
+            .addCase(fetchInstallmentsInLease.pending, (state) => {
+                state.installmentsLoading = true;
+            })
+            .addCase(fetchInstallmentsInLease.fulfilled, (state,action) => {
+                state.installmentsInLease = action.payload;
+                state.installmentsLoading = false;
+            })
+            .addCase(fetchInstallmentsInLease.rejected, (state,action) => {
+                state.installmentsLoading = false;
             })
     },
   

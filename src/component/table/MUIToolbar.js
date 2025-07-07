@@ -1,6 +1,6 @@
 import { Badge, Box, Divider, Grid, IconButton, InputAdornment, styled, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel, GridToolbarQuickFilter } from '@mui/x-data-grid-premium'
-import React, { useRef } from 'react'
+import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel, GridToolbarQuickFilter, useGridApiContext } from '@mui/x-data-grid-premium'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -15,12 +15,14 @@ import AssistantIcon from '@mui/icons-material/Assistant';
 import AndroidSwitch from '../switch/AndroidSwitch';
 
 function MUIToolbar(props) {
-  const {children,title,backButton,excelOptions,customFilters,} = props;
+  const {children,title,backButton,excelOptions,customFilters} = props;
 
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
 
   const navigate = useNavigate();
+
+  const [quickValue, setQuickValue] = useState("");
 
   const buttonSlotProps = {
     button: {
@@ -50,7 +52,6 @@ function MUIToolbar(props) {
     opacity: ownerState.expanded ? 1 : 0,
     transition: theme.transitions.create(['width', 'opacity']),
   }));
-
 
 
   return (
@@ -151,7 +152,11 @@ function MUIToolbar(props) {
 
             <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
             {/* <GridToolbarQuickFilter></GridToolbarQuickFilter> */}
-            <StyledQuickFilter>
+            <StyledQuickFilter
+            parser={(searchInput) => searchInput.split(',').map((value) => value.trim())}
+            formatter={(quickFilterValues) => quickFilterValues.join(', ')}
+            debounceMs={200}
+            >
               <QuickFilterTrigger
                 render={(triggerProps, state) => (
                   <Tooltip title="Ara" enterDelay={0}>

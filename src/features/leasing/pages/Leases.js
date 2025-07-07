@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useTransition } from 'react'
+import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLeases, resetLeasesParams, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
@@ -16,6 +16,8 @@ import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import './Installments.css';
+import { useGridApiRef } from '@mui/x-data-grid-premium';
+import { TextField } from '@mui/material';
 
 
 function Leases() {
@@ -24,6 +26,7 @@ function Leases() {
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
+    const apiRef = useGridApiRef();
 
     const [isPending, startTransition] = useTransition();
 
@@ -35,10 +38,11 @@ function Leases() {
         startTransition(() => {
             dispatch(fetchLeases({activeCompany,params:leasesParams}));
         });
+        console.log(leasesParams);
     }, [activeCompany,leasesParams,dispatch]);
 
     const columns = [
-        { field: 'code', headerName: 'Kira Planı Kodu', flex:1, editable: true, renderCell: (params) => (
+        { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
                 <Link
                 to={`/leasing/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
@@ -48,25 +52,42 @@ function Leases() {
                 
             )
         },
-        { field: 'contract', headerName: 'Sözleşme Kodu', flex: 1 },
-        { field: 'partner', headerName: 'Müşteri', flex: 3 },
-        { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
-        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', flex: 1 },
-        { field: 'quotation', headerName: 'Teklif No', flex: 1 },
-        { field: 'kof', headerName: 'KOF No', flex: 1 },
-        { field: 'project', headerName: 'Proje', flex: 3 },
-        { field: 'block', headerName: 'Blok', flex: 1 },
-        { field: 'unit', headerName: 'Bağımsız Bölüm', flex: 1 },
-        { field: 'vade', headerName: 'Vade', flex: 1, type: 'number' },
-        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
-        { field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', flex: 1, type: 'number'},
-        { field: 'currency', headerName: 'PB', flex: 1 },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number', cellClassName: (params) => {
+        { field: 'contract', headerName: 'Sözleşme Kodu' },
+        { field: 'partner', headerName: 'Müşteri', width:280 },
+        { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
+        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
+        //{ field: 'quotation', headerName: 'Teklif No' },
+        //{ field: 'kof', headerName: 'KOF No' },
+        { field: 'project', headerName: 'Proje', width:280 },
+        { field: 'block', headerName: 'Blok' },
+        { field: 'unit', headerName: 'Bağımsız Bölüm' },
+        //{ field: 'vade', headerName: 'Vade', type: 'number' },
+        //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
+        //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
-        { field: 'lease_status', headerName: 'Statü', flex: 2 },
+        { field: 'currency', headerName: 'PB' },
+        { field: 'overdue_days', headerName: 'Gecikme Gün Sayısı', width:120, type: 'number', renderHeaderFilter: () => null },
+        { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
+
+    const columnsWithRenderHeaderFilter = columns.map(col => {
+        if (col.renderHeaderFilter) {
+            return {
+            ...col,
+            renderHeaderFilter: (params) => {
+                return col.renderHeaderFilter({
+                ...params,
+                inputRef: createRef(),
+                apiRef: apiRef,
+                });
+            },
+            };
+        }
+        return col;
+    });
 
     const handleAllDelete = async () => {
         dispatch(setAlert({status:"info",text:"Removing items.."}));
@@ -117,12 +138,12 @@ function Leases() {
                     icon={<DeleteIcon fontSize="small"/>}
                     />
 
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="Tümünü Sil"
                     onClick={handleAllDelete}
                     disabled={user.email === "korayzorllu@gmail.com" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
-                    />
+                    /> */}
 
                     <CustomTableButton
                     title="Yenile"
@@ -150,6 +171,8 @@ function Leases() {
             checkboxSelection
             setParams={(value) => dispatch(setLeasesParams(value))}
             getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            headerFilters={true}
+            apiRef={apiRef}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}

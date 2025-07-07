@@ -18,13 +18,13 @@ RUN npm install
 RUN rm -f .npmrc
 
 # Copy the project files
-COPY . .
+# COPY . .
 
-RUN npm run build
+#RUN npm run build
 #RUN npm install -g server
 
 # Uygulamayı çalıştır
-# CMD ["npm", "start"]
+CMD ["npm", "start"]
 
 # Expose the port
 # EXPOSE 3000

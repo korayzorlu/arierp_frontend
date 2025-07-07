@@ -9,12 +9,16 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-      - ./build:/usr/share/nginx/html
+      - /app/node_modules
+      #- ./build:/usr/share/nginx/html
     command: ["npm", "start"]
     #command: ["npm", "run", "build"]
     restart: always
     networks:
       - arinet_network
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 networks:
   arinet_network:
     external: true
