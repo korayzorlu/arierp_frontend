@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
-import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel, GridColumnMenuFilterItem } from '@mui/x-data-grid-premium';
+import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel, GridColumnMenuFilterItem, GridToolbarContainer } from '@mui/x-data-grid-premium';
 import MUIToolbar from './MUIToolbar';
 import { Box, darken, InputBase, lighten, styled, TextField, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
@@ -94,8 +94,9 @@ function ListTableServer(props) {
     if(model.quickFilterValues.length > 0){
       model.quickFilterValues.forEach((item) => {
           //dispatch(setPartnersParams({"search[value]":item}));
-          debouncedSetFilterParams({...filterParams,"search[value]":item})
-          debouncedSetParams({"search[value]":item});
+          setFilterParams({...filterParams,"search[value]":item})
+          setParams({"search[value]":item});
+
       });                                                                                                                                                 
     }else if(model.quickFilterValues.length === 0 && model.items.length > 0){
       model.items.forEach((item) => {
@@ -103,19 +104,21 @@ function ListTableServer(props) {
             console.log("filtre değişti")
             //dispatch(setPartnersParams({[item.columnField]:item.value}));
             //setParams({[item.columnField]:item.value});
-            debouncedSetFilterParams({...filterParams,[item.field]:item.value})
-            debouncedSetParams({[item.field]:item.value});
+            setFilterParams({...filterParams,[item.field]:item.value})
+            setParams({[item.field]:item.value});
           } else {
-            debouncedSetFilterParams({...filterParams,[item.field]:""})
-            debouncedSetParams({[item.field]:""});
+            setFilterParams({...filterParams,[item.field]:""})
+            setParams({[item.field]:""});
           };
       });
     } else if(model.items.length === 0 && model.quickFilterValues.length === 0){
       //dispatch(setPartnersParams({"search[value]":""}));
       setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
-      debouncedSetParams({...filterParams})
+      setParams({...filterParams})
     };
   };
+
+  const debouncedHandleFilterModelChange = useCallback(debounce(handleFilterModelChange, 900), []);
 
   const NoRowsOverlay = () => (
     <Box sx={{mt: 2,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%'}}>
@@ -164,6 +167,7 @@ function ListTableServer(props) {
         toolbar: MUIToolbar,
         ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
         aiAssistantPanel: GridAiAssistantPanel,
+        headerFilterMenu: null,
       }}
       showToolbar
       slotProps={{
@@ -175,9 +179,12 @@ function ListTableServer(props) {
               excelOptions: excelOptions,
               customFilters: customFilters,
           },
-          loadingOverlay: {
-            variant: 'linear-progress',
-            noRowsVariant: 'linear-progress',
+          // loadingOverlay: {
+          //   variant: 'linear-progress',
+          //   noRowsVariant: 'linear-progress',
+          // },
+          headerFilterCell: {
+            showClearIcon: true,
           },
         }}
       columns={columns}
@@ -195,7 +202,9 @@ function ListTableServer(props) {
       paginationMode="server"
       sortingMode="server"
       filterMode="server"
-      onPaginationModelChange={(model) => handlePaginationModelChange(model)}
+      headerFilters
+      disableColumnFilter
+      onPaginationModelChange={(model) => debouncedHandleFilterModelChange(model)}
       onSortModelChange={(model) => handleSortModelChange(model)}
       onFilterModelChange={(model) => handleFilterModelChange(model)}
       rowCount={rowCount}
@@ -217,6 +226,7 @@ function ListTableServer(props) {
               outline: 'none',
           },
           '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
+          [`.${gridClasses['columnHeader--filter']}`]: { px: 1 },
       }}
       aiAssistant
       onPrompt={processPrompt}

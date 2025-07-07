@@ -1,5 +1,5 @@
 import { Badge, Box, Divider, Grid, IconButton, InputAdornment, styled, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel } from '@mui/x-data-grid-premium'
+import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel, GridToolbarQuickFilter } from '@mui/x-data-grid-premium'
 import React, { useRef } from 'react'
 import { useSelector } from 'react-redux';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
@@ -150,7 +150,7 @@ function MUIToolbar(props) {
             {children}
 
             <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
-
+            {/* <GridToolbarQuickFilter></GridToolbarQuickFilter> */}
             <StyledQuickFilter>
               <QuickFilterTrigger
                 render={(triggerProps, state) => (
