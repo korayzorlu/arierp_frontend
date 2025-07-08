@@ -48,12 +48,16 @@ function InstallmentsInLease(props) {
         },
         { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
-        { field: 'overdue_days', headerName: 'Gecikme Gün Sayısı', flex: 1,  type: 'number', renderCell: (params) => (
+        { field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 1,  type: 'number', renderCell: (params) => (
                 params.row.overdue_amount > 0
                 ?
-                    params.value
+                    params.value >= 0
+                    ?
+                        `${params.value} gün`
+                    :
+                        null
                 :
-                    0
+                    null
                 
             )
         },

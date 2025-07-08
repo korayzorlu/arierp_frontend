@@ -127,7 +127,7 @@ function ListTableServer(props) {
     }
   };
 
-  const debouncedHandleFilterModelChange =debounce(handleFilterModelChange, 600);
+  const debouncedHandleFilterModelChange =debounce(handleFilterModelChange, 800);
 
   const NoRowsOverlay = () => (
     <Box sx={{mt: 2,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%'}}>

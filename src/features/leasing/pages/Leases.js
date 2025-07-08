@@ -69,7 +69,19 @@ function Leases() {
             }
         },
         { field: 'currency', headerName: 'PB' },
-        { field: 'overdue_days', headerName: 'Gecikme Gün Sayısı', width:120, type: 'number', renderHeaderFilter: () => null },
+        { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
+                params.row.overdue_amount > 0
+                ?
+                    params.value >= 0
+                    ?
+                        `${params.value} gün`
+                    :
+                        null
+                :
+                    null
+                
+            )
+        },
         { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
 
