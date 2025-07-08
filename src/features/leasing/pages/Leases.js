@@ -123,6 +123,7 @@ function Leases() {
         <PanelContent>
             <ListTableServer
             title="Kira Planları Listesi"
+            autoHeight
             rows={leases}
             columns={columns}
             getRowId={(row) => row.uuid}

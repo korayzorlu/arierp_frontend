@@ -29,6 +29,8 @@ import quickQuotationReducer from './slices/quotations/quickQuotationSlice';
 import quotationReducer from './slices/quotations/quotationSlice';
 import tradeAccountReducer from './slices/trade/tradeAccountSlice';
 import ledgerAccountReducer from './slices/ledger/ledgerAccountSlice';
+import collectionReducer from './slices/leasing/collectionSlice';
+import bankActivityReducer from './slices/leasing/bankActivitySlice';
 
 let navigate;
 
@@ -68,6 +70,8 @@ export const store = configureStore({
         bankaTahsilatiOdoo: bankaTahsilatiOdooReducer,
         tradeAccount: tradeAccountReducer,
         ledgerAccount: ledgerAccountReducer,
+        collection: collectionReducer,
+        bankActivity: bankActivityReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -129,11 +129,11 @@ function MUIToolbar(props) {
               />
             </Tooltip>
               
-            <Tooltip title="AI Asistanı">
+            {/* <Tooltip title="AI Asistanı">
               <AiAssistantPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
                 <AssistantIcon fontSize="small" />
               </AiAssistantPanelTrigger>
-            </Tooltip>
+            </Tooltip> */}
 
             <Tooltip title="Exel İndir">
               <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>

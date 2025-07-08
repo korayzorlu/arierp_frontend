@@ -39,6 +39,8 @@ function ListTableServer(props) {
     excelOptions,
     customFilters,
     headerFilters,
+    onCellClick,
+    autoHeight
   } = props;
 
   const dispatch = useDispatch();
@@ -231,7 +233,7 @@ function ListTableServer(props) {
       onRowSelectionModelChange={onRowSelectionModelChange}
       apiRef={apiRef}
       hideFooter={hideFooter}
-      autoHeight
+      autoHeight={autoHeight}
       getRowHeight={() => autoRowHeight ? 'auto' : 'false'}
       getRowClassName = {getRowClassName}
       sx={{
@@ -254,6 +256,7 @@ function ListTableServer(props) {
         ...trTR.components.MuiDataGrid.defaultProps.localeText,
         filterOperatorContains: 'Ara', // "Şunu içerir" yazısını kaldır
       }}
+      onCellClick={onCellClick}
       />
     </TableContent>
   )

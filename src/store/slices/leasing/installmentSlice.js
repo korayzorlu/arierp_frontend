@@ -12,6 +12,7 @@ const initialState = {
         format: 'datatables'
     },
     installmentsLoading:false,
+    partnerInformation:{},
 }
 
 export const fetchInstallments = createAsyncThunk('auth/fetchInstallments', async ({activeCompany,serverModels=null,params=null}) => {
@@ -121,6 +122,20 @@ export const deleteInstallment = createAsyncThunk('auth/deleteInstallment', asyn
     }
 });
 
+export const fetchInstallmentInformation = createAsyncThunk('auth/fetchInstallmentInformation', async (lease_code,{rejectWithValue}) => {
+    try {
+        const response = await axios.post('/leasing/installment_information/', { 
+            lease_code:lease_code
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
+
 const installmentSlice = createSlice({
     name:"installment",
     initialState,
@@ -157,6 +172,18 @@ const installmentSlice = createSlice({
             })
             .addCase(fetchInstallments.rejected, (state,action) => {
                 state.installmentsLoading = false
+            })
+            //fetch installment information
+            .addCase(fetchInstallmentInformation.pending, (state) => {
+
+            })
+            .addCase(fetchInstallmentInformation.fulfilled, (state,action) => {
+                state.installmentInformation = action.payload.installment;
+            })
+            .addCase(fetchInstallmentInformation.rejected, (state,action) => {
+                state.authMessage = action.payload.status === 400
+                    ? {color:"text-red-500",icon:"",text:action.payload.message}
+                    : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
             })
     },
   

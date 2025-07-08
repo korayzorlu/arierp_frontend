@@ -40,6 +40,7 @@ function Sidenav() {
         unknown: require("../../images/icons/sidebar/light/unknown_document-filled.svg").ReactComponent,
         checkbook: require("../../images/icons/sidebar/light/checkbook-filled.svg").ReactComponent,
         price_change: require("../../images/icons/sidebar/light/price_change-filled.svg").ReactComponent,
+        paid: require("../../images/icons/sidebar/light/paid-filled.svg").ReactComponent,
     
     };
 

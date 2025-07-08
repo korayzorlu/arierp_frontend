@@ -80,6 +80,7 @@ import TradeAccounts from './features/trade/pages/TradeAccounts.js';
 import LedgerAccounts from './features/ledger/pages/LedgerAccounts.js';
 import AddLease from './features/leasing/pages/AddLease.js';
 import UpdateLease from './features/leasing/pages/UpdateLease.js';
+import Collections from './features/leasing/pages/Collections.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -216,6 +217,7 @@ function App() {
                   <Route path='/leasing/add-lease' element={<AddLease></AddLease>}></Route>
                   <Route path='/leasing/update/:uuid' element={<UpdateLease></UpdateLease>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
+                  <Route path='/collections' element={<Collections></Collections>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>

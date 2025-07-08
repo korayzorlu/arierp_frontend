@@ -1,10 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { fetchMenuItems } from "./subscriptionsSlice";
-import { fetchCompaniesForStart } from "./organizationSlice";
-import { fetchNotifications } from "./notificationSlice";
-import { fetchImportProcess } from "./processSlice";
 
 const rawTheme = Cookies.get("theme");
 const theme = rawTheme === "dark" || rawTheme === "light" ? rawTheme : "light";

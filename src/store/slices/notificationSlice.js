@@ -10,6 +10,8 @@ const initialState = {
     deleteDialog:false,
     importDialog:false,
     userDialog:false,
+    partnerDialog:false,
+    installmentDialog:false,
     modal:false,
     notifications:[],
     unreadNotifications:0
@@ -62,6 +64,12 @@ const notificationSlice = createSlice({
         setUserDialog: (state,action) => {
             state.userDialog = action.payload;
         },
+        setPartnerDialog: (state,action) => {
+            state.partnerDialog = action.payload;
+        },
+        setInstallmentDialog: (state,action) => {
+            state.installmentDialog = action.payload;
+        },
         setModal: (state,action) => {
             state.modal = action.payload;
         },
@@ -90,5 +98,5 @@ const notificationSlice = createSlice({
   
 })
 
-export const {setAlert,setOpenAlert,clearAler,setDialog,setDeleteDialog,setImportDialog,setModal,send_notification,setUnreadNotifications,setUserDialog} = notificationSlice.actions;
+export const {setAlert,setOpenAlert,clearAler,setDialog,setDeleteDialog,setImportDialog,setModal,send_notification,setUnreadNotifications,setUserDialog,setPartnerDialog,setInstallmentDialog} = notificationSlice.actions;
 export default notificationSlice.reducer;

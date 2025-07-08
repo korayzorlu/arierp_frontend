@@ -14,6 +14,8 @@ import { fetchImportProcess } from '../../../store/slices/processSlice';
 import { joinWebsocket } from '../../../store/slices/websocketSlice';
 import { Grid } from '@mui/material';
 import { Stack } from '@mui/material';
+import PartnerDialog from '../../../component/dialog/PartnerDialog';
+import InstallmentDialog from '../../../component/dialog/InstallmentDialog';
 
 function Panel() {
   const {alert} = useSelector((store) => store.notification);
@@ -106,6 +108,8 @@ function Panel() {
      
       <Alert></Alert>
       <UserDialog/>
+      <PartnerDialog/>
+      <InstallmentDialog/>
     </>
   )
 }

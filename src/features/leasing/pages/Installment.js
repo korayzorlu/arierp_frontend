@@ -92,6 +92,7 @@ function Installment() {
         <PanelContent>
             <ListTableServer
             title="Kira Planları Taksit Listesi"
+            autoHeight
             rows={installments}
             columns={columns}
             getRowId={(row) => row.uuid}
