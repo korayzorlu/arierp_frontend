@@ -28,7 +28,7 @@ function InstallmentDialog(props) {
         { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
         { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
         { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
-        { field: 'interest', headerName: 'Faiz', flex: 1, type: 'number' },
+        { field: 'interest', headerName: 'Kâr Payı', flex: 1, type: 'number' },
         { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number', cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';

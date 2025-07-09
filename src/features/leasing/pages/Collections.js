@@ -96,14 +96,14 @@ function Collections() {
     ]
 
     const bankActivityColumns = [
-        { field: 'bank', headerName: 'Banka' },
-        { field: 'bank_account_no', headerName: 'Banka Hesap No' },
         { field: 'process_date', headerName: 'İşlem Tarihi' },
         { field: 'amount', headerName: 'Tutar' },
         { field: 'currency', headerName: 'PB' },
         { field: 'description', headerName: 'Açıklama',width: 240 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN' },
         { field: 'receipt_no', headerName: 'Dekont No' },
+        { field: 'bank', headerName: 'Banka' },
+        { field: 'bank_account_no', headerName: 'Banka Hesap No' },
     ]
 
     const columnsWithRenderHeaderFilter = columns.map(col => {

@@ -66,7 +66,7 @@ function Installment() {
         { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number'},
         { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
-        { field: 'interest', headerName: 'Faiz', flex: 1, type: 'number' },
+        { field: 'interest', headerName: 'Kâr Payı', flex: 1, type: 'number' },
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
     ]
 
