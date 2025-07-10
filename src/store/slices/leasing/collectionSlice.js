@@ -123,6 +123,29 @@ export const deleteCollection = createAsyncThunk('auth/deleteCollection', async 
     }
 });
 
+export const updateLeaseflexAutomationLeases = createAsyncThunk('auth/updateLeaseflexAutomationLeases', async ({data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    console.log(data)
+    try {
+        const response = await axios.post(`/leasing/update_leaseflex_automation_leases/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const fetchInstallmentsInCollection = createAsyncThunk('organization/fetchInstallmentsInCollection', async ({activeCompany,collection_id}) => {
     const response = await axios.get(`/leasing/installments/?active_company=${activeCompany.id}&collection_id=${collection_id}`, {withCredentials: true});
     console.log(response);

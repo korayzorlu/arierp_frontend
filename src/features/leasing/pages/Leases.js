@@ -38,7 +38,6 @@ function Leases() {
         startTransition(() => {
             dispatch(fetchLeases({activeCompany,params:leasesParams}));
         });
-        console.log(leasesParams);
     }, [activeCompany,leasesParams,dispatch]);
 
     const columns = [
@@ -133,7 +132,7 @@ function Leases() {
 
                     <CustomTableButton
                     title="İçe Aktar"
-                    onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
+                    onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());console.log(Array.from(apiRef.current.getSelectedRows().values()))}}
                     icon={<UploadFileIcon fontSize="small"/>}
                     />
 
@@ -177,9 +176,6 @@ function Leases() {
                     />
                 </>
             }
-            onRowSelectionModelChange={(newRowSelectionModel) => {
-                setSelectedItems(newRowSelectionModel);
-            }}
             rowCount={leasesCount}
             checkboxSelection
             setParams={(value) => dispatch(setLeasesParams(value))}
@@ -199,7 +195,7 @@ function Leases() {
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
             deleteURL="/leasing/delete_leases/"
-            selectedItems={selectedItems}
+            selectedItems={apiRef.current ? apiRef.current.getSelectedRows().values() : []}
             startEvent={() => dispatch(setLeasesLoading(true))}
             finalEvent={() => {dispatch(fetchLeases({activeCompany}));dispatch(setLeasesLoading(false));}}
             />

@@ -8,7 +8,14 @@ import { darken, lighten } from '@mui/material';
 import { styled } from '@mui/system';
 
 function BasicTable(props) {
-    const {rows,columns,loading,customButtons,hiddenColumns,checkboxSelection,disableRowSelectionOnClick,title,getRowClassName} = props;
+    const {rows,columns,loading,customButtons,hiddenColumns,checkboxSelection,disableRowSelectionOnClick,title,getRowClassName,
+      getDetailPanelContent,
+    getDetailPanelHeight,
+    detailPanelExpandedRowIds,
+    onDetailPanelExpandedRowIdsChange,
+    rowSelectionModel,
+    onRowSelectionModelChange
+    } = props;
 
     const [paginationModel, setPaginationModel] = useState({
         pageSize: 50,
@@ -67,6 +74,8 @@ function BasicTable(props) {
             loading={loading}
             checkboxSelection={checkboxSelection}
             disableRowSelectionOnClick={disableRowSelectionOnClick}
+            rowSelectionModel={rowSelectionModel}
+            onRowSelectionModelChange={onRowSelectionModelChange}
             autoHeight
             sx={{
                 [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
@@ -78,6 +87,10 @@ function BasicTable(props) {
                   },
             }}
             getRowClassName = {getRowClassName}
+            getDetailPanelContent={getDetailPanelContent}
+            getDetailPanelHeight={getDetailPanelHeight}
+            detailPanelExpandedRowIds={detailPanelExpandedRowIds}
+            onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
             />
         </TableContent>
     )

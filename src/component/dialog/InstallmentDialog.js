@@ -9,6 +9,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import { amber } from '@mui/material/colors';
 import InstallmentsInLease from '../../features/leasing/components/InstallmentsInLease';
 import BasicTable from '../table/BasicTable';
+import { GRID_CHECKBOX_SELECTION_COL_DEF } from '@mui/x-data-grid-premium';
 
 function InstallmentDialog(props) {
     const {lease_id} = props;
@@ -54,7 +55,14 @@ function InstallmentDialog(props) {
                 
             )
         },
+        {...GRID_CHECKBOX_SELECTION_COL_DEF, width: 100,},
     ]
+
+    const rows = installmentInformation.map((row) => ({
+        ...row,
+        showCheckbox: row.overdue_amount > 0,
+    }));
+
 
     return (
         <MUIDialog
@@ -73,11 +81,11 @@ function InstallmentDialog(props) {
                     <Stack spacing={2}>
                         <>
                             <BasicTable
-                            title={`Kira Planı - ${installmentInformation ? installmentInformation.length > 0 ? installmentInformation[0]["lease"] : "" : ""}`}
-                            rows={installmentInformation}
+                            title={`Kira Planı - ${rows ? rows.length > 0 ? rows[0]["lease"] : "" : ""}`}
+                            rows={rows}
                             columns={userColumns}
                             getRowId={(row) => row.id}
-                            checkboxSelection={false}
+                            checkboxSelection={true}
                             disableRowSelectionOnClick={true}
                             loading={installmentsLoading}
                             getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}

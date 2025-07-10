@@ -13,6 +13,7 @@ const initialState = {
     },
     installmentsLoading:false,
     partnerInformation:{},
+    installmentInformation:[],
 }
 
 export const fetchInstallments = createAsyncThunk('auth/fetchInstallments', async ({activeCompany,serverModels=null,params=null}) => {

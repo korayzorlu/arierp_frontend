@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react'
+import React, { useCallback, useState, useTransition } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
-import { DataGridPremium, GridRowsProp, GridColDef, unstable_gridDefaultPromptResolver as promptResolver, GridAiAssistantPanel, GridColumnMenuFilterItem, GridToolbarContainer } from '@mui/x-data-grid-premium';
+import { DataGridPremium,  unstable_gridDefaultPromptResolver as promptResolver } from '@mui/x-data-grid-premium';
 import MUIToolbar from './MUIToolbar';
-import { Box, darken, InputBase, lighten, styled, TextField, Typography } from '@mui/material';
+import { Box, darken, lighten, styled, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useDispatch } from 'react-redux';
-import { setPartnersParams } from '../../store/slices/partners/partnerSlice';
 import { debounce } from 'lodash';
 import { trTR } from '@mui/x-data-grid/locales';
 
@@ -40,7 +39,12 @@ function ListTableServer(props) {
     customFilters,
     headerFilters,
     onCellClick,
-    autoHeight
+    autoHeight,
+    initialState,
+    rowSpanning,
+    showCellVerticalBorder,
+    showColumnVerticalBorder,
+    rowSelectionModel
   } = props;
 
   const dispatch = useDispatch();
@@ -209,6 +213,7 @@ function ListTableServer(props) {
       rows={rows}
       getRowId={getRowId || ((row) => row.uuid)}
       initialState={{
+        ...initialState,
         columns: {
           columnVisibilityModel: hiddenColumns,
         },
@@ -229,7 +234,8 @@ function ListTableServer(props) {
       rowCount={rowCount}
       loading={loading}
       checkboxSelection={checkboxSelection}
-      disableRowSelectionOnClick={true}
+      disableRowSelectionOnClick={disableRowSelectionOnClick}
+      rowSelectionModel={rowSelectionModel}
       onRowSelectionModelChange={onRowSelectionModelChange}
       apiRef={apiRef}
       hideFooter={hideFooter}
@@ -257,6 +263,9 @@ function ListTableServer(props) {
         filterOperatorContains: 'Ara', // "Şunu içerir" yazısını kaldır
       }}
       onCellClick={onCellClick}
+      rowSpanning={rowSpanning}
+      showCellVerticalBorder={showCellVerticalBorder}
+      showColumnVerticalBorder={showColumnVerticalBorder}
       />
     </TableContent>
   )

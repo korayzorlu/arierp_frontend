@@ -34,7 +34,7 @@ function DeleteDialog(props) {
 
             const response = await axios.post(deleteURL,
                 {
-                    uuids : Array.from(selectedItems.ids) || []
+                    uuids : Array.from(selectedItems).map(item => item.uuid) || []
                 },
                 { withCredentials: true},
             );

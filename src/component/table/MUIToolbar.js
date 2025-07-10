@@ -1,9 +1,10 @@
 import { Badge, Box, Divider, Grid, IconButton, InputAdornment, styled, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel, GridToolbarQuickFilter, useGridApiContext } from '@mui/x-data-grid-premium'
+import { ColumnsPanelTrigger, ExportCsv, ExportPrint, FilterPanelTrigger, QuickFilter, QuickFilterClear, QuickFilterControl, QuickFilterTrigger, Toolbar, ToolbarButton, AiAssistantPanelTrigger, ExportExcel, GridToolbarQuickFilter, useGridApiContext, PivotPanelTrigger } from '@mui/x-data-grid-premium'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import PivotTableChartIcon from '@mui/icons-material/PivotTableChart';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -15,7 +16,7 @@ import AssistantIcon from '@mui/icons-material/Assistant';
 import AndroidSwitch from '../switch/AndroidSwitch';
 
 function MUIToolbar(props) {
-  const {children,title,backButton,excelOptions,customFilters} = props;
+  const {children,title,backButton,excelOptions,customFilters,noToolbarButtons} = props;
 
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
@@ -109,7 +110,7 @@ function MUIToolbar(props) {
             </Typography>
           </Grid>
 
-          <Grid container spacing={0}>
+          <Grid display={noToolbarButtons ? 'none' : 'flex'} container spacing={0}>
             <Tooltip title="Sütunlar">
               <ColumnsPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
                 <ViewColumnIcon fontSize="small" />
@@ -127,6 +128,12 @@ function MUIToolbar(props) {
                 )}
                 sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}
               />
+            </Tooltip>
+
+            <Tooltip title="Pivot">
+              <PivotPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
+                <PivotTableChartIcon fontSize="small" />
+              </PivotPanelTrigger>
             </Tooltip>
               
             {/* <Tooltip title="AI Asistanı">
@@ -211,6 +218,7 @@ function MUIToolbar(props) {
               />
             </StyledQuickFilter>
           </Grid>
+
         </Grid>
         <Grid
         container direction="row"

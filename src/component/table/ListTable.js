@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import TableContent from './TableContent'
 import { ThemeProvider } from '@emotion/react'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
@@ -8,7 +8,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Row from '../grid/Row';
 import Col from '../grid/Col';
 import { grey } from '@mui/material/colors';
-import { Box, Typography } from '@mui/material';
+import { Box, Checkbox, darken, lighten, styled, Typography } from '@mui/material';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { DataGridPremium } from '@mui/x-data-grid-premium';
@@ -25,8 +25,39 @@ function ListTable(props) {
     disableRowSelectionOnClick,
     pageModel,
     onRowSelectionModelChange,
-    title
+    title,
+    headerFilters,
+    rowCount,
+    onCellClick,
+    initialState,
+    groupingColDef,
+    autoHeight,
+    rowSpanning,
+    showCellVerticalBorder,
+    showColumnVerticalBorder,
+    getDetailPanelContent,
+    getDetailPanelHeight,
+    detailPanelExpandedRowIds,
+    onDetailPanelExpandedRowIdsChange,
+    height,
+    outline,
+    noToolbarButtons,
+    getRowClassName,
+    hideFooter,
+    apiRef,
+    rowSelectionModel,
+    disableMultipleRowSelection,
+    noAllSelect,
+    isRowSelected,
+    keepNonExistentRowsSelected,
+    componentsProps,
+    noPagination
   } = props;
+
+  const {dark} = useSelector((store) => store.auth);
+
+
+
 
   const [paginationModel, setPaginationModel] = useState(
     {
@@ -44,12 +75,46 @@ function ListTable(props) {
     </Box>
   );
 
+  const getBackgroundColor = (color, theme, coefficient) => ({
+    backgroundColor: darken(color, coefficient),
+    ...theme.applyStyles('light', {
+      backgroundColor: lighten(color, coefficient),
+    }),
+  });
+
+  const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
+    '& .super-app-theme--overdue': {
+      ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.6),
+      },
+      '&.Mui-selected': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.5),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.error.main, theme, 0.4),
+        },
+      },
+    },
+    '& .super-app-theme--matched': {
+      ...getBackgroundColor(theme.palette.success.main, theme, 0.7),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.success.main, theme, 0.6),
+      },
+      '&.Mui-selected': {
+        ...getBackgroundColor(theme.palette.success.main, theme, 0.5),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.success.main, theme, 0.4),
+        },
+      },
+    },
+  }));
+
   return (
-    <TableContent>
-      <DataGridPremium
+    <TableContent height={height || null}>
+      <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,
-        noRowsOverlay: NoRowsOverlay
+        noRowsOverlay: NoRowsOverlay,
       }}
       showToolbar
       slotProps={{
@@ -57,29 +122,37 @@ function ListTable(props) {
               showQuickFilter: true,
               children: customButtons,
               title: title,
+              noToolbarButtons: noToolbarButtons,
           },
           loadingOverlay: {
             variant: 'linear-progress',
             noRowsVariant: 'linear-progress',
           },
-        }}
+      }}
       columns={columns}
       rows={rows}
       getRowId={getRowId || ((row) => row.uuid)}
       initialState={{
+          ...initialState,
           columns: {
             columnVisibilityModel: hiddenColumns,
           },
         }}
       pageSizeOptions={[25, 50, 100]}
-      pagination
+      pagination={noPagination ? false : true}
       paginationModel={paginationModel}
+      headerFilters={headerFilters}
       onPaginationModelChange={(model) => setPaginationModel(model)}
       loading={loading}
-      checkboxSelection={checkboxSelection || true}
+      disableMultipleRowSelection={disableMultipleRowSelection}
+      checkboxSelection={checkboxSelection}
       disableRowSelectionOnClick={disableRowSelectionOnClick}
+      rowSelectionModel={rowSelectionModel}
       onRowSelectionModelChange={onRowSelectionModelChange}
-      autoHeight
+      isRowSelected={isRowSelected}
+      keepNonExistentRowsSelected={keepNonExistentRowsSelected}
+      rowCount={rowCount}
+      autoHeight={autoHeight}
       //getRowHeight={() => 'auto'}
       sx={{
           [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
@@ -88,8 +161,50 @@ function ListTable(props) {
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
               outline: 'none',
           },
-          '--DataGrid-overlayHeight': '50vh'
+          '--DataGrid-overlayHeight': '50vh',
+          '& .MuiDataGrid-columnHeader': {
+            '& .MuiDataGrid-columnHeaderTitleContainer': {
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-columnHeaderTitleContainerContent': {
+              position: 'sticky',
+              left: 8,
+            },
+          },
+          '& .MuiDataGrid-root': {
+            border: 1,
+            borderColor: dark ? 'rgba(81,81,81,1)' : 'rgba(224,224,224,1)'
+          },
+          ...(!dark
+            ? {
+                '& .MuiDataGrid-detailPanel': {
+                  backgroundColor: '#ECEAE6',
+                },
+              }
+            : {}
+          ),
+          ...(noAllSelect
+            ? {
+                '& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer': {
+                  display: 'none'
+                }
+            }
+            : {}
+          )
+          
       }}
+      onCellClick={onCellClick}
+      groupingColDef={groupingColDef}
+      rowSpanning={rowSpanning}
+      showCellVerticalBorder={showCellVerticalBorder}
+      showColumnVerticalBorder={showColumnVerticalBorder}
+      getDetailPanelContent={getDetailPanelContent}
+      getDetailPanelHeight={getDetailPanelHeight}
+      detailPanelExpandedRowIds={detailPanelExpandedRowIds}
+      onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
+      getRowClassName={getRowClassName}
+      hideFooter={hideFooter}
+      apiRef={apiRef}
       />
     </TableContent>
   )

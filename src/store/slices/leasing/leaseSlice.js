@@ -24,7 +24,21 @@ export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCo
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
 
+export const fetchLeaseUnpages = createAsyncThunk('auth/fetchLeaseUnpages', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/lease_unpages/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        console.log(response.data)
         return response.data;
     } catch (error) {
         return [];
