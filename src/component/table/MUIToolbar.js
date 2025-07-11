@@ -16,7 +16,7 @@ import AssistantIcon from '@mui/icons-material/Assistant';
 import AndroidSwitch from '../switch/AndroidSwitch';
 
 function MUIToolbar(props) {
-  const {children,title,backButton,excelOptions,customFilters,noToolbarButtons} = props;
+  const {children,title,backButton,excelOptions,customFilters,noToolbarButtons,noDownloadButton} = props;
 
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
@@ -142,11 +142,17 @@ function MUIToolbar(props) {
               </AiAssistantPanelTrigger>
             </Tooltip> */}
 
-            <Tooltip title="Exel İndir">
-              <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
-                <FileDownloadIcon fontSize="small" />
-              </ExportExcel>
-            </Tooltip>
+            {
+              noDownloadButton
+              ?
+                null
+              :
+                <Tooltip title="Exel İndir">
+                  <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
+                    <FileDownloadIcon fontSize="small" />
+                  </ExportExcel>
+                </Tooltip>
+            }
             
 
             <Tooltip title="Yazdır">

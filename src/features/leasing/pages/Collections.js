@@ -1,11 +1,11 @@
 import React, { createRef, useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCollections, resetCollectionsParams, setCollectionsLoading, setCollectionsParams } from '../../../store/slices/leasing/collectionSlice';
-import { setAlert, setDeleteDialog, setImportDialog, setInstallmentDialog, setPartnerDialog, setUserDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setInstallmentDialog, setPartnerDialog, setUserDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
+import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import ImportDialog from '../../../component/feedback/ImportDialog';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -26,6 +26,8 @@ import { fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams 
 import ListTable from '../../../component/table/ListTable';
 import BasicTable from '../../../component/table/BasicTable';
 import DetailPanel from '../components/DetailPanel';
+import ExportDialog from '../../../component/feedback/ExportDialog';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -129,12 +131,11 @@ function Collections() {
 
     const bankActivityColumns = [
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
+        { field: 'name', headerName: 'Name', flex: 2 },
         { field: 'description', headerName: 'Açıklama',flex: 10 },
         { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number' },
         { field: 'currency', headerName: 'PB', flex: 1 },
         { field: 'process_date', headerName: 'İşlem Tarihi', flex: 2 },
-        { field: 'receipt_no', headerName: 'Dekont No', flex: 2 },
-        { field: 'bank', headerName: 'Banka', flex: 1 },
         { field: 'bank_account_no', headerName: 'Banka Hesap No', flex: 1 },
     ]
 
@@ -169,6 +170,11 @@ function Collections() {
                         icon={<UploadFileIcon fontSize="small"/>}
                         />
                         <CustomTableButton
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
@@ -177,7 +183,8 @@ function Collections() {
                 }
                 setParams={(value) => dispatch(setBankActivitiesParams(value))}
                 headerFilters={true}
-                getRowClassName={(params) => `super-app-theme--${params.row.leases.length > 0 ? "matched" : ""}`}
+                noDownloadButton
+                getRowClassName={(params) => `super-app-theme--${params.row.leases ? params.row.leases.length > 0 ? "matched" : "" : ""}`}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={handleDetailPanelExpandedRowIdsChange}
                 getDetailPanelHeight={() => "auto"}
@@ -252,6 +259,13 @@ function Collections() {
             >
 
             </ImportDialog>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/leasing/export_bank_activities/"
+            startEvent={() => dispatch(setBankActivitiesLoading(true))}
+            finalEvent={() => {dispatch(fetchBankActivities({activeCompany}));dispatch(setBankActivitiesLoading(false));}}
+            >
+            </ExportDialog>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
             deleteURL="/leasing/delete_collections/"

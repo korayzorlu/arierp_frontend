@@ -1,6 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchNotifications, send_notification, setAlert, setUnreadNotifications } from "./notificationSlice";
-import { fetchImportProcess, setImportProgress } from "./processSlice";
+import { fetchExportProcess, fetchImportProcess, setExportProgress, setImportProgress } from "./processSlice";
 import { fetchPartners } from "./partners/partnerSlice";
 import { fetchObjects } from "./common/commonSlice";
 
@@ -70,6 +70,26 @@ export const connectWebsocket = (dispatch,getState) => {
                 //     }
                 // ))
 
+                const actionName = `fetch${message.model}s`;
+
+                if (fetchActions[actionName]) {
+                    dispatch(fetchActions[actionName](
+                        {
+                            activeCompany:getState().organization.activeCompany,
+                            params:{
+                                start: 0 * 50,
+                                end: (0 + 1) * 50,
+                                format: 'datatables'
+                            }
+                        }
+                    ));
+                }
+            }
+        }else if(type === "send_export_process_percent"){
+            dispatch(setExportProgress({task:message.task,progress:message.progress}));
+        }else if(type === "fetch_export_processes"){
+            dispatch(fetchExportProcess());
+            if(message.status === "completed" || message.status === "rejected"){
                 const actionName = `fetch${message.model}s`;
 
                 if (fetchActions[actionName]) {

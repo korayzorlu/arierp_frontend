@@ -11,27 +11,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme, logoutAuth } from '../../store/slices/authSlice';
 import { setSidebar } from '../../store/slices/sidebarSlice';
 import { Badge, Box, CircularProgress, Divider, IconButton, LinearProgress, Menu, MenuItem, Typography } from '@mui/material';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import Button from '../button/Button';
-import { setActiveCompany } from '../../store/slices/organizationSlice';
-import axios from 'axios';
-import { fetchNotifications, readNotifications, setAlert } from '../../store/slices/notificationSlice';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MUIButton from '@mui/material/Button';
-import DownloadingIcon from '@mui/icons-material/Downloading';
-import Row from '../grid/Row';
-import Col from '../grid/Col';
 import ImportProcesses from './ImportProcesses';
 import Companies from './Companies';
 import Notifications from './Notifications';
 import User from './User';
+import ExportProcesses from './ExportProcesses';
 
 function Navbar() {
     const {dark,logo} = useSelector((store) => store.auth);
     const {collapse,toggle} = useSelector((store) => store.sidebar);
     //const {progress} = useSelector((store) => store.process);
-    const {importProcesses,isProgress} = useSelector((store) => store.process);
+    const {importProcesses,exportProcesses,isProgress} = useSelector((store) => store.process);
 
     const dispatch = useDispatch();
 
@@ -79,6 +69,7 @@ function Navbar() {
                 </div>
                 <div className="d-flex align-items-end">
                     <ImportProcesses importProcesses={importProcesses}/>
+                    <ExportProcesses exportProcesses={exportProcesses}/>
                     <Companies/>
                     <Notifications/>
                     <User></User>

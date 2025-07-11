@@ -51,7 +51,8 @@ function ListTable(props) {
     isRowSelected,
     keepNonExistentRowsSelected,
     componentsProps,
-    noPagination
+    noPagination,
+    noDownloadButton
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -123,6 +124,7 @@ function ListTable(props) {
               children: customButtons,
               title: title,
               noToolbarButtons: noToolbarButtons,
+              noDownloadButton: noDownloadButton,
           },
           loadingOverlay: {
             variant: 'linear-progress',

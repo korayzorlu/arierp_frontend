@@ -10,7 +10,7 @@ import Button from "../../../component/button/Button";
 import { fetchMenuItems } from "../../../store/slices/subscriptionsSlice";
 import { fetchCompanies } from "../../../store/slices/organizationSlice";
 import { fetchNotifications } from "../../../store/slices/notificationSlice";
-import { fetchImportProcess } from "../../../store/slices/processSlice";
+import { fetchExportProcess, fetchImportProcess } from "../../../store/slices/processSlice";
 
 function Register() {
     const {authMessage,theme} = useSelector((store) => store.auth);
@@ -95,7 +95,8 @@ function Register() {
                 dispatch(fetchMenuItems()).unwrap(),
                 dispatch(fetchCompanies()).unwrap(),
                 dispatch(fetchNotifications()).unwrap(),
-                dispatch(fetchImportProcess()).unwrap()
+                dispatch(fetchImportProcess()).unwrap(),
+                dispatch(fetchExportProcess()).unwrap()
                         ]);
             navigate('/');
         } catch (error) {

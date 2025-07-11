@@ -152,6 +152,12 @@ export const fetchInstallmentsInCollection = createAsyncThunk('organization/fetc
     return response.data;
 });
 
+export const fetchBankActivitiesExcel = createAsyncThunk('process/fetchBankActivitiesExcel', async () => {
+    const response = await axios.get(`/leasing/bank_activities_excel/`, {withCredentials: true});
+
+    return response.data;
+});
+
 const collectionSlice = createSlice({
     name:"collection",
     initialState,

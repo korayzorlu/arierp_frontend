@@ -6,7 +6,7 @@ import { changeTheme, clearAuthMessage, fetchCSRFToken, loginAuth, setLoading } 
 import { fetchCompanies, fetchCompaniesForStart } from "../../../store/slices/organizationSlice";
 import { fetchMenuItems } from "../../../store/slices/subscriptionsSlice";
 import { fetchNotifications } from "../../../store/slices/notificationSlice";
-import { fetchImportProcess } from "../../../store/slices/processSlice";
+import { fetchExportProcess, fetchImportProcess } from "../../../store/slices/processSlice";
 
 function Login() {
     const {status,theme,authMessage} = useSelector((store) => store.auth);
@@ -39,7 +39,8 @@ function Login() {
                 dispatch(fetchMenuItems()).unwrap(),
                 dispatch(fetchCompaniesForStart()).unwrap(),
                 dispatch(fetchNotifications()).unwrap(),
-                dispatch(fetchImportProcess()).unwrap()
+                dispatch(fetchImportProcess()).unwrap(),
+                dispatch(fetchExportProcess()).unwrap()
             ]);
             dispatch(setLoading(false));
             navigate('/');
