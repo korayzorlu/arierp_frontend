@@ -52,7 +52,10 @@ function ListTable(props) {
     keepNonExistentRowsSelected,
     componentsProps,
     noPagination,
-    noDownloadButton
+    noDownloadButton,
+    processRowUpdate,
+    onProcessRowUpdateError,
+    specialButtons
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -125,6 +128,7 @@ function ListTable(props) {
               title: title,
               noToolbarButtons: noToolbarButtons,
               noDownloadButton: noDownloadButton,
+              specialButtons: specialButtons,
           },
           loadingOverlay: {
             variant: 'linear-progress',
@@ -207,6 +211,8 @@ function ListTable(props) {
       getRowClassName={getRowClassName}
       hideFooter={hideFooter}
       apiRef={apiRef}
+      processRowUpdate={processRowUpdate}
+      onProcessRowUpdateError={onProcessRowUpdateError}
       />
     </TableContent>
   )

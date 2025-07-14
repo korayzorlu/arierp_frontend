@@ -123,11 +123,11 @@ export const deleteCollection = createAsyncThunk('auth/deleteCollection', async 
     }
 });
 
-export const updateLeaseflexAutomationLeases = createAsyncThunk('auth/updateLeaseflexAutomationLeases', async ({data=null},{dispatch}) => {
+export const updateLeaseflexAutomationBankActivityLeases = createAsyncThunk('auth/updateLeaseflexAutomationBankActivityLeases', async ({data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     console.log(data)
     try {
-        const response = await axios.post(`/leasing/update_leaseflex_automation_leases/`,
+        const response = await axios.post(`/leasing/update_leaseflex_automation_bank_activity_leases/`,
             data,
             { 
                 withCredentials: true

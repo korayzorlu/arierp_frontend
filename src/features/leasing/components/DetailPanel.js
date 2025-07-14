@@ -5,9 +5,13 @@ import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { updateLeaseflexAutomationLease, updateLeaseflexAutomationLeases } from '../../../store/slices/leasing/collectionSlice';
+import { updateLeaseflexAutomationLease, updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
+import { setIsProgress } from '../../../store/slices/processSlice';
+import axios from 'axios';
+import CustomTableButton from '../../../component/table/CustomTableButton';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases} = props;
@@ -16,7 +20,7 @@ function DetailPanel(props) {
     const {activeCompany} = useSelector((store) => store.organization);
     const {collections,collectionsCount,collectionsParams,collectionsLoading} = useSelector((store) => store.collection);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
-    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading} = useSelector((store) => store.bankActivity);
+    const {bankActivityLeases,bankActivityLeasesCount,bankActivityLeasesParams,bankActivityLeasesLoading} = useSelector((store) => store.bankActivity);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -81,7 +85,14 @@ function DetailPanel(props) {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
-        { field: 'currency', headerName: 'PB' },
+        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, type: 'number', editable: true, preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+                const value = parseFloat(params.props.value);
+                const isValid = Number.isFinite(params.props.value);    
+                return { ...params.props, value: isValid ? value : 0, error: 0 }
+            
+            },
+        },
+        { field: 'currency', headerName: 'PB', flex:1 },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
                 ?
@@ -127,11 +138,11 @@ function DetailPanel(props) {
 
         if (added.length > 0) {
             console.log('Seçilen:', added);
-            dispatch(updateLeaseflexAutomationLeases({data:{uuids:added,select:true}}))
+            dispatch(updateLeaseflexAutomationBankActivityLeases({data:{uuids:added,select:true}}))
         }
         if (removed.length > 0) {
             console.log('Seçimi kaldırılan:', removed);
-            dispatch(updateLeaseflexAutomationLeases({data:{uuids:removed,select:false}}))
+            dispatch(updateLeaseflexAutomationBankActivityLeases({data:{uuids:removed,select:false}}))
         }
 
         previousSelectedRows.current = currentSelection;
@@ -139,6 +150,44 @@ function DetailPanel(props) {
     
     const handleChangeField = (field,value) => {
         setData(data => ({...data, [field]:value}));
+    };
+
+    const handleProcessRowUpdate = async (newRow,oldRow) => {
+        try {
+            if (!Number.isFinite(newRow.processed_amount)) {
+                throw new Error("Geçersiz sayı değeri");
+            }
+
+            try {
+                const response = await axios.post(`/leasing/update_bank_activity_lease_processed_amount/`,
+                    {
+                        uuid: newRow.id,
+                        amount: newRow.processed_amount
+                    },
+                    { 
+                        withCredentials: true
+                    },
+                );
+                dispatch(setAlert({status:response.data.status,text:response.data.message}))
+            } catch (error) {
+                if(error.response.data){
+                    dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+                }else{
+                    dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+                };
+                return null
+            }
+
+
+            const updatedRow = { ...newRow, isUpdated: true };
+
+            return updatedRow;
+        } catch (error) {
+            return {
+                ...oldRow,
+                processed_amount: oldRow.processed_amount
+            };
+        }
     };
 
 
@@ -152,6 +201,16 @@ function DetailPanel(props) {
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
             loading={leasesLoading}
+            specialButtons={
+                    <>
+                        <CustomTableButton
+                        title="Yeni"
+                        link="/leasing/add-bank-activity-lease"
+                        disabled={activeCompany ? false : true}
+                        icon={<AddBoxIcon fontSize="small"/>}
+                        />
+                    </>
+                }
             setParams={(value) => dispatch(setLeasesParams(value))}
             onCellClick={handleProfileDialog}
             showCellVerticalBorder
@@ -169,6 +228,16 @@ function DetailPanel(props) {
             //hideFooter
             noPagination
             apiRef={apiRef}
+            initialState={{
+                aggregation: {
+                    model: {
+                        overdue_amount: 'sum',
+                        processed_amount: 'sum',
+                    },
+                },
+            }}
+            processRowUpdate={handleProcessRowUpdate}
+            onProcessRowUpdateError={(error) => console.log(error)}
             />
         </Box>
     )

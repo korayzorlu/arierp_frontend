@@ -85,7 +85,6 @@ function InstallmentDialog(props) {
                             rows={rows}
                             columns={userColumns}
                             getRowId={(row) => row.id}
-                            checkboxSelection={true}
                             disableRowSelectionOnClick={true}
                             loading={installmentsLoading}
                             getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}

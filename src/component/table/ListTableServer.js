@@ -44,7 +44,8 @@ function ListTableServer(props) {
     rowSpanning,
     showCellVerticalBorder,
     showColumnVerticalBorder,
-    rowSelectionModel
+    rowSelectionModel,
+    onProcessRowUpdateError
   } = props;
 
   const dispatch = useDispatch();
@@ -266,6 +267,7 @@ function ListTableServer(props) {
       rowSpanning={rowSpanning}
       showCellVerticalBorder={showCellVerticalBorder}
       showColumnVerticalBorder={showColumnVerticalBorder}
+      onProcessRowUpdateError={onProcessRowUpdateError}
       />
     </TableContent>
   )

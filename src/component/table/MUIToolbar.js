@@ -16,7 +16,7 @@ import AssistantIcon from '@mui/icons-material/Assistant';
 import AndroidSwitch from '../switch/AndroidSwitch';
 
 function MUIToolbar(props) {
-  const {children,title,backButton,excelOptions,customFilters,noToolbarButtons,noDownloadButton} = props;
+  const {children,title,backButton,excelOptions,customFilters,noToolbarButtons,noDownloadButton,specialButtons} = props;
 
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
@@ -224,6 +224,17 @@ function MUIToolbar(props) {
               />
             </StyledQuickFilter>
           </Grid>
+
+          {
+            specialButtons
+            ?
+              <Grid container spacing={0}>
+                {specialButtons}
+              </Grid>
+            :
+            null
+
+          }
 
         </Grid>
         <Grid

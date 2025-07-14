@@ -11,7 +11,14 @@ const initialState = {
         end: (0 + 1) * 50,
         format: 'datatables'
     },
-    bankActivitiesLoading:false,
+    bankActivityLeases:[],
+    bankActivityLeasesCount:0,
+    bankActivityLeasesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    bankActivityLeasesLoading:false,
     partnerInformation:{},
 }
 
@@ -136,6 +143,21 @@ export const fetchBankActivityInformation = createAsyncThunk('auth/fetchBankActi
     };
 });
 
+export const fetchBankActivityLeases = createAsyncThunk('auth/fetchBankActivityLeases', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/bank_activity_leases/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
 const bankActivitySlice = createSlice({
     name:"bankActivity",
     initialState,
@@ -184,6 +206,18 @@ const bankActivitySlice = createSlice({
                 state.authMessage = action.payload.status === 400
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
+            })
+            //fetch bank activity leases
+            .addCase(fetchBankActivityLeases.pending, (state) => {
+                state.bankActivityLeasesLoading = true
+            })
+            .addCase(fetchBankActivityLeases.fulfilled, (state,action) => {
+                state.bankActivityLeases = action.payload.data || action.payload;
+                state.bankActivityLeasesCount = action.payload.recordsTotal || 0;
+                state.bankActivityLeasesLoading = false
+            })
+            .addCase(fetchBankActivityLeases.rejected, (state,action) => {
+                state.bankActivityLeasesLoading = false
             })
     },
   
