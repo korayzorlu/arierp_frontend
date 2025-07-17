@@ -62,7 +62,7 @@ function Collections() {
         startTransition(() => {
             //dispatch(fetchCollections({activeCompany,params:collectionsParams})).unwrap();
             //dispatch(fetchLeases({activeCompany,params:{...leasesParams,leaseflex_automation:true,ordering:"contract__partner__tc_vkn_no"}}));
-            dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));
+            dispatch(fetchBankActivities({activeCompany}));
         });
 
         
@@ -133,7 +133,9 @@ function Collections() {
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'name', headerName: 'Name', flex: 2 },
         { field: 'description', headerName: 'Açıklama',flex: 10 },
-        { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number' },
+        { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'currency', headerName: 'PB', flex: 1 },
         { field: 'process_date', headerName: 'İşlem Tarihi', flex: 2 },
         { field: 'bank_account_no', headerName: 'Banka Hesap No', flex: 1 },
