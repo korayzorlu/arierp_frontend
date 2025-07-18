@@ -38,7 +38,7 @@ function RiskPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartners({activeCompany}));
+            dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));
         });
 
         
@@ -98,7 +98,7 @@ function RiskPartners() {
     return (
         <PanelContent>
             <Grid container spacing={1}>
-                <ListTable
+                <ListTableServer
                 title="Müşteri Risk Listesi"
                 //autoHeight
                 rows={riskPartners}
@@ -119,12 +119,12 @@ function RiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
                 }
-                //rowCount={riskPartnersCount}
+                rowCount={riskPartnersCount}
                 checkboxSelection
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
@@ -143,7 +143,7 @@ function RiskPartners() {
             deleteURL="/leasing/delete_risk_partners/"
             selectedItems={selectedItems}
             startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany}));dispatch(setRiskPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));dispatch(setRiskPartnersLoading(false));}}
             />
         </PanelContent>
     )
