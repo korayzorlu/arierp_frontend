@@ -21,6 +21,7 @@ import ListTableServer from '../../../component/table/ListTableServer';
 import KeyIcon from '@mui/icons-material/Key';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import StarIcon from '@mui/icons-material/Star';
 
 function Partners() {
     const {user} = useSelector((store) => store.auth);
@@ -40,7 +41,7 @@ function Partners() {
     }, [activeCompany,partnersParams,dispatch]);
       
     const columns = [
-        { field: 'types', headerName: 'Tip', flex: 1.5, renderCell: (params) => (
+        { field: 'types', headerName: 'Tip', flex: 2, renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
                         params.value.map((value,index) => {
@@ -49,18 +50,26 @@ function Partners() {
                                         ?   
                                             <Chip key={index} variant='contained' color="mars" icon={<PeopleIcon />} label="Müşteri" size='small'/>
                                         :
-                                        value === "supplier"
-                                        ?
-                                            <Chip key={index} variant='contained' color="primary" icon={<LocalShippingIcon />} label="Tedarikçi" size='small'/>
-                                        :
-                                            <Chip key={index} variant='contained' color="success" icon={<BusinessCenterIcon />} label={capitalize(value)} size='small'/>
+                                            value === "supplier"
+                                            ?
+                                                <Chip key={index} variant='contained' color="primary" icon={<LocalShippingIcon />} label="Tedarikçi" size='small'/>
+                                            :
+                                                value === "shareholder"
+                                                ?
+                                                    <Chip key={index} variant='contained' color="success" icon={<BusinessCenterIcon />} label="Hissedar" size='small'/>
+                                                :
+                                                    value === "special"
+                                                    ?
+                                                        <Chip key={index} variant='contained' color="secondary" icon={<StarIcon />} label="Özel" size='small'/>
+                                                    :
+                                                        <Chip key={index} variant='contained' color="success" icon={<BusinessCenterIcon />} label={capitalize(value)} size='small'/>
                                 )
                         })
                     }
                 </Stack>
             ) 
         },
-        { field: 'name', headerName: 'İsim', width: 400, editable: true, renderCell: (params) => (
+        { field: 'name', headerName: 'İsim', flex: 6, editable: true, renderCell: (params) => (
                 <Link
                 to={`/partners/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
@@ -72,18 +81,18 @@ function Partners() {
         },
         { field: 'customerCode', headerName: 'Müşteri Kodu', flex: 1},
         { field: 'crmCode', headerName: 'CRM Kodu', flex: 1},
-        { field: 'tcVknNo', headerName: 'TC/VKN No', flex: 1 },
+        { field: 'tcVknNo', headerName: 'TC/VKN No', flex: 2 },
         { field: 'country_name', headerName: 'Ülke', flex: 1 },
         { field: 'city_name', headerName: 'Şehir', flex: 1 },
-        { field: 'address', headerName: 'Adres', flex: 4, renderCell: (params) => (
-            <>
-                {params.value} {params.row.address2}
-            </>
+        // { field: 'address', headerName: 'Adres', flex: 4, renderCell: (params) => (
+        //     <>
+        //         {params.value} {params.row.address2}
+        //     </>
             
-        )
-        },
-        { field: 'email', headerName: 'Email', flex: 1 },
-        { field: 'phoneNumber', headerName: 'Tel', flex: 1 },
+        // )
+        // },
+        // { field: 'email', headerName: 'Email', flex: 1 },
+        // { field: 'phoneNumber', headerName: 'Tel', flex: 1 },
     ]
 
     const handleAllDelete = async () => {

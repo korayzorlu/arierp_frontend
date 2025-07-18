@@ -42,7 +42,7 @@ function UpdatePartner() {
         await dispatch(fetchCurrencies()).unwrap();
         const response = await dispatch(fetchPartner({activeCompany,params:{uuid}})).unwrap();
         setData(response);
-        handleChangeShareholder(response.shareholder);
+        //handleChangeShareholder(response.shareholder);
     };
     
     useEffect(() => {

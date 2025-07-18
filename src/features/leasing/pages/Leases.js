@@ -17,8 +17,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import './Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { TextField } from '@mui/material';
-
+import { Chip, Grid, TextField } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 
 function Leases() {
     const {user} = useSelector((store) => store.auth);
@@ -52,7 +52,21 @@ function Leases() {
             )
         },
         { field: 'contract', headerName: 'Sözleşme Kodu' },
-        { field: 'partner', headerName: 'Müşteri', width:280 },
+        { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
+                params.row.partner_special
+                ?
+                    <Grid container spacing={2}>
+                        <Grid size={8}>
+                            {params.value}
+                        </Grid>
+                        <Grid size={4}>
+                            <Chip key={params.row.id} variant='contained' color="secondary" icon={<StarIcon />} label="Özel" size='small'/>
+                        </Grid>
+                    </Grid>
+                :
+                    params.value
+            )
+        },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
         //{ field: 'quotation', headerName: 'Teklif No' },

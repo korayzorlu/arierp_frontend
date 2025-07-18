@@ -5,17 +5,19 @@ import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setAlert, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAddBankActivityLeaseDialog, setAlert, setImportDialog, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
 import { updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
 import { setIsProgress } from '../../../store/slices/processSlice';
 import axios from 'axios';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { fetchBankActivities, fetchBankActivityLeases } from '../../../store/slices/leasing/bankActivitySlice';
+import { fetchBankActivities, fetchBankActivity, fetchBankActivityLeases, setBankActivitiesLoading } from '../../../store/slices/leasing/bankActivitySlice';
+import ImportDialog from '../../../component/feedback/ImportDialog';
+import AddBankActivityLeaseDialog from '../../../component/feedback/AddBankActivityLeaseDialog';
 
 function DetailPanel(props) {
-    const {uuid,bank_activity_leases} = props;
+    const {uuid,bank_activity_leases,onOpen} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
@@ -25,9 +27,21 @@ function DetailPanel(props) {
     const apiRef = useGridApiRef();
     const detailApiRefs = useRef({});
 
-    const [data, setData] = useState({})
+    const [data, setData] = useState({leases:[]})
     const [selectedRows, setSelectedRows] = useState([]);
     const isFirstSelection = useRef(true);
+
+     const fetchData = async () => {
+        const response = await dispatch(fetchBankActivity({activeCompany,params:{uuid}})).unwrap();
+        setData(response);
+        
+    };
+
+    useEffect(() => {
+        fetchData();
+        
+    }, [activeCompany])
+
 
     useEffect(() => {
         let allSelectedRows = [];
@@ -48,7 +62,8 @@ function DetailPanel(props) {
                 isFirstSelection.current = false;
             }
         }
-    }, [])
+        
+    }, [data.leases])
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı', flex:2, renderCell: (params) => (
@@ -58,22 +73,9 @@ function DetailPanel(props) {
             )
         },
         { field: 'contract', headerName: 'Sözleşme', flex:2 },
-        // { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
-        //         <div style={{ cursor: 'pointer' }}>
-        //             {params.value}
-        //         </div>
-        //     ),
-        // },
-        //{ field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
-        //{ field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
-        //{ field: 'quotation', headerName: 'Teklif No' },
-        //{ field: 'kof', headerName: 'KOF No' },
         { field: 'project', headerName: 'Proje', flex:6 },
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
-        //{ field: 'vade', headerName: 'Vade', type: 'number' },
-        //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
-        //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
@@ -117,7 +119,6 @@ function DetailPanel(props) {
     const previousSelectedRows = useRef(new Set());
 
     const handleSelectionChange = () => {
-       // console.log(Array.from(apiRef.current.getSelectedRows().values()))
         const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
 
         if (isFirstSelection.current) {
@@ -187,10 +188,10 @@ function DetailPanel(props) {
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
             <ListTable
-            title={bank_activity_leases.length > 1 ? `${bank_activity_leases[0].partner} - ${bank_activity_leases[0].partner_tc} Kira Planları` : ""}
+            title={data.leases.length > 1 ? `${data.leases[0].partner} - ${data.leases[0].partner_tc} Kira Planları` : ""}
             height="auto"
             autoHeight
-            rows={bank_activity_leases}
+            rows={data.leases}
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
             loading={leasesLoading}
@@ -198,8 +199,7 @@ function DetailPanel(props) {
                     <>
                         <CustomTableButton
                         title="Yeni"
-                        link="/leasing/add-bank-activity-lease"
-                        disabled={activeCompany ? false : true}
+                        onClick={() => {dispatch(setAddBankActivityLeaseDialog(true));}}
                         icon={<AddBoxIcon fontSize="small"/>}
                         />
                     </>
@@ -231,6 +231,12 @@ function DetailPanel(props) {
             }}
             processRowUpdate={handleProcessRowUpdate}
             onProcessRowUpdateError={(error) => console.log(error)}
+            />
+            <AddBankActivityLeaseDialog
+            handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}
+            submitURL="/leasing/add_bank_activity_lease"
+            startEvent={() => dispatch(setBankActivitiesLoading(true))}
+            finalEvent={() => {/*dispatch(fetchBankActivities({activeCompany}));*/dispatch(setBankActivitiesLoading(false));}}
             />
         </Box>
     )

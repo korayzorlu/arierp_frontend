@@ -162,7 +162,7 @@ function Collections() {
             <Grid container spacing={1}>
                 <ListTable
                 title="Banka Hareketleri"
-                autoHeight
+                //autoHeight
                 rows={bankActivities}
                 columns={bankActivityColumns}
                 getRowId={(row) => row.uuid}
@@ -191,7 +191,7 @@ function Collections() {
                 noDownloadButton
                 getRowClassName={(params) => `super-app-theme--${params.row.leases ? params.row.leases.length > 0 ? "matched" : "" : ""}`}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchBankActivities({activeCompany}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));}}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases}></DetailPanel>)}}
                 />
