@@ -237,6 +237,7 @@ function DetailPanel(props) {
             submitURL="/leasing/add_bank_activity_lease"
             startEvent={() => dispatch(setBankActivitiesLoading(true))}
             finalEvent={() => {/*dispatch(fetchBankActivities({activeCompany}));*/dispatch(setBankActivitiesLoading(false));}}
+            uuid={uuid}
             />
         </Box>
     )

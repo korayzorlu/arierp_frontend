@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useState } from 'react'
+import React, { act, startTransition, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setAddBankActivityLeaseDialog, setImportDialog } from '../../store/slices/notificationSlice';
@@ -12,20 +12,29 @@ import CustomTableButton from '../table/CustomTableButton';
 import { fetchImportProcess } from '../../store/slices/processSlice';
 import { fetchPartners, setPartnersParams } from '../../store/slices/partners/partnerSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useGridApiRef } from '@mui/x-data-grid';
+import { updateLeaseflexAutomationBankActivityLeases } from '../../store/slices/leasing/collectionSlice';
+import { fetchBankActivities, updateBankActivityLeases } from '../../store/slices/leasing/bankActivitySlice';
 
 function AddBankActivityLeaseDialog(props) {
-    const {children,submitURL,startEvent,finalEvent,closeEvent} = props;
+    const {children,submitURL,startEvent,finalEvent,closeEvent,uuid} = props;
     const {dark} = useSelector((store) => store.auth);
     const {addBankActivityLeaseDialog} = useSelector((store) => store.notification);
     const {partners,partnersCount,partnersParams,partnersLoading} = useSelector((store) => store.partner);
     const {activeCompany} = useSelector((store) => store.organization);
+    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading} = useSelector((store) => store.bankActivity);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const apiRef = useGridApiRef();
+    const isFirstSelection = useRef(true);
+    const previousSelectedRows = useRef(new Set());
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileText, setSelectedFileText] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [currentSelection, setCurrentSelection] = useState(new Set())
+    
 
     useEffect(() => {
         startTransition(() => {
@@ -58,15 +67,28 @@ function AddBankActivityLeaseDialog(props) {
 
     const handleClose = () => {
         dispatch(setAddBankActivityLeaseDialog(false));
-        setSelectedFile(null);
-        setSelectedFileText(null);
         if(closeEvent){
             closeEvent();
         };
     };
 
-    const handleSubmit = () => {
+    const handleSelectionChange = () => {
+        const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
+        console.log(currentSelection)
+    };
 
+    const handleSubmit = () => {
+        const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
+        console.log(currentSelection)
+        if (Array.from(currentSelection).length > 0) {
+            console.log('Seçilen:', currentSelection);
+            dispatch(updateBankActivityLeases({data:{uuid:Array.from(currentSelection)[0],bank_activity_uuid:uuid}}))
+        }
+
+        previousSelectedRows.current = currentSelection;
+
+        dispatch(setAddBankActivityLeaseDialog(false));
+        dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}))
     };
 
     return (
@@ -101,13 +123,13 @@ function AddBankActivityLeaseDialog(props) {
                             />
                         </>
                     }
-                    onRowSelectionModelChange={(newRowSelectionModel) => {
-                        setSelectedItems(newRowSelectionModel);
-                    }}
                     rowCount={partnersCount}
-                    checkboxSelection
+                    checkboxSelection={true}
+                    disableRowSelectionOnClick={true}
                     setParams={(value) => dispatch(setPartnersParams(value))}
                     noAllSelect
+                    disableMultipleRowSelection
+                    apiRef={apiRef}
                     />
                 </DialogContentText>
             </DialogContent>

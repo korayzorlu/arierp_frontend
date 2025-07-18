@@ -54,7 +54,8 @@ function ListTableServer(props) {
     getDetailPanelHeight,
     detailPanelExpandedRowIds,
     onDetailPanelExpandedRowIdsChange,
-    processRowUpdate
+    processRowUpdate,
+    disableMultipleRowSelection
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -251,6 +252,7 @@ function ListTableServer(props) {
       onRowSelectionModelChange={onRowSelectionModelChange}
       isRowSelected={isRowSelected}
       keepNonExistentRowsSelected={keepNonExistentRowsSelected}
+      disableMultipleRowSelection={disableMultipleRowSelection}
       apiRef={apiRef}
       hideFooter={hideFooter}
       autoHeight={autoHeight}

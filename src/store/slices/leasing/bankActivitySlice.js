@@ -159,6 +159,29 @@ export const fetchBankActivityLeases = createAsyncThunk('auth/fetchBankActivityL
     }
 });
 
+export const updateBankActivityLeases = createAsyncThunk('auth/updateBankActivityLeases', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    console.log(data)
+    try {
+        const response = await axios.post(`/leasing/update_bank_activity_leases/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const bankActivitySlice = createSlice({
     name:"bankActivity",
     initialState,
