@@ -81,6 +81,7 @@ import LedgerAccounts from './features/ledger/pages/LedgerAccounts.js';
 import AddLease from './features/leasing/pages/AddLease.js';
 import UpdateLease from './features/leasing/pages/UpdateLease.js';
 import Collections from './features/leasing/pages/Collections.js';
+import RiskPartners from './features/leasing/pages/RiskPartners.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -218,6 +219,7 @@ function App() {
                   <Route path='/leasing/update/:uuid' element={<UpdateLease></UpdateLease>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
+                  <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>

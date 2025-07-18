@@ -81,7 +81,7 @@ function UpdatePartner() {
                 title="PARTNER DETAYI"
                 loadingSave={disabled}
                 disabledSave={buttonDisabled}
-                //onClickSave={() => handleSubmit()}
+                onClickSave={() => handleSubmit()}
                 //onClickDelete={() => dispatch(setDialog(true))}
                 />
                 <Divider></Divider>
@@ -123,6 +123,11 @@ function UpdatePartner() {
                             label="Hissedar"
                             checked={data.shareholder}
                             onChange={(value) => {handleChangeField("shareholder",value);handleChangeShareholder(value);}}
+                            />
+                            <AndroidSwitch
+                            label="Özel"
+                            checked={data.special}
+                            onChange={(value) => handleChangeField("special",value)}
                             />
                         </Grid>
                     </Grid>

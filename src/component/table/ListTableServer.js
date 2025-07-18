@@ -5,7 +5,7 @@ import { DataGridPremium,  unstable_gridDefaultPromptResolver as promptResolver 
 import MUIToolbar from './MUIToolbar';
 import { Box, darken, lighten, styled, Typography } from '@mui/material';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from 'lodash';
 import { trTR } from '@mui/x-data-grid/locales';
 
@@ -45,8 +45,19 @@ function ListTableServer(props) {
     showCellVerticalBorder,
     showColumnVerticalBorder,
     rowSelectionModel,
-    onProcessRowUpdateError
+    onProcessRowUpdateError,
+    isRowSelected,
+    keepNonExistentRowsSelected,
+    noAllSelect,
+    groupingColDef,
+    getDetailPanelContent,
+    getDetailPanelHeight,
+    detailPanelExpandedRowIds,
+    onDetailPanelExpandedRowIdsChange,
+    processRowUpdate
   } = props;
+
+  const {dark} = useSelector((store) => store.auth);
 
   const dispatch = useDispatch();
 
@@ -238,6 +249,8 @@ function ListTableServer(props) {
       disableRowSelectionOnClick={disableRowSelectionOnClick}
       rowSelectionModel={rowSelectionModel}
       onRowSelectionModelChange={onRowSelectionModelChange}
+      isRowSelected={isRowSelected}
+      keepNonExistentRowsSelected={keepNonExistentRowsSelected}
       apiRef={apiRef}
       hideFooter={hideFooter}
       autoHeight={autoHeight}
@@ -253,6 +266,35 @@ function ListTableServer(props) {
           },
           '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
           [`.${gridClasses['columnHeader--filter']}`]: { px: 1 },
+          '& .MuiDataGrid-columnHeader': {
+            '& .MuiDataGrid-columnHeaderTitleContainer': {
+              overflow: 'visible',
+            },
+            '& .MuiDataGrid-columnHeaderTitleContainerContent': {
+              position: 'sticky',
+              left: 8,
+            },
+          },
+          '& .MuiDataGrid-root': {
+            border: 1,
+            borderColor: dark ? 'rgba(81,81,81,1)' : 'rgba(224,224,224,1)'
+          },
+          ...(!dark
+            ? {
+                '& .MuiDataGrid-detailPanel': {
+                  backgroundColor: '#ECEAE6',
+                },
+              }
+            : {}
+          ),
+          ...(noAllSelect
+            ? {
+                '& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer': {
+                  display: 'none'
+                }
+            }
+            : {}
+          )
       }}
       //aiAssistant
       //onPrompt={processPrompt}
@@ -268,6 +310,12 @@ function ListTableServer(props) {
       showCellVerticalBorder={showCellVerticalBorder}
       showColumnVerticalBorder={showColumnVerticalBorder}
       onProcessRowUpdateError={onProcessRowUpdateError}
+      groupingColDef={groupingColDef}
+      getDetailPanelContent={getDetailPanelContent}
+      getDetailPanelHeight={getDetailPanelHeight}
+      detailPanelExpandedRowIds={detailPanelExpandedRowIds}
+      onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
+      processRowUpdate={processRowUpdate}
       />
     </TableContent>
   )

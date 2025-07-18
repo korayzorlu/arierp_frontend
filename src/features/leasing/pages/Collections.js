@@ -22,7 +22,7 @@ import { fetchLeases, setLeasesParams } from '../../../store/slices/leasing/leas
 import { fetchUserInformation } from '../../../store/slices/authSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from '../../../store/slices/leasing/bankActivitySlice';
+import { fetchBankActivities, fetchBankActivityLeases, setBankActivitiesLoading, setBankActivitiesParams } from '../../../store/slices/leasing/bankActivitySlice';
 import ListTable from '../../../component/table/ListTable';
 import BasicTable from '../../../component/table/BasicTable';
 import DetailPanel from '../components/DetailPanel';
@@ -51,12 +51,13 @@ function Collections() {
 
     const [isPending, startTransition] = useTransition();
     
+    const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [selectedItemsPerRow, setSelectedItemsPerRow] = useState({});
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
     const [selectedPartnerCrmCode, setSelectedPartnerCrmCode] = useState(null);
-    const [detailPanelExpandedRowIds, setDetailPanelExpandedRowIds] = useState([]);
+    const [detailPanelExpandedRowIds, setDetailPanelExpandedRowIds] = useState(new Set());
 
     useEffect(() => {
         startTransition(() => {
@@ -67,6 +68,8 @@ function Collections() {
 
         
     }, [activeCompany,collectionsParams,leasesParams,dispatch]);
+
+    
 
     // useEffect(() => {
     //     if (bankActivities.length) {
@@ -188,7 +191,7 @@ function Collections() {
                 noDownloadButton
                 getRowClassName={(params) => `super-app-theme--${params.row.leases ? params.row.leases.length > 0 ? "matched" : "" : ""}`}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={handleDetailPanelExpandedRowIdsChange}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchBankActivities({activeCompany}));}}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases}></DetailPanel>)}}
                 />

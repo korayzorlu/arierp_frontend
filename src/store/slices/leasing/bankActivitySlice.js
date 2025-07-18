@@ -18,6 +18,7 @@ const initialState = {
         end: (0 + 1) * 50,
         format: 'datatables'
     },
+    bankActivitiesLoading:false,
     bankActivityLeasesLoading:false,
     partnerInformation:{},
 }

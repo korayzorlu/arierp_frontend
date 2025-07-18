@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { setIsProgress } from "../processSlice";
 import { setAlert, setDialog } from "../notificationSlice";
+import { fetchBankActivities } from "./bankActivitySlice";
 
 const initialState = {
     collections:[],
@@ -123,7 +124,7 @@ export const deleteCollection = createAsyncThunk('auth/deleteCollection', async 
     }
 });
 
-export const updateLeaseflexAutomationBankActivityLeases = createAsyncThunk('auth/updateLeaseflexAutomationBankActivityLeases', async ({data=null},{dispatch}) => {
+export const updateLeaseflexAutomationBankActivityLeases = createAsyncThunk('auth/updateLeaseflexAutomationBankActivityLeases', async ({activeCompany,data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     console.log(data)
     try {

@@ -7,20 +7,19 @@ import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import { setAlert, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { updateLeaseflexAutomationLease, updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
+import { updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
 import { setIsProgress } from '../../../store/slices/processSlice';
 import axios from 'axios';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { fetchBankActivities, fetchBankActivityLeases } from '../../../store/slices/leasing/bankActivitySlice';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {collections,collectionsCount,collectionsParams,collectionsLoading} = useSelector((store) => store.collection);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
-    const {bankActivityLeases,bankActivityLeasesCount,bankActivityLeasesParams,bankActivityLeasesLoading} = useSelector((store) => store.bankActivity);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -50,12 +49,6 @@ function DetailPanel(props) {
             }
         }
     }, [])
-
-    useEffect(() => {
-        //dispatch(updateLeaseflexAutomationLease({data}));
-    }, [])
-
-    
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı', flex:2, renderCell: (params) => (
@@ -138,11 +131,11 @@ function DetailPanel(props) {
 
         if (added.length > 0) {
             console.log('Seçilen:', added);
-            dispatch(updateLeaseflexAutomationBankActivityLeases({data:{uuids:added,select:true}}))
+            dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:added,select:true}}))
         }
         if (removed.length > 0) {
             console.log('Seçimi kaldırılan:', removed);
-            dispatch(updateLeaseflexAutomationBankActivityLeases({data:{uuids:removed,select:false}}))
+            dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:removed,select:false}}))
         }
 
         previousSelectedRows.current = currentSelection;
@@ -176,7 +169,7 @@ function DetailPanel(props) {
                     dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
                 };
                 return null
-            }
+            } 
 
 
             const updatedRow = { ...newRow, isUpdated: true };
@@ -187,7 +180,7 @@ function DetailPanel(props) {
                 ...oldRow,
                 processed_amount: oldRow.processed_amount
             };
-        }
+        } 
     };
 
 

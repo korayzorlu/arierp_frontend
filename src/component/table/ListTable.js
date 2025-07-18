@@ -55,7 +55,8 @@ function ListTable(props) {
     noDownloadButton,
     processRowUpdate,
     onProcessRowUpdateError,
-    specialButtons
+    specialButtons,
+    noOverlay
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -167,7 +168,7 @@ function ListTable(props) {
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
               outline: 'none',
           },
-          '--DataGrid-overlayHeight': '50vh',
+          '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
           '& .MuiDataGrid-columnHeader': {
             '& .MuiDataGrid-columnHeaderTitleContainer': {
               overflow: 'visible',
