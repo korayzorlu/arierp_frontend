@@ -26,19 +26,22 @@ function DetailPanel(props) {
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
     const detailApiRefs = useRef({});
+    const isFirstSelection = useRef(true);
 
     const [data, setData] = useState({leases:[]})
     const [selectedRows, setSelectedRows] = useState([]);
-    const isFirstSelection = useRef(true);
+    
 
      const fetchData = async () => {
         const response = await dispatch(fetchBankActivity({activeCompany,params:{uuid}})).unwrap();
         setData(response);
         
+        
     };
 
     useEffect(() => {
         fetchData();
+        
         
     }, [activeCompany])
 
@@ -131,11 +134,9 @@ function DetailPanel(props) {
         const removed = [...previousSelectedRows.current].filter(id => !currentSelection.has(id));
 
         if (added.length > 0) {
-            console.log('Seçilen:', added);
             dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:added,select:true}}))
         }
         if (removed.length > 0) {
-            console.log('Seçimi kaldırılan:', removed);
             dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:removed,select:false}}))
         }
 
@@ -216,7 +217,7 @@ function DetailPanel(props) {
             disableRowSelectionOnClick={true}
             onRowSelectionModelChange={handleSelectionChange}
             //rowSelectionModel={selectedRows}
-            //keepNonExistentRowsSelected
+            keepNonExistentRowsSelected
             //isRowSelected={(row) => row.overdue_amount > 0}
             //hideFooter
             noPagination

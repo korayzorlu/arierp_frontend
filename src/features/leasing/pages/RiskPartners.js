@@ -98,7 +98,7 @@ function RiskPartners() {
     return (
         <PanelContent>
             <Grid container spacing={1}>
-                <ListTableServer
+                <ListTable
                 title="Müşteri Risk Listesi"
                 //autoHeight
                 rows={riskPartners}
@@ -130,6 +130,7 @@ function RiskPartners() {
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
+                sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}

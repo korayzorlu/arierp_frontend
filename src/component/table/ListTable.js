@@ -56,7 +56,8 @@ function ListTable(props) {
     processRowUpdate,
     onProcessRowUpdateError,
     specialButtons,
-    noOverlay
+    noOverlay,
+    sortModel
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -214,6 +215,7 @@ function ListTable(props) {
       apiRef={apiRef}
       processRowUpdate={processRowUpdate}
       onProcessRowUpdateError={onProcessRowUpdateError}
+      sortModel={sortModel}
       />
     </TableContent>
   )

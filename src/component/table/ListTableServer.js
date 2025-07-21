@@ -55,7 +55,8 @@ function ListTableServer(props) {
     detailPanelExpandedRowIds,
     onDetailPanelExpandedRowIdsChange,
     processRowUpdate,
-    disableMultipleRowSelection
+    disableMultipleRowSelection,
+    sortModel
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -318,6 +319,7 @@ function ListTableServer(props) {
       detailPanelExpandedRowIds={detailPanelExpandedRowIds}
       onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
       processRowUpdate={processRowUpdate}
+      sortModel={sortModel}
       />
     </TableContent>
   )
