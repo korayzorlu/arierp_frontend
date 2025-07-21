@@ -2,10 +2,10 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Grid } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
@@ -17,6 +17,11 @@ import DetailPanel from '../components/DetailPanel';
 import ListTableServer from '../../../component/table/ListTableServer';
 import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
+import CallIcon from '@mui/icons-material/Call';
+import MessageIcon from '@mui/icons-material/Message';
+import PartnerDialog from '../../../component/dialog/PartnerDialog';
+import CallDialog from '../components/CallDialog';
+import MessageDialog from '../components/MessageDialog';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -38,7 +43,7 @@ function RiskPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));
+            dispatch(fetchRiskPartners({activeCompany}));
         });
 
         
@@ -65,10 +70,19 @@ function RiskPartners() {
                 }
             }
         },
-        { field: 'a', headerName: 'Aranma Durumu', flex: 2, renderCell: (params) => (
-                <div style={{ cursor: 'pointer' }}>
-                    Detay için tıkla
-                </div>
+        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={6} sx={{textAlign: 'center'}}>
+                    <IconButton aria-label="delete" onClick={handleCallDialog}>
+                        <CallIcon />
+                    </IconButton>
+                </Grid>
+                <Grid size={6} sx={{textAlign: 'center'}}>
+                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
+                        <MessageIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
             )
         },
         { field: 's', headerName: 'Statü', flex: 2 },
@@ -80,6 +94,14 @@ function RiskPartners() {
             await dispatch(fetchPartnerInformation(params.row.crm_code)).unwrap();
             dispatch(setPartnerDialog(true));
         }
+    };
+
+    const handleCallDialog = async (params,event) => {
+        dispatch(setCallDialog(true));
+    };
+
+    const handleMessageDialog = async (params,event) => {
+        dispatch(setMessageDialog(true));
     };
 
     const handleAllDelete = async () => {
@@ -119,12 +141,12 @@ function RiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartners({activeCompany})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
                 }
-                rowCount={riskPartnersCount}
+                //rowCount={riskPartnersCount}
                 checkboxSelection
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
@@ -134,7 +156,7 @@ function RiskPartners() {
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany}));}}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
                 />
@@ -144,8 +166,10 @@ function RiskPartners() {
             deleteURL="/leasing/delete_risk_partners/"
             selectedItems={selectedItems}
             startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));dispatch(setRiskPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany}));dispatch(setRiskPartnersLoading(false));}}
             />
+            <CallDialog/>
+            <MessageDialog/>
         </PanelContent>
     )
 }

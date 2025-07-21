@@ -14,6 +14,8 @@ const initialState = {
     partnerDialog:false,
     installmentDialog:false,
     addBankActivityLeaseDialog:false,
+    callDialog:false,
+    messageDialog:false,
     modal:false,
     notifications:[],
     unreadNotifications:0
@@ -78,6 +80,12 @@ const notificationSlice = createSlice({
         setAddBankActivityLeaseDialog: (state,action) => {
             state.addBankActivityLeaseDialog = action.payload;
         },
+        setCallDialog: (state,action) => {
+            state.callDialog = action.payload;
+        },
+        setMessageDialog: (state,action) => {
+            state.messageDialog = action.payload;
+        },
         setModal: (state,action) => {
             state.modal = action.payload;
         },
@@ -120,6 +128,8 @@ export const {
     setUserDialog,
     setPartnerDialog,
     setInstallmentDialog,
-    setAddBankActivityLeaseDialog
+    setAddBankActivityLeaseDialog,
+    setCallDialog,
+    setMessageDialog
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

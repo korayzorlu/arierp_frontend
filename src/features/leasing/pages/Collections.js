@@ -140,7 +140,7 @@ function Collections() {
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB', flex: 1 },
-        { field: 'process_date', headerName: 'İşlem Tarihi', flex: 2 },
+        { field: 'process_date_date', headerName: 'İşlem Tarihi', flex: 2 },
         { field: 'bank_account_no', headerName: 'Banka Hesap No', flex: 1 },
     ]
 
