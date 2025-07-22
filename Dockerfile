@@ -11,6 +11,8 @@ COPY package*.json ./
 COPY .npmrc ./
 
 # Npm veya yarn dependency'lerini yükleyin
+RUN npm config set strict-ssl false
+RUN git config --global http.sslVerify false
 RUN npm install
 #RUN npm install --save @datatables.net/editor-dt
 

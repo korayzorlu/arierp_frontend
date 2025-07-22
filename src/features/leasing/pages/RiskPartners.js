@@ -43,7 +43,7 @@ function RiskPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartners({activeCompany}));
+            dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));
         });
 
         
@@ -120,9 +120,9 @@ function RiskPartners() {
     return (
         <PanelContent>
             <Grid container spacing={1}>
-                <ListTable
+                <ListTableServer
                 title="Müşteri Risk Listesi"
-                //autoHeight
+                autoHeight
                 rows={riskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
@@ -141,12 +141,12 @@ function RiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
                 }
-                //rowCount={riskPartnersCount}
+                rowCount={riskPartnersCount}
                 checkboxSelection
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
@@ -156,7 +156,7 @@ function RiskPartners() {
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
                 />
@@ -166,7 +166,7 @@ function RiskPartners() {
             deleteURL="/leasing/delete_risk_partners/"
             selectedItems={selectedItems}
             startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany}));dispatch(setRiskPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));dispatch(setRiskPartnersLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>
