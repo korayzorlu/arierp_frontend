@@ -4,12 +4,16 @@ import { useParams } from 'react-router-dom';
 import { fetchCountries, fetchCurrencies } from '../../../store/slices/dataSlice';
 import { deletePartner, fetchPartner } from '../../../store/slices/partners/partnerSlice';
 import { deleteLease, fetchLease, updateLease } from '../../../store/slices/leasing/leaseSlice';
-import { Dialog, Divider, Grid, Paper, Stack, TextField } from '@mui/material';
+import { Dialog, Divider, Grid, Paper, Stack, Tab, Tabs, TextField } from '@mui/material';
 import FormHeader from '../../../component/header/FormHeader';
 import { setDialog } from '../../../store/slices/notificationSlice';
 import PartnerSelect from '../../../component/select/PartnerSelect';
 import CurrencySelect from '../../../component/select/CurrencySelect';
 import InstallmentsInLease from '../components/InstallmentsInLease';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import PaidIcon from '@mui/icons-material/Paid';
+import TabPanel from '../../../component/tab/TabPanel';
+import ContractPaymentsInLease from '../components/ContractPaymentsInLease';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -21,7 +25,7 @@ function UpdateLease() {
     const [tabValue, setTabValue] = useState(0);
     const [switchDisabled, setSwitchDisabled] = useState(false);
 
-    const { uuid } = useParams();
+    const { uuid,contract_code } = useParams();
 
     const [data, setData] = useState({})
 
@@ -247,11 +251,40 @@ function UpdateLease() {
                             />
                         </Grid>
                     </Grid>
-                    <Grid container spacing={2}>
-                        <Grid size={{xs:12,sm:12}}>
-                            <InstallmentsInLease lease_id={uuid}></InstallmentsInLease>
+                    <Grid
+                    container
+                    spacing={{xs:2,sm:0}}
+                    sx={{
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}>
+                        <Grid>
+                            <Tabs
+                            value={tabValue}
+                            variant='scrollable'
+                            scrollButtons="auto"
+                            onChange={handleChangeTabValue}
+                            >
+                                <Tab label="Ödeme Tablosu" value={0} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
+                                <Tab label="TAHSİLATLAR" value={1} icon={<PaidIcon/>} iconPosition="start"/>
+                            </Tabs>
                         </Grid>
                     </Grid>
+                    <Divider></Divider>
+                    <TabPanel value={tabValue} index={0}>
+                        <Grid container spacing={2}>
+                            <Grid size={{xs:12,sm:12}}>
+                                <InstallmentsInLease lease_id={uuid}></InstallmentsInLease>
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1}>
+                        <Grid container spacing={2}>
+                            <Grid size={{xs:12,sm:12}}>
+                                <ContractPaymentsInLease contract_code={contract_code}></ContractPaymentsInLease>
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
 
                     
                 </Stack>

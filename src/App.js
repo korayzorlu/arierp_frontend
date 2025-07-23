@@ -82,6 +82,7 @@ import AddLease from './features/leasing/pages/AddLease.js';
 import UpdateLease from './features/leasing/pages/UpdateLease.js';
 import Collections from './features/leasing/pages/Collections.js';
 import RiskPartners from './features/leasing/pages/RiskPartners.js';
+import ContractPayments from './features/contracts/pages/ContractPayments.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -213,10 +214,11 @@ function App() {
                   <Route path='/products/update/:uuid' element={<UpdateCategory></UpdateCategory>}></Route>
 
                   <Route path='/contracts' element={<Contracts></Contracts>}></Route>
+                  <Route path='/contract-payments' element={<ContractPayments></ContractPayments>}></Route>
 
                   <Route path='/leases' element={<Leases></Leases>}></Route>
                   <Route path='/leasing/add-lease' element={<AddLease></AddLease>}></Route>
-                  <Route path='/leasing/update/:uuid' element={<UpdateLease></UpdateLease>}></Route>
+                  <Route path='/leasing/update/:uuid/:contract_code' element={<UpdateLease></UpdateLease>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>

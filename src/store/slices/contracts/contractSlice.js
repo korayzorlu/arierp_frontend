@@ -12,6 +12,16 @@ const initialState = {
         format: 'datatables'
     },
     contractsLoading:false,
+    //
+    contractPayments:[],
+    contractPaymentsCount:0,
+    contractPaymentsParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    contractPaymentsLoading:false,
+    contractPaymentsInLease:[],
 }
 
 export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({activeCompany,serverModels=null,params=null}) => {
@@ -121,6 +131,26 @@ export const deleteContract = createAsyncThunk('auth/deleteContract', async ({da
     }
 });
 
+export const fetchContractPayments = createAsyncThunk('auth/fetchContractPayments', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/contracts/contract_payments/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchContractPaymentsInLease = createAsyncThunk('organization/fetchContractPaymentsInLease', async ({activeCompany,contract_code}) => {
+    const response = await axios.get(`/contracts/contract_payments/?active_company=${activeCompany.id}&contract=${contract_code}`, {withCredentials: true});
+    return response.data;
+});
+
 const contractSlice = createSlice({
     name:"contract",
     initialState,
@@ -137,6 +167,15 @@ const contractSlice = createSlice({
         deleteContracts: (state,action) => {
             state.contracts = [];
         },
+        setContractPaymentsLoading: (state,action) => {
+            state.contractPaymentsLoading = action.payload;
+        },
+        setContractPaymentsParams: (state,action) => {
+            state.contractPaymentsParams = {
+                ...state.contractPaymentsParams,
+                ...action.payload
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -151,9 +190,38 @@ const contractSlice = createSlice({
             .addCase(fetchContracts.rejected, (state,action) => {
                 state.contractsLoading = false
             })
+            //contract payments
+            .addCase(fetchContractPayments.pending, (state) => {
+                state.contractPaymentsLoading = true
+            })
+            .addCase(fetchContractPayments.fulfilled, (state,action) => {
+                state.contractPayments = action.payload.data || action.payload;
+                state.contractPaymentsCount = action.payload.recordsTotal || 0;
+                state.contractPaymentsLoading = false
+            })
+            .addCase(fetchContractPayments.rejected, (state,action) => {
+                state.contractPaymentsLoading = false
+            })
+            //fetch contract payments in lease
+            .addCase(fetchContractPaymentsInLease.pending, (state) => {
+                state.contractPaymentsLoading = true;
+            })
+            .addCase(fetchContractPaymentsInLease.fulfilled, (state,action) => {
+                state.contractPaymentsInLease = action.payload;
+                state.contractPaymentsLoading = false;
+            })
+            .addCase(fetchContractPaymentsInLease.rejected, (state,action) => {
+                state.contractPaymentsLoading = false;
+            })
     },
   
 })
 
-export const {setContractsLoading,setContractsParams,deleteContracts} = contractSlice.actions;
+export const {
+    setContractsLoading,
+    setContractsParams,
+    deleteContracts,
+    setContractPaymentsLoading,
+    setContractPaymentsParams,
+} = contractSlice.actions;
 export default contractSlice.reducer;

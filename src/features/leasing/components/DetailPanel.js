@@ -195,7 +195,6 @@ function DetailPanel(props) {
             rows={data.leases}
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
-            loading={leasesLoading}
             specialButtons={
                     <>
                         <CustomTableButton

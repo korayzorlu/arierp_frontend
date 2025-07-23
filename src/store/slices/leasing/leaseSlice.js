@@ -139,9 +139,10 @@ export const deleteLease = createAsyncThunk('auth/deleteLease', async ({data=nul
 
 export const fetchInstallmentsInLease = createAsyncThunk('organization/fetchInstallmentsInLease', async ({activeCompany,lease_id}) => {
     const response = await axios.get(`/leasing/installments/?active_company=${activeCompany.id}&lease_id=${lease_id}`, {withCredentials: true});
-    console.log(response);
     return response.data;
 });
+
+
 
 const leaseSlice = createSlice({
     name:"lease",
@@ -191,6 +192,7 @@ const leaseSlice = createSlice({
             .addCase(fetchInstallmentsInLease.rejected, (state,action) => {
                 state.installmentsLoading = false;
             })
+            
     },
   
 })
