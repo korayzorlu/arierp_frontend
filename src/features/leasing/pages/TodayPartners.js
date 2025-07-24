@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
+import { fetchTodayPartners, setTodayPartnersLoading, setTodayPartnersParams } from '../../../store/slices/leasing/todayPartnerSlice';
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
@@ -13,7 +13,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from '../../../component/table/ListTableServer';
-import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
+import TodayPartnerDetailPanel from '../components/TodayPartnerDetailPanel';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
@@ -25,9 +25,9 @@ import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/cont
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 
-function RiskPartners() {
+function TodayPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {riskPartners,riskPartnersCount,riskPartnersParams,riskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {todayPartners,todayPartnersCount,todayPartnersParams,todayPartnersLoading} = useSelector((store) => store.todayPartner);
 
     const dispatch = useDispatch();
 
@@ -40,18 +40,18 @@ function RiskPartners() {
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
 
     // useEffect(() => {
-    //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
+    //     dispatch(setTodayPartnersParams({bigger_than_100:true}));
     // }, []);
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));
+            dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));
         });
 
         
-    }, [activeCompany,riskPartnersParams,dispatch]);
+    }, [activeCompany,todayPartnersParams,dispatch]);
 
-    const riskPartnerColumns = [
+    const todayPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     {
@@ -75,18 +75,6 @@ function RiskPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'overdue_days', headerName: 'Maks. Gecikme Gün', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                if (params.value <= 30){
-                    return 'bg-yellow'
-                } else if (params.value > 30 && params.value <= 60){
-                    return 'bg-orange'
-                } else if (params.value > 60 && params.value <= 90){
-                    return 'bg-light-red'
-                } else if (params.value > 90){
-                    return 'bg-dark-red'
-                }
-            }
-        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -103,16 +91,6 @@ function RiskPartners() {
             )
         },
         { field: 's', headerName: 'Statü', flex: 2 },
-        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
-            <Grid container spacing={1}>
-                <Grid size={12} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.crm_code)}>
-                        <FeedIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
-            )
-        },
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -140,7 +118,7 @@ function RiskPartners() {
 
         try {
 
-            const response = await axios.post(`/leasing/delete_all_risk_partners/`,
+            const response = await axios.post(`/leasing/delete_all_today_partners/`,
                 { withCredentials: true},
             );
         } catch (error) {
@@ -149,15 +127,15 @@ function RiskPartners() {
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setRiskPartnersParams({special:value}));
+        dispatch(setTodayPartnersParams({special:value}));
         setSwitchPosition(value);
     };
 
     const handleChangeBiggerThan100 = async (value) => {
         if(!value){
-            dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:true}));
+            dispatch(setTodayPartnersParams({bigger_than_100:value,overdue_amount:true}));
         }else{
-            dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:false}));
+            dispatch(setTodayPartnersParams({bigger_than_100:value,overdue_amount:false}));
         }
         setBiggerThan100SwitchPosition(value);
     };
@@ -166,12 +144,12 @@ function RiskPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Risk Durumundaki Müşteriler"
+                title="Today Durumundaki Müşteriler"
                 autoHeight
-                rows={riskPartners}
-                columns={riskPartnerColumns}
+                rows={todayPartners}
+                columns={todayPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={riskPartnersLoading}
+                loading={todayPartnersLoading}
                 customButtons={
                     <>
                         <CustomTableButton
@@ -186,7 +164,7 @@ function RiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -208,27 +186,25 @@ function RiskPartners() {
                 </>
                 
             }
-                rowCount={riskPartnersCount}
-                checkboxSelection
-                setParams={(value) => dispatch(setRiskPartnersParams(value))}
+                rowCount={todayPartnersCount}
+                setParams={(value) => dispatch(setTodayPartnersParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
-                sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<TodayPartnerDetailPanel uuid={params.row.uuid} todayPartnerLeases={params.row.leases}></TodayPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_risk_partners/"
+            deleteURL="/leasing/delete_today_partners/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));dispatch(setRiskPartnersLoading(false));}}
+            startEvent={() => dispatch(setTodayPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));dispatch(setTodayPartnersLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>
@@ -237,4 +213,4 @@ function RiskPartners() {
     )
 }
 
-export default RiskPartners
+export default TodayPartners

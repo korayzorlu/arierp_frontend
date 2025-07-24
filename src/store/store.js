@@ -32,6 +32,9 @@ import ledgerAccountReducer from './slices/ledger/ledgerAccountSlice';
 import collectionReducer from './slices/leasing/collectionSlice';
 import bankActivityReducer from './slices/leasing/bankActivitySlice';
 import riskPartnerReducer from './slices/leasing/riskPartnerSlice';
+import tomorrowPartnerReducer from './slices/leasing/tomorrowPartnerSlice';
+import todayPartnerReducer from './slices/leasing/todayPartnerSlice';
+import yesterdayPartnerReducer from './slices/leasing/yesterdayPartnerSlice';
 
 let navigate;
 
@@ -74,6 +77,9 @@ export const store = configureStore({
         collection: collectionReducer,
         bankActivity: bankActivityReducer,
         riskPartner: riskPartnerReducer,
+        tomorrowPartner: tomorrowPartnerReducer,
+        todayPartner: todayPartnerReducer,
+        yesterdayPartner: yesterdayPartnerReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

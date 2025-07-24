@@ -45,19 +45,19 @@ function InstallmentsInLease(props) {
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number' },
         { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
-        { field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 1,  type: 'number', renderCell: (params) => (
-                params.row.overdue_amount > 0
-                ?
-                    params.value >= 0
-                    ?
-                        `${params.value} gün`
-                    :
-                        null
-                :
-                    null
+        // { field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 1,  type: 'number', renderCell: (params) => (
+        //         params.row.overdue_amount > 0
+        //         ?
+        //             params.value >= 0
+        //             ?
+        //                 `${params.value} gün`
+        //             :
+        //                 null
+        //         :
+        //             null
                 
-            )
-        },
+        //     )
+        // },
     ]
 
     return (
@@ -70,7 +70,7 @@ function InstallmentsInLease(props) {
             checkboxSelection={false}
             disableRowSelectionOnClick={true}
             loading={installmentsLoading}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             />
         </>
     )

@@ -113,6 +113,30 @@ function ListTable(props) {
         },
       },
     },
+    '& .super-app-theme--tomorrow': {
+      ...getBackgroundColor(theme.palette.info.main, theme, 0.7),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.info.main, theme, 0.6),
+      },
+      '&.Mui-selected': {
+        ...getBackgroundColor(theme.palette.info.main, theme, 0.5),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.info.main, theme, 0.4),
+        },
+      },
+    },
+    '& .super-app-theme--today': {
+      ...getBackgroundColor(theme.palette.primary.main, theme, 0.7),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.primary.main, theme, 0.6),
+      },
+      '&.Mui-selected': {
+        ...getBackgroundColor(theme.palette.primary.main, theme, 0.5),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.primary.main, theme, 0.4),
+        },
+      },
+    },
   }));
 
   return (
