@@ -20,7 +20,7 @@ import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Chip, Grid, TextField } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
-function Leases() {
+function OverdueLeases() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
@@ -36,7 +36,7 @@ function Leases() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchLeases({activeCompany,params:leasesParams}));
+            dispatch(fetchLeases({activeCompany,params:{...leasesParams,overdue:true}}));
         });
     }, [activeCompany,leasesParams,dispatch]);
 
@@ -69,18 +69,8 @@ function Leases() {
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
-        //{ field: 'quotation', headerName: 'Teklif No' },
-        //{ field: 'kof', headerName: 'KOF No' },
-        { field: 'project', headerName: 'Proje', width:280 },
-        { field: 'block', headerName: 'Blok' },
-        { field: 'unit', headerName: 'Bağımsız Bölüm' },
-        //{ field: 'vade', headerName: 'Vade', type: 'number' },
-        //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
-        //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.value > 0 ? 'bg-red' : '';
-            },
-            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null,valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB' },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
@@ -96,7 +86,6 @@ function Leases() {
                 
             )
         },
-        { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
 
     const columnsWithRenderHeaderFilter = columns.map(col => {
@@ -194,7 +183,6 @@ function Leases() {
             rowCount={leasesCount}
             checkboxSelection
             setParams={(value) => dispatch(setLeasesParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             apiRef={apiRef}
             />
@@ -218,4 +206,4 @@ function Leases() {
     )
 }
 
-export default Leases
+export default OverdueLeases
