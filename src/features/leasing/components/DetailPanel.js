@@ -1,11 +1,11 @@
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setAddBankActivityLeaseDialog, setAlert, setImportDialog, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAddBankActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
 import { updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
 import { setIsProgress } from '../../../store/slices/processSlice';
@@ -15,6 +15,9 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { fetchBankActivities, fetchBankActivity, fetchBankActivityLeases, setBankActivitiesLoading } from '../../../store/slices/leasing/bankActivitySlice';
 import ImportDialog from '../../../component/feedback/ImportDialog';
 import AddBankActivityLeaseDialog from '../../../component/feedback/AddBankActivityLeaseDialog';
+import ContractPaymentDialog from './ContractPaymentDialog';
+import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
+import PaidIcon from '@mui/icons-material/Paid';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;
@@ -89,6 +92,13 @@ function DetailPanel(props) {
                 return { ...params.props, value: isValid ? value : 0, error: 0 }
             
             },
+        },
+        { field: '', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
+                <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
+                    <PaidIcon/>
+                </IconButton>
+                
+            )
         },
         { field: 'currency', headerName: 'PB', flex:1 },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
@@ -239,6 +249,7 @@ function DetailPanel(props) {
             finalEvent={() => {/*dispatch(fetchBankActivities({activeCompany}));*/dispatch(setBankActivitiesLoading(false));}}
             uuid={uuid}
             />
+            <ContractPaymentDialog/>
         </Box>
     )
 }

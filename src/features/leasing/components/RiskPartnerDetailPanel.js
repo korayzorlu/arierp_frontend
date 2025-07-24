@@ -2,12 +2,15 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
+import { fetchContractPaymentsInLease } from '../../../store/slices/contracts/contractSlice';
+import PaidIcon from '@mui/icons-material/Paid';
+import ContractPaymentDialog from './ContractPaymentDialog';
 
 function RiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases} = props;
@@ -15,6 +18,7 @@ function RiskPartnerDetailPanel(props) {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
+    const {contractPaymentsParams} = useSelector((store) => store.contract);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -56,6 +60,13 @@ function RiskPartnerDetailPanel(props) {
         { field: 'project', headerName: 'Proje', flex:6 },
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
+        { field: '', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
+                <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
+                    <PaidIcon/>
+                </IconButton>
+                
+            )
+        },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
@@ -121,6 +132,7 @@ function RiskPartnerDetailPanel(props) {
                 },
             }}
             />
+            <ContractPaymentDialog/>
         </Box>
     )
 }

@@ -22,6 +22,7 @@ const initialState = {
     },
     contractPaymentsLoading:false,
     contractPaymentsInLease:[],
+    contractPaymentsInLeaseCode:0,
 }
 
 export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({activeCompany,serverModels=null,params=null}) => {
@@ -176,6 +177,9 @@ const contractSlice = createSlice({
                 ...action.payload
             };
         },
+        setContractPaymentsInLeaseCode: (state,action) => {
+            state.contractPaymentsInLeaseCode = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -223,5 +227,6 @@ export const {
     deleteContracts,
     setContractPaymentsLoading,
     setContractPaymentsParams,
+    setContractPaymentsInLeaseCode,
 } = contractSlice.actions;
 export default contractSlice.reducer;

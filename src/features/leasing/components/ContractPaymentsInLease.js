@@ -73,6 +73,16 @@ function ContractPaymentsInLease(props) {
             checkboxSelection={false}
             disableRowSelectionOnClick={true}
             loading={contractPaymentsLoading}
+            // initialState={{
+            //     aggregation: {
+            //         model: {
+            //             debit_amount: 'sum',
+            //             credit_amount: 'sum',
+            //             local_debit_amount: 'sum',
+            //             local_credit_amount: 'sum',
+            //         },
+            //     },
+            // }}
             />
         </>
     )

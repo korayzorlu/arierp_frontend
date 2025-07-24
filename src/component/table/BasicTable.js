@@ -14,7 +14,9 @@ function BasicTable(props) {
     detailPanelExpandedRowIds,
     onDetailPanelExpandedRowIdsChange,
     rowSelectionModel,
-    onRowSelectionModelChange
+    onRowSelectionModelChange,
+    initialState,
+    apiRef
     } = props;
 
     const [paginationModel, setPaginationModel] = useState({
@@ -63,10 +65,11 @@ function BasicTable(props) {
             columns={columns}
             rows={rows}
             initialState={{
-                columns: {
-                  columnVisibilityModel: hiddenColumns,
-                },
-              }}
+              ...initialState,
+              columns: {
+                columnVisibilityModel: hiddenColumns,
+              },
+            }}
             pageSizeOptions={[25, 50, 100]}
             pagination
             paginationModel={paginationModel}
@@ -91,6 +94,7 @@ function BasicTable(props) {
             getDetailPanelHeight={getDetailPanelHeight}
             detailPanelExpandedRowIds={detailPanelExpandedRowIds}
             onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
+            apiRef={apiRef}
             />
         </TableContent>
     )

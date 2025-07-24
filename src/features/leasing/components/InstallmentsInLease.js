@@ -42,10 +42,7 @@ function InstallmentsInLease(props) {
         { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
         { field: 'interest', headerName: 'Kâr Payı', flex: 1, type: 'number' },
         { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number', cellClassName: (params) => {
-                return params.value > 0 ? 'bg-red' : '';
-            }
-        },
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number' },
         { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 1,  type: 'number', renderCell: (params) => (
