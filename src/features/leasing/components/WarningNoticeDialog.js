@@ -60,7 +60,7 @@ function WarningNoticeDialog(props) {
                     <Stack spacing={2}>
                         <>
                             <BasicTable
-                            title={`Sözleşme - ${warningNoticesInLease ? warningNoticesInLease.length > 0 ? warningNoticesInLease[0]["contract"] : "" : ""}`}
+                            title={`${warningNoticesInLease ? warningNoticesInLease.length > 0 ? warningNoticesInLease[0]["partner"] : "" : ""} İhtarlar`}
                             rows={warningNoticesInLease}
                             columns={columns}
                             getRowId={(row) => row.id}
