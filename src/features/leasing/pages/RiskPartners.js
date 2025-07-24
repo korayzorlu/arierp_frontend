@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Grid, IconButton } from '@mui/material';
@@ -22,6 +22,10 @@ import MessageIcon from '@mui/icons-material/Message';
 import PartnerDialog from '../../../component/dialog/PartnerDialog';
 import CallDialog from '../components/CallDialog';
 import MessageDialog from '../components/MessageDialog';
+import FeedIcon from '@mui/icons-material/Feed';
+import WarningNotices from './WarningNotices';
+import WarningNoticeDialog from '../components/WarningNoticeDialog';
+import { fetchContractPaymentsInLease, fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -86,7 +90,16 @@ function RiskPartners() {
             )
         },
         { field: 's', headerName: 'Statü', flex: 2 },
-        { field: 'i', headerName: 'İhtar', flex: 2 },
+        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={12} sx={{textAlign: 'center'}}>
+                    <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.crm_code)}>
+                        <FeedIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
+            )
+        },
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -102,6 +115,11 @@ function RiskPartners() {
 
     const handleMessageDialog = async (params,event) => {
         dispatch(setMessageDialog(true));
+    };
+
+    const handleWarningNoticeDialog = async (crm_code) => {
+        dispatch(fetchWarningNoticesInLease({activeCompany,partner_crm_code:crm_code}));
+        dispatch(setWarningNoticeDialog(true));
     };
 
     const handleAllDelete = async () => {
@@ -121,7 +139,7 @@ function RiskPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Müşteri Risk Listesi"
+                title="Risk Durumundaki Müşteriler"
                 autoHeight
                 rows={riskPartners}
                 columns={riskPartnerColumns}
@@ -170,6 +188,7 @@ function RiskPartners() {
             />
             <CallDialog/>
             <MessageDialog/>
+            <WarningNoticeDialog/>
         </PanelContent>
     )
 }

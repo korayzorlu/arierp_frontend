@@ -23,6 +23,17 @@ const initialState = {
     contractPaymentsLoading:false,
     contractPaymentsInLease:[],
     contractPaymentsInLeaseCode:0,
+    //
+    warningNotices:[],
+    warningNoticesCount:0,
+    warningNoticesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    warningNoticesLoading:false,
+    warningNoticesInLease:[],
+    warningNoticesInLeaseCode:0,
 }
 
 export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({activeCompany,serverModels=null,params=null}) => {
@@ -152,6 +163,26 @@ export const fetchContractPaymentsInLease = createAsyncThunk('organization/fetch
     return response.data;
 });
 
+export const fetchWarningNotices = createAsyncThunk('auth/fetchWarningNotices', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/contracts/warning_notices/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchWarningNoticesInLease = createAsyncThunk('organization/fetchWarningNoticesInLease', async ({activeCompany,partner_crm_code}) => {
+    const response = await axios.get(`/contracts/warning_notices/?active_company=${activeCompany.id}&partner_crm_code=${partner_crm_code}`, {withCredentials: true});
+    return response.data;
+});
+
 const contractSlice = createSlice({
     name:"contract",
     initialState,
@@ -178,7 +209,19 @@ const contractSlice = createSlice({
             };
         },
         setContractPaymentsInLeaseCode: (state,action) => {
-            state.contractPaymentsInLeaseCode = action.payload;
+            state.warningNoticesInLeaseCode = action.payload;
+        },
+        setWarningNoticesLoading: (state,action) => {
+            state.warningNoticesLoading = action.payload;
+        },
+        setWarningNoticesParams: (state,action) => {
+            state.warningNoticesParams = {
+                ...state.warningNoticesParams,
+                ...action.payload
+            };
+        },
+        setWarningNoticesInLeaseCode: (state,action) => {
+            state.warningNoticesInLeaseCode = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -217,6 +260,29 @@ const contractSlice = createSlice({
             .addCase(fetchContractPaymentsInLease.rejected, (state,action) => {
                 state.contractPaymentsLoading = false;
             })
+            //fetch warning notices
+            .addCase(fetchWarningNotices.pending, (state) => {
+                state.warningNoticesLoading = true;
+            })
+            .addCase(fetchWarningNotices.fulfilled, (state,action) => {
+                state.warningNotices = action.payload.data || action.payload;
+                state.warningNoticesCount = action.payload.recordsTotal || 0;
+                state.warningNoticesLoading = false;
+            })
+            .addCase(fetchWarningNotices.rejected, (state,action) => {
+                state.warningNoticesLoading = false;
+            })
+            //fetch warning notices in lease
+            .addCase(fetchWarningNoticesInLease.pending, (state) => {
+                state.warningNoticesLoading = true;
+            })
+            .addCase(fetchWarningNoticesInLease.fulfilled, (state,action) => {
+                state.warningNoticesInLease = action.payload;
+                state.warningNoticesLoading = false;
+            })
+            .addCase(fetchWarningNoticesInLease.rejected, (state,action) => {
+                state.warningNoticesLoading = false;
+            })
     },
   
 })
@@ -228,5 +294,8 @@ export const {
     setContractPaymentsLoading,
     setContractPaymentsParams,
     setContractPaymentsInLeaseCode,
+    setWarningNoticesLoading,
+    setWarningNoticesParams,
+    setWarningNoticesInLeaseCode
 } = contractSlice.actions;
 export default contractSlice.reducer;

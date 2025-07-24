@@ -84,6 +84,7 @@ import Collections from './features/leasing/pages/Collections.js';
 import RiskPartners from './features/leasing/pages/RiskPartners.js';
 import ContractPayments from './features/contracts/pages/ContractPayments.js';
 import OverdueLeases from './features/leasing/pages/OverdueLeases.js';
+import WarningNotices from './features/leasing/pages/WarningNotices.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -222,8 +223,10 @@ function App() {
                   <Route path='/leasing/update/:uuid/:contract_code' element={<UpdateLease></UpdateLease>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
+
                   <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
+                  <Route path='/warning-notices' element={<WarningNotices></WarningNotices>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>

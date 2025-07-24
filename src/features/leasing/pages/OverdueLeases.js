@@ -125,7 +125,7 @@ function OverdueLeases() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Kira Planları Listesi"
+            title="Vadesi Geçmiş Kira Alacakları"
             autoHeight
             rows={leases}
             columns={columns}
