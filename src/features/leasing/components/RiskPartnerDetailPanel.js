@@ -85,7 +85,7 @@ function RiskPartnerDetailPanel(props) {
                 
             )
         },
-        { field: 'collection_status', headerName: 'Statü', flex:2 },
+        { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 
     const handleProfileDialog = async (params,event) => {

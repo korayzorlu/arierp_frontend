@@ -7,6 +7,7 @@ const initialState = {
     riskPartners:[],
     riskPartnersCount:0,
     riskPartnersParams:{
+        special: false,
         start: 0 * 50,
         end: (0 + 1) * 50,
         format: 'datatables'

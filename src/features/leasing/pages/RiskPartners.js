@@ -5,45 +5,37 @@ import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Grid, IconButton } from '@mui/material';
-import ListTable from '../../../component/table/ListTable';
+import { Chip, Grid, IconButton } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
-import DetailPanel from '../components/DetailPanel';
 import ListTableServer from '../../../component/table/ListTableServer';
 import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
-import PartnerDialog from '../../../component/dialog/PartnerDialog';
 import CallDialog from '../components/CallDialog';
 import MessageDialog from '../components/MessageDialog';
 import FeedIcon from '@mui/icons-material/Feed';
-import WarningNotices from './WarningNotices';
 import WarningNoticeDialog from '../components/WarningNoticeDialog';
-import { fetchContractPaymentsInLease, fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
+import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
+import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import StarIcon from '@mui/icons-material/Star';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {riskPartners,riskPartnersCount,riskPartnersParams,riskPartnersLoading} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
-    const apiRef = useGridApiRef();
-    const detailApiRefs = useRef({});
 
     const [isPending, startTransition] = useTransition();
     
-    const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
-    const [selectedItemsPerRow, setSelectedItemsPerRow] = useState({});
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
-    const [selectedPartnerCrmCode, setSelectedPartnerCrmCode] = useState(null);
-    const [detailPanelExpandedRowIds, setDetailPanelExpandedRowIds] = useState(new Set());
 
     useEffect(() => {
         startTransition(() => {
@@ -56,13 +48,28 @@ function RiskPartners() {
     const riskPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
-                    {params.value}
+                    {
+                        params.row.special
+                        ?
+                            <Grid container spacing={2}>
+                                <Grid size={8}>
+                                    {params.value}
+                                </Grid>
+                                <Grid size={4}>
+                                    <Chip key={params.row.id} variant='contained' color="secondary" icon={<StarIcon />} label="Özel" size='small'/>
+                                </Grid>
+                            </Grid>
+                        :
+                            params.value
+                    }
+                    
                 </div>
+                
             )
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'overdue_days', headerName: 'Gecikmedeki Maks. Gün Sayısı', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'overdue_days', headerName: 'Maks. Gecikme Gün', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 if (params.value <= 30){
                     return 'bg-yellow'
                 } else if (params.value > 30 && params.value <= 60){
@@ -135,6 +142,11 @@ function RiskPartners() {
         };
     };
 
+    const handleChangeSpecialPartners = async (value) => {
+            dispatch(setRiskPartnersParams({special:value}));
+            setSwitchPosition(value);
+        };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
@@ -164,6 +176,16 @@ function RiskPartners() {
                         />
                     </>
                 }
+                customFilters={
+                <>
+                    <AndroidSwitch
+                    label="Özel Müşterileri Göster"
+                    checked={switchPosition}
+                    onChange={(value) => handleChangeSpecialPartners(value)}
+                    disabled={switchDisabled}
+                    />
+                </>
+            }
                 rowCount={riskPartnersCount}
                 checkboxSelection
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
