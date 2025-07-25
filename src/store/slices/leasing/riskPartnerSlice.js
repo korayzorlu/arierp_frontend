@@ -13,13 +13,38 @@ const initialState = {
         format: 'datatables'
     },
     riskPartnersLoading:false,
+    //kdv
+    riskPartnersKDV:[],
+    riskPartnersKDVCount:0,
+    riskPartnersKDVParams:{
+        special: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    riskPartnersKDVLoading:false,
 }
 
-export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null,kdv=null}) => {
     try {
         const response = await axios.get(`/leasing/risk_partners/?active_company=${activeCompany.id}`,
             {   
-                params : params,
+                params : {...params,kdv},
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV', async ({activeCompany,serverModels=null,params=null,kdv=null}) => {
+    try {
+        const response = await axios.get(`/leasing/kdv_risk_partners/?active_company=${activeCompany.id}`,
+            {   
+                params : {...params,kdv},
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
@@ -143,7 +168,27 @@ const riskPartnerSlice = createSlice({
             };
         },
         deleteRiskPartners: (state,action) => {
-            state.riskPartners = [];
+            state.riskPartnersKDV = [];
+        },
+        //kdv
+        setRiskPartnersKDVLoading: (state,action) => {
+            state.riskPartnersKDVLoading = action.payload;
+        },
+        setRiskPartnersKDVParams: (state,action) => {
+            state.riskPartnersKDVParams = {
+                ...state.riskPartnersKDVParams,
+                ...action.payload
+            };
+        },
+        resetRiskPartnersKDVParams: (state,action) => {
+            state.riskPartnersKDVParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteRiskPartnersKDV: (state,action) => {
+            state.riskPartnersKDV = [];
         },
     },
     extraReducers: (builder) => {
@@ -159,9 +204,30 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchRiskPartners.rejected, (state,action) => {
                 state.riskPartnersLoading = false
             })
+            //kdv
+            .addCase(fetchRiskPartnersKDV.pending, (state) => {
+                state.riskPartnersKDVLoading = true
+            })
+            .addCase(fetchRiskPartnersKDV.fulfilled, (state,action) => {
+                state.riskPartnersKDV = action.payload.data || action.payload;
+                state.riskPartnersKDVCount = action.payload.recordsTotal || 0;
+                state.riskPartnersKDVLoading = false
+            })
+            .addCase(fetchRiskPartnersKDV.rejected, (state,action) => {
+                state.riskPartnersKDVLoading = false
+            })
     },
   
 })
 
-export const {setRiskPartnersLoading,setRiskPartnersParams,resetRiskPartnersParams,deleteRiskPartners} = riskPartnerSlice.actions;
+export const {
+    setRiskPartnersLoading,
+    setRiskPartnersParams,
+    resetRiskPartnersParams,
+    deleteRiskPartners,
+    setRiskPartnersKDVLoading,
+    setRiskPartnersKDVParams,
+    resetRiskPartnersKDVParams,
+    deleteRiskPartnersKDV
+} = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;

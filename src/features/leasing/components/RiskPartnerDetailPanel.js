@@ -85,6 +85,18 @@ function RiskPartnerDetailPanel(props) {
                 
             )
         },
+        { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
+                params.value
+                ?
+                    "Kdv Farkı Var"
+                :
+                    ""
+                
+            ),
+            cellClassName: (params) => {
+                return params.value ? 'bg-orange' : '';
+            }
+        },
         { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 

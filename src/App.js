@@ -87,6 +87,7 @@ import OverdueLeases from './features/leasing/pages/OverdueLeases.js';
 import WarningNotices from './features/leasing/pages/WarningNotices.js';
 import TomorrowPartners from './features/leasing/pages/TomorrowPartners.js';
 import TodayPartners from './features/leasing/pages/TodayPartners.js';
+import RiskPartnersKDV from './features/leasing/pages/RiskPartnersKDV.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -228,6 +229,7 @@ function App() {
 
                   <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
+                  <Route path='/kdv-risk-partners' element={<RiskPartnersKDV></RiskPartnersKDV>}></Route>
                   <Route path='/tomorrow-partners' element={<TomorrowPartners></TomorrowPartners>}></Route>
                   <Route path='/today-partners' element={<TodayPartners></TodayPartners>}></Route>
                   <Route path='/warning-notices' element={<WarningNotices></WarningNotices>}></Route>
