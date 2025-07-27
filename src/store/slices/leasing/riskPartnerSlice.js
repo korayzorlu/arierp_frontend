@@ -25,11 +25,11 @@ const initialState = {
     riskPartnersKDVLoading:false,
 }
 
-export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null,kdv=null}) => {
+export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/risk_partners/?active_company=${activeCompany.id}`,
             {   
-                params : {...params,kdv},
+                params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
@@ -40,11 +40,11 @@ export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', asyn
     }
 });
 
-export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV', async ({activeCompany,serverModels=null,params=null,kdv=null}) => {
+export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/kdv_risk_partners/?active_company=${activeCompany.id}`,
             {   
-                params : {...params,kdv},
+                params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );

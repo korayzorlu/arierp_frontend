@@ -55,8 +55,7 @@ function ListTableServer(props) {
     detailPanelExpandedRowIds,
     onDetailPanelExpandedRowIdsChange,
     processRowUpdate,
-    disableMultipleRowSelection,
-    sortModel
+    disableMultipleRowSelection
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -70,6 +69,8 @@ function ListTableServer(props) {
   const [filterParams, setFilterParams] = useState({});
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
 
+  const [sortModel, setSortModel] = useState([]);
+
   const debouncedSetParams = useCallback(debounce(setParams, 700), []);
   const debouncedSetFilterParams = useCallback(debounce(setFilterParams, 600), []);
 
@@ -80,6 +81,15 @@ function ListTableServer(props) {
   };
 
   const handleSortModelChange = (model) => {
+    console.log(model)
+    
+    setSortModel(model);
+
+    if(model.length > 0){
+      setParams({"ordering":model.sort === "asc" ? model[0].field : `-${model[0].field}`});
+    }
+    
+
     // dispatch(setPartnersParams(
     //   {
     //       ordering:model.length
@@ -243,6 +253,7 @@ function ListTableServer(props) {
       headerFilters={headerFilters}
       disableColumnFilter
       onPaginationModelChange={(model) => handlePaginationModelChange(model)}
+      sortModel={sortModel}
       onSortModelChange={(model) => handleSortModelChange(model)}
       onFilterModelChange={(model) => debouncedHandleFilterModelChange(model)}
       rowCount={rowCount}
@@ -319,7 +330,6 @@ function ListTableServer(props) {
       detailPanelExpandedRowIds={detailPanelExpandedRowIds}
       onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
       processRowUpdate={processRowUpdate}
-      sortModel={sortModel}
       />
     </TableContent>
   )

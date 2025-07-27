@@ -13,7 +13,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from '../../../component/table/ListTableServer';
-import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
+import RiskPartnerKDVDetailPanel from '../components/RiskPartnerKDVDetailPanel';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
@@ -84,6 +84,9 @@ function RiskPartnersKDV() {
                     return 'bg-dark-red'
                 }
             }
+        },
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
@@ -164,7 +167,7 @@ function RiskPartnersKDV() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Risk Durumundaki Müşteriler"
+                title="KDV Farkı Uygulanan Müşteriler"
                 autoHeight
                 rows={riskPartnersKDV}
                 columns={riskPartnerColumns}
@@ -207,18 +210,16 @@ function RiskPartnersKDV() {
                 
             }
                 rowCount={riskPartnersKDVCount}
-                checkboxSelection
                 setParams={(value) => dispatch(setRiskPartnersKDVParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
-                sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerKDVDetailPanel uuid={params.row.uuid} riskPartnerKDVLeases={params.row.leases}></RiskPartnerKDVDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
