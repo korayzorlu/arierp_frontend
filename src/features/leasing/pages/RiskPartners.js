@@ -77,7 +77,7 @@ function RiskPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'overdue_days', headerName: 'Maks. Gecikme Gün', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 if (params.value <= 30){
                     return 'bg-yellow'
                 } else if (params.value > 30 && params.value <= 60){
@@ -88,6 +88,9 @@ function RiskPartners() {
                     return 'bg-dark-red'
                 }
             }
+        },
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
