@@ -175,7 +175,7 @@ function UpdatePartner() {
                         valueEmail={data.email || ""}
                         valueWeb={data.web || ""}
                         valuePhoneCountry={data.phoneCountry || user.location.country || 0}
-                        valuePhoneNumber={data.phoneNumber || ""}
+                        valuePhoneNumber={data.phoneNumber}
                         onChangeEmail={(value) => handleChangeField("email",value)}
                         onChangeWeb={(value) => handleChangeField("web",value)}
                         onChangePhoneCountry={(value) => handleChangeField("phoneCountry",value)}

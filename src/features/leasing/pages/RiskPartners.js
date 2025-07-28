@@ -5,7 +5,7 @@ import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, Grid, IconButton, TextField } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
@@ -24,6 +24,7 @@ import WarningNoticeDialog from '../components/WarningNoticeDialog';
 import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -41,6 +42,8 @@ function RiskPartners() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
+    const [projectOpen, setProjectOpen] = useState(false)
+    const [project, setProject] = useState("KIZILBÜK")
 
     // useEffect(() => {
     //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
@@ -110,10 +113,10 @@ function RiskPartners() {
                 }
             }
         },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>
@@ -186,6 +189,12 @@ function RiskPartners() {
         setData(data => ({...data, [field]:value}));
     };
 
+    const changeProject = (databaseTerm) => {
+        setProject(databaseTerm);
+        dispatch(setRiskPartnersLoading(true));
+        setProjectOpen(false);
+    };
+
     const handleChangeBiggerThan100 = async (value) => {
         if(!value){
             dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:true}));
@@ -206,7 +215,7 @@ function RiskPartners() {
                 getRowId={(row) => row.id}
                 loading={riskPartnersLoading}
                 customButtons={
-                    <>
+                    <>  
                         <CustomTableButton
                         title="İçe Aktar"
                         onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
@@ -232,6 +241,20 @@ function RiskPartners() {
                     onChange={(value) => handleChangeBiggerThan100(value)}
                     disabled={biggerThan100SwitchDisabled}
                     /> */}
+                    <FormControl sx={{mr: 2}}>
+                        <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        size='small'
+                        value='kizilbuk'
+                        label="Age"
+                        onChange={(value) => changeProject(value)}
+                        >
+                        <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                        <MenuItem value='sinpas'>SİNPAŞ</MenuItem>
+                        </Select>
+                    </FormControl>
                     <AndroidSwitch
                     label="Virman Göster"
                     checked={virmanSwitchPosition}

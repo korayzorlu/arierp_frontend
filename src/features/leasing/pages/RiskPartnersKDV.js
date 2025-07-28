@@ -100,10 +100,10 @@ function RiskPartnersKDV() {
                 }
             }
         },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>
@@ -118,7 +118,7 @@ function RiskPartnersKDV() {
             </Grid>
             )
         },
-        { field: 's', headerName: 'Statü', flex: 2 },
+        { field: 's', headerName: 'Statü', flex: 2, renderHeaderFilter: () => null, },
         { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={12} sx={{textAlign: 'center'}}>

@@ -102,6 +102,15 @@ function PartnerDialog(props) {
                         disabled={false}
                         fullWidth
                         />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Email"}
+                        variant='standard'
+                        value={partnerInformation.email}
+                        disabled={false}
+                        fullWidth
+                        />
                     </Stack>
                 </DialogContentText>
             </DialogContent>

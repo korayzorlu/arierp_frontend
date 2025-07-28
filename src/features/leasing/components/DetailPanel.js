@@ -114,6 +114,9 @@ function DetailPanel(props) {
                 
             )
         },
+        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'collection_status', headerName: 'Statü', flex:2 },
     ]
 
@@ -236,6 +239,7 @@ function DetailPanel(props) {
                     model: {
                         overdue_amount: 'sum',
                         processed_amount: 'sum',
+                        next_payment: 'sum',
                     },
                 },
             }}

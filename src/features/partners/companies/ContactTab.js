@@ -24,7 +24,6 @@ function ContactTab(props) {
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <TextField
-                    type="number"
                     size="small"
                     label={"Phone Number"}
                     variant='outlined'
