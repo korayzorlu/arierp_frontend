@@ -5,7 +5,7 @@ import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, Grid, IconButton } from '@mui/material';
+import { Chip, Grid, IconButton, TextField } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
@@ -33,6 +33,7 @@ function RiskPartners() {
 
     const [isPending, startTransition] = useTransition();
     
+    const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
@@ -77,7 +78,12 @@ function RiskPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
+            // valueOptions: [
+            //     { value: '0', label: '30 Günü Geçmeyenler' },
+            //     { value: '30', label: '30 Günü Geçenler' },    
+            // ],
+            cellClassName: (params) => {
                 if (params.value <= 30){
                     return 'bg-yellow'
                 } else if (params.value > 30 && params.value <= 60){
@@ -107,7 +113,7 @@ function RiskPartners() {
             </Grid>
             )
         },
-        { field: 's', headerName: 'Statü', flex: 2 },
+        { field: 'status', headerName: 'Durum', flex: 2, renderHeaderFilter: () => null },
         { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={12} sx={{textAlign: 'center'}}>
@@ -140,22 +146,13 @@ function RiskPartners() {
         dispatch(setWarningNoticeDialog(true));
     };
 
-    const handleAllDelete = async () => {
-        dispatch(setAlert({status:"info",text:"Removing items.."}));
-
-        try {
-
-            const response = await axios.post(`/leasing/delete_all_risk_partners/`,
-                { withCredentials: true},
-            );
-        } catch (error) {
-            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        };
-    };
-
     const handleChangeSpecialPartners = async (value) => {
         dispatch(setRiskPartnersParams({special:value}));
         setSwitchPosition(value);
+    };
+
+    const handleChangeField = (field,value) => {
+        setData(data => ({...data, [field]:value}));
     };
 
     const handleChangeBiggerThan100 = async (value) => {

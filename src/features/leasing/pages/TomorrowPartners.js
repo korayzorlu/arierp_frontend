@@ -144,7 +144,7 @@ function TomorrowPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Tomorrow Durumundaki Müşteriler"
+                title="Yarın Ödemesi Olan Müşteriler"
                 autoHeight
                 rows={tomorrowPartners}
                 columns={tomorrowPartnerColumns}

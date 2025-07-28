@@ -140,7 +140,7 @@ function ListTableServer(props) {
             setFilterParams({...filterParams,[item.field]:item.value})
             setParams({[item.field]:item.value});
           } else {
-           // setFilterParams({...filterParams,[item.field]:""})
+          // setFilterParams({...filterParams,[item.field]:""})
             setParams({[item.field]:""});
           };
       });
@@ -154,6 +154,13 @@ function ListTableServer(props) {
       setParams(emptyParams);
     } else {
       setParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})});
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    console.log(event)
+    if (event.key === 'Enter') {
+      
     }
   };
 
@@ -200,7 +207,7 @@ function ListTableServer(props) {
   }));
 
   return (
-    <TableContent height={height}>
+    <TableContent height={height} onKeyDown={handleKeyDown}>
       <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,

@@ -23,6 +23,26 @@ const initialState = {
         format: 'datatables'
     },
     riskPartnersKDVLoading:false,
+    //to warned
+    toWarnedRiskPartners:[],
+    toWarnedRiskPartnersCount:0,
+    toWarnedRiskPartnersParams:{
+        special: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    toWarnedRiskPartnersLoading:false,
+    //to terminated
+    toTerminatedRiskPartners:[],
+    toTerminatedRiskPartnersCount:0,
+    toTerminatedRiskPartnersParams:{
+        special: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    toTerminatedRiskPartnersLoading:false,
 }
 
 export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
@@ -43,6 +63,36 @@ export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', asyn
 export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/kdv_risk_partners/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/to_warned_risk_partners/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchToTerminatedRiskPartners = createAsyncThunk('auth/fetchToTerminatedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/to_terminated_risk_partners/?active_company=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -168,7 +218,7 @@ const riskPartnerSlice = createSlice({
             };
         },
         deleteRiskPartners: (state,action) => {
-            state.riskPartnersKDV = [];
+            state.riskPartners = [];
         },
         //kdv
         setRiskPartnersKDVLoading: (state,action) => {
@@ -189,6 +239,46 @@ const riskPartnerSlice = createSlice({
         },
         deleteRiskPartnersKDV: (state,action) => {
             state.riskPartnersKDV = [];
+        },
+        //to warned
+        setToWarnedRiskPartnersLoading: (state,action) => {
+            state.toWarnedRiskPartnersLoading = action.payload;
+        },
+        setToWarnedRiskPartnersParams: (state,action) => {
+            state.toWarnedRiskPartnersParams = {
+                ...state.toWarnedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetToWarnedRiskPartnersParams: (state,action) => {
+            state.toWarnedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteToWarnedRiskPartners: (state,action) => {
+            state.toWarnedRiskPartners = [];
+        },
+        //to terminated
+        setToTerminatedRiskPartnersLoading: (state,action) => {
+            state.toTerminatedRiskPartnersLoading = action.payload;
+        },
+        setToTerminatedRiskPartnersParams: (state,action) => {
+            state.toTerminatedRiskPartnersParams = {
+                ...state.toTerminatedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetToTerminatedRiskPartnersParams: (state,action) => {
+            state.toTerminatedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteToTerminatedRiskPartners: (state,action) => {
+            state.toTerminatedRiskPartners = [];
         },
     },
     extraReducers: (builder) => {
@@ -216,6 +306,30 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchRiskPartnersKDV.rejected, (state,action) => {
                 state.riskPartnersKDVLoading = false
             })
+            //to warned
+            .addCase(fetchToWarnedRiskPartners.pending, (state) => {
+                state.toWarnedRiskPartnersLoading = true
+            })
+            .addCase(fetchToWarnedRiskPartners.fulfilled, (state,action) => {
+                state.toWarnedRiskPartners = action.payload.data || action.payload;
+                state.toWarnedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.toWarnedRiskPartnersLoading = false
+            })
+            .addCase(fetchToWarnedRiskPartners.rejected, (state,action) => {
+                state.toWarnedRiskPartnersLoading = false
+            })
+            //to terminated
+            .addCase(fetchToTerminatedRiskPartners.pending, (state) => {
+                state.toTerminatedRiskPartnersLoading = true
+            })
+            .addCase(fetchToTerminatedRiskPartners.fulfilled, (state,action) => {
+                state.toTerminatedRiskPartners = action.payload.data || action.payload;
+                state.toTerminatedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.toTerminatedRiskPartnersLoading = false
+            })
+            .addCase(fetchToTerminatedRiskPartners.rejected, (state,action) => {
+                state.toTerminatedRiskPartnersLoading = false
+            })
     },
   
 })
@@ -228,6 +342,14 @@ export const {
     setRiskPartnersKDVLoading,
     setRiskPartnersKDVParams,
     resetRiskPartnersKDVParams,
-    deleteRiskPartnersKDV
+    deleteRiskPartnersKDV,
+    setToWarnedRiskPartnersLoading,
+    setToWarnedRiskPartnersParams,
+    resetToWarnedRiskPartnersParams,
+    deleteToWarnedRiskPartners,
+    setToTerminatedRiskPartnersLoading,
+    setToTerminatedRiskPartnersParams,
+    resetToTerminatedRiskPartnersParams,
+    deleteToTerminatedRiskPartners,
 } = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;

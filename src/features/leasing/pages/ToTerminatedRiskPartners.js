@@ -1,11 +1,11 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTodayPartners, setTodayPartnersLoading, setTodayPartnersParams } from '../../../store/slices/leasing/todayPartnerSlice';
+import { fetchRiskPartners, fetchToTerminatedRiskPartners, setToTerminatedRiskPartnersLoading, setToTerminatedRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, Grid, IconButton } from '@mui/material';
+import { Chip, Grid, IconButton, TextField } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
@@ -13,7 +13,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from '../../../component/table/ListTableServer';
-import TodayPartnerDetailPanel from '../components/TodayPartnerDetailPanel';
+import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
@@ -25,14 +25,15 @@ import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/cont
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 
-function TodayPartners() {
+function ToTerminatedRiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {todayPartners,todayPartnersCount,todayPartnersParams,todayPartnersLoading} = useSelector((store) => store.todayPartner);
+    const {toTerminatedRiskPartners,toTerminatedRiskPartnersCount,toTerminatedRiskPartnersParams,toTerminatedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
     const [isPending, startTransition] = useTransition();
     
+    const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
@@ -40,18 +41,20 @@ function TodayPartners() {
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
 
     // useEffect(() => {
-    //     dispatch(setTodayPartnersParams({bigger_than_100:true}));
+    //     dispatch(setToTerminatedRiskPartnersParams({bigger_than_100:true}));
     // }, []);
+
+
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));
+            dispatch(fetchToTerminatedRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));
         });
 
         
-    }, [activeCompany,todayPartnersParams,dispatch]);
+    }, [activeCompany,toTerminatedRiskPartnersParams,dispatch]);
 
-    const todayPartnerColumns = [
+    const riskPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     {
@@ -75,6 +78,26 @@ function TodayPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
+        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
+            // valueOptions: [
+            //     { value: '0', label: '30 Günü Geçmeyenler' },
+            //     { value: '30', label: '30 Günü Geçenler' },    
+            // ],
+            cellClassName: (params) => {
+                if (params.value <= 30){
+                    return 'bg-yellow'
+                } else if (params.value > 30 && params.value <= 60){
+                    return 'bg-orange'
+                } else if (params.value > 60 && params.value <= 90){
+                    return 'bg-light-red'
+                } else if (params.value > 90){
+                    return 'bg-dark-red'
+                }
+            }
+        },
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -90,7 +113,17 @@ function TodayPartners() {
             </Grid>
             )
         },
-        { field: 's', headerName: 'Statü', flex: 2 },
+        { field: 'status', headerName: 'Durum', flex: 2, renderHeaderFilter: () => null },
+        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={12} sx={{textAlign: 'center'}}>
+                    <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.crm_code)}>
+                        <FeedIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
+            )
+        },
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -113,29 +146,20 @@ function TodayPartners() {
         dispatch(setWarningNoticeDialog(true));
     };
 
-    const handleAllDelete = async () => {
-        dispatch(setAlert({status:"info",text:"Removing items.."}));
-
-        try {
-
-            const response = await axios.post(`/leasing/delete_all_today_partners/`,
-                { withCredentials: true},
-            );
-        } catch (error) {
-            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        };
+    const handleChangeSpecialPartners = async (value) => {
+        dispatch(setToTerminatedRiskPartnersParams({special:value}));
+        setSwitchPosition(value);
     };
 
-    const handleChangeSpecialPartners = async (value) => {
-        dispatch(setTodayPartnersParams({special:value}));
-        setSwitchPosition(value);
+    const handleChangeField = (field,value) => {
+        setData(data => ({...data, [field]:value}));
     };
 
     const handleChangeBiggerThan100 = async (value) => {
         if(!value){
-            dispatch(setTodayPartnersParams({bigger_than_100:value,overdue_amount:true}));
+            dispatch(setToTerminatedRiskPartnersParams({bigger_than_100:value,overdue_amount:true}));
         }else{
-            dispatch(setTodayPartnersParams({bigger_than_100:value,overdue_amount:false}));
+            dispatch(setToTerminatedRiskPartnersParams({bigger_than_100:value,overdue_amount:false}));
         }
         setBiggerThan100SwitchPosition(value);
     };
@@ -144,12 +168,12 @@ function TodayPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Bugün Ödemesi Olan Müşteriler"
+                title="İhtar Çekilecek Müşteriler"
                 autoHeight
-                rows={todayPartners}
-                columns={todayPartnerColumns}
+                rows={toTerminatedRiskPartners}
+                columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={todayPartnersLoading}
+                loading={toTerminatedRiskPartnersLoading}
                 customButtons={
                     <>
                         <CustomTableButton
@@ -164,7 +188,7 @@ function TodayPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -186,25 +210,26 @@ function TodayPartners() {
                 </>
                 
             }
-                rowCount={todayPartnersCount}
-                setParams={(value) => dispatch(setTodayPartnersParams(value))}
+                rowCount={toTerminatedRiskPartnersCount}
+                setParams={(value) => dispatch(setToTerminatedRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
+                //sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<TodayPartnerDetailPanel uuid={params.row.uuid} todayPartnerLeases={params.row.leases}></TodayPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_today_partners/"
+            deleteURL="/leasing/delete_risk_partners/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setTodayPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));dispatch(setTodayPartnersLoading(false));}}
+            startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>
@@ -213,4 +238,4 @@ function TodayPartners() {
     )
 }
 
-export default TodayPartners
+export default ToTerminatedRiskPartners
