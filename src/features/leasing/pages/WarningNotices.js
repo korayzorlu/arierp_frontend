@@ -27,8 +27,8 @@ function WarningNotices() {
     }, [activeCompany,warningNoticesParams,dispatch]);
 
     const columns = [
-        { field: 'partner', headerName: 'Müşteri', flex: 4 },
-        { field: 'contract', headerName: 'Sözleşme No', flex: 1 },
+        { field: 'partner_name', headerName: 'Müşteri', flex: 4 },
+        { field: 'contract_code', headerName: 'Sözleşme No', flex: 1 },
         { field: 'process_start_date', headerName: 'İhtar Tarihi', flex: 2 },
         { field: 'service_date', headerName: 'Tebliğ Tarihi', flex: 2 },
         { field: 'official_cancellation_date', headerName: 'Öngörülen Fesih Tarihi', flex: 2 },
