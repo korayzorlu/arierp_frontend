@@ -51,7 +51,7 @@ function AddBankActivityLeaseDialog(props) {
                             {params.value}
                         </Grid>
                         <Grid size={4}>
-                            <Chip key={params.row.id} variant='contained' color="secondary" icon={<StarIcon />} label="Özel" size='small'/>
+                            <Chip key={params.row.id} variant='outlined' color="neutral" icon={<StarIcon />} label="Özel" size='small'/>
                         </Grid>
                     </Grid>
                 :

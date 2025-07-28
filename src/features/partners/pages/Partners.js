@@ -60,7 +60,7 @@ function Partners() {
                                                 :
                                                     value === "special"
                                                     ?
-                                                        <Chip key={index} variant='contained' color="secondary" icon={<StarIcon />} label="Özel" size='small'/>
+                                                        <Chip key={index} variant='outlined' color="neutral" icon={<StarIcon />} label="Özel" size='small'/>
                                                     :
                                                         <Chip key={index} variant='contained' color="success" icon={<BusinessCenterIcon />} label={capitalize(value)} size='small'/>
                                 )
