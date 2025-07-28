@@ -8,6 +8,8 @@ const initialState = {
     riskPartnersCount:0,
     riskPartnersParams:{
         special: false,
+        barter: false,
+        virman: false,
         start: 0 * 50,
         end: (0 + 1) * 50,
         format: 'datatables'
@@ -18,6 +20,8 @@ const initialState = {
     riskPartnersKDVCount:0,
     riskPartnersKDVParams:{
         special: false,
+        barter: false,
+        virman: false,
         start: 0 * 50,
         end: (0 + 1) * 50,
         format: 'datatables'
@@ -28,6 +32,8 @@ const initialState = {
     toWarnedRiskPartnersCount:0,
     toWarnedRiskPartnersParams:{
         special: false,
+        barter: false,
+        virman: false,
         start: 0 * 50,
         end: (0 + 1) * 50,
         format: 'datatables'
@@ -38,6 +44,8 @@ const initialState = {
     toTerminatedRiskPartnersCount:0,
     toTerminatedRiskPartnersParams:{
         special: false,
+        barter: false,
+        virman: false,
         start: 0 * 50,
         end: (0 + 1) * 50,
         format: 'datatables'

@@ -36,7 +36,9 @@ function ToWarnedRiskPartners() {
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [switchDisabled, setSwitchDisabled] = useState(false);
-    const [switchPosition, setSwitchPosition] = useState(false);
+    const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
+    const [barterSwitchPosition, setBarterSwitchPosition] = useState(false);
+    const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
 
@@ -57,21 +59,34 @@ function ToWarnedRiskPartners() {
     const riskPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
-                    {
-                        params.row.special
-                        ?
-                            <Grid container spacing={2}>
-                                <Grid size={8}>
-                                    {params.value}
-                                </Grid>
-                                <Grid size={4}>
-                                    <Chip key={params.row.id} variant='outlined' color="neutral" icon={<StarIcon />} label="Özel" size='small'/>
-                                </Grid>
-                            </Grid>
-                        :
-                            params.value
-                    }
-                    
+                    <Grid container spacing={2}>
+                        <Grid size={8}>
+                            {params.value}
+                        </Grid>
+                        <Grid size={4}>
+                            {
+                                params.row.special
+                                ?
+                                <Chip key={params.row.id} variant='outlined' color="neutral" icon={<StarIcon />} label="Özel" size='small'/>
+                                :
+                                null
+                            }
+                            {
+                                params.row.barter
+                                ?
+                                <Chip key={params.row.id} variant='outlined' color="neutral" icon={<StarIcon />} label="Barter" size='small'/>
+                                :
+                                null
+                            }
+                            {
+                                params.row.virman
+                                ?
+                                <Chip key={params.row.id} variant='outlined' color="neutral" icon={<StarIcon />} label="Virman" size='small'/>
+                                :
+                                null
+                            }
+                        </Grid>
+                    </Grid>
                 </div>
                 
             )
@@ -146,8 +161,24 @@ function ToWarnedRiskPartners() {
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({special:value}));
-        setSwitchPosition(value);
+        dispatch(setToWarnedRiskPartnersParams({special:value,barter:false,virman:false}));
+        setSpecialSwitchPosition(value);
+        setBarterSwitchPosition(false);
+        setVirmanSwitchPosition(false);
+    };
+
+    const handleChangeBarterPartners = async (value) => {
+        dispatch(setToWarnedRiskPartnersParams({barter:value,special:false,virman:false}));
+        setBarterSwitchPosition(value);
+        setSpecialSwitchPosition(false);
+        setVirmanSwitchPosition(false);
+    };
+
+    const handleChangeVirmanPartners = async (value) => {
+        dispatch(setToWarnedRiskPartnersParams({virman:value,special:false,barter:false}));
+        setVirmanSwitchPosition(value);
+        setSpecialSwitchPosition(false);
+        setBarterSwitchPosition(false);
     };
 
     const handleChangeField = (field,value) => {
@@ -201,10 +232,19 @@ function ToWarnedRiskPartners() {
                     disabled={biggerThan100SwitchDisabled}
                     /> */}
                     <AndroidSwitch
+                    label="Virman Göster"
+                    checked={virmanSwitchPosition}
+                    onChange={(value) => handleChangeVirmanPartners(value)}
+                    />
+                    <AndroidSwitch
+                    label="Barter Göster"
+                    checked={barterSwitchPosition}
+                    onChange={(value) => handleChangeBarterPartners(value)}
+                    />
+                    <AndroidSwitch
                     label="Özel Müşterileri Göster"
-                    checked={switchPosition}
+                    checked={specialSwitchPosition}
                     onChange={(value) => handleChangeSpecialPartners(value)}
-                    disabled={switchDisabled}
                     />
                 </>
                 

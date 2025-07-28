@@ -8,6 +8,8 @@ const initialState = {
     yesterdayPartnersCount:0,
     yesterdayPartnersParams:{
         special: false,
+        barter: false,
+        virman: false,
         start: 0 * 50,
         end: (0 + 1) * 50,
         format: 'datatables'
