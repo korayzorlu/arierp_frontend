@@ -97,7 +97,7 @@ function DeliveryConfirms() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'main_paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: renderProgress },
+        { field: 'main_paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: renderProgress },
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -115,18 +115,7 @@ function DeliveryConfirms() {
                 </Grid>
             </Grid>
             )
-        },
-        { field: 'status', headerName: 'Durum', flex: 2, renderHeaderFilter: () => null },
-        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
-            <Grid container spacing={1}>
-                <Grid size={12} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.crm_code)}>
-                        <FeedIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
-            )
-        },
+        }
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -193,7 +182,7 @@ function DeliveryConfirms() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Risk Durumundaki Müşteriler"
+                title="Teslim Onay"
                 autoHeight
                 rows={deliveryConfirms}
                 columns={deliveryConfirmColumns}
