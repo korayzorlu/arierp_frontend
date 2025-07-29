@@ -2,17 +2,19 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { Box, IconButton } from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
-import { fetchContractPaymentsInLease } from '../../../store/slices/contracts/contractSlice';
+import { fetchContractPaymentsInLease, fetchWarningNoticeInformation } from '../../../store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import ContractPaymentDialog from './ContractPaymentDialog';
+import { cellProgress } from '../../../component/progress/CellProgress';
+import FeedIcon from '@mui/icons-material/Feed';
 
-function RiskPartnerDetailPanel(props) {
+function RiskPartnerKDVDetailPanel(props) {
     const {uuid, riskPartnerKDVLeases} = props;
 
     const {user} = useSelector((store) => store.auth);
@@ -85,6 +87,22 @@ function RiskPartnerDetailPanel(props) {
                 
             )
         },
+        { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
+        { field: 'status', headerName: 'Durum', flex:2 },
+        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+                params.row.status === "İhtar Çekildi"
+                ?
+                    <Grid container spacing={1}>
+                        <Grid size={12} sx={{textAlign: 'center'}}>
+                            <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.contract)}>
+                                <FeedIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                :
+                    null
+            )
+        },
         { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
                 params.value
                 ?
@@ -110,6 +128,11 @@ function RiskPartnerDetailPanel(props) {
             dispatch(setInstallmentDialog(true));
             dispatch(setInstallmentsLoading(false));
         };
+    };
+
+    const handleWarningNoticeDialog = async (contract) => {
+        dispatch(fetchWarningNoticeInformation({activeCompany,contract:contract}));
+        dispatch(setWarningNoticeDialog(true));
     };
 
     return (
@@ -149,4 +172,4 @@ function RiskPartnerDetailPanel(props) {
     )
 }
 
-export default RiskPartnerDetailPanel
+export default RiskPartnerKDVDetailPanel

@@ -24,8 +24,7 @@ import WarningNoticeDialog from '../components/WarningNoticeDialog';
 import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { renderProgress } from '../components/Progress';
+import { cellProgress } from '../../../component/progress/CellProgress';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -97,7 +96,7 @@ function DeliveryConfirms() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'main_paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: renderProgress },
+        { field: 'main_paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },

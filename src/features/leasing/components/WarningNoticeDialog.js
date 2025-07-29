@@ -1,24 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setWarningNoticeDialog, setMessageDialog } from '../../../store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
-import { Button, DialogActions, DialogContent, DialogContentText, Stack } from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField } from '@mui/material';
 import BasicTable from '../../../component/table/BasicTable';
-import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
+import { fetchWarningNoticeInformation, fetchWarningNoticeInLease } from '../../../store/slices/contracts/contractSlice';
 
 function WarningNoticeDialog(props) {
-    const {user} = props;
+    const {user,contract} = props;
 
     const {activeCompany} = useSelector((store) => store.organization);
     const {warningNoticeDialog} = useSelector((store) => store.notification);
-    const {warningNoticesLoading,warningNoticesInLease,warningNoticesInLeaseCode} = useSelector((store) => store.contract);
+    const {warningNoticesLoading,warningNoticesInLease,warningNoticesInLeaseCode,warningNoticeInformation} = useSelector((store) => store.contract);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        console.log(warningNoticesInLeaseCode)
-        dispatch(fetchWarningNoticesInLease({activeCompany,warningNoticesInLeaseCode}));
-    }, [])
 
     const handleClose = () => {
         dispatch(setWarningNoticeDialog(false))
@@ -51,33 +46,97 @@ function WarningNoticeDialog(props) {
         aria-describedby="alert-dialog-description"
         elevation={3}
         variant="outlined"
-        maxWidth="xl"
+        maxWidth="md"
         fullWidth
         >
             
+            <DialogTitle id="alert-dialog-title">
+                İhtar Detayı
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
-                        <>
-                            <BasicTable
-                            title="İhtarlar"
-                            rows={warningNoticesInLease}
-                            columns={columns}
-                            getRowId={(row) => row.id}
-                            disableRowSelectionOnClick={true}
-                            loading={warningNoticesLoading}
-                            // initialState={{
-                            //     aggregation: {
-                            //         model: {
-                            //             debit_amount: 'sum',
-                            //             credit_amount: 'sum',
-                            //             local_debit_amount: 'sum',
-                            //             local_credit_amount: 'sum',
-                            //         },
-                            //     },
-                            // }}
-                            />
-                        </>
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Müşteri İsmi"}
+                        variant='standard'
+                        value={warningNoticeInformation.partner}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Sözleşme No"}
+                        variant='standard'
+                        value={warningNoticeInformation.contract}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"İhtar Tarihi"}
+                        variant='standard'
+                        value={warningNoticeInformation.process_start_date}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Tebliğ Tarihi"}
+                        variant='standard'
+                        value={warningNoticeInformation.service_date}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Öngörülen Fesih Tarihi"}
+                        variant='standard'
+                        value={warningNoticeInformation.official_cancellation_date}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Fesihe Kalan Gün Sayısı"}
+                        variant='standard'
+                        value={warningNoticeInformation.termination_days}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"İhtar Borcu"}
+                        variant='standard'
+                        value={`${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(warningNoticeInformation.debit_amount)} ${warningNoticeInformation.currency}`}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Ödenen Tutar"}
+                        variant='standard'
+                        value={`${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(warningNoticeInformation.paid)} ${warningNoticeInformation.currency}`}
+                        disabled={false}
+                        fullWidth
+                        />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Kalan Tutar"}
+                        variant='standard'
+                        value={`${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(warningNoticeInformation.diff)} ${warningNoticeInformation.currency}`}
+                        disabled={false}
+                        fullWidth
+                        />
                     </Stack>
                 </DialogContentText>
             </DialogContent>

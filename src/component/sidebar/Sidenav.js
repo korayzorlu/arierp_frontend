@@ -125,7 +125,7 @@ function Sidenav() {
                                                     className={location.pathname.startsWith(item.route) ? "active" : ""}
                                                     name={item.label}
                                                     component={<Link to={item.route}></Link>}
-                                                    icon={getIconComponent(item.icon)}
+                                                    //icon={getIconComponent(item.icon)}
                                                 >
                                                     {item.label}
                                                 </MenuItem>

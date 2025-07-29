@@ -161,7 +161,7 @@ function EditProgress(props) {
   );
 }
 
-export function renderProgress(params) {
+export function cellProgress(params) {
   if (params.value == null) {
     return '';
   }

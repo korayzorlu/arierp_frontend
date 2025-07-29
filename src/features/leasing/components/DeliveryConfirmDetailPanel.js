@@ -11,7 +11,7 @@ import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchContractPaymentsInLease } from '../../../store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import ContractPaymentDialog from './ContractPaymentDialog';
-import { renderProgress } from './Progress';
+import { cellProgress } from '../../../component/progress/CellProgress';
 
 function DeliveryConfirmDetailPanel(props) {
     const {uuid, deliveryConfirmLeases} = props;
@@ -86,7 +86,7 @@ function DeliveryConfirmDetailPanel(props) {
                 
             )
         },
-        { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: renderProgress },
+        { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
         { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
                 params.value
                 ?

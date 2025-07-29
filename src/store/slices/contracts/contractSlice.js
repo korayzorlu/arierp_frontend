@@ -34,6 +34,7 @@ const initialState = {
     warningNoticesLoading:false,
     warningNoticesInLease:[],
     warningNoticesInLeaseCode:0,
+    warningNoticeInformation:{},
 }
 
 export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({activeCompany,serverModels=null,params=null}) => {
@@ -183,6 +184,21 @@ export const fetchWarningNoticesInLease = createAsyncThunk('organization/fetchWa
     return response.data;
 });
 
+export const fetchWarningNoticeInformation = createAsyncThunk('auth/fetchWarningNoticeInformation', async ({activeCompany,contract},{rejectWithValue}) => {
+    try {
+        const response = await axios.post(`/contracts/warning_notice_information/`, {
+            active_company:activeCompany.id,
+            contract:contract
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
+
 const contractSlice = createSlice({
     name:"contract",
     initialState,
@@ -282,6 +298,18 @@ const contractSlice = createSlice({
             })
             .addCase(fetchWarningNoticesInLease.rejected, (state,action) => {
                 state.warningNoticesLoading = false;
+            })
+            //fetch warning notice information
+            .addCase(fetchWarningNoticeInformation.pending, (state) => {
+
+            })
+            .addCase(fetchWarningNoticeInformation.fulfilled, (state,action) => {
+                state.warningNoticeInformation = action.payload.warning_notice;
+            })
+            .addCase(fetchWarningNoticeInformation.rejected, (state,action) => {
+                state.authMessage = action.payload.status === 400
+                    ? {color:"text-red-500",icon:"",text:action.payload.message}
+                    : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
             })
     },
   

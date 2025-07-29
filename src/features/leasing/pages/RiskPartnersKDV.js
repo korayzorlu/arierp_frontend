@@ -118,17 +118,6 @@ function RiskPartnersKDV() {
             </Grid>
             )
         },
-        { field: 's', headerName: 'Statü', flex: 2, renderHeaderFilter: () => null, },
-        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
-            <Grid container spacing={1}>
-                <Grid size={12} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.crm_code)}>
-                        <FeedIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
-            )
-        },
     ]
 
     const handleProfileDialog = async (params,event) => {
