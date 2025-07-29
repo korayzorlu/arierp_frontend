@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
+import { fetchDeliveryConfirms, setDeliveryConfirmsLoading, setDeliveryConfirmsParams } from '../../../store/slices/leasing/riskPartnerSlice';
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
@@ -13,7 +13,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from '../../../component/table/ListTableServer';
-import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
+import DeliveryConfirmDetailPanel from '../components/DeliveryConfirmDetailPanel';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
@@ -25,10 +25,11 @@ import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/cont
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { renderProgress } from '../components/Progress';
 
-function RiskPartners() {
+function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {riskPartners,riskPartnersCount,riskPartnersParams,riskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {deliveryConfirms,deliveryConfirmsCount,deliveryConfirmsParams,deliveryConfirmsLoading} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
@@ -46,20 +47,20 @@ function RiskPartners() {
     const [project, setProject] = useState("KIZILBÜK")
 
     // useEffect(() => {
-    //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
+    //     dispatch(setDeliveryConfirmsParams({bigger_than_100:true}));
     // }, []);
 
 
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));
+            dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));
         });
 
         
-    }, [activeCompany,riskPartnersParams,dispatch]);
+    }, [activeCompany,deliveryConfirmsParams,dispatch]);
 
-    const riskPartnerColumns = [
+    const deliveryConfirmColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     <Grid container spacing={2}>
@@ -96,23 +97,7 @@ function RiskPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
-            // valueOptions: [
-            //     { value: '0', label: '30 Günü Geçmeyenler' },
-            //     { value: '30', label: '30 Günü Geçenler' },    
-            // ],
-            cellClassName: (params) => {
-                if (params.value <= 30){
-                    return 'bg-yellow'
-                } else if (params.value > 30 && params.value <= 60){
-                    return 'bg-orange'
-                } else if (params.value > 60 && params.value <= 90){
-                    return 'bg-light-red'
-                } else if (params.value > 90){
-                    return 'bg-dark-red'
-                }
-            }
-        },
+        { field: 'main_paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: renderProgress },
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -165,21 +150,21 @@ function RiskPartners() {
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setRiskPartnersParams({special:value,barter:false,virman:false}));
+        dispatch(setDeliveryConfirmsParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
         setBarterSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeBarterPartners = async (value) => {
-        dispatch(setRiskPartnersParams({barter:value,special:false,virman:false}));
+        dispatch(setDeliveryConfirmsParams({barter:value,special:false,virman:false}));
         setBarterSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeVirmanPartners = async (value) => {
-        dispatch(setRiskPartnersParams({virman:value,special:false,barter:false}));
+        dispatch(setDeliveryConfirmsParams({virman:value,special:false,barter:false}));
         setVirmanSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setBarterSwitchPosition(false);
@@ -191,15 +176,15 @@ function RiskPartners() {
 
     const changeProject = (databaseTerm) => {
         setProject(databaseTerm);
-        dispatch(setRiskPartnersLoading(true));
+        dispatch(setDeliveryConfirmsLoading(true));
         setProjectOpen(false);
     };
 
     const handleChangeBiggerThan100 = async (value) => {
         if(!value){
-            dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:true}));
+            dispatch(setDeliveryConfirmsParams({bigger_than_100:value,overdue_amount:true}));
         }else{
-            dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:false}));
+            dispatch(setDeliveryConfirmsParams({bigger_than_100:value,overdue_amount:false}));
         }
         setBiggerThan100SwitchPosition(value);
     };
@@ -210,10 +195,10 @@ function RiskPartners() {
                 <ListTableServer
                 title="Risk Durumundaki Müşteriler"
                 autoHeight
-                rows={riskPartners}
-                columns={riskPartnerColumns}
+                rows={deliveryConfirms}
+                columns={deliveryConfirmColumns}
                 getRowId={(row) => row.id}
-                loading={riskPartnersLoading}
+                loading={deliveryConfirmsLoading}
                 customButtons={
                     <>  
                         <CustomTableButton
@@ -228,7 +213,7 @@ function RiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -276,8 +261,8 @@ function RiskPartners() {
                 </>
                 
             }
-                rowCount={riskPartnersCount}
-                setParams={(value) => dispatch(setRiskPartnersParams(value))}
+                rowCount={deliveryConfirmsCount}
+                setParams={(value) => dispatch(setDeliveryConfirmsParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
@@ -285,17 +270,17 @@ function RiskPartners() {
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<DeliveryConfirmDetailPanel uuid={params.row.uuid} deliveryConfirmLeases={params.row.leases}></DeliveryConfirmDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
             deleteURL="/leasing/delete_risk_partners/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));dispatch(setRiskPartnersLoading(false));}}
+            startEvent={() => dispatch(setDeliveryConfirmsLoading(true))}
+            finalEvent={() => {dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));dispatch(setDeliveryConfirmsLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>
@@ -304,4 +289,4 @@ function RiskPartners() {
     )
 }
 
-export default RiskPartners
+export default DeliveryConfirms

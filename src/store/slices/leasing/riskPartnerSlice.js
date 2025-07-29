@@ -51,6 +51,18 @@ const initialState = {
         format: 'datatables'
     },
     toTerminatedRiskPartnersLoading:false,
+    //delivery confirm
+    deliveryConfirms:[],
+    deliveryConfirmsCount:0,
+    deliveryConfirmsParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    deliveryConfirmsLoading:false,
 }
 
 export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
@@ -101,6 +113,21 @@ export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRis
 export const fetchToTerminatedRiskPartners = createAsyncThunk('auth/fetchToTerminatedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/to_terminated_risk_partners/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchDeliveryConfirms = createAsyncThunk('auth/fetchDeliveryConfirms', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/delivery_confirms/?active_company=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -288,6 +315,26 @@ const riskPartnerSlice = createSlice({
         deleteToTerminatedRiskPartners: (state,action) => {
             state.toTerminatedRiskPartners = [];
         },
+        //delivery confirm
+        setDeliveryConfirmsLoading: (state,action) => {
+            state.deliveryConfirmsLoading = action.payload;
+        },
+        setDeliveryConfirmsParams: (state,action) => {
+            state.deliveryConfirmsParams = {
+                ...state.deliveryConfirmsParams,
+                ...action.payload
+            };
+        },
+        resetDeliveryConfirmsParams: (state,action) => {
+            state.deliveryConfirmsParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteDeliveryConfirms: (state,action) => {
+            state.deliveryConfirms = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -338,6 +385,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchToTerminatedRiskPartners.rejected, (state,action) => {
                 state.toTerminatedRiskPartnersLoading = false
             })
+            //delivery confirm
+            .addCase(fetchDeliveryConfirms.pending, (state) => {
+                state.deliveryConfirmsLoading = true
+            })
+            .addCase(fetchDeliveryConfirms.fulfilled, (state,action) => {
+                state.deliveryConfirms = action.payload.data || action.payload;
+                state.deliveryConfirmsCount = action.payload.recordsTotal || 0;
+                state.deliveryConfirmsLoading = false
+            })
+            .addCase(fetchDeliveryConfirms.rejected, (state,action) => {
+                state.deliveryConfirmsLoading = false
+            })
     },
   
 })
@@ -359,5 +418,9 @@ export const {
     setToTerminatedRiskPartnersParams,
     resetToTerminatedRiskPartnersParams,
     deleteToTerminatedRiskPartners,
+    setDeliveryConfirmsLoading,
+    setDeliveryConfirmsParams,
+    resetDeliveryConfirmsParams,
+    deleteDeliveryConfirms,
 } = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;

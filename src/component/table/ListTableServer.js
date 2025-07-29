@@ -37,6 +37,7 @@ function ListTableServer(props) {
     excelExportOptions,
     excelOptions,
     customFilters,
+    customFiltersLeft,
     headerFilters,
     onCellClick,
     autoHeight,
@@ -224,6 +225,7 @@ function ListTableServer(props) {
               backButton: backButton,
               excelOptions: excelOptions,
               customFilters: customFilters,
+              customFiltersLeft: customFiltersLeft,
               apiRef: apiRef,
               quickFilterProps: {
                 quickFilterParser: (searchInput) => searchInput.split(',').map((value) => value.trim()),

@@ -13,8 +13,8 @@ import PaidIcon from '@mui/icons-material/Paid';
 import ContractPaymentDialog from './ContractPaymentDialog';
 import { renderProgress } from './Progress';
 
-function RiskPartnerDetailPanel(props) {
-    const {uuid, riskPartnerLeases} = props;
+function DeliveryConfirmDetailPanel(props) {
+    const {uuid, deliveryConfirmLeases} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
@@ -117,10 +117,10 @@ function RiskPartnerDetailPanel(props) {
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
             <ListTable
-            title={riskPartnerLeases.length > 1 ? `${riskPartnerLeases[0].partner} - ${riskPartnerLeases[0].partner_tc} Kira Planları` : ""}
+            title={deliveryConfirmLeases.length > 1 ? `${deliveryConfirmLeases[0].partner} - ${deliveryConfirmLeases[0].partner_tc} Kira Planları` : ""}
             height="auto"
             autoHeight
-            rows={riskPartnerLeases}
+            rows={deliveryConfirmLeases}
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
             loading={leasesLoading}
@@ -151,4 +151,4 @@ function RiskPartnerDetailPanel(props) {
     )
 }
 
-export default RiskPartnerDetailPanel
+export default DeliveryConfirmDetailPanel
