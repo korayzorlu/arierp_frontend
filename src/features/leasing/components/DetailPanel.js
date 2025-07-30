@@ -19,6 +19,7 @@ import ContractPaymentDialog from './ContractPaymentDialog';
 import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import OverdueDialog from '../../../component/dialog/OverdueDialog';
+import OverdueDetailDetailPanel from './OverdueDetailPanel';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;
@@ -95,11 +96,7 @@ function DetailPanel(props) {
         },
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderCell: (params) => (
-                <div style={{ cursor: 'pointer' }}>
-                    {params.value}
-                </div>
-            ),
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number',
             renderHeaderFilter: () => null,
             cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
@@ -151,10 +148,7 @@ function DetailPanel(props) {
             await dispatch(fetchInstallmentInformation(params.row.code)).unwrap();
             dispatch(setInstallmentDialog(true));
             dispatch(setInstallmentsLoading(false));
-        }else if(params.field==="overdue_amount"){
-            dispatch(setLeaseOverdues(params.row.overdues));
-            dispatch(setOverdueDialog(true));
-        };
+        }
     };
 
     const previousSelectedRows = useRef(new Set());
@@ -271,6 +265,8 @@ function DetailPanel(props) {
             processRowUpdate={handleProcessRowUpdate}
             onProcessRowUpdateError={(error) => console.log(error)}
             //cellFontSize="12px"
+            getDetailPanelHeight={() => "auto"}
+            getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
             <AddBankActivityLeaseDialog
             handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}
