@@ -36,6 +36,7 @@ function ToTerminatedRiskPartners() {
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [switchDisabled, setSwitchDisabled] = useState(false);
+    const [overdueTerminatedSwitchPosition, setOverdueTerminatedSwitchPosition] = useState(false);
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
     const [barterSwitchPosition, setBarterSwitchPosition] = useState(false);
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
@@ -150,6 +151,11 @@ function ToTerminatedRiskPartners() {
         dispatch(setWarningNoticeDialog(true));
     };
 
+    const handleChangeOverdueTerminatedPartners = async (value) => {
+        dispatch(setToTerminatedRiskPartnersParams({overdue_terminated:value}));
+        setOverdueTerminatedSwitchPosition(value);
+    };
+
     const handleChangeSpecialPartners = async (value) => {
         dispatch(setToTerminatedRiskPartnersParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
@@ -188,7 +194,7 @@ function ToTerminatedRiskPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="İhtar Çekilecek Müşteriler"
+                title="Sözleşmesi Fesih Edilecek Müşteriler"
                 autoHeight
                 rows={toTerminatedRiskPartners}
                 columns={riskPartnerColumns}
@@ -221,6 +227,11 @@ function ToTerminatedRiskPartners() {
                     onChange={(value) => handleChangeBiggerThan100(value)}
                     disabled={biggerThan100SwitchDisabled}
                     /> */}
+                    <AndroidSwitch
+                    label="Fesih Tarihi Gelenler"
+                    checked={overdueTerminatedSwitchPosition}
+                    onChange={(value) => handleChangeOverdueTerminatedPartners(value)}
+                    />
                     <AndroidSwitch
                     label="Virman Göster"
                     checked={virmanSwitchPosition}

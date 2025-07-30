@@ -15,6 +15,7 @@ const initialState = {
     installmentsInLease:[],
     installmentsLoading:false,
     overdueInformation:[],
+    leaseOverdues:[]
 }
 
 export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCompany,serverModels=null,params=null}) => {
@@ -143,10 +144,9 @@ export const fetchInstallmentsInLease = createAsyncThunk('organization/fetchInst
     return response.data;
 });
 
-export const fetchOverdueInformation = createAsyncThunk('auth/fetchOverdueInformation', async ({activeCompany,lease_code},{rejectWithValue}) => {
+export const fetchOverdueInformation = createAsyncThunk('auth/fetchOverdueInformation', async (lease_code,{rejectWithValue}) => {
     try {
-        const response = await axios.post('/leasing/overdue_information/', { 
-            active_company:activeCompany.id,
+        const response = await axios.post('/leasing/overdue_information/', {
             lease_code:lease_code
         },{ withCredentials: true, });
         return response.data;
@@ -180,6 +180,9 @@ const leaseSlice = createSlice({
         },
         deleteLeases: (state,action) => {
             state.leases = [];
+        },
+        setLeaseOverdues: (state,action) => {
+            state.leaseOverdues = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -223,5 +226,5 @@ const leaseSlice = createSlice({
   
 })
 
-export const {setLeasesLoading,setLeasesParams,resetLeasesParams,deleteLeases} = leaseSlice.actions;
+export const {setLeasesLoading,setLeasesParams,resetLeasesParams,deleteLeases,setLeaseOverdues} = leaseSlice.actions;
 export default leaseSlice.reducer;

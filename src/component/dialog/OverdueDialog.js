@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MUIDialog from '@mui/material/Dialog';
 import { Avatar, Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOverdueDialog } from '../../store/slices/notificationSlice';
 import BasicTable from '../table/BasicTable';
+import { fetchOverdueInformation } from '../../store/slices/leasing/leaseSlice';
 
 function OverdueDialog(props) {
     const {children} = props;
 
-    const {userInformation} = useSelector((store) => store.auth);
+    const {activeCompany} = useSelector((store) => store.organization);
     const {overdueDialog} = useSelector((store) => store.notification);
-    const {overdueInformation,leasesLoading} = useSelector((store) => store.lease);
+    const {leaseOverdues} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
+
+
 
     const handleClose = () => {
         dispatch(setOverdueDialog(false))
@@ -61,11 +64,10 @@ function OverdueDialog(props) {
                             <BasicTable
                             //title={`Kira Planı - ${overdueInformation ? overdueInformation.length > 0 ? overdueInformation[0]["lease"] : "" : ""}`}
                             title="Vadesi Geçmiş Borçlar"
-                            rows={overdueInformation}
+                            rows={leaseOverdues}
                             columns={userColumns}
                             getRowId={(row) => row.id}
                             disableRowSelectionOnClick={true}
-                            loading={leasesLoading}
                             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
                             />
                         </>

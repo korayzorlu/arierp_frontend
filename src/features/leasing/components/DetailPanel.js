@@ -3,7 +3,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOverdueInformation, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
+import { fetchOverdueInformation, setLeaseOverdues, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
 import { setAddBankActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setOverdueDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
@@ -141,7 +141,7 @@ function DetailPanel(props) {
 
     const handleProfileDialog = async (params,event) => {
         if (event) {
-            event.stopPropagation();  // 🔥 Detail panel kapanmasını engeller
+            event.stopPropagation();
         }
         if(params.field==="partner"){
             await dispatch(fetchPartnerInformation(params.row.partner_crm_code)).unwrap();
@@ -152,9 +152,8 @@ function DetailPanel(props) {
             dispatch(setInstallmentDialog(true));
             dispatch(setInstallmentsLoading(false));
         }else if(params.field==="overdue_amount"){
+            dispatch(setLeaseOverdues(params.row.overdues));
             dispatch(setOverdueDialog(true));
-            await dispatch(fetchOverdueInformation({activeCompany,lease_code:params.row.code})).unwrap();
-            
         };
     };
 
