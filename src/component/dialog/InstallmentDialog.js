@@ -11,7 +11,7 @@ function InstallmentDialog(props) {
 
     const {userInformation} = useSelector((store) => store.auth);
     const {installmentDialog} = useSelector((store) => store.notification);
-    const {installmentInformation,installmentsLoading} = useSelector((store) => store.installment);
+    const {installmentInformation,installmentsLoading,overdueInformation,overduesLoading} = useSelector((store) => store.installment);
 
     const dispatch = useDispatch();
 

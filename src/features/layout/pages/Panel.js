@@ -16,6 +16,7 @@ import { Grid } from '@mui/material';
 import { Stack } from '@mui/material';
 import PartnerDialog from '../../../component/dialog/PartnerDialog';
 import InstallmentDialog from '../../../component/dialog/InstallmentDialog';
+import OverdueDialog from '../../../component/dialog/OverdueDialog';
 
 function Panel() {
   const {alert} = useSelector((store) => store.notification);
@@ -111,6 +112,7 @@ function Panel() {
       <UserDialog/>
       <PartnerDialog/>
       <InstallmentDialog/>
+      <OverdueDialog/>
     </>
   )
 }

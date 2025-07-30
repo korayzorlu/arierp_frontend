@@ -13,7 +13,8 @@ const initialState = {
     },
     leasesLoading:false,
     installmentsInLease:[],
-    installmentsLoading:false
+    installmentsLoading:false,
+    overdueInformation:[],
 }
 
 export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCompany,serverModels=null,params=null}) => {
@@ -142,7 +143,20 @@ export const fetchInstallmentsInLease = createAsyncThunk('organization/fetchInst
     return response.data;
 });
 
-
+export const fetchOverdueInformation = createAsyncThunk('auth/fetchOverdueInformation', async ({activeCompany,lease_code},{rejectWithValue}) => {
+    try {
+        const response = await axios.post('/leasing/overdue_information/', { 
+            active_company:activeCompany.id,
+            lease_code:lease_code
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
 
 const leaseSlice = createSlice({
     name:"lease",
@@ -191,6 +205,18 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchInstallmentsInLease.rejected, (state,action) => {
                 state.installmentsLoading = false;
+            })
+            //fetch overdue information
+            .addCase(fetchOverdueInformation.pending, (state) => {
+
+            })
+            .addCase(fetchOverdueInformation.fulfilled, (state,action) => {
+                state.overdueInformation = action.payload.overdue;
+            })
+            .addCase(fetchOverdueInformation.rejected, (state,action) => {
+                state.authMessage = action.payload.status === 400
+                    ? {color:"text-red-500",icon:"",text:action.payload.message}
+                    : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
             })
             
     },

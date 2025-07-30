@@ -16,7 +16,7 @@ import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import './Installments.css';
-import { useGridApiRef, useKeepGroupedColumnsHidden } from '@mui/x-data-grid-premium';
+import { getGridStringOperators, useGridApiRef, useKeepGroupedColumnsHidden } from '@mui/x-data-grid-premium';
 import { Box, Grid, TextField, Typography } from '@mui/material';
 import { fetchLeases, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchUserInformation } from '../../../store/slices/authSlice';
@@ -28,6 +28,7 @@ import BasicTable from '../../../component/table/BasicTable';
 import DetailPanel from '../components/DetailPanel';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
+import OverdueDialog from '../../../component/dialog/OverdueDialog';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -132,6 +133,8 @@ function Collections() {
         { field: 'collection_status', headerName: 'Statü', flex:2 },
     ]
 
+
+    
     const bankActivityColumns = [
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'name', headerName: 'Name', flex: 2 },
@@ -143,6 +146,8 @@ function Collections() {
         { field: 'process_date_date', headerName: 'İşlem Tarihi', flex: 2 },
         { field: 'bank_account_no', headerName: 'Banka Hesap No', flex: 1 },
     ]
+
+    
 
     const handleAllDelete = async () => {
         dispatch(setAlert({status:"info",text:"Removing items.."}));
@@ -278,6 +283,7 @@ function Collections() {
             startEvent={() => dispatch(setCollectionsLoading(true))}
             finalEvent={() => {dispatch(fetchCollections({activeCompany}));dispatch(setCollectionsLoading(false));}}
             />
+            
         </PanelContent>
     )
 }

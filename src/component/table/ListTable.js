@@ -57,7 +57,8 @@ function ListTable(props) {
     onProcessRowUpdateError,
     specialButtons,
     noOverlay,
-    sortModel
+    sortModel,
+    cellFontSize
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -222,6 +223,17 @@ function ListTable(props) {
                 }
             }
             : {}
+          ),
+          ...(cellFontSize
+            ?
+              {
+                '& .MuiDataGrid-cell': {
+                  fontSize: cellFontSize,
+                }
+              }
+            :
+              {}
+
           )
           
       }}

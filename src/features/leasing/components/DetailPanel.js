@@ -3,9 +3,9 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
+import { fetchOverdueInformation, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setAddBankActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAddBankActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setOverdueDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
 import { updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
 import { setIsProgress } from '../../../store/slices/processSlice';
@@ -18,6 +18,7 @@ import AddBankActivityLeaseDialog from '../../../component/feedback/AddBankActiv
 import ContractPaymentDialog from './ContractPaymentDialog';
 import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
+import OverdueDialog from '../../../component/dialog/OverdueDialog';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;
@@ -78,11 +79,29 @@ function DetailPanel(props) {
                 </div>
             )
         },
-        { field: 'contract', headerName: 'Sözleşme', flex:2 },
-        { field: 'project', headerName: 'Proje', flex:6 },
+        { field: 'contract', headerName: 'Sözleşme', flex:1.5 },
+        { field: 'project', headerName: 'Proje', flex:2, renderCell: (params) => (
+            params.value
+            ?
+                params.value.includes("KIZILBÜK")
+                ?
+                    "KIZILBÜK"
+                :
+                    params.value
+            :
+                ""
+        )
+
+        },
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderCell: (params) => (
+                <div style={{ cursor: 'pointer' }}>
+                    {params.value}
+                </div>
+            ),
+            renderHeaderFilter: () => null,
+            cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
@@ -121,6 +140,9 @@ function DetailPanel(props) {
     ]
 
     const handleProfileDialog = async (params,event) => {
+        if (event) {
+            event.stopPropagation();  // 🔥 Detail panel kapanmasını engeller
+        }
         if(params.field==="partner"){
             await dispatch(fetchPartnerInformation(params.row.partner_crm_code)).unwrap();
             dispatch(setPartnerDialog(true));
@@ -129,6 +151,10 @@ function DetailPanel(props) {
             await dispatch(fetchInstallmentInformation(params.row.code)).unwrap();
             dispatch(setInstallmentDialog(true));
             dispatch(setInstallmentsLoading(false));
+        }else if(params.field==="overdue_amount"){
+            dispatch(setOverdueDialog(true));
+            await dispatch(fetchOverdueInformation({activeCompany,lease_code:params.row.code})).unwrap();
+            
         };
     };
 
@@ -245,6 +271,7 @@ function DetailPanel(props) {
             }}
             processRowUpdate={handleProcessRowUpdate}
             onProcessRowUpdateError={(error) => console.log(error)}
+            //cellFontSize="12px"
             />
             <AddBankActivityLeaseDialog
             handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}
@@ -254,6 +281,7 @@ function DetailPanel(props) {
             uuid={uuid}
             />
             <ContractPaymentDialog/>
+            
         </Box>
     )
 }
