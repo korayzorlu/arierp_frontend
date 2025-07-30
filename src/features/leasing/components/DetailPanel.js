@@ -20,6 +20,7 @@ import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContra
 import PaidIcon from '@mui/icons-material/Paid';
 import OverdueDialog from '../../../component/dialog/OverdueDialog';
 import OverdueDetailDetailPanel from './OverdueDetailPanel';
+import { amountFormatter, parseLocalizedAmount } from '../../../utils/floatUtils';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;
@@ -102,12 +103,28 @@ function DetailPanel(props) {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
-        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, type: 'number', editable: true, preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-                const value = parseFloat(params.props.value);
-                const isValid = Number.isFinite(params.props.value);    
-                return { ...params.props, value: isValid ? value : 0, error: 0 }
+        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true, preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+                //const value = parseFloat(params.props.value);
+                console.log(params.props.value)
+                const convertedValue = parseLocalizedAmount(params.props.value)
+                console.log(convertedValue)
+                const isValid = Number.isFinite(convertedValue);  
+                console.log(isValid)  
+                return { ...params.props, value: isValid ? convertedValue : 0, error: 0 }
             
             },
+            valueFormatter: (value) => {
+                
+                if (value === null || value === undefined) {
+                    return ''; // boş göster
+                }
+
+                const convertedValue = parseLocalizedAmount(value);
+
+               return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
+            }
+                
+            
         },
         { field: '', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
                 <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
@@ -180,8 +197,9 @@ function DetailPanel(props) {
     };
 
     const handleProcessRowUpdate = async (newRow,oldRow) => {
+        const convertedValue = parseLocalizedAmount(newRow.processed_amount)
         try {
-            if (!Number.isFinite(newRow.processed_amount)) {
+            if (!Number.isFinite(convertedValue)) {
                 throw new Error("Geçersiz sayı değeri");
             }
 
@@ -189,7 +207,7 @@ function DetailPanel(props) {
                 const response = await axios.post(`/leasing/update_bank_activity_lease_processed_amount/`,
                     {
                         uuid: newRow.id,
-                        amount: newRow.processed_amount
+                        amount: convertedValue
                     },
                     { 
                         withCredentials: true
