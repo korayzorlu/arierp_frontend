@@ -46,6 +46,7 @@ function OverdueDetailDetailPanel(props) {
             columns={columns}
             getRowId={(row) => row.id}
             disableRowSelectionOnClick={true}
+            noToolbarButtons
             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             />
             

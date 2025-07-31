@@ -16,7 +16,8 @@ function BasicTable(props) {
     rowSelectionModel,
     onRowSelectionModelChange,
     initialState,
-    apiRef
+    apiRef,
+    noToolbarButtons
     } = props;
 
     const [paginationModel, setPaginationModel] = useState({
@@ -56,6 +57,7 @@ function BasicTable(props) {
                     showQuickFilter: true,
                     children: customButtons,
                     title:title,
+                    noToolbarButtons: noToolbarButtons,
                 },
                 loadingOverlay: {
                   variant: 'linear-progress',
@@ -95,6 +97,7 @@ function BasicTable(props) {
             detailPanelExpandedRowIds={detailPanelExpandedRowIds}
             onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
             apiRef={apiRef}
+            noToolbarButtons={noToolbarButtons}
             />
         </TableContent>
     )

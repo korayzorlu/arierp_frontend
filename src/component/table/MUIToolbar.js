@@ -23,8 +23,6 @@ function MUIToolbar(props) {
 
   const navigate = useNavigate();
 
-  const [quickValue, setQuickValue] = useState("");
-
   const buttonSlotProps = {
     button: {
       color: dark ? "primary" : "blackhole"
