@@ -56,7 +56,8 @@ function ListTableServer(props) {
     detailPanelExpandedRowIds,
     onDetailPanelExpandedRowIdsChange,
     processRowUpdate,
-    disableMultipleRowSelection
+    disableMultipleRowSelection,
+    noDownloadButton
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -232,6 +233,7 @@ function ListTableServer(props) {
                 quickFilterFormatter: (quickFilterValues) => quickFilterValues.join(', '),
                 debounceMs: 200,
               },
+              noDownloadButton: noDownloadButton,
           },
           // loadingOverlay: {
           //   variant: 'linear-progress',

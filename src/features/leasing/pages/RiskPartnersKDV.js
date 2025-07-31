@@ -24,6 +24,7 @@ import WarningNoticeDialog from '../components/WarningNoticeDialog';
 import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
+import ExportDialog from '../../../component/feedback/ExportDialog';
 
 function RiskPartnersKDV() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -257,6 +258,12 @@ function RiskPartnersKDV() {
             selectedItems={selectedItems}
             startEvent={() => dispatch(setRiskPartnersKDVLoading(true))}
             finalEvent={() => {dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams}));dispatch(setRiskPartnersKDVLoading(false));}}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/leasing/export_kdv_risk_partners/"
+            startEvent={() => dispatch(setRiskPartnersKDVLoading(true))}
+            finalEvent={() => {dispatch(fetchRiskPartnersKDV({activeCompany}));dispatch(setRiskPartnersKDVLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>

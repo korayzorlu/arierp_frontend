@@ -6,6 +6,7 @@ import Col from '../grid/Col';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import axios from 'axios';
 import { setAlert } from '../../store/slices/notificationSlice';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function ExportProcesses(props) {
     const {children,excelURL,file_name,exportProcesses} = props;
@@ -26,7 +27,7 @@ function ExportProcesses(props) {
     
     const fetchExcel = async () => {
         try {
-            const response = await axios.get("/leasing/bank_activities_excel",
+            const response = await axios.get(exportProcesses[0].export_url,
                 {
                     responseType: "blob",
                     withCredentials: true
@@ -34,7 +35,7 @@ function ExportProcesses(props) {
             );
             const a = document.createElement("a");
             a.href = URL.createObjectURL(response.data);
-            a.download = "banka-hareketleri.xlsx";
+            a.download = exportProcesses[0].file_name;
             a.click();
             URL.revokeObjectURL(a.href);
         } catch (error) {
@@ -74,7 +75,7 @@ function ExportProcesses(props) {
                         PaperProps={{
                             sx: {
                                 marginTop: 1.2,
-                                width: 360, // Piksel cinsinden genişlik belirleme
+                                width: 420, // Piksel cinsinden genişlik belirleme
                             }
                         }}
                     >   
@@ -100,11 +101,22 @@ function ExportProcesses(props) {
                                                     process.progress >= 100
                                                     ?
                                                         <Row>
-                                                            <Col size="6">
+                                                            <Col size="3">
                                                                 Dosya hazır!
                                                             </Col>
-                                                            <Col size="6">
-                                                                <Button variant="contained" color="mars" size='small' onClick={fetchExcel} autoFocus fullWidth>İndir</Button>
+                                                            <Col size="9">
+                                                                <Button
+                                                                variant="contained"
+                                                                color="mars"
+                                                                size='small'
+                                                                onClick={fetchExcel}
+                                                                autoFocus
+                                                                fullWidth
+                                                                sx={{fontSize:'0.675rem'}}
+                                                                >
+                                                                    <DownloadIcon/>
+                                                                    {process.file_name}
+                                                                </Button>
                                                             </Col>
                                                         </Row>
                                                     :

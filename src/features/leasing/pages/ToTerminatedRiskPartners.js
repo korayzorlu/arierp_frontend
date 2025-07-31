@@ -24,6 +24,7 @@ import WarningNoticeDialog from '../components/WarningNoticeDialog';
 import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
+import ExportDialog from '../../../component/feedback/ExportDialog';
 
 function ToTerminatedRiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -270,6 +271,12 @@ function ToTerminatedRiskPartners() {
             selectedItems={selectedItems}
             startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/leasing/export_to_terminated_risk_partners/"
+            startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchToTerminatedRiskPartners({activeCompany}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>

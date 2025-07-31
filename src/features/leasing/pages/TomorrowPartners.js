@@ -24,6 +24,7 @@ import WarningNoticeDialog from '../components/WarningNoticeDialog';
 import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
+import ExportDialog from '../../../component/feedback/ExportDialog';
 
 function TomorrowPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -245,6 +246,12 @@ function TomorrowPartners() {
             selectedItems={selectedItems}
             startEvent={() => dispatch(setTomorrowPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchTomorrowPartners({activeCompany,params:tomorrowPartnersParams}));dispatch(setTomorrowPartnersLoading(false));}}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/leasing/export_tomorrow_partners/"
+            startEvent={() => dispatch(setTomorrowPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchTomorrowPartners({activeCompany}));dispatch(setTomorrowPartnersLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>

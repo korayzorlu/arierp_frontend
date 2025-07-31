@@ -105,22 +105,16 @@ function DetailPanel(props) {
         },
         { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true, preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
                 //const value = parseFloat(params.props.value);
-                console.log(params.props.value)
                 const convertedValue = parseLocalizedAmount(params.props.value)
-                console.log(convertedValue)
-                const isValid = Number.isFinite(convertedValue);  
-                console.log(isValid)  
+                const isValid = Number.isFinite(convertedValue);
                 return { ...params.props, value: isValid ? convertedValue : 0, error: 0 }
             
             },
             valueFormatter: (value) => {
-                
                 if (value === null || value === undefined) {
                     return ''; // boş göster
                 }
-
                 const convertedValue = parseLocalizedAmount(value);
-
                return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
             }
                 
