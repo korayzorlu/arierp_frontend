@@ -115,8 +115,8 @@ function DetailPanel(props) {
                     return ''; // boş göster
                 }
                 const convertedValue = parseLocalizedAmount(value);
-                //return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
-                return Number(convertedValue);
+                return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
+                //return Number(convertedValue);
             }
                 
             
