@@ -1,4 +1,5 @@
 export function parseLocalizedAmount(value: string | number): number {
+     if (value === null || value === undefined) return 0;
     if (typeof value === 'number') return value;
 
     let str = value.trim();
