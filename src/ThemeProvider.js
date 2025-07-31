@@ -44,6 +44,10 @@ const commonTheme = {
             main: '#F4F2EE',
             contrastText: '#000',
         },
+        bluelemonade: {
+            main: '#0045B0',
+            contrastText: '#000',
+        },
     },
     components: {
         MuiDataGrid: {
@@ -151,7 +155,7 @@ export const ThemeProvider = ({ children }) => {
             panelbox: {
                 main: '#1b1f23',
                 contrastText: '#fff',
-            },
+            }
         },
         components: {
             ...commonTheme.components,

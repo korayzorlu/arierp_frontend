@@ -194,7 +194,24 @@ function Collections() {
                 setParams={(value) => dispatch(setBankActivitiesParams(value))}
                 headerFilters={true}
                 noDownloadButton
-                getRowClassName={(params) => `super-app-theme--${params.row.leases ? params.row.leases.length > 0 ? "matched" : "" : ""}`}
+                getRowClassName={(params) => {
+                    return `
+                        super-app-theme--${
+                            params.row.leases
+                            ?
+                                params.row.leases.length > 0
+                                    ?
+                                        params.row.is_processed
+                                        ?
+                                            "processed"
+                                        :
+                                            "matched"
+                                    :
+                                        ""
+                            : ""
+                        }
+                    `
+                }}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));}}
                 getDetailPanelHeight={() => "auto"}
