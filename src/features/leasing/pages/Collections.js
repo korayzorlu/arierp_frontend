@@ -139,10 +139,10 @@ function Collections() {
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'name', headerName: 'Name', flex: 2 },
         { field: 'description', headerName: 'Açıklama',flex: 10 },
-        { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', valueFormatter: (value) =>
+        { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', valueFormatter: (value) =>
+        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB', flex: 1 },

@@ -96,7 +96,8 @@ function DetailPanel(props) {
 
         },
         { field: 'block', headerName: 'Blok', flex:2 },
-        { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
+        { field: 'unit', headerName: 'Bağımsız Bölüm', flex:1.5 },
+        { field: 'devremulk', headerName: 'Dönem', flex:2 },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number',
             renderHeaderFilter: () => null,
             cellClassName: (params) => {
