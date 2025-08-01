@@ -258,11 +258,11 @@ function RiskPartners() {
                     checked={barterSwitchPosition}
                     onChange={(value) => handleChangeBarterPartners(value)}
                     />
-                    <AndroidSwitch
+                    {/* <AndroidSwitch
                     label="Özel Müşterileri Göster"
                     checked={specialSwitchPosition}
                     onChange={(value) => handleChangeSpecialPartners(value)}
-                    />
+                    /> */}
                 </>
                 
             }
