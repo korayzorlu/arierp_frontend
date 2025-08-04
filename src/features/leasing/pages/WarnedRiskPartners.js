@@ -189,7 +189,7 @@ function WarnedRiskPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="İhtar Çekilecek Müşteriler"
+                title="İhtar Çekilen Müşteriler"
                 autoHeight
                 rows={warnedRiskPartners}
                 columns={riskPartnerColumns}
@@ -258,7 +258,7 @@ function WarnedRiskPartners() {
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_to_warned_risk_partners/"
+            exportURL="/leasing/export_warned_risk_partners/"
             startEvent={() => dispatch(setWarnedRiskPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchWarnedRiskPartners({activeCompany}));dispatch(setWarnedRiskPartnersLoading(false));}}
             />
