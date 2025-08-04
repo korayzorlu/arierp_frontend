@@ -91,6 +91,7 @@ import RiskPartnersKDV from './features/leasing/pages/RiskPartnersKDV.js';
 import ToWarnedRiskPartners from './features/leasing/pages/ToWarnedRiskPartners.js';
 import ToTerminatedRiskPartners from './features/leasing/pages/ToTerminatedRiskPartners.js';
 import DeliveryConfirms from './features/leasing/pages/DeliveryConfirms.js';
+import WarnedRiskPartners from './features/leasing/pages/WarnedRiskPartners.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -234,6 +235,7 @@ function App() {
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
                   <Route path='/kdv-risk-partners' element={<RiskPartnersKDV></RiskPartnersKDV>}></Route>
                   <Route path='/to-warned-risk-partners' element={<ToWarnedRiskPartners></ToWarnedRiskPartners>}></Route>
+                  <Route path='/warned-risk-partners' element={<WarnedRiskPartners></WarnedRiskPartners>}></Route>
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
                   <Route path='/delivery-confirm' element={<DeliveryConfirms></DeliveryConfirms>}></Route>
                   <Route path='/tomorrow-partners' element={<TomorrowPartners></TomorrowPartners>}></Route>

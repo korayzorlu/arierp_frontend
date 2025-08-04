@@ -39,6 +39,18 @@ const initialState = {
         format: 'datatables'
     },
     toWarnedRiskPartnersLoading:false,
+    //warned
+    warnedRiskPartners:[],
+    warnedRiskPartnersCount:0,
+    warnedRiskPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    warnedRiskPartnersLoading:false,
     //to terminated
     toTerminatedRiskPartners:[],
     toTerminatedRiskPartnersCount:0,
@@ -98,6 +110,21 @@ export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV'
 export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/to_warned_risk_partners/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchWarnedRiskPartners = createAsyncThunk('auth/fetchWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/warned_risk_partners/?active_company=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -295,6 +322,26 @@ const riskPartnerSlice = createSlice({
         deleteToWarnedRiskPartners: (state,action) => {
             state.toWarnedRiskPartners = [];
         },
+        //warned
+        setWarnedRiskPartnersLoading: (state,action) => {
+            state.warnedRiskPartnersLoading = action.payload;
+        },
+        setWarnedRiskPartnersParams: (state,action) => {
+            state.warnedRiskPartnersParams = {
+                ...state.warnedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetWarnedRiskPartnersParams: (state,action) => {
+            state.warnedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteWarnedRiskPartners: (state,action) => {
+            state.warnedRiskPartners = [];
+        },
         //to terminated
         setToTerminatedRiskPartnersLoading: (state,action) => {
             state.toTerminatedRiskPartnersLoading = action.payload;
@@ -373,6 +420,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchToWarnedRiskPartners.rejected, (state,action) => {
                 state.toWarnedRiskPartnersLoading = false
             })
+            //warned
+            .addCase(fetchWarnedRiskPartners.pending, (state) => {
+                state.warnedRiskPartnersLoading = true
+            })
+            .addCase(fetchWarnedRiskPartners.fulfilled, (state,action) => {
+                state.warnedRiskPartners = action.payload.data || action.payload;
+                state.warnedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.warnedRiskPartnersLoading = false
+            })
+            .addCase(fetchWarnedRiskPartners.rejected, (state,action) => {
+                state.warnedRiskPartnersLoading = false
+            })
             //to terminated
             .addCase(fetchToTerminatedRiskPartners.pending, (state) => {
                 state.toTerminatedRiskPartnersLoading = true
@@ -414,6 +473,10 @@ export const {
     setToWarnedRiskPartnersParams,
     resetToWarnedRiskPartnersParams,
     deleteToWarnedRiskPartners,
+    setWarnedRiskPartnersLoading,
+    setWarnedRiskPartnersParams,
+    resetWarnedRiskPartnersParams,
+    deleteWarnedRiskPartners,
     setToTerminatedRiskPartnersLoading,
     setToTerminatedRiskPartnersParams,
     resetToTerminatedRiskPartnersParams,
