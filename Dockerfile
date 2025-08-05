@@ -20,7 +20,7 @@ RUN npm install
 RUN rm -f .npmrc
 
 # Copy the project files
-# COPY . .
+COPY . .
 
 #RUN npm run build
 #RUN npm install -g server
