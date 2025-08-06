@@ -42,6 +42,7 @@ function Sidenav() {
         price_change: require("../../images/icons/sidebar/light/price_change-filled.svg").ReactComponent,
         paid: require("../../images/icons/sidebar/light/paid-filled.svg").ReactComponent,
         policy: require("../../images/icons/sidebar/light/policy-filled.svg").ReactComponent,
+        home_work: require("../../images/icons/sidebar/light/home_work-filled.svg").ReactComponent,
     };
 
     const DefaultIcon = require("../../images/icons/sidebar/light/dashboard-filled.svg").ReactComponent;

@@ -94,6 +94,7 @@ import ToWarnedRiskPartners from './features/leasing/pages/ToWarnedRiskPartners.
 import ToTerminatedRiskPartners from './features/leasing/pages/ToTerminatedRiskPartners.js';
 import DeliveryConfirms from './features/leasing/pages/DeliveryConfirms.js';
 import WarnedRiskPartners from './features/leasing/pages/WarnedRiskPartners.js';
+import Projects from './features/project/pages/Projects.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -216,6 +217,8 @@ function App() {
                 <Route path='/partners' element={<Partners></Partners>}></Route>
                 <Route path='/partners/add-partner' element={<AddPartner></AddPartner>}></Route>
                 <Route path='/partners/update/:uuid' element={<UpdatePartner></UpdatePartner>}></Route>
+
+                <Route path='/projects' element={<Projects></Projects>}></Route>
 
                 <Route path='/categories' element={<Categories></Categories>}>
                   <Route path='add-category' element={<AddCategory></AddCategory>}></Route>
