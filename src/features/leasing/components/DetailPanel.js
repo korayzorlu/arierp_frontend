@@ -1,5 +1,5 @@
 import { Box, IconButton } from '@mui/material';
-import { useGridApiRef } from '@mui/x-data-grid';
+import { useGridApiRef, GridFooter } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,8 +42,6 @@ function DetailPanel(props) {
     const fetchData = async () => {
         const response = await dispatch(fetchBankActivity({ activeCompany, params: { uuid } })).unwrap();
         setData(response);
-
-
     };
 
     useEffect(() => {
@@ -124,7 +122,7 @@ function DetailPanel(props) {
             field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 2, type: 'number',
             renderHeaderFilter: () => null
         },
-        {
+                {
             field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2,
             editable: (params) => params.id !== 'total-row',
             preProcessEditCellProps: (params) => {
@@ -146,17 +144,22 @@ function DetailPanel(props) {
 
         },
         {
-            field: '', headerName: 'Tahsilatlar', flex: 2, renderCell: (params) => (
-                <IconButton aria-label='back' onClick={() => { dispatch(fetchContractPaymentsInLease({ activeCompany, contract_code: params.row.contract })); dispatch(setContractPaymentDialog(true)) }}>
-                    <PaidIcon />
-                </IconButton>
-
-            )
+            field: '', headerName: 'Tahsilatlar', flex: 2, renderCell: (params) => {
+                if (params.id === 'total-row') {
+                    return null;
+                }
+                return (
+                    <IconButton aria-label='back' onClick={() => { dispatch(fetchContractPaymentsInLease({ activeCompany, contract_code: params.row.contract })); dispatch(setContractPaymentDialog(true)) }}>
+                        <PaidIcon />
+                    </IconButton>
+                );
+            }
         },
         { field: 'currency', headerName: 'PB', flex: 1 },
         {
-            field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
-                params.row.overdue_amount > 0
+            field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => {
+                if (params.id === 'total-row') return null;
+                return params.row.overdue_amount > 0
                     ?
                     params.value >= 0
                         ?
@@ -166,11 +169,15 @@ function DetailPanel(props) {
                     :
                     null
 
-            )
+            }
         },
         {
-            field: 'next_payment', headerName: 'Gelecek Ödeme', flex: 2, type: 'number', valueFormatter: (value) =>
-                new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(value)
+            field: 'next_payment', headerName: 'Gelecek Ödeme', flex: 2, type: 'number', valueFormatter: (value) => {
+                if (value === undefined) {
+                    return '';
+                }
+                return new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2, }).format(value);
+            }
         },
         { field: 'collection_status', headerName: 'Statü', flex: 2 },
     ]
@@ -179,6 +186,7 @@ function DetailPanel(props) {
         if (event) {
             event.stopPropagation();
         }
+        if (params.id === 'total-row') return; 
         if (params.field === "partner") {
             await dispatch(fetchPartnerInformation(params.row.partner_crm_code)).unwrap();
             dispatch(setPartnerDialog(true));
@@ -255,8 +263,11 @@ function DetailPanel(props) {
     return (
         <Box sx={{
             pt: 2, pb: 2, pl: 8, pr: 8,
-            '& .total-row-class': {
+             '& .total-row-class': {
                 color: 'secondary.main',
+                '& .MuiDataGrid-cellCheckbox': {
+                    visibility: 'hidden',
+                },
             },
         }}>
             <ListTable
@@ -282,28 +293,13 @@ function DetailPanel(props) {
                 outline
                 noToolbarButtons
                 getRowClassName={(params) => params.id === 'total-row' ? 'total-row-class' : ''}
-                //noAllSelect
                 checkboxSelection={true}
                 disableRowSelectionOnClick={true}
                 onRowSelectionModelChange={handleSelectionChange}
-                //rowSelectionModel={selectedRows}
                 keepNonExistentRowsSelected
-                //isRowSelected={(row) => row.overdue_amount > 0}
-                //hideFooter
-                noPagination
                 apiRef={apiRef}
-                // initialState={{
-                //     aggregation: {
-                //         model: {
-                //             overdue_amount: 'sum',
-                //             processed_amount: 'sum',
-                //             next_payment: 'sum',
-                //         },
-                //     },
-                // }}
                 processRowUpdate={handleProcessRowUpdate}
                 onProcessRowUpdateError={(error) => console.log(error)}
-                //cellFontSize="12px"
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {
                     if (params.id === 'total-row') return null;
