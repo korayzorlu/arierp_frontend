@@ -14,6 +14,7 @@ import ContractPaymentDialog from './ContractPaymentDialog';
 import { cellProgress } from '../../../component/progress/CellProgress';
 import FeedIcon from '@mui/icons-material/Feed';
 import WarningNoticeDialog from './WarningNoticeDialog';
+import OverdueDetailDetailPanel from './OverdueDetailPanel';
 
 function RiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases} = props;
@@ -166,6 +167,8 @@ function RiskPartnerDetailPanel(props) {
                     },
                 },
             }}
+            getDetailPanelHeight={() => "auto"}
+            getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
             <ContractPaymentDialog/>
             <WarningNoticeDialog/>
