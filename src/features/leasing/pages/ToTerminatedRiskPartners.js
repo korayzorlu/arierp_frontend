@@ -228,11 +228,11 @@ function ToTerminatedRiskPartners() {
                     onChange={(value) => handleChangeBiggerThan100(value)}
                     disabled={biggerThan100SwitchDisabled}
                     /> */}
-                    <AndroidSwitch
+                    {/* <AndroidSwitch
                     label="Fesih Tarihi Gelenler"
                     checked={overdueTerminatedSwitchPosition}
                     onChange={(value) => handleChangeOverdueTerminatedPartners(value)}
-                    />
+                    /> */}
                     <AndroidSwitch
                     label="Virman Göster"
                     checked={virmanSwitchPosition}

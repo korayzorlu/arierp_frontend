@@ -198,7 +198,7 @@ function RiskPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Risk Durumundaki Müşteriler"
+                title="Gecikmesi Olan Müşteriler"
                 autoHeight
                 rows={riskPartners}
                 columns={riskPartnerColumns}
