@@ -104,7 +104,7 @@ function DetailPanel(props) {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
-        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, type: 'number', editable: true, preProcessEditCellProps: (params) => {
+        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true, preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
                 //const value = parseFloat(params.props.value);
                 const convertedValue = parseLocalizedAmount(params.props.value)
                 const isValid = Number.isFinite(convertedValue);
