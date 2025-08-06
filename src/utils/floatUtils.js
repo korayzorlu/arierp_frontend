@@ -1,19 +1,32 @@
 export function parseLocalizedAmount(value: string | number): number {
-     if (value === null || value === undefined) return 0;
+    if (value === null || value === undefined) return 0;
     if (typeof value === 'number') return value;
 
-    let str = value.trim();
+    let str = String(value).trim();
 
-    if (str.includes(',') && str.includes('.')) {
+    const hasComma = str.includes(',');
+    const hasDot = str.includes('.');
+
+    // "1.234,56" veya "1,234.56" formatlarını ele al
+    if (hasComma && hasDot) {
         if (str.lastIndexOf(',') > str.lastIndexOf('.')) {
-            str = str.replace(/\./g, '').replace(',', '.'); // 19.731,25 → 19731.25
+            // Türkçe format: 1.234,56 -> 1234.56
+            str = str.replace(/\./g, '').replace(',', '.');
         } else {
-            str = str.replace(/,/g, ''); // 19,731.25 → 19731.25
+            // İngilizce format: 1,234.56 -> 1234.56
+            str = str.replace(/,/g, '');
         }
-    } else if (str.includes(',')) {
-        str = str.replace(/\./g, '').replace(',', '.'); // 19731,25 → 19731.25
-    } else {
-        str = str.replace(/,/g, ''); // 19731.25 → 19731.25
+    } else if (hasComma) {
+        // Sadece virgül varsa ondalık ayıracıdır: 1234,56 -> 1234.56
+        str = str.replace(',', '.');
+    } else if (hasDot) {
+        // Sadece nokta varsa, binlik ayıracı mı ondalık mı kontrol et
+        const parts = str.split('.');
+        if (parts.length === 2 && parts[1].length === 3 && parts[0].length <=3) {
+             // 100.000 gibi binlik ayıracı
+            str = str.replace(/\./g, '');
+        }
+        // Aksi halde "100.50" gibi ondalık kabul edilir ve bir şey yapmaya gerek kalmaz.
     }
 
     const parsed = parseFloat(str);

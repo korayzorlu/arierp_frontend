@@ -36,6 +36,7 @@ function DetailPanel(props) {
 
     const [data, setData] = useState({leases:[]})
     const [selectedRows, setSelectedRows] = useState([]);
+    const [processedAmountTotal, setProcessedAmountTotal] = useState(0);
     
 
      const fetchData = async () => {
@@ -50,6 +51,16 @@ function DetailPanel(props) {
         
         
     }, [activeCompany])
+
+    useEffect(() => {
+        if (data.leases) {
+            const total = data.leases.reduce((sum, lease) => {
+                const amount = lease.processed_amount ? parseLocalizedAmount(lease.processed_amount.toString()) : 0;
+                return sum + amount;
+            }, 0);
+            setProcessedAmountTotal(total);
+        }
+    }, [data.leases]);
 
 
     useEffect(() => {
@@ -104,7 +115,7 @@ function DetailPanel(props) {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
-        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true, preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true, preProcessEditCellProps: (params) => {
                 //const value = parseFloat(params.props.value);
                 const convertedValue = parseLocalizedAmount(params.props.value)
                 const isValid = Number.isFinite(convertedValue);
@@ -192,43 +203,37 @@ function DetailPanel(props) {
         setData(data => ({...data, [field]:value}));
     };
 
-    const handleProcessRowUpdate = async (newRow,oldRow) => {
-        const convertedValue = parseLocalizedAmount(newRow.processed_amount)
+    const handleProcessRowUpdate = async (newRow, oldRow) => {
         try {
+            const convertedValue = parseLocalizedAmount(newRow.processed_amount);
             if (!Number.isFinite(convertedValue)) {
-                throw new Error("Geçersiz sayı değeri");
+                dispatch(setAlert({ status: "error", text: "Geçersiz sayı formatı." }));
+                return oldRow;
             }
 
-            try {
-                const response = await axios.post(`/leasing/update_bank_activity_lease_processed_amount/`,
-                    {
-                        uuid: newRow.id,
-                        amount: convertedValue
-                    },
-                    { 
-                        withCredentials: true
-                    },
-                );
-                dispatch(setAlert({status:response.data.status,text:response.data.message}))
-            } catch (error) {
-                if(error.response.data){
-                    dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-                }else{
-                    dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
-                };
-                return null
-            } 
+            const response = await axios.post(`/leasing/update_bank_activity_lease_processed_amount/`, {
+                uuid: newRow.id,
+                amount: convertedValue
+            }, { 
+                withCredentials: true
+            });
 
+            dispatch(setAlert({ status: response.data.status, text: response.data.message }));
 
-            const updatedRow = { ...newRow, isUpdated: true };
-
+            const updatedRow = { ...newRow, processed_amount: convertedValue, isUpdated: true };
+            const newLeases = data.leases.map(lease => (lease.id === newRow.id ? updatedRow : lease));
+            setData(prevData => ({ ...prevData, leases: newLeases }));
+            
             return updatedRow;
+
         } catch (error) {
-            return {
-                ...oldRow,
-                processed_amount: oldRow.processed_amount
-            };
-        } 
+            if (error.response && error.response.data) {
+                dispatch(setAlert({ status: error.response.data.status, text: error.response.data.message }));
+            } else {
+                dispatch(setAlert({ status: "error", text: "İşlem sırasında bir hata oluştu!" }));
+            }
+            return oldRow;
+        }
     };
 
 
@@ -282,6 +287,9 @@ function DetailPanel(props) {
             getDetailPanelHeight={() => "auto"}
             getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2, fontWeight: 'bold' }}>
+                Toplam İşlenen Tutar: {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(processedAmountTotal)}
+            </Box>
             <AddBankActivityLeaseDialog
             handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}
             submitURL="/leasing/add_bank_activity_lease"
