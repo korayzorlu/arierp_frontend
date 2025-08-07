@@ -236,7 +236,7 @@ function RiskPartners() {
                             onChange={(value) => changeProject(value)}
                             >
                             <MenuItem value='1202'>KIZILBÜK</MenuItem>
-                            <MenuItem value='1202'>SİNPAŞ GYO</MenuItem>
+                            {/* <MenuItem value='1202'>SİNPAŞ GYO</MenuItem> */}
                             </Select>
                         </FormControl>
                     </>
