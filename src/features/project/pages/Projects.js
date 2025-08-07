@@ -25,20 +25,20 @@ function Projects() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchProjects({activeCompany,params:projectsParams}));
+            dispatch(fetchProjects({activeCompany}));
         });
     }, [activeCompany,projectsParams,dispatch]);
 
     const columns = [
         { field: 'name', headerName: 'Proje İsmi', flex: 1 },
         { field: 'partner_name', headerName: 'Satıcı', flex: 1 },
+        { field: 'partner_crm_code', headerName: 'Crm Kodu', flex: 1 },
     ]
 
     return (
         <PanelContent>
             <ListTable
             title="Proje Listesi"
-            autoHeight
             rows={projects}
             columns={columns}
             getRowId={(row) => row.uuid}
@@ -52,11 +52,8 @@ function Projects() {
                     />
                 </>
             }
-            rowCount={projectsCount}
-            checkboxSelection
             setParams={(value) => dispatch(setProjectsParams(value))}
             headerFilters={true}
-            apiRef={apiRef}
             />
         </PanelContent>
     )

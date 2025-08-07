@@ -231,8 +231,8 @@ function RiskPartners() {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             size='small'
-                            value='kizilbuk'
-                            label="Age"
+                            value='1202'
+                            label="PRoject"
                             onChange={(value) => changeProject(value)}
                             >
                             <MenuItem value='1202'>KIZILBÜK</MenuItem>
