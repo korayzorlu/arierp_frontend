@@ -19,8 +19,7 @@ function WarningNotices() {
 
     useEffect(() => {
         startTransition(() => {
-            const response = dispatch(fetchWarningNotices({activeCompany,params:warningNoticesParams}));
-            console.log(response)
+            dispatch(fetchWarningNotices({activeCompany,params:warningNoticesParams}));
         });
 
         
@@ -65,7 +64,6 @@ function WarningNotices() {
                     </>
                 }
                 rowCount={warningNoticesCount}
-                checkboxSelection
                 setParams={(value) => dispatch(setWarningNoticesParams(value))}
                 headerFilters={true}
                 noDownloadButton

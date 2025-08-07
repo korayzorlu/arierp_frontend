@@ -242,31 +242,30 @@ function RiskPartners() {
                     </>
                 }
                 customFilters={
-                <>  
-                    {/* <AndroidSwitch
-                    label="100'den Büyük Olanlar"
-                    checked={biggerThan100SwitchPosition}
-                    onChange={(value) => handleChangeBiggerThan100(value)}
-                    disabled={biggerThan100SwitchDisabled}
-                    /> */}
-                    <AndroidSwitch
-                    label="Virman Göster"
-                    checked={virmanSwitchPosition}
-                    onChange={(value) => handleChangeVirmanPartners(value)}
-                    />
-                    <AndroidSwitch
-                    label="Barter Göster"
-                    checked={barterSwitchPosition}
-                    onChange={(value) => handleChangeBarterPartners(value)}
-                    />
-                    {/* <AndroidSwitch
-                    label="Özel Müşterileri Göster"
-                    checked={specialSwitchPosition}
-                    onChange={(value) => handleChangeSpecialPartners(value)}
-                    /> */}
-                </>
-                
-            }
+                    <>  
+                        {/* <AndroidSwitch
+                        label="100'den Büyük Olanlar"
+                        checked={biggerThan100SwitchPosition}
+                        onChange={(value) => handleChangeBiggerThan100(value)}
+                        disabled={biggerThan100SwitchDisabled}
+                        /> */}
+                        <AndroidSwitch
+                        label="Virman Göster"
+                        checked={virmanSwitchPosition}
+                        onChange={(value) => handleChangeVirmanPartners(value)}
+                        />
+                        <AndroidSwitch
+                        label="Barter Göster"
+                        checked={barterSwitchPosition}
+                        onChange={(value) => handleChangeBarterPartners(value)}
+                        />
+                        {/* <AndroidSwitch
+                        label="Özel Müşterileri Göster"
+                        checked={specialSwitchPosition}
+                        onChange={(value) => handleChangeSpecialPartners(value)}
+                        /> */}
+                    </>
+                }
                 rowCount={riskPartnersCount}
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
