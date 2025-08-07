@@ -54,38 +54,12 @@ function Collections() {
     
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
-    const [selectedItemsPerRow, setSelectedItemsPerRow] = useState({});
-    const [switchDisabled, setSwitchDisabled] = useState(false);
-    const [switchPosition, setSwitchPosition] = useState(false);
-    const [selectedPartnerCrmCode, setSelectedPartnerCrmCode] = useState(null);
-    const [detailPanelExpandedRowIds, setDetailPanelExpandedRowIds] = useState(new Set());
 
     useEffect(() => {
         startTransition(() => {
-            //dispatch(fetchCollections({activeCompany,params:collectionsParams})).unwrap();
-            //dispatch(fetchLeases({activeCompany,params:{...leasesParams,leaseflex_automation:true,ordering:"contract__partner__tc_vkn_no"}}));
-            dispatch(fetchBankActivities({activeCompany}));
+            dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));
         });
-
-        
-    }, [activeCompany,collectionsParams,leasesParams,dispatch]);
-
-    
-
-    // useEffect(() => {
-    //     if (bankActivities.length) {
-    //         bankActivities.forEach((activity) => {
-    //             if (activity.leases.length) {
-    //                 activity.leases.forEach((leases) => {
-    //                     if (leases.overdue_amount > 0) {
-    //                         setSelectedItems(apiRef.current.getPropagatedRowSelectionModel({type: "include", ids: Set([leases.id])}));
-    //                         apiRef.current.selectRow(leases.id, true);
-    //                     }
-    //                 })
-    //             }
-    //         });
-    //     }
-    // }, [bankActivities])
+    }, [activeCompany,bankActivitiesParams,dispatch]);
     
 
     const columns = [
@@ -96,22 +70,9 @@ function Collections() {
             )
         },
         { field: 'contract', headerName: 'Sözleşme', flex:2 },
-        // { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
-        //         <div style={{ cursor: 'pointer' }}>
-        //             {params.value}
-        //         </div>
-        //     ),
-        // },
-        //{ field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
-        //{ field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
-        //{ field: 'quotation', headerName: 'Teklif No' },
-        //{ field: 'kof', headerName: 'KOF No' },
         { field: 'project', headerName: 'Proje', flex:6 },
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
-        //{ field: 'vade', headerName: 'Vade', type: 'number' },
-        //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
-        //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
@@ -170,7 +131,6 @@ function Collections() {
             <Grid container spacing={1}>
                 <ListTable
                 title="Banka Hareketleri"
-                //autoHeight
                 rows={bankActivities}
                 columns={bankActivityColumns}
                 getRowId={(row) => row.uuid}
@@ -215,70 +175,10 @@ function Collections() {
                         }
                     `
                 }}
-                //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));}}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases}></DetailPanel>)}}
+                disableVirtualization
                 />
-                {/* <Grid size={{xs:12,sm:6}}>
-                    <ListTable
-                    title="Banka Hareketleri"
-                    autoHeight
-                    rows={bankActivities}
-                    columns={bankActivityColumns}
-                    getRowId={(row) => row.uuid}
-                    loading={bankActivitiesLoading}
-                    customButtons={
-                        <>
-                            <CustomTableButton
-                            title="İçe Aktar"
-                            onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
-                            icon={<UploadFileIcon fontSize="small"/>}
-                            />
-                            <CustomTableButton
-                            title="Yenile"
-                            onClick={() => dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams})).unwrap()}
-                            icon={<RefreshIcon fontSize="small"/>}
-                            />
-                        </>
-                    }
-                    onRowSelectionModelChange={(newRowSelectionModel) => {
-                        setSelectedItems(newRowSelectionModel);
-                    }}
-                    rowCount={bankActivitiesCount}
-                    setParams={(value) => dispatch(setBankActivitiesParams(value))}
-                    headerFilters={true}
-                    />
-                </Grid>
-                <Grid size={{xs:12,sm:6}}>
-                    <ListTable
-                    title="Kira Planları Listesi"
-                    autoHeight
-                    rows={leases}
-                    columns={columns}
-                    getRowId={(row) => row.uuid}
-                    loading={leasesLoading}
-                    customButtons={
-                        <>  
-
-                            <CustomTableButton
-                            title="Yenile"
-                            onClick={() => dispatch(fetchCollections({activeCompany,params:collectionsParams})).unwrap()}
-                            icon={<RefreshIcon fontSize="small"/>}
-                            />
-
-                            
-                        </>
-                    }
-                    onRowSelectionModelChange={(newRowSelectionModel) => {
-                        setSelectedItems(newRowSelectionModel);
-                    }}
-                    rowCount={leasesCount}
-                    setParams={(value) => dispatch(setLeasesParams(value))}
-                    headerFilters={true}
-                    onCellClick={handleProfileDialog}
-                    />
-                </Grid> */}
             </Grid>
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
@@ -292,6 +192,7 @@ function Collections() {
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_bank_activities/"
+            selectedItems={selectedItems}
             startEvent={() => dispatch(setBankActivitiesLoading(true))}
             finalEvent={() => {dispatch(fetchBankActivities({activeCompany}));dispatch(setBankActivitiesLoading(false));}}
             >

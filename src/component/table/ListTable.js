@@ -58,7 +58,8 @@ function ListTable(props) {
     specialButtons,
     noOverlay,
     sortModel,
-    cellFontSize
+    cellFontSize,
+    disableVirtualization
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -153,7 +154,7 @@ function ListTable(props) {
   }));
 
   return (
-    <TableContent height={height || null}>
+    <TableContent height={autoHeight ? 'auto' : (height || null)}>
       <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,
@@ -263,6 +264,7 @@ function ListTable(props) {
       apiRef={apiRef}
       processRowUpdate={processRowUpdate}
       onProcessRowUpdateError={onProcessRowUpdateError}
+      disableVirtualization={disableVirtualization}
       sortModel={sortModel}
       />
     </TableContent>

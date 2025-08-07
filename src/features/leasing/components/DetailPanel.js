@@ -1,6 +1,6 @@
 import { Box, IconButton } from '@mui/material';
 import { useGridApiRef, GridFooter } from '@mui/x-data-grid';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOverdueInformation, setLeaseOverdues, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
@@ -39,14 +39,16 @@ function DetailPanel(props) {
     const [selectedRows, setSelectedRows] = useState([]);
 
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         const response = await dispatch(fetchBankActivity({ activeCompany, params: { uuid } })).unwrap();
         setData(response);
-    };
+    }, [activeCompany, dispatch, uuid]);
 
     useEffect(() => {
+        setData({ leases: [] });
+        setDisplayData([]);
         fetchData();
-    }, [activeCompany])
+    }, [fetchData]);
 
     useEffect(() => {
         if (data.leases && data.leases.length > 0) {
@@ -272,7 +274,6 @@ function DetailPanel(props) {
         }}>
             <ListTable
                 title={data.leases.length > 1 ? `${data.leases[0].partner} - ${data.leases[0].partner_tc} Kira Planları` : ""}
-                height="auto"
                 autoHeight
                 rows={displayData}
                 columns={columns}
@@ -301,6 +302,7 @@ function DetailPanel(props) {
                 processRowUpdate={handleProcessRowUpdate}
                 onProcessRowUpdateError={(error) => console.log(error)}
                 getDetailPanelHeight={() => "auto"}
+                noOverlay
                 getDetailPanelContent={(params) => {
                     if (params.id === 'total-row') return null;
                     return (<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)
