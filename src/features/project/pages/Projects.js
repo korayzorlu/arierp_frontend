@@ -7,6 +7,7 @@ import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
+import ListTable from '../../../component/table/ListTable';
 
 function Projects() {
     const {user} = useSelector((store) => store.auth);
@@ -29,13 +30,13 @@ function Projects() {
     }, [activeCompany,projectsParams,dispatch]);
 
     const columns = [
-        { field: 'name', headerName: 'Proje İsmi' },
-        { field: 'partner_name', headerName: 'Satıcı' },
+        { field: 'name', headerName: 'Proje İsmi', flex: 1 },
+        { field: 'partner_name', headerName: 'Satıcı', flex: 1 },
     ]
 
     return (
         <PanelContent>
-            <ListTableServer
+            <ListTable
             title="Proje Listesi"
             autoHeight
             rows={projects}
