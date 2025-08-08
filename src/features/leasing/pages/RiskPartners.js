@@ -44,7 +44,7 @@ function RiskPartners() {
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [projectOpen, setProjectOpen] = useState(false)
-    const [project, setProject] = useState("KIZILBÜK")
+    const [project, setProject] = useState("kizilbuk")
 
     // useEffect(() => {
     //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
@@ -54,7 +54,7 @@ function RiskPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));
+            dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}}));
         });
 
         
@@ -179,10 +179,9 @@ function RiskPartners() {
         setData(data => ({...data, [field]:value}));
     };
 
-    const changeProject = (databaseTerm) => {
-        setProject(databaseTerm);
-        dispatch(setRiskPartnersLoading(true));
-        setProjectOpen(false);
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setRiskPartnersParams({project:newValue}));
     };
 
     const handleChangeBiggerThan100 = async (value) => {
@@ -231,12 +230,15 @@ function RiskPartners() {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             size='small'
-                            value='1202'
-                            label="PRoject"
-                            onChange={(value) => changeProject(value)}
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
                             >
-                            <MenuItem value='1202'>KIZILBÜK</MenuItem>
-                            {/* <MenuItem value='1202'>SİNPAŞ GYO</MenuItem> */}
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='1202'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='28974'>KASABA</MenuItem>
+                                <MenuItem value='6548'>SERVET</MenuItem>
+                                <MenuItem value='diger'>Diğer</MenuItem>
                             </Select>
                         </FormControl>
                     </>
@@ -291,7 +293,8 @@ function RiskPartners() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_risk_partners/"
             startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany}));dispatch(setRiskPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}}));dispatch(setRiskPartnersLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>

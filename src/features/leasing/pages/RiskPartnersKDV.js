@@ -5,7 +5,7 @@ import { fetchRiskPartners, fetchRiskPartnersKDV, setRiskPartnersKDVLoading, set
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, Grid, IconButton } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
@@ -41,7 +41,7 @@ function RiskPartnersKDV() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
-
+    const [project, setProject] = useState("kizilbuk")
 
 
     useEffect(() => {
@@ -184,6 +184,11 @@ function RiskPartnersKDV() {
         setBiggerThan100SwitchPosition(value);
     };
 
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setRiskPartnersKDVParams({project:newValue}));
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
@@ -211,6 +216,27 @@ function RiskPartnersKDV() {
                         onClick={() => dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
+                    </>
+                }
+                customFiltersLeft={
+                    <>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            size='small'
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
+                            >
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='1202'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='28974'>KASABA</MenuItem>
+                                <MenuItem value='6548'>SERVET</MenuItem>
+                                <MenuItem value='diger'>Diğer</MenuItem>
+                            </Select>
+                        </FormControl>
                     </>
                 }
                 customFilters={

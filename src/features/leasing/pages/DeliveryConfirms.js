@@ -25,6 +25,7 @@ import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/cont
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import { cellProgress } from '../../../component/progress/CellProgress';
+import ExportDialog from '../../../component/feedback/ExportDialog';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -43,7 +44,7 @@ function DeliveryConfirms() {
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [projectOpen, setProjectOpen] = useState(false)
-    const [project, setProject] = useState("KIZILBÜK")
+    const [project, setProject] = useState("kizilbuk")
 
     // useEffect(() => {
     //     dispatch(setDeliveryConfirmsParams({bigger_than_100:true}));
@@ -264,6 +265,12 @@ function DeliveryConfirms() {
             selectedItems={selectedItems}
             startEvent={() => dispatch(setDeliveryConfirmsLoading(true))}
             finalEvent={() => {dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));dispatch(setDeliveryConfirmsLoading(false));}}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/leasing/export_delivery_confirms/"
+            startEvent={() => dispatch(setDeliveryConfirmsLoading(true))}
+            finalEvent={() => {dispatch(fetchDeliveryConfirms({activeCompany}));dispatch(setDeliveryConfirmsLoading(false));}}
             />
             <CallDialog/>
             <MessageDialog/>

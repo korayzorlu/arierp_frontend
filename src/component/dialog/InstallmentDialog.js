@@ -61,12 +61,13 @@ function InstallmentDialog(props) {
                     <Stack spacing={2}>
                         <>
                             <BasicTable
-                            title={`Kira Planı - ${rows ? rows.length > 0 ? rows[0]["lease"] : "" : ""}`}
+                            title={`Kira Planı: ${rows ? rows.length > 0 ? rows[0]["lease"] : "" : ""} | Proje: ${rows ? rows.length > 0 ? rows[0]["project"] : "" : ""}`}
                             rows={rows}
                             columns={userColumns}
                             getRowId={(row) => row.id}
                             disableRowSelectionOnClick={true}
                             loading={installmentsLoading}
+                            noToolbarButtons
                             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
                             />
                         </>

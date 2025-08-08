@@ -5,7 +5,7 @@ import { fetchRiskPartners, fetchToWarnedRiskPartners, setToWarnedRiskPartnersLo
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, Grid, IconButton, TextField } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
@@ -42,6 +42,7 @@ function ToWarnedRiskPartners() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
+    const [project, setProject] = useState("kizilbuk")
 
     // useEffect(() => {
     //     dispatch(setToWarnedRiskPartnersParams({bigger_than_100:true}));
@@ -172,17 +173,9 @@ function ToWarnedRiskPartners() {
         setBarterSwitchPosition(false);
     };
 
-    const handleChangeField = (field,value) => {
-        setData(data => ({...data, [field]:value}));
-    };
-
-    const handleChangeBiggerThan100 = async (value) => {
-        if(!value){
-            dispatch(setToWarnedRiskPartnersParams({bigger_than_100:value,overdue_amount:true}));
-        }else{
-            dispatch(setToWarnedRiskPartnersParams({bigger_than_100:value,overdue_amount:false}));
-        }
-        setBiggerThan100SwitchPosition(value);
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setToWarnedRiskPartnersParams({project:newValue}));
     };
 
     return (
@@ -212,6 +205,27 @@ function ToWarnedRiskPartners() {
                         onClick={() => dispatch(fetchRiskPartners({activeCompany,params:toWarnedRiskPartnersParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
+                    </>
+                }
+                customFiltersLeft={
+                    <>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            size='small'
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
+                            >
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='1202'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='28974'>KASABA</MenuItem>
+                                <MenuItem value='6548'>SERVET</MenuItem>
+                                <MenuItem value='diger'>Diğer</MenuItem>
+                            </Select>
+                        </FormControl>
                     </>
                 }
                 customFilters={

@@ -17,6 +17,8 @@ function WarningNotices() {
 
     const [isPending, startTransition] = useTransition();
 
+    const [project, setProject] = useState("kizilbuk")
+
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchWarningNotices({activeCompany,params:warningNoticesParams}));
@@ -43,6 +45,11 @@ function WarningNotices() {
         },
         { field: 'state', headerName: 'Durum', flex: 1 },
     ]
+
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setWarningNoticesParams({project:newValue}));
+    };
 
     return (
         <PanelContent>

@@ -12,7 +12,7 @@ import DownloadingIcon from '@mui/icons-material/Downloading';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 function ExportDialog(props) {
-    const {children,excelURL,exportURL,startEvent,finalEvent,closeEvent,file_name} = props;
+    const {children,excelURL,exportURL,startEvent,finalEvent,closeEvent,file_name,project} = props;
 
     const {dark} = useSelector((store) => store.auth);
     const {exportDialog} = useSelector((store) => store.notification);
@@ -36,7 +36,7 @@ function ExportDialog(props) {
         
         try {
             const response = await axios.post(exportURL,
-                {},
+                {project},
                 { 
                     withCredentials: true
                 },
