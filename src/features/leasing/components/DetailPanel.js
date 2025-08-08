@@ -274,16 +274,6 @@ function DetailPanel(props) {
                     },
                 );
                 dispatch(setAlert({status:response.data.status,text:response.data.message}))
-<<<<<<< HEAD
-=======
-                // Satırdaki değeri yerel state'te de güncelle ki toplam anında güncellensin
-                setData((prev) => ({
-                    ...prev,
-                    leases: (prev.leases || []).map((r) =>
-                        r.id === newRow.id ? { ...r, processed_amount: convertedValue } : r
-                    ),
-                }));
->>>>>>> hasan
             } catch (error) {
                 if(error.response.data){
                     dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
