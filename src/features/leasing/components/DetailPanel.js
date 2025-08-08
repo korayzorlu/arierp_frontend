@@ -78,7 +78,7 @@ function DetailPanel(props) {
     const columns = useMemo(() => [
         { field: 'code', headerName: 'Kira Planı', flex:2, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
-                    {params.value}
+                    {params?.row?.isSummary ? '' : params.value}
                 </div>
             )
         },
@@ -100,6 +100,7 @@ function DetailPanel(props) {
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:1.5 },
         { field: 'devremulk', headerName: 'Dönem', flex:2 },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number',
+            valueGetter: (params) => parseLocalizedAmount((params && params.row && params.row.overdue_amount) ?? (params && params.value) ?? 0),
             renderHeaderFilter: () => null,
             cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
@@ -112,7 +113,8 @@ function DetailPanel(props) {
                 return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
             }
         },
-        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true, preProcessEditCellProps: (params) => {
+        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true,
+            preProcessEditCellProps: (params) => {
                 //const value = parseFloat(params.props.value);
                 const convertedValue = parseLocalizedAmount(params.props.value)
                 const isValid = Number.isFinite(convertedValue);
@@ -125,12 +127,11 @@ function DetailPanel(props) {
                 }
                 const convertedValue = parseLocalizedAmount(value);
                 return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
-                //return Number(convertedValue);
             }
                 
             
         },
-        { field: '', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
+        { field: '', headerName: 'Tahsilatlar', flex:2, sortable:false, filterable:false, disableColumnMenu:true, renderCell: (params) => (
                 params?.row?.isSummary ? null : (
                     <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
                         <PaidIcon/>
@@ -153,10 +154,9 @@ function DetailPanel(props) {
                 
             )
         },
-        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => {
-            if (value === null || value === undefined) {
-                return '';
-            }
+        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number',
+            valueGetter: (params) => parseLocalizedAmount((params && params.row && params.row.next_payment) ?? (params && params.value) ?? 0),
+            valueFormatter: (value) => {
             const convertedValue = parseLocalizedAmount(value);
             return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
         }},
@@ -264,7 +264,14 @@ function DetailPanel(props) {
             
             <ListTable
             title={data.leases.length > 1 ? `${data.leases[0].partner} - ${data.leases[0].partner_tc} Kira Planları` : ""}
-            height={300}
+            height={useMemo(() => {
+                const count = Array.isArray(data.leases) ? data.leases.length : 0;
+                return count <= 8 ? 'auto' : 520;
+            }, [data.leases])}
+            autoHeight={useMemo(() => {
+                const count = Array.isArray(data.leases) ? data.leases.length : 0;
+                return count <= 8;
+            }, [data.leases])}
             rows={useMemo(() => {
                 const leasesArr = Array.isArray(data.leases) ? data.leases : [];
                 const totals = leasesArr.reduce((acc, row) => {
@@ -280,7 +287,6 @@ function DetailPanel(props) {
                 const summaryRow = {
                     id: 'total-row',
                     isSummary: true,
-                    code: 'Toplam',
                     processed_amount: totals.processed_amount,
                     overdue_amount: totals.overdue_amount,
                     next_payment: totals.next_payment,
@@ -289,8 +295,8 @@ function DetailPanel(props) {
             }, [data.leases])}
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
-            noOverlay
-            disableLoadingOverlay
+             noOverlay
+             disableLoadingOverlay
             rowBuffer={7}
             columnBuffer={4}
             isCellEditable={(params) => !params?.row?.isSummary}
@@ -329,8 +335,11 @@ function DetailPanel(props) {
             processRowUpdate={handleProcessRowUpdate}
             onProcessRowUpdateError={(error) => console.log(error)}
             //cellFontSize="12px"
-            getDetailPanelHeight={() => "auto"}
-            getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
+            getDetailPanelHeight={(params) => (params?.row?.isSummary ? 0 : 'auto')}
+            getDetailPanelContent={(params) => {
+                if (params?.row?.isSummary) return null;
+                return (<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)
+            }}
             />
             <AddBankActivityLeaseDialog
             handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}
