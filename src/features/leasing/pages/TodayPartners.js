@@ -211,9 +211,9 @@ function TodayPartners() {
                             onChange={(e) => changeProject(e.target.value)}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
-                                <MenuItem value='1202'>SİNPAŞ GYO</MenuItem>
-                                <MenuItem value='28974'>KASABA</MenuItem>
-                                <MenuItem value='6548'>SERVET</MenuItem>
+                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='kasaba'>KASABA</MenuItem>
+                                <MenuItem value='servet'>SERVET</MenuItem>
                                 <MenuItem value='diger'>Diğer</MenuItem>
                             </Select>
                         </FormControl>
