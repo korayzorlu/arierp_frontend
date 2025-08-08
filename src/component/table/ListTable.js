@@ -13,6 +13,81 @@ import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { DataGridPremium } from '@mui/x-data-grid-premium';
 
+// Hoisted helpers to avoid recreating styled component each render (prevents jank flicker)
+const getBackgroundColor = (color, theme, coefficient) => ({
+  backgroundColor: darken(color, coefficient),
+  ...theme.applyStyles('light', {
+    backgroundColor: lighten(color, coefficient),
+  }),
+});
+
+const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
+  '& .super-app-theme--overdue': {
+    ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.error.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.error.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.error.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--matched': {
+    ...getBackgroundColor(theme.palette.success.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.success.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.success.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.success.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--processed': {
+    ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--tomorrow': {
+    ...getBackgroundColor(theme.palette.info.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.info.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.info.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.info.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--today': {
+    ...getBackgroundColor(theme.palette.primary.main, theme, 0.7),
+    '&:hover': {
+      ...getBackgroundColor(theme.palette.primary.main, theme, 0.6),
+    },
+    '&.Mui-selected': {
+      ...getBackgroundColor(theme.palette.primary.main, theme, 0.5),
+      '&:hover': {
+        ...getBackgroundColor(theme.palette.primary.main, theme, 0.4),
+      },
+    },
+  },
+  '& .super-app-theme--pinned-total .MuiDataGrid-cell': {
+    color: theme.palette.primary.main,
+    fontWeight: 600,
+  },
+}));
+
 function ListTable(props) {
   const {
     rows,
@@ -49,6 +124,7 @@ function ListTable(props) {
     disableMultipleRowSelection,
     noAllSelect,
     isRowSelected,
+    isRowSelectable,
     keepNonExistentRowsSelected,
     componentsProps,
     noPagination,
@@ -59,7 +135,13 @@ function ListTable(props) {
     noOverlay,
     sortModel,
     cellFontSize,
-    disableVirtualization
+    pinnedRows,
+    isCellEditable,
+    disableLoadingOverlay,
+    rowBuffer,
+    columnBuffer,
+    rowHeight,
+    disableVirtualization,
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -83,82 +165,17 @@ function ListTable(props) {
     </Box>
   );
 
-  const getBackgroundColor = (color, theme, coefficient) => ({
-    backgroundColor: darken(color, coefficient),
-    ...theme.applyStyles('light', {
-      backgroundColor: lighten(color, coefficient),
-    }),
-  });
+  const EmptyOverlay = () => null;
 
-  const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
-    '& .super-app-theme--overdue': {
-      ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
-      '&:hover': {
-        ...getBackgroundColor(theme.palette.error.main, theme, 0.6),
-      },
-      '&.Mui-selected': {
-        ...getBackgroundColor(theme.palette.error.main, theme, 0.5),
-        '&:hover': {
-          ...getBackgroundColor(theme.palette.error.main, theme, 0.4),
-        },
-      },
-    },
-    '& .super-app-theme--matched': {
-      ...getBackgroundColor(theme.palette.success.main, theme, 0.7),
-      '&:hover': {
-        ...getBackgroundColor(theme.palette.success.main, theme, 0.6),
-      },
-      '&.Mui-selected': {
-        ...getBackgroundColor(theme.palette.success.main, theme, 0.5),
-        '&:hover': {
-          ...getBackgroundColor(theme.palette.success.main, theme, 0.4),
-        },
-      },
-    },
-    '& .super-app-theme--processed': {
-      ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.7),
-      '&:hover': {
-        ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.6),
-      },
-      '&.Mui-selected': {
-        ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.5),
-        '&:hover': {
-          ...getBackgroundColor(theme.palette.bluelemonade.main, theme, 0.4),
-        },
-      },
-    },
-    '& .super-app-theme--tomorrow': {
-      ...getBackgroundColor(theme.palette.info.main, theme, 0.7),
-      '&:hover': {
-        ...getBackgroundColor(theme.palette.info.main, theme, 0.6),
-      },
-      '&.Mui-selected': {
-        ...getBackgroundColor(theme.palette.info.main, theme, 0.5),
-        '&:hover': {
-          ...getBackgroundColor(theme.palette.info.main, theme, 0.4),
-        },
-      },
-    },
-    '& .super-app-theme--today': {
-      ...getBackgroundColor(theme.palette.primary.main, theme, 0.7),
-      '&:hover': {
-        ...getBackgroundColor(theme.palette.primary.main, theme, 0.6),
-      },
-      '&.Mui-selected': {
-        ...getBackgroundColor(theme.palette.primary.main, theme, 0.5),
-        '&:hover': {
-          ...getBackgroundColor(theme.palette.primary.main, theme, 0.4),
-        },
-      },
-    },
-  }));
+  
 
   return (
     <TableContent height={autoHeight ? 'auto' : (height || null)}>
       <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,
-        noRowsOverlay: NoRowsOverlay,
+        noRowsOverlay: noOverlay ? EmptyOverlay : NoRowsOverlay,
+        ...(disableLoadingOverlay ? { loadingOverlay: EmptyOverlay } : {}),
       }}
       showToolbar
       slotProps={{
@@ -170,10 +187,15 @@ function ListTable(props) {
               noDownloadButton: noDownloadButton,
               specialButtons: specialButtons,
           },
-          loadingOverlay: {
-            variant: 'linear-progress',
-            noRowsVariant: 'linear-progress',
-          },
+          ...(disableLoadingOverlay
+            ? {}
+            : {
+                loadingOverlay: {
+                  variant: 'linear-progress',
+                  noRowsVariant: 'linear-progress',
+                },
+              }
+          ),
       }}
       columns={columns}
       rows={rows}
@@ -184,6 +206,11 @@ function ListTable(props) {
             columnVisibilityModel: hiddenColumns,
           },
         }}
+      pinnedRows={pinnedRows}
+      rowBuffer={rowBuffer}
+      columnBuffer={columnBuffer}
+      rowHeight={rowHeight}
+      disableVirtualization={disableVirtualization}
       pageSizeOptions={[25, 50, 100]}
       pagination={noPagination ? false : true}
       paginationModel={paginationModel}
@@ -196,6 +223,8 @@ function ListTable(props) {
       rowSelectionModel={rowSelectionModel}
       onRowSelectionModelChange={onRowSelectionModelChange}
       isRowSelected={isRowSelected}
+      isRowSelectable={isRowSelectable}
+      isCellEditable={isCellEditable}
       keepNonExistentRowsSelected={keepNonExistentRowsSelected}
       rowCount={rowCount}
       autoHeight={autoHeight}
@@ -206,6 +235,23 @@ function ListTable(props) {
           },
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
               outline: 'none',
+          },
+          // Pinned toplam satırını veri satırlarının hemen altında göstermek için
+          // virtual scroller içerik alt boşluğunu kapat ve pinned rows'u akışa al
+          '& .MuiDataGrid-virtualScrollerContent': {
+            marginBottom: '0px !important',
+            paddingBottom: '0px !important',
+          },
+          '& .MuiDataGrid-pinnedRows, & .MuiDataGrid-pinnedRowsBottom': {
+            position: 'static !important',
+            bottom: 'auto !important',
+            transform: 'none !important',
+            boxShadow: 'none !important',
+            zIndex: 'auto !important',
+          },
+          '& .MuiDataGrid-footerContainer': {
+            paddingTop: 0,
+            marginTop: 0,
           },
           '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
           '& .MuiDataGrid-columnHeader': {
@@ -264,7 +310,6 @@ function ListTable(props) {
       apiRef={apiRef}
       processRowUpdate={processRowUpdate}
       onProcessRowUpdateError={onProcessRowUpdateError}
-      disableVirtualization={disableVirtualization}
       sortModel={sortModel}
       />
     </TableContent>

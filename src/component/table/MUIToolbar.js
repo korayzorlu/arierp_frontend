@@ -192,7 +192,6 @@ function MUIToolbar(props) {
                     aria-label="Search"
                     placeholder="Search..."
                     size="small"
-                    autoFocus={true}
                     slotProps={{
                       input: {
                         startAdornment: (
