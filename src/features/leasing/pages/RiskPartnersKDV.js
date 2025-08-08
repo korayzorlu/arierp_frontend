@@ -46,7 +46,7 @@ function RiskPartnersKDV() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams}));
+            dispatch(fetchRiskPartnersKDV({activeCompany,params:{...riskPartnersKDVParams,project}}));
         });
 
         

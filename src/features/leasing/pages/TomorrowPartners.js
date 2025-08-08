@@ -49,7 +49,7 @@ function TomorrowPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTomorrowPartners({activeCompany,params:tomorrowPartnersParams}));
+            dispatch(fetchTomorrowPartners({activeCompany,params:{...tomorrowPartnersParams,project}}));
         });
 
         

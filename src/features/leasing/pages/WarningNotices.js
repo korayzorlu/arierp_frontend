@@ -21,7 +21,7 @@ function WarningNotices() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchWarningNotices({activeCompany,params:warningNoticesParams}));
+            dispatch(fetchWarningNotices({activeCompany,params:{...warningNoticesParams,project}}));
         });
 
         

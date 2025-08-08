@@ -53,7 +53,7 @@ function ToTerminatedRiskPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchToTerminatedRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));
+            dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}}));
         });
 
         

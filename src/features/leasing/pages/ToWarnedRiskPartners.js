@@ -52,7 +52,7 @@ function ToWarnedRiskPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchToWarnedRiskPartners({activeCompany,params:toWarnedRiskPartnersParams}));
+            dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}}))
         });
 
         

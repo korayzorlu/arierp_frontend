@@ -49,7 +49,7 @@ function TodayPartners() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));
+            dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}}));
         });
 
         
