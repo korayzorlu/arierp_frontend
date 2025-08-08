@@ -79,7 +79,7 @@ const initialState = {
 
 export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/risk_partners/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -94,7 +94,7 @@ export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', asyn
 
 export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/kdv_risk_partners/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/kdv_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -109,7 +109,7 @@ export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV'
 
 export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/to_warned_risk_partners/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/to_warned_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -124,7 +124,7 @@ export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRis
 
 export const fetchWarnedRiskPartners = createAsyncThunk('auth/fetchWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/warned_risk_partners/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/warned_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -139,7 +139,7 @@ export const fetchWarnedRiskPartners = createAsyncThunk('auth/fetchWarnedRiskPar
 
 export const fetchToTerminatedRiskPartners = createAsyncThunk('auth/fetchToTerminatedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/to_terminated_risk_partners/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/to_terminated_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -154,7 +154,7 @@ export const fetchToTerminatedRiskPartners = createAsyncThunk('auth/fetchToTermi
 
 export const fetchDeliveryConfirms = createAsyncThunk('auth/fetchDeliveryConfirms', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/delivery_confirms/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/delivery_confirms/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -170,7 +170,7 @@ export const fetchDeliveryConfirms = createAsyncThunk('auth/fetchDeliveryConfirm
 export const fetchRiskPartner = createAsyncThunk('auth/fetchRiskPartner', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
     dispatch(setIsProgress(true));
     try {
-        const response = await axios.get(`/leasing/risk_partners/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
