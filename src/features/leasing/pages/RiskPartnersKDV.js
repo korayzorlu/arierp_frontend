@@ -284,7 +284,8 @@ function RiskPartnersKDV() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_kdv_risk_partners/"
             startEvent={() => dispatch(setRiskPartnersKDVLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartnersKDV({activeCompany}));dispatch(setRiskPartnersKDVLoading(false));}}
+            finalEvent={() => {dispatch(fetchRiskPartnersKDV({activeCompany,params:{...riskPartnersKDVParams,project}}));dispatch(setRiskPartnersKDVLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>

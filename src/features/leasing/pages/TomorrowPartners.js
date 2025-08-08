@@ -266,7 +266,8 @@ function TomorrowPartners() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_tomorrow_partners/"
             startEvent={() => dispatch(setTomorrowPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchTomorrowPartners({activeCompany}));dispatch(setTomorrowPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchTomorrowPartners({activeCompany,params:{...tomorrowPartnersParams,project}}));dispatch(setTomorrowPartnersLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>

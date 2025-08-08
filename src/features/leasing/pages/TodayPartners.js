@@ -264,7 +264,8 @@ function TodayPartners() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_today_partners/"
             startEvent={() => dispatch(setTodayPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchTodayPartners({activeCompany}));dispatch(setTodayPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}}));dispatch(setTodayPartnersLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>

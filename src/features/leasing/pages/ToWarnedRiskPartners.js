@@ -274,7 +274,8 @@ function ToWarnedRiskPartners() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_to_warned_risk_partners/"
             startEvent={() => dispatch(setToWarnedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchToWarnedRiskPartners({activeCompany}));dispatch(setToWarnedRiskPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}}));dispatch(setToWarnedRiskPartnersLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>

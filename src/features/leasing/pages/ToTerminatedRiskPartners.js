@@ -285,7 +285,8 @@ function ToTerminatedRiskPartners() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_to_terminated_risk_partners/"
             startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchToTerminatedRiskPartners({activeCompany}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
+            finalEvent={() => {dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>

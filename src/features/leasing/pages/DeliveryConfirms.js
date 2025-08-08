@@ -54,7 +54,7 @@ function DeliveryConfirms() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));
+            dispatch(fetchDeliveryConfirms({activeCompany,params:{...deliveryConfirmsParams,project}}));
         });
 
         
@@ -215,11 +215,15 @@ function DeliveryConfirms() {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             size='small'
-                            value='kizilbuk'
-                            label="Age"
-                            onChange={(value) => changeProject(value)}
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
                             >
-                            <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='1202'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='28974'>KASABA</MenuItem>
+                                <MenuItem value='6548'>SERVET</MenuItem>
+                                <MenuItem value='diger'>Diğer</MenuItem>
                             </Select>
                         </FormControl>
                     </>
@@ -270,7 +274,8 @@ function DeliveryConfirms() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL="/leasing/export_delivery_confirms/"
             startEvent={() => dispatch(setDeliveryConfirmsLoading(true))}
-            finalEvent={() => {dispatch(fetchDeliveryConfirms({activeCompany}));dispatch(setDeliveryConfirmsLoading(false));}}
+            finalEvent={() => {dispatch(fetchDeliveryConfirms({activeCompany,params:{...deliveryConfirmsParams,project}}));dispatch(setDeliveryConfirmsLoading(false));}}
+            project={project}
             />
             <CallDialog/>
             <MessageDialog/>
