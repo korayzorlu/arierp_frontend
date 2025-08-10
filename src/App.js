@@ -95,6 +95,7 @@ import ToTerminatedRiskPartners from './features/leasing/pages/ToTerminatedRiskP
 import DeliveryConfirms from './features/leasing/pages/DeliveryConfirms.js';
 import WarnedRiskPartners from './features/leasing/pages/WarnedRiskPartners.js';
 import Projects from './features/project/pages/Projects.js';
+import DepositPartners from './features/leasing/pages/DepositPartners.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -246,6 +247,7 @@ function App() {
                 <Route path='/tomorrow-partners' element={<TomorrowPartners></TomorrowPartners>}></Route>
                 <Route path='/today-partners' element={<TodayPartners></TodayPartners>}></Route>
                 <Route path='/warning-notices' element={<WarningNotices></WarningNotices>}></Route>
+                <Route path='/deposit-partners' element={<DepositPartners></DepositPartners>}></Route>
 
                 <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                 <Route path='/quotations' element={<Quotations></Quotations>}></Route>

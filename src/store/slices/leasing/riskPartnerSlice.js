@@ -75,6 +75,18 @@ const initialState = {
         format: 'datatables'
     },
     deliveryConfirmsLoading:false,
+    //deposit
+    depositPartners:[],
+    depositPartnersCount:0,
+    depositPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    depositPartnersLoading:false,
 }
 
 export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
@@ -259,6 +271,21 @@ export const deleteRiskPartner = createAsyncThunk('auth/deleteRiskPartner', asyn
     }
 });
 
+export const fetchDepositPartners = createAsyncThunk('auth/fetchDepositPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/deposit_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
 const riskPartnerSlice = createSlice({
     name:"riskPartner",
     initialState,
@@ -382,6 +409,26 @@ const riskPartnerSlice = createSlice({
         deleteDeliveryConfirms: (state,action) => {
             state.deliveryConfirms = [];
         },
+        //deposit
+        setDepositPartnersLoading: (state,action) => {
+            state.depositPartnersLoading = action.payload;
+        },
+        setDepositPartnersParams: (state,action) => {
+            state.depositPartnersParams = {
+                ...state.depositPartnersParams,
+                ...action.payload
+            };
+        },
+        resetDepositPartnersParams: (state,action) => {
+            state.depositPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteDepositPartners: (state,action) => {
+            state.depositPartners = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -456,6 +503,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchDeliveryConfirms.rejected, (state,action) => {
                 state.deliveryConfirmsLoading = false
             })
+            //deposit
+            .addCase(fetchDepositPartners.pending, (state) => {
+                state.depositPartnersLoading = true
+            })
+            .addCase(fetchDepositPartners.fulfilled, (state,action) => {
+                state.depositPartners = action.payload.data || action.payload;
+                state.depositPartnersCount = action.payload.recordsTotal || 0;
+                state.depositPartnersLoading = false
+            })
+            .addCase(fetchDepositPartners.rejected, (state,action) => {
+                state.depositPartnersLoading = false
+            })
     },
   
 })
@@ -465,25 +524,36 @@ export const {
     setRiskPartnersParams,
     resetRiskPartnersParams,
     deleteRiskPartners,
+
     setRiskPartnersKDVLoading,
     setRiskPartnersKDVParams,
     resetRiskPartnersKDVParams,
     deleteRiskPartnersKDV,
+
     setToWarnedRiskPartnersLoading,
     setToWarnedRiskPartnersParams,
     resetToWarnedRiskPartnersParams,
     deleteToWarnedRiskPartners,
+
     setWarnedRiskPartnersLoading,
     setWarnedRiskPartnersParams,
     resetWarnedRiskPartnersParams,
     deleteWarnedRiskPartners,
+
     setToTerminatedRiskPartnersLoading,
     setToTerminatedRiskPartnersParams,
     resetToTerminatedRiskPartnersParams,
     deleteToTerminatedRiskPartners,
+
     setDeliveryConfirmsLoading,
     setDeliveryConfirmsParams,
     resetDeliveryConfirmsParams,
     deleteDeliveryConfirms,
+
+    setDepositPartnersLoading,
+    setDepositPartnersParams,
+    resetDepositPartnersParams,
+    deleteDepositPartners,
+
 } = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;
