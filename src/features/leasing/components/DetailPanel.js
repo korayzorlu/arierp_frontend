@@ -99,19 +99,8 @@ function DetailPanel(props) {
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:1.5 },
         { field: 'devremulk', headerName: 'Dönem', flex:2 },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number',
-            valueGetter: (params) => parseLocalizedAmount((params && params.row && params.row.overdue_amount) ?? (params && params.value) ?? 0),
-            renderHeaderFilter: () => null,
-            cellClassName: (params) => {
-                return params.value > 0 ? 'bg-red' : '';
-            },
-            valueFormatter: (value) => {
-                if (value === null || value === undefined) {
-                    return '';
-                }
-                const convertedValue = parseLocalizedAmount(value);
-                return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
-            }
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true,
             preProcessEditCellProps: (params) => {
@@ -154,12 +143,9 @@ function DetailPanel(props) {
                 
             )
         },
-        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number',
-            valueGetter: (params) => parseLocalizedAmount((params && params.row && params.row.next_payment) ?? (params && params.value) ?? 0),
-            valueFormatter: (value) => {
-            const convertedValue = parseLocalizedAmount(value);
-            return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
-        }},
+        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'collection_status', headerName: 'Statü', flex:2 },
     ], [dispatch, activeCompany])
 
