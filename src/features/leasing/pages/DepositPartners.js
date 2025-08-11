@@ -200,7 +200,7 @@ function DepositPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchDepositPartners({activeCompany,params:depositPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -216,6 +216,7 @@ function DepositPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
+                            disabled={depositPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>

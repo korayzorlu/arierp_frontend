@@ -208,7 +208,7 @@ function ToTerminatedRiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -224,6 +224,7 @@ function ToTerminatedRiskPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
+                            disabled={toTerminatedRiskPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>

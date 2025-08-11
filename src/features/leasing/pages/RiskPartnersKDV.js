@@ -213,7 +213,7 @@ function RiskPartnersKDV() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartnersKDV({activeCompany,params:{...riskPartnersKDVParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -229,6 +229,7 @@ function RiskPartnersKDV() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
+                            disabled={riskPartnersKDVLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>

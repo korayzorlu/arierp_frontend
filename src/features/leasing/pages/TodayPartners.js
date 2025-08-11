@@ -193,7 +193,7 @@ function TodayPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -209,6 +209,7 @@ function TodayPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
+                            disabled={todayPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>

@@ -65,7 +65,7 @@ function WarningNotices() {
                     <>
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchWarningNotices({activeCompany,params:warningNoticesParams})).unwrap()}
+                        onClick={() => dispatch(fetchWarningNotices({activeCompany,params:{...warningNoticesParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>

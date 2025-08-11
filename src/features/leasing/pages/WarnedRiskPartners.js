@@ -202,7 +202,7 @@ function WarnedRiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:warnedRiskPartnersParams})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -218,6 +218,7 @@ function WarnedRiskPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
+                            disabled={warnedRiskPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>

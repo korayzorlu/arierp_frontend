@@ -202,7 +202,7 @@ function DeliveryConfirms() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams})).unwrap()}
+                        onClick={() => dispatch(fetchDeliveryConfirms({activeCompany,params:{...deliveryConfirmsParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -218,6 +218,7 @@ function DeliveryConfirms() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
+                            disabled={deliveryConfirmsLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
