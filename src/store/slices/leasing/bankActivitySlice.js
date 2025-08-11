@@ -25,7 +25,7 @@ const initialState = {
 
 export const fetchBankActivities = createAsyncThunk('auth/fetchBankActivities', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}&paginate=false`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -41,7 +41,7 @@ export const fetchBankActivities = createAsyncThunk('auth/fetchBankActivities', 
 export const fetchBankActivity = createAsyncThunk('auth/fetchBankActivity', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
     dispatch(setIsProgress(true));
     try {
-        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}&paginate=false`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -146,7 +146,7 @@ export const fetchBankActivityInformation = createAsyncThunk('auth/fetchBankActi
 
 export const fetchBankActivityLeases = createAsyncThunk('auth/fetchBankActivityLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/bank_activity_leases/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/bank_activity_leases/?active_company=${activeCompany.id}&paginate=false`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
