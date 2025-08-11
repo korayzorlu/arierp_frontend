@@ -42,7 +42,7 @@ function PurchasePayments() {
 
     return (
         <PanelContent>
-            <ListTable
+            <ListTableServer
             title="Satıcı Ödemeleri"
             rows={purchasePayments}
             columns={columns}
@@ -57,6 +57,7 @@ function PurchasePayments() {
                     />
                 </>
             }
+            rowCount={purchasePaymentsCount}
             setParams={(value) => dispatch(setPurchasePaymentsParams(value))}
             headerFilters={true}
             />
