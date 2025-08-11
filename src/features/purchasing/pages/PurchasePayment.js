@@ -25,7 +25,7 @@ function PurchasePayments() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchPurchasePayments({activeCompany}));
+            dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams}));
         });
     }, [activeCompany,purchasePaymentsParams,dispatch]);
 
