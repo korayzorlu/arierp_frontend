@@ -36,6 +36,7 @@ import tomorrowPartnerReducer from './slices/leasing/tomorrowPartnerSlice';
 import todayPartnerReducer from './slices/leasing/todayPartnerSlice';
 import yesterdayPartnerReducer from './slices/leasing/yesterdayPartnerSlice';
 import projectReducer from './slices/projects/projectSlice';
+import purchasePaymentReducer from './slices/purchasing/purchasePaymentSlice';
 
 let navigate;
 
@@ -82,6 +83,7 @@ export const store = configureStore({
         todayPartner: todayPartnerReducer,
         yesterdayPartner: yesterdayPartnerReducer,
         project: projectReducer,
+        purchasePayment: purchasePaymentReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
