@@ -1,6 +1,6 @@
 import { Box, IconButton } from '@mui/material';
-import { useGridApiRef } from '@mui/x-data-grid';
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useGridApiRef } from '@mui/x-data-grid-premium';
+import React, { useEffect, useRef, useState } from 'react'
 import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOverdueInformation, setLeaseOverdues, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
@@ -40,9 +40,14 @@ function DetailPanel(props) {
 
      const fetchData = async () => {
         const response = await dispatch(fetchBankActivity({activeCompany,params:{uuid}})).unwrap();
-        setData(response);
-        
-        
+        const normalized = {
+            ...response,
+            leases: (response.leases || []).map((row) => ({
+                ...row,
+                processed_amount: parseLocalizedAmount(row.processed_amount)
+            }))
+        };
+        setData(normalized);
     };
 
     useEffect(() => {
@@ -67,7 +72,6 @@ function DetailPanel(props) {
                 apiRef.current.selectRows(overdueRowIds,true,true);
                 const map = apiRef.current.getSelectedRows();
                 map.forEach((row) => allSelectedRows.push(row));
-                isFirstSelection.current = false;
             }else {
                 isFirstSelection.current = false;
             }
@@ -75,10 +79,45 @@ function DetailPanel(props) {
         
     }, [data.leases])
 
-    const columns = useMemo(() => [
+    const ProcessedAmountEditCell = (props) => {
+        const { id, field, value, api } = props;
+        const [draft, setDraft] = React.useState(value ?? '');
+
+        const handleChange = (e) => {
+            setDraft(e.target.value);
+        };
+
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                const parsed = parseLocalizedAmount(draft);
+                api.setEditCellValue({ id, field, value: parsed });
+                api.stopRowEditMode({ id });
+                return;
+            }
+            if (e.key !== 'Escape') {
+                e.stopPropagation();
+            }
+        };
+
+        return (
+            <input
+                autoFocus
+                type="text"
+                value={draft}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                style={{ width: '100%', height: '100%', border: 'none', outline: 'none', font: 'inherit', background: 'transparent' }}
+                inputMode="decimal"
+            />
+        );
+    };
+
+    const columns = [
         { field: 'code', headerName: 'Kira Planı', flex:2, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
-                    {params?.row?.isSummary ? '' : params.value}
+                    {params.value}
                 </div>
             )
         },
@@ -100,48 +139,35 @@ function DetailPanel(props) {
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:1.5 },
         { field: 'devremulk', headerName: 'Dönem', flex:2 },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number',
-            valueGetter: (params) => parseLocalizedAmount((params && params.row && params.row.overdue_amount) ?? (params && params.value) ?? 0),
             renderHeaderFilter: () => null,
             cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
-            },
-            valueFormatter: (value) => {
-                if (value === null || value === undefined) {
-                    return '';
-                }
-                const convertedValue = parseLocalizedAmount(value);
-                return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
             }
         },
-        { field: 'processed_amount', headerName: 'işlenen Tutar', flex:2, editable: true,
-            preProcessEditCellProps: (params) => {
-                //const value = parseFloat(params.props.value);
-                const convertedValue = parseLocalizedAmount(params.props.value)
-                const isValid = Number.isFinite(convertedValue);
-                return { ...params.props, value: isValid ? convertedValue : 0, error: 0 }
-            
-            },
+        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex:2, type: 'number', editable: true,
+            renderEditCell: (params) => (<ProcessedAmountEditCell {...params} />),
+            // Commit anında yerel string → number
+            valueParser: (value) => parseLocalizedAmount(value),
             valueFormatter: (value) => {
                 if (value === null || value === undefined) {
                     return ''; // boş göster
                 }
                 const convertedValue = parseLocalizedAmount(value);
                 return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
+                //return Number(convertedValue);
             }
                 
             
         },
-        { field: '', headerName: 'Tahsilatlar', flex:2, sortable:false, filterable:false, disableColumnMenu:true, renderCell: (params) => (
-                params?.row?.isSummary ? null : (
-                    <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
-                        <PaidIcon/>
-                    </IconButton>
-                )
+        { field: '', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
+                <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
+                    <PaidIcon/>
+                </IconButton>
+                
             )
         },
         { field: 'currency', headerName: 'PB', flex:1 },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
-                params.row.isSummary ? null : (
                 params.row.overdue_amount > 0
                 ?
                     params.value >= 0
@@ -150,28 +176,23 @@ function DetailPanel(props) {
                     :
                         null
                 :
-                    null)
+                    null
                 
             )
         },
-        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number',
-            valueGetter: (params) => parseLocalizedAmount((params && params.row && params.row.next_payment) ?? (params && params.value) ?? 0),
-            valueFormatter: (value) => {
-            const convertedValue = parseLocalizedAmount(value);
-            return  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(convertedValue);
-        }},
+        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'collection_status', headerName: 'Statü', flex:2 },
-    ], [dispatch, activeCompany])
+    ]
 
     const handleProfileDialog = async (params,event) => {
-        if (params?.row?.isSummary) return; // toplam satırında etkileşim yok
-        if (event) {
-            event.stopPropagation();
-        }
         if(params.field==="partner"){
+            if (event) event.stopPropagation();
             await dispatch(fetchPartnerInformation(params.row.partner_crm_code)).unwrap();
             dispatch(setPartnerDialog(true));
         }else if(params.field==="code"){
+            if (event) event.stopPropagation();
             dispatch(setInstallmentsLoading(true));
             await dispatch(fetchInstallmentInformation(params.row.code)).unwrap();
             dispatch(setInstallmentDialog(true));
@@ -225,13 +246,6 @@ function DetailPanel(props) {
                     },
                 );
                 dispatch(setAlert({status:response.data.status,text:response.data.message}))
-                // Satırdaki değeri yerel state'te de güncelle ki toplam anında güncellensin
-                setData((prev) => ({
-                    ...prev,
-                    leases: (prev.leases || []).map((r) =>
-                        r.id === newRow.id ? { ...r, processed_amount: convertedValue } : r
-                    ),
-                }));
             } catch (error) {
                 if(error.response.data){
                     dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
@@ -242,7 +256,15 @@ function DetailPanel(props) {
             } 
 
 
-            const updatedRow = { ...newRow, isUpdated: true };
+            // Lokal tablo durumunu güncelle (UI ve toplamların anında güncellenmesi için)
+            setData((prev) => ({
+                ...prev,
+                leases: (prev.leases || []).map((row) =>
+                  row.id === newRow.id ? { ...row, processed_amount: convertedValue } : row
+                ),
+            }));
+
+            const updatedRow = { ...newRow, processed_amount: convertedValue, isUpdated: true };
 
             return updatedRow;
         } catch (error) {
@@ -256,51 +278,14 @@ function DetailPanel(props) {
 
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
-            { /* Toplam satırı: sadece işlenen tutar */ }
-            { /* data.leases değiştikçe tekrar hesaplanır */ }
-            { /* pinnedRows, ListTable üzerinden DataGridPremium'a aktarılır */ }
-            
-            { /* Hesaplanan toplam */ }
-            
             <ListTable
             title={data.leases.length > 1 ? `${data.leases[0].partner} - ${data.leases[0].partner_tc} Kira Planları` : ""}
-            height={useMemo(() => {
-                const count = Array.isArray(data.leases) ? data.leases.length : 0;
-                return count <= 8 ? 'auto' : 520;
-            }, [data.leases])}
-            autoHeight={useMemo(() => {
-                const count = Array.isArray(data.leases) ? data.leases.length : 0;
-                return count <= 8;
-            }, [data.leases])}
-            rows={useMemo(() => {
-                const leasesArr = Array.isArray(data.leases) ? data.leases : [];
-                const totals = leasesArr.reduce((acc, row) => {
-                    const processed = parseLocalizedAmount(row?.processed_amount);
-                    const overdue = parseLocalizedAmount(row?.overdue_amount);
-                    const nextPay = parseLocalizedAmount(row?.next_payment);
-                    return {
-                        processed_amount: acc.processed_amount + (Number.isFinite(processed) ? processed : 0),
-                        overdue_amount: acc.overdue_amount + (Number.isFinite(overdue) ? overdue : 0),
-                        next_payment: acc.next_payment + (Number.isFinite(nextPay) ? nextPay : 0),
-                    };
-                }, { processed_amount: 0, overdue_amount: 0, next_payment: 0 });
-                const summaryRow = {
-                    id: 'total-row',
-                    isSummary: true,
-                    processed_amount: totals.processed_amount,
-                    overdue_amount: totals.overdue_amount,
-                    next_payment: totals.next_payment,
-                };
-                return [...leasesArr, summaryRow];
-            }, [data.leases])}
+            height="auto"
+            autoHeight
+            rows={data.leases}
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
-             noOverlay
-             disableLoadingOverlay
-            rowBuffer={7}
-            columnBuffer={4}
-            isCellEditable={(params) => !params?.row?.isSummary}
-            isRowSelectable={(params) => !params?.row?.isSummary}
+            editMode="row"
             specialButtons={
                     <>
                         <CustomTableButton
@@ -316,12 +301,7 @@ function DetailPanel(props) {
             showColumnVerticalBorder
             outline
             noToolbarButtons
-            // pagination & footer açık
-            rowHeight={40}
-            getRowClassName={(params) => {
-                if (params?.row?.isSummary) return 'super-app-theme--pinned-total';
-                return `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`
-            }}
+            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             //noAllSelect
             checkboxSelection={true}
             disableRowSelectionOnClick={true}
@@ -329,17 +309,24 @@ function DetailPanel(props) {
             //rowSelectionModel={selectedRows}
             keepNonExistentRowsSelected
             //isRowSelected={(row) => row.overdue_amount > 0}
-            // pagination aktif
+            //hideFooter
+            noPagination
             apiRef={apiRef}
-            initialState={{}}
+            initialState={{
+                aggregation: {
+                    model: {
+                        overdue_amount: 'sum',
+                        processed_amount: 'sum',
+                        next_payment: 'sum',
+                    },
+                },
+            }}
             processRowUpdate={handleProcessRowUpdate}
+            // Hücre komitini özelleştirmiyoruz; row-level processRowUpdate ile backend + UI senkronizasyonu sağlanacak
             onProcessRowUpdateError={(error) => console.log(error)}
             //cellFontSize="12px"
-            getDetailPanelHeight={(params) => (params?.row?.isSummary ? 0 : 'auto')}
-            getDetailPanelContent={(params) => {
-                if (params?.row?.isSummary) return null;
-                return (<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)
-            }}
+            getDetailPanelHeight={() => "auto"}
+            getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
             <AddBankActivityLeaseDialog
             handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}

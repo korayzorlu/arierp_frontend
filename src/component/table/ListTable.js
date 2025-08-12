@@ -142,6 +142,8 @@ function ListTable(props) {
     columnBuffer,
     rowHeight,
     disableVirtualization,
+    editMode,
+    onCellEditCommit,
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -172,6 +174,7 @@ function ListTable(props) {
   return (
     <TableContent height={autoHeight ? 'auto' : (height || null)}>
       <StyledDataGridPremium
+      editMode={editMode}
       slots={{
         toolbar: MUIToolbar,
         noRowsOverlay: noOverlay ? EmptyOverlay : NoRowsOverlay,
