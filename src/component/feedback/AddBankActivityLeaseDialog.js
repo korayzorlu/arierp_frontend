@@ -74,12 +74,10 @@ function AddBankActivityLeaseDialog(props) {
 
     const handleSelectionChange = () => {
         const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
-        console.log(currentSelection)
     };
 
     const handleSubmit = () => {
         const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
-        console.log(currentSelection)
         if (Array.from(currentSelection).length > 0) {
             console.log('Seçilen:', currentSelection);
             dispatch(updateBankActivityLeases({data:{uuid:Array.from(currentSelection)[0],bank_activity_uuid:uuid}}))

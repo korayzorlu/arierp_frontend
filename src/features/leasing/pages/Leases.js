@@ -96,6 +96,7 @@ function Leases() {
                 
             )
         },
+        { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
 
