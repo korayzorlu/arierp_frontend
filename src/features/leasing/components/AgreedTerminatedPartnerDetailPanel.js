@@ -70,52 +70,52 @@ function AgreedTerminatedPartnerDetailPanel(props) {
                 
             )
         },
-        // { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-        //         return params.value > 0 ? 'bg-red' : '';
-        //     }
-        // },
-        // { field: 'currency', headerName: 'PB', flex:1 },
-        // { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
-        //         params.row.overdue_amount > 0
-        //         ?
-        //             params.value >= 0
-        //             ?
-        //                 `${params.value} gün`
-        //             :
-        //                 null
-        //         :
-        //             null
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+                return params.value > 0 ? 'bg-red' : '';
+            }
+        },
+        { field: 'currency', headerName: 'PB', flex:1 },
+        { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
+                params.row.overdue_amount > 0
+                ?
+                    params.value >= 0
+                    ?
+                        `${params.value} gün`
+                    :
+                        null
+                :
+                    null
                 
-        //     )
-        // },
-        // { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
-        // { field: 'status', headerName: 'Durum', flex:2 },
-        // { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
-        //         params.row.status === "İhtar Çekildi"
-        //         ?
-        //             <Grid container spacing={1}>
-        //                 <Grid size={12} sx={{textAlign: 'center'}}>
-        //                     <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.contract)}>
-        //                         <FeedIcon />
-        //                     </IconButton>
-        //                 </Grid>
-        //             </Grid>
-        //         :
-        //             null
-        //     )
-        // },
-        // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
-        //         params.value
-        //         ?
-        //             "Kdv Farkı Var"
-        //         :
-        //             ""
+            )
+        },
+        { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
+        { field: 'status', headerName: 'Durum', flex:2 },
+        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+                params.row.status === "İhtar Çekildi"
+                ?
+                    <Grid container spacing={1}>
+                        <Grid size={12} sx={{textAlign: 'center'}}>
+                            <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.contract)}>
+                                <FeedIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                :
+                    null
+            )
+        },
+        { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
+                params.value
+                ?
+                    "Kdv Farkı Var"
+                :
+                    ""
                 
-        //     ),
-        //     cellClassName: (params) => {
-        //         return params.value ? 'bg-orange' : '';
-        //     }
-        // },
+            ),
+            cellClassName: (params) => {
+                return params.value ? 'bg-orange' : '';
+            }
+        },
         { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 

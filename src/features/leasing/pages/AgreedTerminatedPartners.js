@@ -97,42 +97,42 @@ function AgreedTerminatedPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        // { field: '', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
-        //     // valueOptions: [
-        //     //     { value: '0', label: '30 Günü Geçmeyenler' },
-        //     //     { value: '30', label: '30 Günü Geçenler' },    
-        //     // ],
-        //     cellClassName: (params) => {
-        //         if (params.row.leases.max_overdue_days <= 30){
-        //             return 'bg-yellow'
-        //         } else if (params.row.leases.max_overdue_days > 30 && params.row.leases.max_overdue_days <= 60){
-        //             return 'bg-orange'
-        //         } else if (params.row.leases.max_overdue_days > 60 && params.row.leases.max_overdue_days <= 90){
-        //             return 'bg-light-red'
-        //         } else if (params.row.leases.max_overdue_days > 90){
-        //             return 'bg-dark-red'
-        //         }
-        //     },
-        //     renderCell: (params) => params.row.leases.max_overdue_days
-        // },
-        // { field: 'leases', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
-        //     new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value.total_overdue_amount)
-        // },
-        // { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
-        //     <Grid container spacing={1}>
-        //         <Grid size={6} sx={{textAlign: 'center'}}>
-        //             <IconButton aria-label="delete" onClick={handleCallDialog}>
-        //                 <CallIcon />
-        //             </IconButton>
-        //         </Grid>
-        //         <Grid size={6} sx={{textAlign: 'center'}}>
-        //             <IconButton aria-label="delete" onClick={handleMessageDialog}>
-        //                 <MessageIcon />
-        //             </IconButton>
-        //         </Grid>
-        //     </Grid>
-        //     )
-        // },
+        { field: '', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
+            // valueOptions: [
+            //     { value: '0', label: '30 Günü Geçmeyenler' },
+            //     { value: '30', label: '30 Günü Geçenler' },    
+            // ],
+            cellClassName: (params) => {
+                if (params.row.leases.max_overdue_days <= 30){
+                    return 'bg-yellow'
+                } else if (params.row.leases.max_overdue_days > 30 && params.row.leases.max_overdue_days <= 60){
+                    return 'bg-orange'
+                } else if (params.row.leases.max_overdue_days > 60 && params.row.leases.max_overdue_days <= 90){
+                    return 'bg-light-red'
+                } else if (params.row.leases.max_overdue_days > 90){
+                    return 'bg-dark-red'
+                }
+            },
+            renderCell: (params) => params.row.leases.max_overdue_days
+        },
+        { field: 'leases', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value.total_overdue_amount)
+        },
+        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={6} sx={{textAlign: 'center'}}>
+                    <IconButton aria-label="delete" onClick={handleCallDialog}>
+                        <CallIcon />
+                    </IconButton>
+                </Grid>
+                <Grid size={6} sx={{textAlign: 'center'}}>
+                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
+                        <MessageIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
+            )
+        },
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -198,7 +198,7 @@ function AgreedTerminatedPartners() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Gecikmesi Olan Müşteriler"
+                title="Anlaşmalı Fesihler"
                 autoHeight
                 rows={agreedTerminatedPartners}
                 columns={agreedTerminatedPartnerColumns}
