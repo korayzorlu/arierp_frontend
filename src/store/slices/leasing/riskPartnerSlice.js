@@ -87,6 +87,18 @@ const initialState = {
         format: 'datatables'
     },
     depositPartnersLoading:false,
+    //agreed terminated
+    agreedTerminatedPartners:[],
+    agreedTerminatedPartnersCount:0,
+    agreedTerminatedPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    agreedTerminatedPartnersLoading:false,
 }
 
 export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
@@ -286,6 +298,21 @@ export const fetchDepositPartners = createAsyncThunk('auth/fetchDepositPartners'
     }
 });
 
+export const fetchAgreedTerminatedPartners = createAsyncThunk('auth/fetchAgreedTerminatedPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/agreed_terminated_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
 const riskPartnerSlice = createSlice({
     name:"riskPartner",
     initialState,
@@ -429,6 +456,26 @@ const riskPartnerSlice = createSlice({
         deleteDepositPartners: (state,action) => {
             state.depositPartners = [];
         },
+        //agreed terminated
+        setAgreedTerminatedPartnersLoading: (state,action) => {
+            state.agreedTerminatedPartnersLoading = action.payload;
+        },
+        setAgreedTerminatedPartnersParams: (state,action) => {
+            state.agreedTerminatedPartnersParams = {
+                ...state.agreedTerminatedPartnersParams,
+                ...action.payload
+            };
+        },
+        resetAgreedTerminatedPartnersParams: (state,action) => {
+            state.agreedTerminatedPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteAgreedTerminatedPartners: (state,action) => {
+            state.agreedTerminatedPartners = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -515,6 +562,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchDepositPartners.rejected, (state,action) => {
                 state.depositPartnersLoading = false
             })
+            //agreed terminated
+            .addCase(fetchAgreedTerminatedPartners.pending, (state) => {
+                state.agreedTerminatedPartnersLoading = true
+            })
+            .addCase(fetchAgreedTerminatedPartners.fulfilled, (state,action) => {
+                state.agreedTerminatedPartners = action.payload.data || action.payload;
+                state.agreedTerminatedPartnersCount = action.payload.recordsTotal || 0;
+                state.agreedTerminatedPartnersLoading = false
+            })
+            .addCase(fetchAgreedTerminatedPartners.rejected, (state,action) => {
+                state.agreedTerminatedPartnersLoading = false
+            })
     },
   
 })
@@ -554,6 +613,11 @@ export const {
     setDepositPartnersParams,
     resetDepositPartnersParams,
     deleteDepositPartners,
+
+    setAgreedTerminatedPartnersLoading,
+    setAgreedTerminatedPartnersParams,
+    resetAgreedTerminatedPartnersParams,
+    deleteAgreedTerminatedPartners,
 
 } = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;
