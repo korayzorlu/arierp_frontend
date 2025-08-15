@@ -25,7 +25,8 @@ const initialState = {
 
 export const fetchBankActivities = createAsyncThunk('auth/fetchBankActivities', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}&paginate=false`,
+        const today = new Date().toISOString().split('T')[0];
+        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}&paginate=false&created_date_after=${today}&created_date_before=${today}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
