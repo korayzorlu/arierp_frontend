@@ -44,6 +44,7 @@ function Sidenav() {
         policy: require("../../images/icons/sidebar/light/policy-filled.svg").ReactComponent,
         home_work: require("../../images/icons/sidebar/light/home_work-filled.svg").ReactComponent,
         real_estate_agent: require("../../images/icons/sidebar/light/real_estate_agent-filled.svg").ReactComponent,
+        report: require("../../images/icons/sidebar/light/report-filled.svg").ReactComponent,
     };
 
     const DefaultIcon = require("../../images/icons/sidebar/light/dashboard-filled.svg").ReactComponent;

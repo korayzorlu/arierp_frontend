@@ -99,7 +99,33 @@ const initialState = {
         format: 'datatables'
     },
     agreedTerminatedPartnersLoading:false,
+    //manager summary
+    managerSummary:[],
+    managerSummaryCount:0,
+    managerSummaryParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    managerSummaryLoading:false,
 }
+
+export const fetchManagerSummary = createAsyncThunk('auth/fetchManagerSummary', async (lease_code=null,{rejectWithValue}) => {
+    try {
+        const response = await axios.post('/leasing/manager_summary/', { 
+            
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
 
 export const fetchRiskPartners = createAsyncThunk('auth/fetchRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
@@ -476,6 +502,23 @@ const riskPartnerSlice = createSlice({
         deleteAgreedTerminatedPartners: (state,action) => {
             state.agreedTerminatedPartners = [];
         },
+        //manager summary
+        setManagerSummaryLoading: (state,action) => {
+            state.managerSummaryLoading = action.payload;
+        },
+        setManagerSummaryParams: (state,action) => {
+            state.managerSummaryParams = {
+                ...state.managerSummaryParams,
+                ...action.payload
+            };
+        },
+        resetManagerSummaryParams: (state,action) => {
+            state.managerSummaryParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -574,6 +617,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchAgreedTerminatedPartners.rejected, (state,action) => {
                 state.agreedTerminatedPartnersLoading = false
             })
+            //manager summary
+            .addCase(fetchManagerSummary.pending, (state) => {
+                state.managerSummaryLoading = true
+            })
+            .addCase(fetchManagerSummary.fulfilled, (state,action) => {
+                state.managerSummary = action.payload.data || action.payload;
+                state.managerSummaryCount = action.payload.recordsTotal || 0;
+                state.managerSummaryLoading = false
+            })
+            .addCase(fetchManagerSummary.rejected, (state,action) => {
+                state.managerSummaryLoading = false
+            })
     },
   
 })
@@ -618,6 +673,10 @@ export const {
     setAgreedTerminatedPartnersParams,
     resetAgreedTerminatedPartnersParams,
     deleteAgreedTerminatedPartners,
+
+    setManagerSummaryLoading,
+    setManagerSummaryParams,
+    resetManagerSummaryParams,
 
 } = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;
