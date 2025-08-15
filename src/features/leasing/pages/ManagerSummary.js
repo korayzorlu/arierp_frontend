@@ -63,7 +63,8 @@ function ManagerSummary() {
     }, [activeCompany,managerSummaryParams,dispatch]);
 
     const bankActivityColumns = [
-        { field: 'id', headerName: 'ID', flex: 2 },
+        { field: 'key', headerName: '', flex: 2 },
+        { field: 'value', headerName: '', flex: 2 },
     ]
 
     return (
@@ -73,7 +74,7 @@ function ManagerSummary() {
                 title="Yönetici Özeti"
                 rows={managerSummary}
                 columns={bankActivityColumns}
-                getRowId={(row) => row.uuid}
+                getRowId={(row) => row.id}
                 loading={managerSummaryLoading}
                 customButtons={
                     <>
@@ -85,7 +86,6 @@ function ManagerSummary() {
                     </>
                 }
                 setParams={(value) => dispatch(setManagerSummaryParams(value))}
-                headerFilters={true}
                 noDownloadButton
                 disableVirtualization
                 />
