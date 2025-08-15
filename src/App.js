@@ -99,6 +99,7 @@ import DepositPartners from './features/leasing/pages/DepositPartners.js';
 import PurchasePayments from './features/purchasing/pages/PurchasePayment.js';
 import AgreedTerminatedPartners from './features/leasing/pages/AgreedTerminatedPartners.js';
 import ManagerSummary from './features/leasing/pages/ManagerSummary.js';
+import FinanceSummary from './features/leasing/pages/FinanceSummary.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -239,6 +240,7 @@ function App() {
                 <Route path='/leasing/update/:uuid/:contract_code' element={<UpdateLease></UpdateLease>}></Route>
                 <Route path='/installments' element={<Installment></Installment>}></Route>
                 <Route path='/collections' element={<Collections></Collections>}></Route>
+                <Route path='/finance-summary' element={<FinanceSummary></FinanceSummary>}></Route>
 
                 <Route path='/purchase-payments' element={<PurchasePayments></PurchasePayments>}></Route>
 
