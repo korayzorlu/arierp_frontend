@@ -142,6 +142,7 @@ function ListTable(props) {
     columnBuffer,
     rowHeight,
     disableVirtualization,
+    customFiltersLeft,
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -186,6 +187,7 @@ function ListTable(props) {
               noToolbarButtons: noToolbarButtons,
               noDownloadButton: noDownloadButton,
               specialButtons: specialButtons,
+              customFiltersLeft: customFiltersLeft,
           },
           ...(disableLoadingOverlay
             ? {}

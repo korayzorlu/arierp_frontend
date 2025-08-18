@@ -17,7 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import './Installments.css';
 import { getGridStringOperators, useGridApiRef, useKeepGroupedColumnsHidden } from '@mui/x-data-grid-premium';
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { fetchLeases, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchUserInformation } from '../../../store/slices/authSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
@@ -55,23 +55,34 @@ function ManagerSummary() {
     
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
+    const [project, setProject] = useState("kizilbuk")
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchManagerSummary({activeCompany}));
+            dispatch(fetchManagerSummary({activeCompany,project}));
         });
-    }, [activeCompany,managerSummaryParams,dispatch]);
+    }, [activeCompany,project,dispatch]);
 
     const bankActivityColumns = [
-        { field: 'key', headerName: '', flex: 2 },
-        { field: 'value', headerName: '', flex: 2 },
+        { field: 'title', headerName: '', flex: 2 },
+        { field: 'amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'quantity', headerName: 'Toplam Sözleşme Sayısı', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0,maximumFractionDigits: 0,}).format(value)
+        },
     ]
+
+    const changeProject = (newValue) => {
+        setProject(newValue);
+    };
 
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTable
                 title="Yönetici Özeti"
+                autoHeight
                 rows={managerSummary}
                 columns={bankActivityColumns}
                 getRowId={(row) => row.id}
@@ -83,6 +94,28 @@ function ManagerSummary() {
                         onClick={() => dispatch(fetchManagerSummary({activeCompany})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
+                    </>
+                }
+                customFiltersLeft={
+                    <>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            size='small'
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
+                            disabled={managerSummaryLoading}
+                            >
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='kasaba'>KASABA</MenuItem>
+                                <MenuItem value='servet'>SERVET</MenuItem>
+                                <MenuItem value='diger'>Diğer</MenuItem>
+                            </Select>
+                        </FormControl>
                     </>
                 }
                 setParams={(value) => dispatch(setManagerSummaryParams(value))}

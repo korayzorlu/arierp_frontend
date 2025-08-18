@@ -3,13 +3,17 @@ import axios from "axios";
 import { setIsProgress } from "../processSlice";
 import { setAlert, setDialog } from "../notificationSlice";
 
+const today = new Date().toISOString().split('T')[0];
+
 const initialState = {
     bankActivities:[],
     bankActivitiesCount:0,
     bankActivitiesParams:{
         start: 0 * 50,
         end: (0 + 1) * 50,
-        format: 'datatables'
+        format: 'datatables',
+        created_date_after: today,
+        created_date_before: today
     },
     bankActivityLeases:[],
     bankActivityLeasesCount:0,
@@ -25,8 +29,7 @@ const initialState = {
 
 export const fetchBankActivities = createAsyncThunk('auth/fetchBankActivities', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const today = new Date().toISOString().split('T')[0];
-        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}&paginate=false&created_date_after=${today}&created_date_before=${today}`,
+        const response = await axios.get(`/leasing/bank_activities/?active_company=${activeCompany.id}&paginate=false`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}

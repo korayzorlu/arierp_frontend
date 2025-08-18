@@ -113,10 +113,10 @@ const initialState = {
     managerSummaryLoading:false,
 }
 
-export const fetchManagerSummary = createAsyncThunk('auth/fetchManagerSummary', async (lease_code=null,{rejectWithValue}) => {
+export const fetchManagerSummary = createAsyncThunk('auth/fetchManagerSummary', async (params=null,{rejectWithValue}) => {
     try {
         const response = await axios.post('/leasing/manager_summary/', { 
-            
+          params:params  
         },{ withCredentials: true, });
         return response.data.data;
     } catch (error) {

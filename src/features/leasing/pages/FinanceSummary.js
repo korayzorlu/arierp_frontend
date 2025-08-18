@@ -31,6 +31,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import OverdueDialog from '../../../component/dialog/OverdueDialog';
 import { fetchFinanceSummary, setFinanceSummaryLoading, setFinanceSummaryParams } from '../../../store/slices/finance/financeSlice';
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
+import dayjs from "dayjs";
+import { faker } from '@faker-js/faker';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -42,11 +44,8 @@ function randomId(length = 8) {
 }
 
 function FinanceSummary() {
-    const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {collections,collectionsCount,collectionsParams,collectionsLoading} = useSelector((store) => store.collection);
-    const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
-    const {financeSummary,financeSummaryCount,financeSummaryParams,financeSummaryLoading} = useSelector((store) => store.finance);
+    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading} = useSelector((store) => store.bankActivity);
 
     const dispatch = useDispatch();
 
@@ -56,14 +55,27 @@ function FinanceSummary() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchFinanceSummary({activeCompany}));
+            dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,created_date_after:'2025-08-13'}}));
         });
-    }, [activeCompany,financeSummaryParams,dispatch]);
+    }, [activeCompany,bankActivitiesParams,dispatch]);
 
-    const bankActivityColumns = [
-        { field: 'key', headerName: '', flex: 2 },
-        { field: 'value', headerName: '', flex: 2 },
-    ]
+    const endDate = new Date('2025-08-14');
+    const dates = [];
+    const seriesData = [];
+
+    for (let i = 29; i >= 0; i--) {
+        const date = new Date(endDate);
+        date.setDate(endDate.getDate() - i);
+        dates.push(date);
+        seriesData.push(faker.number.float({ min: 1, max: 10, precision: 0.5 }));
+    }
+
+    const xAxisData = bankActivities.map(item =>
+        Date(item.created_date) // Grafikte tarih düzgün gözüksün diye
+    );
+    console.log(xAxisData)
+    // amount → data
+    const amountData = bankActivities.map(item => Number(item.processed_amount));
 
     return (
         <PanelContent>
@@ -75,10 +87,14 @@ function FinanceSummary() {
                                 30 Günlük Tahsilat Grafiği
                             </Typography>
                             <LineChart
-                            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                            xAxis={[{ 
+                                data: dates,
+                                scaleType: "time",
+                                valueFormatter: (date) => date.toISOString().split('T')[0],
+                            }]}
                             series={[
                                 {
-                                data: [2, 5.5, 2, 8.5, 1.5, 5],
+                                data: amountData,
                                 area: true,
                                 color: theme.palette.primary.main
                                 },
