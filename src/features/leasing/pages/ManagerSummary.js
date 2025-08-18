@@ -71,6 +71,9 @@ function ManagerSummary() {
         { field: 'quantity', headerName: 'Toplam Sözleşme Sayısı', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0,maximumFractionDigits: 0,}).format(value)
         },
+        { field: 'partner', headerName: 'Toplam Müşteri Sayısı', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0,maximumFractionDigits: 0,}).format(value)
+        },
     ]
 
     const changeProject = (newValue) => {
@@ -81,7 +84,7 @@ function ManagerSummary() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTable
-                title="Yönetici Özeti"
+                title="Risk İzleme Yönetici Özeti"
                 autoHeight
                 rows={managerSummary}
                 columns={bankActivityColumns}
