@@ -100,22 +100,6 @@ function Leases() {
         { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
 
-    const columnsWithRenderHeaderFilter = columns.map(col => {
-        if (col.renderHeaderFilter) {
-            return {
-            ...col,
-            renderHeaderFilter: (params) => {
-                return col.renderHeaderFilter({
-                ...params,
-                inputRef: createRef(),
-                apiRef: apiRef,
-                });
-            },
-            };
-        }
-        return col;
-    });
-
     const handleAllDelete = async () => {
         dispatch(setAlert({status:"info",text:"Removing items.."}));
 
@@ -145,14 +129,7 @@ function Leases() {
             loading={leasesLoading}
             customButtons={
                 <>  
-
-                    <CustomTableButton
-                    title="İçe Aktar"
-                    onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());console.log(Array.from(apiRef.current.getSelectedRows().values()))}}
-                    icon={<UploadFileIcon fontSize="small"/>}
-                    />
-
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="Yeni"
                     link="/leasing/add-lease"
                     disabled={activeCompany ? false : true}
@@ -164,7 +141,7 @@ function Leases() {
                     onClick={() => dispatch(setDeleteDialog(true))}
                     disabled={leases.length > 0 ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
-                    />
+                    /> */}
 
                     {/* <CustomTableButton
                     title="Tümünü Sil"
