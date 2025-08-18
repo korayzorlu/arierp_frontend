@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useTransition, useMemo } from 'react'
+import React, { useCallback, useState, useTransition } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
 import { DataGridPremium,  unstable_gridDefaultPromptResolver as promptResolver } from '@mui/x-data-grid-premium';
@@ -127,42 +127,35 @@ function ListTableServer(props) {
   const handleFilterModelChange = (model) => {
     setFilterModel(model);
     if(model.quickFilterValues && model.quickFilterValues.length > 0){
-      const value = model.quickFilterValues[model.quickFilterValues.length - 1];
-      setFilterParams({ ...filterParams, "search[value]": value });
-      debouncedSetParams({ "search[value]": value });
-  
-    } else if(model.quickFilterValues && model.quickFilterValues.length === 0 && model.items.length > 0){
+      model.quickFilterValues.forEach((item) => {
+          //dispatch(setPartnersParams({"search[value]":item}));
+          setFilterParams({...filterParams,"search[value]":item})
+          setParams({"search[value]":item});
+
+      });                                                                                                                                                 
+    }else if(model.quickFilterValues && model.quickFilterValues.length === 0 && model.items.length > 0){
       model.items.forEach((item) => {
-          const isCodeLike = ['code','contract','lease'].includes(item.field);
           if (item.value) {
-            setFilterParams({
-              ...filterParams,
-              ...(isCodeLike ? { "search[value]": item.value } : { [item.field]: item.value })
-            });
-            if (isCodeLike) {
-              setParams({ "search[value]": item.value });
-            } else {
-              setParams({ [item.field]: item.value });
-            }
+            console.log("filtre değişti")
+            //dispatch(setPartnersParams({[item.columnField]:item.value}));
+            //setParams({[item.columnField]:item.value});
+            setFilterParams({...filterParams,[item.field]:item.value})
+            setParams({[item.field]:item.value});
           } else {
-            if (isCodeLike) {
-              setParams({ "search[value]": "" });
-            } else {
-              setParams({ [item.field]: "" });
-            }
+          // setFilterParams({...filterParams,[item.field]:""})
+            setParams({[item.field]:""});
           };
       });
     } else if(model.items && model.items.length === 0 && model.quickFilterValues.length === 0){
+      //dispatch(setPartnersParams({"search[value]":""}));
       setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
       const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
         acc[key] = "";
         return acc;
       }, {});
-      debouncedSetParams(emptyParams);
+      setParams(emptyParams);
     } else {
-      const cleared = {};
-      Object.keys(filterParams).forEach(key => { cleared[key] = "" });
-      debouncedSetParams(cleared);
+      setParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})});
     }
   };
 
@@ -173,7 +166,7 @@ function ListTableServer(props) {
     }
   };
 
-  
+  const debouncedHandleFilterModelChange =debounce(handleFilterModelChange, 800);
 
   const NoRowsOverlay = () => (
     <Box sx={{mt: 2,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%'}}>
@@ -200,7 +193,7 @@ function ListTableServer(props) {
     }),
   });
 
-  const StyledDataGridPremium = useMemo(() => styled(DataGridPremium)(({ theme }) => ({
+  const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
     '& .super-app-theme--overdue': {
       ...getBackgroundColor(theme.palette.error.main, theme, 0.7),
       '&:hover': {
@@ -213,7 +206,7 @@ function ListTableServer(props) {
         },
       },
     },
-  })), []);
+  }));
 
   return (
     <TableContent height={height} onKeyDown={handleKeyDown}>
@@ -273,7 +266,7 @@ function ListTableServer(props) {
       onPaginationModelChange={(model) => handlePaginationModelChange(model)}
       sortModel={sortModel}
       onSortModelChange={(model) => handleSortModelChange(model)}
-      onFilterModelChange={(model) => handleFilterModelChange(model)}
+      onFilterModelChange={(model) => debouncedHandleFilterModelChange(model)}
       rowCount={rowCount}
       loading={loading}
       checkboxSelection={checkboxSelection}
