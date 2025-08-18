@@ -30,14 +30,55 @@ function PurchasePayments() {
     }, [activeCompany,purchasePaymentsParams,dispatch]);
 
     const columns = [
-        { field: 'contract', headerName: 'Sözleşme No', flex: 1 },
-        { field: 'lease', headerName: 'Kira Planı', flex: 1 },
-        { field: 'partner', headerName: 'Müşteri', flex: 1 },
-        { field: 'vendor', headerName: 'Satıcı', flex: 1 },
-        { field: 'total_contract_amount', headerName: 'Toplam Sözleşme Bedeli', flex: 1 },
-        { field: 'total_vendor_payment', headerName: 'Satıcı Ödemeleri Toplam', flex: 1 },
-        { field: 'before_total_payment', headerName: 'Ödeme Toplam Öncesi', flex: 1 },
-        { field: 'purchasing', headerName: 'Satın Alma', flex: 1 },
+        { field: 'contract', headerName: 'Sözleşme No', renderCell: (params) => params.row.lease.contract },
+        { field: 'lease_code', headerName: 'Kira Planı', renderCell: (params) => params.row.lease.code },
+        { field: 'partner', headerName: 'Müşteri', width: 280, renderCell: (params) => params.row.lease.partner },
+        { field: 'currency', headerName: 'PB', renderCell: (params) => params.row.lease.currency },
+        { field: 'vendor', headerName: 'Satıcı', width: 280, renderCell: (params) => params.row.lease.vendor },
+        { field: 'project', headerName: 'Proje', width: 140, renderCell: (params) => params.row.lease.project },
+        { field: 'activation_date', headerName: 'Aktivasyon Tarihi', renderCell: (params) => params.row.lease.activation_date },
+        { field: 'contract_date', headerName: 'Söz. Tarihi', renderCell: (params) => params.row.lease.contract_date },
+        { field: 'lease_status', headerName: 'Ana Statü', renderCell: (params) => params.row.lease.lease_status },
+        { field: 'status', headerName: 'Alt Statü', renderCell: (params) => params.row.lease.status },
+        { field: 'vat', headerName: 'KDV (%)', type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'total_contract_amount', headerName: 'Toplam Sözleşme Bedeli', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'before_total_payment', headerName: 'Ödeme Toplam Öncesi', type: 'number', cellClassName: () => 'bg-cream', headerClassName: () => 'bg-cream',
+            renderHeaderFilter: () => null, valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'after_total_payment', headerName: 'Toplam Ödeme Sonrası', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream', headerClassName: (params) => 'bg-cream',
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'managing_expense', headerName: 'Yönetim Gideri (Kdv Dahil)', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream', headerClassName: (params) => 'bg-cream',
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'lease_payment_amount', headerName: 'Kira Tahsilat Tutarı', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'total_vendor_payment', headerName: 'Satıcı Ödemeleri Toplam Tutarı', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'vendor_payment_with_report_date', headerName: 'Rapor Tarihi İtibariyle Ödenecek Satıcı Tutarı', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'talimat', headerName: 'Talimat', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream-dark', headerClassName: () => 'bg-cream-dark',
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'diff', headerName: 'Fark', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream-dark', headerClassName: () => 'bg-cream-dark',
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'temerrut', headerName: 'Temerrüt', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream-dark', headerClassName: () => 'bg-cream-dark',
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'next_payment', headerName: 'Sonraki Ödeme', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'purchasing', headerName: 'Satın Alma', type: 'number', renderHeaderFilter: () => null },
+        { field: 'bbsn', headerName: 'BBSN', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.bbsn },
+        { field: 'is_tufe', headerName: 'Tüfeli mi?', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.is_tufe },
     ]
 
     return (
