@@ -1,13 +1,17 @@
 import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPurchasePayments, resetPurchasePaymentsParams, setPurchasePaymentsLoading, setPurchasePaymentsParams } from '../../../store/slices/purchasing/purchasePaymentSlice';
-import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import ListTable from '../../../component/table/ListTable';
+import { Grid } from '@mui/material';
+import ExportDialog from '../../../component/feedback/ExportDialog';
+import { fetchExportProcess } from '../../../store/slices/processSlice';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function PurchasePayments() {
     const {user} = useSelector((store) => store.auth);
@@ -83,24 +87,37 @@ function PurchasePayments() {
 
     return (
         <PanelContent>
-            <ListTableServer
-            title="Satıcı Ödemeleri"
-            rows={purchasePayments}
-            columns={columns}
-            getRowId={(row) => row.uuid}
-            loading={purchasePaymentsLoading}
-            customButtons={
-                <>  
-                    <CustomTableButton
-                    title="Yenile"
-                    onClick={() => dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams})).unwrap()}
-                    icon={<RefreshIcon fontSize="small"/>}
-                    />
-                </>
-            }
-            rowCount={purchasePaymentsCount}
-            setParams={(value) => dispatch(setPurchasePaymentsParams(value))}
-            headerFilters={true}
+            <Grid container spacing={1}>
+                <ListTableServer
+                title="Satıcı Ödemeleri"
+                rows={purchasePayments}
+                columns={columns}
+                getRowId={(row) => row.uuid}
+                loading={purchasePaymentsLoading}
+                customButtons={
+                    <>  
+                        <CustomTableButton
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
+                        title="Yenile"
+                        onClick={() => dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams})).unwrap()}
+                        icon={<RefreshIcon fontSize="small"/>}
+                        />
+                    </>
+                }
+                rowCount={purchasePaymentsCount}
+                setParams={(value) => dispatch(setPurchasePaymentsParams(value))}
+                headerFilters={true}
+                />
+            </Grid>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/purchasing/export_purchase_payments/"
+            startEvent={() => dispatch(setPurchasePaymentsLoading(true))}
+            finalEvent={() => {dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams}));dispatch(setPurchasePaymentsLoading(false));}}
             />
         </PanelContent>
     )
