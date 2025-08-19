@@ -111,6 +111,7 @@ function PurchasePayments() {
                 rowCount={purchasePaymentsCount}
                 setParams={(value) => dispatch(setPurchasePaymentsParams(value))}
                 headerFilters={true}
+                noDownloadButton
                 />
             </Grid>
             <ExportDialog
