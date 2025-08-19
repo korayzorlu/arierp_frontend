@@ -129,6 +129,11 @@ function UpdatePartner() {
                             checked={data.special}
                             onChange={(value) => handleChangeField("special",value)}
                             />
+                            <AndroidSwitch
+                            label="PEP"
+                            checked={data.pep}
+                            onChange={(value) => handleChangeField("pep",value)}
+                            />
                         </Grid>
                     </Grid>
                     <Divider></Divider>
