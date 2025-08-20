@@ -17,7 +17,8 @@ function BasicTable(props) {
     onRowSelectionModelChange,
     initialState,
     apiRef,
-    noToolbarButtons
+    noToolbarButtons,
+    getRowId
     } = props;
 
     const [paginationModel, setPaginationModel] = useState({
@@ -98,6 +99,7 @@ function BasicTable(props) {
             onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
             apiRef={apiRef}
             noToolbarButtons={noToolbarButtons}
+            getRowId={getRowId || ((row) => row.uuid)}
             />
         </TableContent>
     )

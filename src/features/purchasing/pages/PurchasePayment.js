@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPurchasePayments, resetPurchasePaymentsParams, setPurchasePaymentsLoading, setPurchasePaymentsParams } from '../../../store/slices/purchasing/purchasePaymentSlice';
-import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setPurchaseDocumentDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
@@ -12,6 +12,8 @@ import { Grid } from '@mui/material';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
+import { fetchPurchaseDocumentsInPurchasePayment } from '../../../store/slices/purchasing/purchaseDocumentSlice';
+import PurchaseDocumentDialog from '../components/PurchaseDocumentDialog';
 
 function PurchasePayments() {
     const {user} = useSelector((store) => store.auth);
@@ -82,8 +84,25 @@ function PurchasePayments() {
         },
         { field: 'purchasing', headerName: 'Satın Alma', type: 'number', renderHeaderFilter: () => null },
         { field: 'bbsn', headerName: 'BBSN', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.bbsn },
+        { field: 'total_purchase_document_amount', headerName: 'Toplam Fatura Tutarı', width: 140, type: 'number', renderCell: (params) => (
+                <div style={{ cursor: 'pointer' }}>
+                    {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)}
+                </div>
+            ), renderHeaderFilter: () => null 
+        },
         { field: 'is_tufe', headerName: 'Tüfeli mi?', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.is_tufe },
     ]
+
+    const handleProfileDialog = async (params,event) => {
+        console.log(params)
+        if (event) {
+            event.stopPropagation();
+        }
+        if(params.field==="total_purchase_document_amount"){
+            dispatch(fetchPurchaseDocumentsInPurchasePayment({activeCompany,lease_code:params.row.lease.code}));
+            dispatch(setPurchaseDocumentDialog(true))
+        }
+    };
 
     return (
         <PanelContent>
@@ -112,6 +131,7 @@ function PurchasePayments() {
                 setParams={(value) => dispatch(setPurchasePaymentsParams(value))}
                 headerFilters={true}
                 noDownloadButton
+                onCellClick={handleProfileDialog}
                 />
             </Grid>
             <ExportDialog
@@ -120,6 +140,7 @@ function PurchasePayments() {
             startEvent={() => dispatch(setPurchasePaymentsLoading(true))}
             finalEvent={() => {dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams}));dispatch(setPurchasePaymentsLoading(false));}}
             />
+            <PurchaseDocumentDialog/>
         </PanelContent>
     )
 }

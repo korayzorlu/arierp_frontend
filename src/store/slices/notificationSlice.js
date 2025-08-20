@@ -19,6 +19,7 @@ const initialState = {
     messageDialog:false,
     contractPaymentDialog:false,
     warningNoticeDialog:false,
+    purchaseDocumentDialog:false,
     modal:false,
     notifications:[],
     unreadNotifications:0
@@ -98,6 +99,9 @@ const notificationSlice = createSlice({
         setWarningNoticeDialog: (state,action) => {
             state.warningNoticeDialog = action.payload;
         },
+        setPurchaseDocumentDialog: (state,action) => {
+            state.purchaseDocumentDialog = action.payload;
+        },
         setModal: (state,action) => {
             state.modal = action.payload;
         },
@@ -145,6 +149,7 @@ export const {
     setCallDialog,
     setMessageDialog,
     setContractPaymentDialog,
-    setWarningNoticeDialog
+    setWarningNoticeDialog,
+    setPurchaseDocumentDialog,
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

@@ -100,6 +100,7 @@ import PurchasePayments from './features/purchasing/pages/PurchasePayment.js';
 import AgreedTerminatedPartners from './features/leasing/pages/AgreedTerminatedPartners.js';
 import ManagerSummary from './features/leasing/pages/ManagerSummary.js';
 import FinanceSummary from './features/leasing/pages/FinanceSummary.js';
+import PurchaseDocuments from './features/purchasing/pages/PurchaseDocuments.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -243,6 +244,7 @@ function App() {
                 <Route path='/finance-summary' element={<FinanceSummary></FinanceSummary>}></Route>
 
                 <Route path='/purchase-payments' element={<PurchasePayments></PurchasePayments>}></Route>
+                <Route path='/purchase-documents' element={<PurchaseDocuments></PurchaseDocuments>}></Route>
 
                 <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
                 <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
