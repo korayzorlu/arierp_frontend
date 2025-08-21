@@ -235,7 +235,7 @@ function DetailPanel(props) {
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
             <ListTable
-            title={data.leases.length > 1 ? `${data.leases[0].partner} - ${data.leases[0].partner_tc} Kira Planları` : ""}
+            title={data.leases.length > 0 ? `${data.leases[0].partner} - ${data.leases[0].partner_tc} Kira Planları` : ""}
             height="auto"
             autoHeight
             rows={data.leases}

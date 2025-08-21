@@ -194,7 +194,7 @@ function Collections() {
             exportURL="/leasing/export_bank_activities/"
             selectedItems={selectedItems}
             startEvent={() => dispatch(setBankActivitiesLoading(true))}
-            finalEvent={() => {dispatch(fetchBankActivities({activeCompany}));dispatch(setBankActivitiesLoading(false));}}
+            finalEvent={() => {dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));dispatch(setBankActivitiesLoading(false));}}
             >
             </ExportDialog>
             <DeleteDialog
