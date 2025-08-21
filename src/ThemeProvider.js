@@ -48,6 +48,10 @@ const commonTheme = {
             main: '#0045B0',
             contrastText: '#000',
         },
+        ari: {
+            main: '#980748',
+            contrastText: '#fff',
+        },
     },
     components: {
         MuiDataGrid: {
