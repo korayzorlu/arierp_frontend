@@ -17,7 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import './Installments.css';
 import { getGridStringOperators, useGridApiRef, useKeepGroupedColumnsHidden } from '@mui/x-data-grid-premium';
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import { Box, Chip, Grid, TextField, Typography } from '@mui/material';
 import { fetchLeases, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchUserInformation } from '../../../store/slices/authSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
@@ -29,6 +29,8 @@ import DetailPanel from '../components/DetailPanel';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
 import OverdueDialog from '../../../component/dialog/OverdueDialog';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import WarningIcon from '@mui/icons-material/Warning';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -98,7 +100,19 @@ function Collections() {
     
     const bankActivityColumns = [
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
-        { field: 'name', headerName: 'Name', flex: 2 },
+        { field: 'is_third_person', headerName: 'Güvenlik Onayı', flex: 3, renderCell: (params) => (
+                params.value === true
+                ?
+                    params.row.is_reliable_person === true
+                    ?
+                        <Chip key={params.row.id} variant='contained' color="success" icon={<CheckCircleIcon />} label="Güvenilir" size='small'/>
+                    :
+                        <Chip key={params.row.id} variant='contained' color="error" icon={<WarningIcon />} label="Kontrol Gerekiyor" size='small'/>
+                :
+                    null
+                
+            )
+        },
         { field: 'description', headerName: 'Açıklama',flex: 10 },
         { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
