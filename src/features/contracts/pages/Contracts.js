@@ -54,7 +54,7 @@ function Contracts() {
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
         { field: 'quotation', headerName: 'Teklif', flex: 1 },
         { field: 'kof_tan_sozlesmeye_aktarim_tarihi', headerName: "Kof'tan Sözleşmeye Aktarım Tarihi", flex: 1 },
-        { field: 'supplier', headerName: "Satıcı", flex: 3 },
+        { field: 'vendor', headerName: "Satıcı", flex: 3 },
         { field: 'project', headerName: "Proje", flex: 3 },
         { field: 'customer_representative', headerName: "Müşteri Temsilcisi", flex: 1 },
         { field: 'status', headerName: "Statü", flex: 1 },
@@ -111,8 +111,8 @@ function Contracts() {
                 setSelectedItems(newRowSelectionModel);
             }}
             rowCount={contractsCount}
-            checkboxSelection
             setParams={(value) => dispatch(setContractsParams(value))}
+            headerFilters={true}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
