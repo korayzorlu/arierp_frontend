@@ -102,6 +102,7 @@ import ManagerSummary from './features/leasing/pages/ManagerSummary.js';
 import FinanceSummary from './features/leasing/pages/FinanceSummary.js';
 import PurchaseDocuments from './features/purchasing/pages/PurchaseDocuments.js';
 import BankActivities from './features/finance/pages/BankActivities.js';
+import StatusControl from './features/purchasing/pages/StatusControl.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -247,8 +248,9 @@ function App() {
                 {/* finance */}
                 <Route path='/bank-activities' element={<BankActivities></BankActivities>}></Route>
                 <Route path='/purchase-payments' element={<PurchasePayments></PurchasePayments>}></Route>
+                <Route path='/status-control' element={<StatusControl></StatusControl>}></Route>
                 <Route path='/purchase-documents' element={<PurchaseDocuments></PurchaseDocuments>}></Route>
-*/}
+
                 <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
                 <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
                 <Route path='/kdv-risk-partners' element={<RiskPartnersKDV></RiskPartnersKDV>}></Route>
