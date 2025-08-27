@@ -275,7 +275,7 @@ function DepositPartners() {
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_risk_partners/"
+            exportURL="/leasing/export_deposite_partners/"
             startEvent={() => dispatch(setDepositPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}}));dispatch(setDepositPartnersLoading(false));}}
             project={project}
