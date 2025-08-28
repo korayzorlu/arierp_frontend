@@ -39,6 +39,7 @@ import projectReducer from './slices/projects/projectSlice';
 import purchasePaymentReducer from './slices/purchasing/purchasePaymentSlice';
 import purchaseDocumentReducer from './slices/purchasing/purchaseDocumentSlice';
 import financeReducer from './slices/finance/financeSlice';
+import amountDebitTransactionReducer from './slices/risk/amountDebitTransactionSlice';
 
 let navigate;
 
@@ -88,6 +89,7 @@ export const store = configureStore({
         purchasePayment: purchasePaymentReducer,
         purchaseDocument: purchaseDocumentReducer,
         finance: financeReducer,
+        amountDebitTransaction: amountDebitTransactionReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -103,6 +103,7 @@ import FinanceSummary from './features/leasing/pages/FinanceSummary.js';
 import PurchaseDocuments from './features/purchasing/pages/PurchaseDocuments.js';
 import BankActivities from './features/finance/pages/BankActivities.js';
 import StatusControl from './features/purchasing/pages/StatusControl.js';
+import AmountDebitTransactions from './features/risk/pages/AmountDebitTransactions.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -264,6 +265,7 @@ function App() {
                 <Route path='/deposit-partners' element={<DepositPartners></DepositPartners>}></Route>
                 <Route path='/agreed-terminated-partners' element={<AgreedTerminatedPartners></AgreedTerminatedPartners>}></Route>
                 <Route path='/manager-summary' element={<ManagerSummary></ManagerSummary>}></Route>
+                <Route path='/amount-debit-transaction' element={<AmountDebitTransactions></AmountDebitTransactions>}></Route>
 
                 <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                 <Route path='/quotations' element={<Quotations></Quotations>}></Route>
