@@ -7,6 +7,11 @@ import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import DownloadIcon from '@mui/icons-material/Download';
+import { setExportDialog } from '../../../store/slices/notificationSlice';
+import { fetchExportProcess } from '../../../store/slices/processSlice';
+import { Grid } from '@mui/material';
+import ExportDialog from '../../../component/feedback/ExportDialog';
 
 function AmountDebitTransactions() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -42,27 +47,40 @@ function AmountDebitTransactions() {
 
     return (
         <PanelContent>
-            <ListTableServer
-            title="Bakiye Temerrüt Raporu"
-            autoHeight
-            rows={amountDebitTransactions}
-            columns={columns}
-            getRowId={(row) => row.uuid}
-            loading={amountDebitTransactionsLoading}
-            customButtons={
-                <>  
-                    <CustomTableButton
-                    title="Yenile"
-                    onClick={() => dispatch(fetchAmountDebitTransactions({activeCompany,params:amountDebitTransactionsParams})).unwrap()}
-                    icon={<RefreshIcon fontSize="small"/>}
-                    />
-                </>
-            }
-            rowCount={amountDebitTransactionsCount}
-            checkboxSelection
-            setParams={(value) => dispatch(setAmountDebitTransactionsParams(value))}
-            headerFilters={true}
-            apiRef={apiRef}
+            <Grid container spacing={1}>
+                <ListTableServer
+                title="Bakiye Temerrüt Raporu"
+                autoHeight
+                rows={amountDebitTransactions}
+                columns={columns}
+                getRowId={(row) => row.uuid}
+                loading={amountDebitTransactionsLoading}
+                customButtons={
+                    <>  
+                        <CustomTableButton
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
+                        title="Yenile"
+                        onClick={() => dispatch(fetchAmountDebitTransactions({activeCompany,params:amountDebitTransactionsParams})).unwrap()}
+                        icon={<RefreshIcon fontSize="small"/>}
+                        />
+                    </>
+                }
+                rowCount={amountDebitTransactionsCount}
+                checkboxSelection
+                setParams={(value) => dispatch(setAmountDebitTransactionsParams(value))}
+                headerFilters={true}
+                apiRef={apiRef}
+                />
+            </Grid>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/risk/export_amount_debit_transactions/"
+            startEvent={() => dispatch(setAmountDebitTransactionsLoading(true))}
+            finalEvent={() => {dispatch(fetchAmountDebitTransactions({activeCompany,params:amountDebitTransactionsParams}));dispatch(setAmountDebitTransactionsLoading(false));}}
             />
         </PanelContent>
     )
