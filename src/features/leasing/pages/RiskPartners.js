@@ -272,6 +272,7 @@ function RiskPartners() {
                 }
                 rowCount={riskPartnersCount}
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
+                //density="compact"
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton

@@ -143,6 +143,7 @@ function ListTable(props) {
     rowHeight,
     disableVirtualization,
     customFiltersLeft,
+    density
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -313,6 +314,7 @@ function ListTable(props) {
       processRowUpdate={processRowUpdate}
       onProcessRowUpdateError={onProcessRowUpdateError}
       sortModel={sortModel}
+      density={density}
       />
     </TableContent>
   )

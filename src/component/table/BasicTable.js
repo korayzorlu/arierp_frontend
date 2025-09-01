@@ -18,7 +18,8 @@ function BasicTable(props) {
     initialState,
     apiRef,
     noToolbarButtons,
-    getRowId
+    getRowId,
+    density
     } = props;
 
     const [paginationModel, setPaginationModel] = useState({
@@ -100,6 +101,7 @@ function BasicTable(props) {
             apiRef={apiRef}
             noToolbarButtons={noToolbarButtons}
             getRowId={getRowId || ((row) => row.uuid)}
+            density={density}
             />
         </TableContent>
     )

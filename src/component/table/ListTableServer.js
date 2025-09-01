@@ -223,6 +223,7 @@ function ListTableServer(props) {
         ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
         //aiAssistantPanel: GridAiAssistantPanel,
         headerFilterMenu: null,
+        headerFilterCell: DataGrid.HeaderFilterCell,
       }}
       showToolbar
       slotProps={{
@@ -336,6 +337,8 @@ function ListTableServer(props) {
       localeText={{
         ...trTR.components.MuiDataGrid.defaultProps.localeText,
         filterOperatorContains: 'Ara', // "Şunu içerir" yazısını kaldır
+        filterPanelInputLabel: "Filtrele", // Global label değişimi
+        filterPanelInputPlaceholder: "Aramak için yazın...",
       }}
       onCellClick={onCellClick}
       rowSpanning={rowSpanning}
@@ -348,6 +351,7 @@ function ListTableServer(props) {
       detailPanelExpandedRowIds={detailPanelExpandedRowIds}
       onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
       processRowUpdate={processRowUpdate}
+      density={density}
       />
     </TableContent>
   )

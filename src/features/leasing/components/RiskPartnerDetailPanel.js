@@ -142,6 +142,7 @@ function RiskPartnerDetailPanel(props) {
             title={riskPartnerLeases.length > 1 ? `${riskPartnerLeases[0].partner} - ${riskPartnerLeases[0].partner_tc} Kira Planları` : ""}
             height="auto"
             autoHeight
+            //density="compact"
             rows={riskPartnerLeases}
             columns={columns}
             getRowId={(row) => row ? row.id : 0}

@@ -22,6 +22,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import StarIcon from '@mui/icons-material/Star';
+import { DataGrid } from '@mui/x-data-grid';
 
 function Partners() {
     const {user} = useSelector((store) => store.auth);
@@ -130,7 +131,7 @@ function Partners() {
             customButtons={
                 <>  
 
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="İçe Aktar"
                     onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
                     icon={<UploadFileIcon fontSize="small"/>}
@@ -141,9 +142,9 @@ function Partners() {
                     link="/partners/add-partner"
                     disabled={activeCompany ? false : true}
                     icon={<AddBoxIcon fontSize="small"/>}
-                    />
+                    /> */}
 
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="Sil"
                     onClick={() => dispatch(setDeleteDialog(true))}
                     disabled={partners.length > 0 ? false : true}
@@ -155,13 +156,13 @@ function Partners() {
                     onClick={handleAllDelete}
                     disabled={user.email === "koray.zorlu@arileasing.com.tr" ? false : true}
                     icon={<DeleteIcon fontSize="small"/>}
-                    />
+                    /> */}
 
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="Permissions"
                     onClick={handleTest}
                     icon={<KeyIcon fontSize="small"/>}
-                    />
+                    /> */}
 
                     <CustomTableButton
                     title="Yenile"
@@ -176,8 +177,9 @@ function Partners() {
                 setSelectedItems(newRowSelectionModel);
             }}
             rowCount={partnersCount}
-            checkboxSelection
+            //checkboxSelection
             setParams={(value) => dispatch(setPartnersParams(value))}
+            headerFilters={true}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
