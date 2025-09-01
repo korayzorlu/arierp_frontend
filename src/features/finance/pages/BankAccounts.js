@@ -34,9 +34,9 @@ function BankAccounts() {
         { field: 'AccountNo', headerName: 'Hesap NO', width: 240 },
         { field: 'BranchCode', headerName: 'Şube Kodu', width: 140 },
         { field: 'BranchName', headerName: 'Şube Adı', width: 240 },
-        { field: 'Balance', headerName: 'Bakiye', width: 140, type: 'number'},
-        { field: 'AvailableBalance', headerName: 'Kullanılabilir Bakiye', width: 140, type: 'number'},
-        { field: 'BlockedBalance', headerName: 'Bloke Bakiye', width: 140, type: 'number'},
+        { field: 'Balance', headerName: 'Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null},
+        { field: 'AvailableBalance', headerName: 'Kullanılabilir Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null },
+        { field: 'BlockedBalance', headerName: 'Bloke Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null },
         { field: 'Currency', headerName: 'PB' },
     ]
 
