@@ -30,7 +30,7 @@ function BankAccounts() {
     }, [activeCompany,bankAccountsParams,dispatch]);
 
     const columns = [
-        { field: 'BankName', headerName: 'Banka', width: 140,sortComparator: turkishSortComparator, },
+        { field: 'BankName', headerName: 'Banka', width: 140 },
         { field: 'IBAN', headerName: 'IBAN', width: 140 },
         { field: 'AccountNo', headerName: 'Hesap NO', width: 240 },
         { field: 'BranchCode', headerName: 'Şube Kodu', width: 140 },
