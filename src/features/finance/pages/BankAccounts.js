@@ -7,6 +7,7 @@ import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { fetchBankAccounts, setBankAccountsParams } from '../../../store/slices/finance/bankAccountSlice';
+import { turkishSortComparator } from '../../../utils/stirngUtils';
 
 function BankAccounts() {
     const {user} = useSelector((store) => store.auth);
@@ -29,14 +30,20 @@ function BankAccounts() {
     }, [activeCompany,bankAccountsParams,dispatch]);
 
     const columns = [
-        { field: 'BankName', headerName: 'Banka', width: 140 },
+        { field: 'BankName', headerName: 'Banka', width: 140,sortComparator: turkishSortComparator, },
         { field: 'IBAN', headerName: 'IBAN', width: 140 },
         { field: 'AccountNo', headerName: 'Hesap NO', width: 240 },
         { field: 'BranchCode', headerName: 'Şube Kodu', width: 140 },
         { field: 'BranchName', headerName: 'Şube Adı', width: 240 },
-        { field: 'Balance', headerName: 'Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null},
-        { field: 'AvailableBalance', headerName: 'Kullanılabilir Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null },
-        { field: 'BlockedBalance', headerName: 'Bloke Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null },
+        { field: 'Balance', headerName: 'Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'AvailableBalance', headerName: 'Kullanılabilir Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'BlockedBalance', headerName: 'Bloke Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'Currency', headerName: 'PB' },
     ]
 
