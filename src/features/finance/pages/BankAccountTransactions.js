@@ -6,7 +6,7 @@ import { Button, Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { fetchBankAccountTransactions, setBankAccountTransactionsParams } from '../../../store/slices/finance/bankAccountTransactionSlice';
+import { addBankActivity, fetchBankAccountTransactions, setBankAccountTransactionsParams } from '../../../store/slices/finance/bankAccountTransactionSlice';
 import { parseDate } from '../../../utils/stirngUtils';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
@@ -36,10 +36,17 @@ function BankAccountTransactions() {
         { field: 'Amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null },
         { field: 'BankName', headerName: 'Banka', width: 140 },
         { field: 'OwnerAccountNo', headerName: 'Banka Hesabı', width: 240 },
-        { field: 'tahsilat', headerName: 'Tahsilat İşleme', width: 240, renderCell: (params) => (
+        { field: 'tahsilat', headerName: 'Tahsilat İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.Debit === "+"
                 ?
-                    <Button key={params.row.TransactionId} variant='contained' color="success" endIcon={<ArrowRightAltIcon />} size='small'>
+                    <Button
+                    key={params.row.TransactionId}
+                    variant='contained'
+                    color="success"
+                    endIcon={<ArrowRightAltIcon />}
+                    size='small'
+                    onClick={() => dispatch(addBankActivity({data:params.row}))}
+                    >
                         Tahsilata Gönder
                     </Button>
                 :
@@ -70,6 +77,7 @@ function BankAccountTransactions() {
                 setParams={(value) => dispatch(setBankAccountTransactionsParams(value))}
                 headerFilters={true}
                 noDownloadButton
+                disableRowSelectionOnClick
                 initialState={{
                     sorting: {
                         sortModel: [
