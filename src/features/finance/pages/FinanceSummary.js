@@ -52,7 +52,13 @@ function FinanceSummary() {
 
     const bankActivityColumns = [
         { field: 'title', headerName: '', flex: 2 },
-        { field: 'amount', headerName: 'Toplam Tutar', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_try', headerName: 'Toplam Tutar TRY', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'amount_usd', headerName: 'Toplam Tutar USD', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'amount_eur', headerName: 'Toplam Tutar EUR', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
     ]
@@ -83,13 +89,11 @@ function FinanceSummary() {
                 customFiltersLeft={
                     <>
                         <FormControl sx={{mr: 2}}>
-                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                            <InputLabel>Satıcı</InputLabel>
                             <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
                             size='small'
                             value={project}
-                            label="Proje"
+                            label="Satıcı"
                             onChange={(e) => changeProject(e.target.value)}
                             disabled={financeSummaryLoading}
                             >
@@ -98,6 +102,18 @@ function FinanceSummary() {
                                 <MenuItem value='kasaba'>KASABA</MenuItem>
                                 <MenuItem value='servet'>SERVET</MenuItem>
                                 <MenuItem value='diger'>Diğer</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel>Proje</InputLabel>
+                            <Select
+                            size='small'
+                            value="hepsi"
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
+                            disabled={financeSummaryLoading}
+                            >
+                                <MenuItem value='hepsi'>Hepsi</MenuItem>
                             </Select>
                         </FormControl>
                     </>
