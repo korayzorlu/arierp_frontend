@@ -71,7 +71,7 @@ function FinanceSummary() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTable
-                title="Satıcı Ödemeleri Yönetici Özeti"
+                title="Satıcı Ödemeleri Özeti"
                 autoHeight
                 rows={financeSummary}
                 columns={bankActivityColumns}
