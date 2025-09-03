@@ -33,10 +33,11 @@ function Leases() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
+    const [project, setProject] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchLeases({activeCompany,params:leasesParams}));
+            dispatch(fetchLeases({activeCompany,params:{...leasesParams,project}}));
         });
     }, [activeCompany,leasesParams,dispatch]);
 

@@ -33,11 +33,11 @@ function OverdueLeases() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
-    const [project, setProject] = useState("kizilbuk")
+    const [project, setProject] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchLeases({activeCompany,params:{...leasesParams,overdue:true}}));
+            dispatch(fetchLeases({activeCompany,params:{...leasesParams,project,overdue:true}}));
         });
     }, [activeCompany,leasesParams,dispatch]);
 
