@@ -143,7 +143,8 @@ function ListTable(props) {
     rowHeight,
     disableVirtualization,
     customFiltersLeft,
-    density
+    density,
+    columnGroupingModel
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -270,6 +271,9 @@ function ListTable(props) {
             border: 1,
             borderColor: dark ? 'rgba(81,81,81,1)' : 'rgba(224,224,224,1)'
           },
+          '& .ColumnGroupingModel .MuiDataGrid-columnHeaderTitleContainer': {
+            justifyContent: 'center',
+          },
           ...(!dark
             ? {
                 '& .MuiDataGrid-detailPanel': {
@@ -315,6 +319,7 @@ function ListTable(props) {
       onProcessRowUpdateError={onProcessRowUpdateError}
       sortModel={sortModel}
       density={density}
+      columnGroupingModel={columnGroupingModel}
       />
     </TableContent>
   )

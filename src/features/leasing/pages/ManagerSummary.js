@@ -65,13 +65,13 @@ function ManagerSummary() {
 
     const bankActivityColumns = [
         { field: 'title', headerName: '', flex: 2 },
-        { field: 'amount_try', headerName: 'Toplam Gecikme Tutarı TRY', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_try', headerName: 'TRY', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'amount_usd', headerName: 'Toplam Gecikme Tutarı USD', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_usd', headerName: 'USD', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'amount_eur', headerName: 'Toplam Gecikme Tutarı EUR', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_eur', headerName: 'EUR', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'quantity', headerName: 'Toplam Sözleşme Sayısı', flex: 2, type: 'number', valueFormatter: (value) => 
@@ -130,6 +130,13 @@ function ManagerSummary() {
                 setParams={(value) => dispatch(setManagerSummaryParams(value))}
                 noDownloadButton
                 disableVirtualization
+                columnGroupingModel={[
+                    {
+                        groupId: 'Toplam Gecikme Tutarı',
+                        children: [{ field: 'amount_try' }, { field: 'amount_usd' }, { field: 'amount_eur' }],
+                        headerClassName: 'ColumnGroupingModel'
+                    },
+                ]}
                 />
             </Grid>
         </PanelContent>

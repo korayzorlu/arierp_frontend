@@ -32,3 +32,8 @@
   background-color: rgba(231, 219, 207,0.7)!important;
   color: #000
 }
+
+.columnGroupingModel {
+  text-align: center;
+  font-weight: bold!important;
+}

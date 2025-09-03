@@ -52,13 +52,13 @@ function FinanceSummary() {
 
     const bankActivityColumns = [
         { field: 'title', headerName: '', flex: 2 },
-        { field: 'amount_try', headerName: 'Toplam Tutar TRY', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_try', headerName: 'TRY', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'amount_usd', headerName: 'Toplam Tutar USD', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_usd', headerName: 'USD', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'amount_eur', headerName: 'Toplam Tutar EUR', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_eur', headerName: 'EUR', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
     ]
@@ -121,6 +121,13 @@ function FinanceSummary() {
                 setParams={(value) => dispatch(setFinanceSummaryParams(value))}
                 noDownloadButton
                 disableVirtualization
+                columnGroupingModel={[
+                    {
+                        groupId: 'Toplam Tutar',
+                        children: [{ field: 'amount_try' }, { field: 'amount_usd' }, { field: 'amount_eur' }],
+                        headerClassName: 'ColumnGroupingModel'
+                    },
+                ]}
                 />
             </Grid>
         </PanelContent>
