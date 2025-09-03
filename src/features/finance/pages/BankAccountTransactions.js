@@ -6,7 +6,7 @@ import { Button, Chip, Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { addBankActivity, fetchBankAccountTransactions, setBankAccountTransactionsParams } from '../../../store/slices/finance/bankAccountTransactionSlice';
+import { addBankActivity, fetchBankAccountTransactions, setBankAccountTransactionsParams, updateBankAccountTransaction } from '../../../store/slices/finance/bankAccountTransactionSlice';
 import { parseDate } from '../../../utils/stirngUtils';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import CheckIcon from '@mui/icons-material/Check';
@@ -32,6 +32,8 @@ function BankAccountTransactions() {
         });
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
+
+
     const columns = [
         { field: 'transaction_date', headerName: 'Tarih', width: 160, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
         { field: 'explanation_field', headerName: 'Açıklama', width: 520 },
@@ -51,7 +53,11 @@ function BankAccountTransactions() {
                         color="info"
                         endIcon={<ArrowOutwardIcon />}
                         size='small'
-                        onClick={() => {dispatch(addBankActivity({data:params.row}))}}
+                        onClick={() => {
+                            dispatch(addBankActivity({data:params.row}));
+                            dispatch(updateBankAccountTransaction({transaction_id: params.row.transaction_id}));
+                            
+                        }}
                         >
                             Tahsilata Gönder
                         </Button>

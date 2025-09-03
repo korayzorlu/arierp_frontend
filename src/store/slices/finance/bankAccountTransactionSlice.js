@@ -71,6 +71,13 @@ const bankAccountTransactionSlice = createSlice({
                 format: 'datatables'
             };
         },
+        updateBankAccountTransaction(state, action) {
+            const { transaction_id } = action.payload;
+            const item = state.bankAccountTransactions.find(obj => obj.transaction_id === transaction_id);
+            if (item) {
+                item.bank_activity = true;
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -90,5 +97,5 @@ const bankAccountTransactionSlice = createSlice({
   
 })
 
-export const {setBankAccountTransactionsLoading,setBankAccountTransactionsParams,resetBankAccountTransactionsParams,deleteBankAccountTransactions,setBankAccountTransactionsOverdues} = bankAccountTransactionSlice.actions;
+export const {setBankAccountTransactionsLoading,setBankAccountTransactionsParams,resetBankAccountTransactionsParams,deleteBankAccountTransactions,setBankAccountTransactionsOverdues,updateBankAccountTransaction} = bankAccountTransactionSlice.actions;
 export default bankAccountTransactionSlice.reducer;

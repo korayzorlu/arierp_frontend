@@ -48,6 +48,7 @@ const financeSlice = createSlice({
                 format: 'datatables'
             };
         },
+        
     },
     extraReducers: (builder) => {
         builder
