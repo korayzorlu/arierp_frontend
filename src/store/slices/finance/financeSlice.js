@@ -14,10 +14,10 @@ const initialState = {
     financeSummaryLoading:false,
 }
 
-export const fetchFinanceSummary = createAsyncThunk('auth/fetchFinanceSummary', async (lease_code=null,{rejectWithValue}) => {
+export const fetchFinanceSummary = createAsyncThunk('auth/fetchFinanceSummary', async (params=null,{rejectWithValue}) => {
     try {
-        const response = await axios.post('/leasing/finance_summary/', { 
-            
+        const response = await axios.post('/finance/finance_summary/', { 
+          params:params  
         },{ withCredentials: true, });
         return response.data.data;
     } catch (error) {
