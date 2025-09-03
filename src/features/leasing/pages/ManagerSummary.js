@@ -65,7 +65,13 @@ function ManagerSummary() {
 
     const bankActivityColumns = [
         { field: 'title', headerName: '', flex: 2 },
-        { field: 'amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'amount_try', headerName: 'Toplam Gecikme Tutarı TRY', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'amount_usd', headerName: 'Toplam Gecikme Tutarı USD', flex: 2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'amount_eur', headerName: 'Toplam Gecikme Tutarı EUR', flex: 2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'quantity', headerName: 'Toplam Sözleşme Sayısı', flex: 2, type: 'number', valueFormatter: (value) => 
