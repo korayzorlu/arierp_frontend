@@ -2,13 +2,15 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Button, Grid } from '@mui/material';
+import { Button, Chip, Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { addBankActivity, fetchBankAccountTransactions, setBankAccountTransactionsParams } from '../../../store/slices/finance/bankAccountTransactionSlice';
 import { parseDate } from '../../../utils/stirngUtils';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import CheckIcon from '@mui/icons-material/Check';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 function BankAccountTransactions() {
     const {user} = useSelector((store) => store.auth);
@@ -31,24 +33,28 @@ function BankAccountTransactions() {
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
     const columns = [
-        { field: 'TransactionDate', headerName: 'Tarih', width: 160, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
-        { field: 'ExplanationField', headerName: 'Açıklama', width: 520 },
-        { field: 'Amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null },
-        { field: 'BankName', headerName: 'Banka', width: 140 },
-        { field: 'OwnerAccountNo', headerName: 'Banka Hesabı', width: 240 },
+        { field: 'transaction_date', headerName: 'Tarih', width: 160, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
+        { field: 'explanation_field', headerName: 'Açıklama', width: 520 },
+        { field: 'amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null },
+        { field: 'bank_name', headerName: 'Banka', width: 140 },
+        { field: 'bank_account_no', headerName: 'Banka Hesabı', width: 240 },
         { field: 'tahsilat', headerName: 'Tahsilat İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
-                params.row.Debit === "+"
+                params.row.debit === "+"
                 ?
-                    <Button
-                    key={params.row.TransactionId}
-                    variant='contained'
-                    color="success"
-                    endIcon={<ArrowRightAltIcon />}
-                    size='small'
-                    onClick={() => dispatch(addBankActivity({data:params.row}))}
-                    >
-                        Tahsilata Gönder
-                    </Button>
+                    params.row.bank_activity
+                    ?
+                        <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Tahsilata Gönderildi" size='small'/>
+                    :
+                        <Button
+                        key={params.row.transaction_id}
+                        variant='contained'
+                        color="info"
+                        endIcon={<ArrowOutwardIcon />}
+                        size='small'
+                        onClick={() => {dispatch(addBankActivity({data:params.row}))}}
+                        >
+                            Tahsilata Gönder
+                        </Button>
                 :
                     null
                 
@@ -63,7 +69,7 @@ function BankAccountTransactions() {
                 title="Banka Hesap Hareketleri"
                 rows={bankAccountTransactions}
                 columns={columns}
-                getRowId={(row) => row.TransactionId}
+                getRowId={(row) => row.transaction_id}
                 loading={bankAccountTransactionsLoading}
                 customButtons={
                     <>
@@ -82,7 +88,7 @@ function BankAccountTransactions() {
                     sorting: {
                         sortModel: [
                         {
-                            field: 'TransactionDate',
+                            field: 'transaction_date',
                             sort: 'desc',
                         },
                         ],
