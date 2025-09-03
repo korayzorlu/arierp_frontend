@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Button, Chip, Grid } from '@mui/material';
+import { Button, Chip, Grid, Stack } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -41,29 +41,32 @@ function BankAccountTransactions() {
         { field: 'bank_name', headerName: 'Banka', width: 140 },
         { field: 'bank_account_no', headerName: 'Banka Hesabı', width: 240 },
         { field: 'tahsilat', headerName: 'Tahsilat İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
-                params.row.debit === "+"
-                ?
-                    params.row.bank_activity
-                    ?
-                        <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Tahsilata Gönderildi" size='small'/>
-                    :
-                        <Button
-                        key={params.row.transaction_id}
-                        variant='contained'
-                        color="info"
-                        endIcon={<ArrowOutwardIcon />}
-                        size='small'
-                        onClick={() => {
-                            dispatch(addBankActivity({data:params.row}));
-                            dispatch(updateBankAccountTransaction({transaction_id: params.row.transaction_id}));
-                            
-                        }}
-                        >
-                            Tahsilata Gönder
-                        </Button>
-                :
-                    null
-                
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    {
+                        params.row.debit === "+"
+                        ?
+                            params.row.bank_activity
+                            ?
+                                <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Tahsilata Gönderildi" size='small'/>
+                            :
+                                <Button
+                                key={params.row.transaction_id}
+                                variant='contained'
+                                color="info"
+                                endIcon={<ArrowOutwardIcon />}
+                                size='small'
+                                onClick={() => {
+                                    dispatch(addBankActivity({data:params.row}));
+                                    dispatch(updateBankAccountTransaction({transaction_id: params.row.transaction_id}));
+                                    
+                                }}
+                                >
+                                    Tahsilata Gönder
+                                </Button>
+                        :
+                            null
+                    }
+                </Stack>
             ) 
         },
     ]

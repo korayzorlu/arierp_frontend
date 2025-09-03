@@ -20,7 +20,7 @@ const initialState = {
 
 export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/leases/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/leases/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}

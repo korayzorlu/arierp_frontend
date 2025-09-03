@@ -46,7 +46,7 @@ const commonTheme = {
         },
         bluelemonade: {
             main: '#0045B0',
-            contrastText: '#000',
+            contrastText: '#fff',
         },
         ari: {
             main: '#980748',
