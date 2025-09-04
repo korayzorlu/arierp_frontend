@@ -165,9 +165,10 @@ function DeliveryConfirms() {
 
     const changeProject = (databaseTerm) => {
         setProject(databaseTerm);
-        dispatch(setDeliveryConfirmsLoading(true));
-        setProjectOpen(false);
+        dispatch(setDeliveryConfirmsParams({project:databaseTerm}));
+        
     };
+
 
     const handleChangeBiggerThan100 = async (value) => {
         if(!value){
