@@ -1,4 +1,3 @@
-import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
@@ -8,8 +7,6 @@ import PanelContent from '../../../component/panel/PanelContent';
 import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from '../../../component/table/ListTableServer';
@@ -19,13 +16,11 @@ import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from '../components/CallDialog';
 import MessageDialog from '../components/MessageDialog';
-import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from '../components/WarningNoticeDialog';
 import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import SmsIcon from '@mui/icons-material/Sms';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -36,15 +31,11 @@ function RiskPartners() {
     const [isPending, startTransition] = useTransition();
     
     const [data, setData] = useState({})
-    const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
-    const [switchDisabled, setSwitchDisabled] = useState(false);
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
     const [barterSwitchPosition, setBarterSwitchPosition] = useState(false);
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
-    const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
-    const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
-    const [projectOpen, setProjectOpen] = useState(false)
     const [project, setProject] = useState("kizilbuk")
+    const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
     //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
@@ -185,15 +176,6 @@ function RiskPartners() {
         dispatch(setRiskPartnersParams({project:newValue}));
     };
 
-    const handleChangeBiggerThan100 = async (value) => {
-        if(!value){
-            dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:true}));
-        }else{
-            dispatch(setRiskPartnersParams({bigger_than_100:value,overdue_amount:false}));
-        }
-        setBiggerThan100SwitchPosition(value);
-    };
-
     return (
         <PanelContent>
             <Grid container spacing={1}>
@@ -207,14 +189,14 @@ function RiskPartners() {
                 customButtons={
                     <>  
                         <CustomTableButton
-                        title="İçe Aktar"
-                        onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
-                        icon={<UploadFileIcon fontSize="small"/>}
+                        title="Sözleşme Bazında Excel'e Aktar"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_risk_partners/")}}
+                        icon={<DownloadIcon fontSize="small"/>}
                         />
                         <CustomTableButton
-                        title="Excel Hazırla ve İndir"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
-                        icon={<DownloadIcon fontSize="small"/>}
+                        title="SMS İçin Excel'e Aktar"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_risk_partners_for_sms/")}}
+                        icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
@@ -285,16 +267,9 @@ function RiskPartners() {
                 getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
-            <DeleteDialog
-            handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_risk_partners/"
-            selectedItems={selectedItems}
-            startEvent={() => dispatch(setRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));dispatch(setRiskPartnersLoading(false));}}
-            />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_risk_partners/"
+            exportURL={exportURL}
             startEvent={() => dispatch(setRiskPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}}));dispatch(setRiskPartnersLoading(false));}}
             project={project}

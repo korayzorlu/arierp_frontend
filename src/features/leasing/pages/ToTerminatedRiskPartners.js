@@ -25,6 +25,7 @@ import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/cont
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import SmsIcon from '@mui/icons-material/Sms';
 
 function ToTerminatedRiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -44,6 +45,7 @@ function ToTerminatedRiskPartners() {
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [project, setProject] = useState("kizilbuk")
+    const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
     //     dispatch(setToTerminatedRiskPartnersParams({bigger_than_100:true}));
@@ -197,14 +199,14 @@ function ToTerminatedRiskPartners() {
                 customButtons={
                     <>
                         <CustomTableButton
-                        title="İçe Aktar"
-                        onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
-                        icon={<UploadFileIcon fontSize="small"/>}
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_terminated_risk_partners/")}}
+                        icon={<DownloadIcon fontSize="small"/>}
                         />
                         <CustomTableButton
-                        title="Excel Hazırla ve İndir"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
-                        icon={<DownloadIcon fontSize="small"/>}
+                        title="SMS İçin Excel'e Aktar"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_terminated_risk_partners_for_sms/")}}
+                        icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
@@ -284,7 +286,7 @@ function ToTerminatedRiskPartners() {
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_to_terminated_risk_partners/"
+            exportURL={exportURL}
             startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
             project={project}

@@ -140,7 +140,7 @@ function ExportDialog(props) {
                         </DialogContent>
                         <DialogActions className=''>
                             <Button variant="text" color="neutral" onClick={handleClose}>Vazgeç</Button>
-                            <Button variant="outlined" color="primary" onClick={handleExport} autoFocus>Başlat</Button>
+                            <Button variant="contained" color="primary" onClick={handleExport} autoFocus>Başlat</Button>
                         </DialogActions>
                     </MUIDialog>
                 )

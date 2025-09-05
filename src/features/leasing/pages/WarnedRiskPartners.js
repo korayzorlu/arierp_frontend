@@ -25,6 +25,7 @@ import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/cont
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import SmsIcon from '@mui/icons-material/Sms';
 
 function WarnedRiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -43,6 +44,7 @@ function WarnedRiskPartners() {
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [project, setProject] = useState("kizilbuk")
+    const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
     //     dispatch(setWarnedRiskPartnersParams({bigger_than_100:true}));
@@ -191,14 +193,14 @@ function WarnedRiskPartners() {
                 customButtons={
                     <>
                         <CustomTableButton
-                        title="İçe Aktar"
-                        onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
-                        icon={<UploadFileIcon fontSize="small"/>}
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_warned_risk_partners/")}}
+                        icon={<DownloadIcon fontSize="small"/>}
                         />
                         <CustomTableButton
-                        title="Excel Hazırla ve İndir"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
-                        icon={<DownloadIcon fontSize="small"/>}
+                        title="SMS İçin Excel'e Aktar"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_warned_risk_partners_for_sms/")}}
+                        icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
@@ -264,16 +266,9 @@ function WarnedRiskPartners() {
                 getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
-            <DeleteDialog
-            handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_risk_partners/"
-            selectedItems={selectedItems}
-            startEvent={() => dispatch(setWarnedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:warnedRiskPartnersParams}));dispatch(setWarnedRiskPartnersLoading(false));}}
-            />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_warned_risk_partners/"
+            exportURL={exportURL}
             startEvent={() => dispatch(setWarnedRiskPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}}));dispatch(setWarnedRiskPartnersLoading(false));}}
             project={project}
