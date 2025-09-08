@@ -24,6 +24,7 @@ function UpdateLease() {
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [tabValue, setTabValue] = useState(0);
     const [switchDisabled, setSwitchDisabled] = useState(false);
+    const [project, setProject] = useState("all");
 
     const { uuid,contract_code } = useParams();
 
@@ -32,7 +33,7 @@ function UpdateLease() {
     const fetchData = async () => {
         await dispatch(fetchCountries()).unwrap();
         await dispatch(fetchCurrencies()).unwrap();
-        const response = await dispatch(fetchLease({activeCompany,params:{uuid}})).unwrap();
+        const response = await dispatch(fetchLease({activeCompany,params:{uuid,project}})).unwrap();
         setData(response);
         handleChangeShareholder(response.shareholder);
     };

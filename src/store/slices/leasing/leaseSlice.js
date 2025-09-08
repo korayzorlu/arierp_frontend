@@ -50,7 +50,7 @@ export const fetchLeaseUnpages = createAsyncThunk('auth/fetchLeaseUnpages', asyn
 export const fetchLease = createAsyncThunk('auth/fetchLease', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
     dispatch(setIsProgress(true));
     try {
-        const response = await axios.get(`/leasing/leases/?active_company=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/leases/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
