@@ -243,7 +243,7 @@ function App() {
 
                 <Route path='/leases' element={<Leases></Leases>}></Route>
                 <Route path='/leasing/add-lease' element={<AddLease></AddLease>}></Route>
-                <Route path='/leasing/update/:uuid/:contract_code' element={<UpdateLease></UpdateLease>}></Route>
+                <Route path='/leasing/update/:uuid/:contract_id' element={<UpdateLease></UpdateLease>}></Route>
                 <Route path='/installments' element={<Installment></Installment>}></Route>
                 <Route path='/collections' element={<Collections></Collections>}></Route>
                 

@@ -159,8 +159,8 @@ export const fetchContractPayments = createAsyncThunk('auth/fetchContractPayment
     }
 });
 
-export const fetchContractPaymentsInLease = createAsyncThunk('organization/fetchContractPaymentsInLease', async ({activeCompany,contract_code}) => {
-    const response = await axios.get(`/contracts/contract_payments/?active_company=${activeCompany.id}&contract=${contract_code}`, {withCredentials: true});
+export const fetchContractPaymentsInLease = createAsyncThunk('organization/fetchContractPaymentsInLease', async ({activeCompany,contract_id}) => {
+    const response = await axios.get(`/contracts/contract_payments/?active_company=${activeCompany.id}&contract_id=${contract_id}`, {withCredentials: true});
     return response.data;
 });
 

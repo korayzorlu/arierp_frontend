@@ -132,7 +132,7 @@ function ExportDialog(props) {
                                 <Row className="mb-3">
                                     <Col>
                                         <Typography>
-                                            Devam etmek istiyor musunuz?
+                                            Devam etmek istiyor musun?
                                         </Typography>
                                     </Col>
                                 </Row>

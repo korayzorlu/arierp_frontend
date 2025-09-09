@@ -26,7 +26,7 @@ function UpdateLease() {
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [project, setProject] = useState("all");
 
-    const { uuid,contract_code } = useParams();
+    const { uuid,contract_id } = useParams();
 
     const [data, setData] = useState({})
 
@@ -282,7 +282,7 @@ function UpdateLease() {
                     <TabPanel value={tabValue} index={1}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
-                                <ContractPaymentsInLease contract_code={contract_code}></ContractPaymentsInLease>
+                                <ContractPaymentsInLease contract_id={contract_id}></ContractPaymentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>

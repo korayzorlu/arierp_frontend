@@ -16,7 +16,7 @@ const initialState = {
     installmentInformation:[],
 }
 
-export const fetchInstallments = createAsyncThunk('auth/fetchInstallments', async ({activeCompany,serverModels=null,params=null}) => {
+export const fetchInstallments = createAsyncThunk('leasing/fetchInstallments', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/installments/?active_company=${activeCompany.id}`,
             {   
@@ -31,7 +31,7 @@ export const fetchInstallments = createAsyncThunk('auth/fetchInstallments', asyn
     }
 });
 
-export const fetchInstallment = createAsyncThunk('auth/fetchInstallment', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
+export const fetchInstallment = createAsyncThunk('leasing/fetchInstallment', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
     dispatch(setIsProgress(true));
     try {
         const response = await axios.get(`/leasing/installments/?active_company=${activeCompany.id}`,
@@ -54,7 +54,7 @@ export const fetchInstallment = createAsyncThunk('auth/fetchInstallment', async 
     }
 });
 
-export const addInstallment = createAsyncThunk('auth/addInstallment', async ({data=null},{dispatch,extra: {navigate}}) => {
+export const addInstallment = createAsyncThunk('leasing/addInstallment', async ({data=null},{dispatch,extra: {navigate}}) => {
     dispatch(setIsProgress(true));
     try {
         const response = await axios.post(`/leasing/add_installment/`,
@@ -77,7 +77,7 @@ export const addInstallment = createAsyncThunk('auth/addInstallment', async ({da
     }
 });
 
-export const updateInstallment = createAsyncThunk('auth/updateInstallment', async ({data=null},{dispatch}) => {
+export const updateInstallment = createAsyncThunk('leasing/updateInstallment', async ({data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     try {
         const response = await axios.post(`/leasing/update_installment/`,
@@ -99,7 +99,7 @@ export const updateInstallment = createAsyncThunk('auth/updateInstallment', asyn
     }
 });
 
-export const deleteInstallment = createAsyncThunk('auth/deleteInstallment', async ({data=null},{dispatch,extra: {navigate}}) => {
+export const deleteInstallment = createAsyncThunk('leasing/deleteInstallment', async ({data=null},{dispatch,extra: {navigate}}) => {
     dispatch(setIsProgress(true));
     try {
         const response = await axios.post(`/leasing/delete_installment/`,
@@ -123,11 +123,13 @@ export const deleteInstallment = createAsyncThunk('auth/deleteInstallment', asyn
     }
 });
 
-export const fetchInstallmentInformation = createAsyncThunk('auth/fetchInstallmentInformation', async (lease_code,{rejectWithValue}) => {
+export const fetchInstallmentInformation = createAsyncThunk('leasing/fetchInstallmentInformation', async ({lease_code,lease_id},{rejectWithValue}) => {
     try {
         const response = await axios.post('/leasing/installment_information/', { 
-            lease_code:lease_code
+            lease_code:lease_code,
+            lease_id:lease_id
         },{ withCredentials: true, });
+        console.log(lease_code)
         return response.data;
     } catch (error) {
         return rejectWithValue({

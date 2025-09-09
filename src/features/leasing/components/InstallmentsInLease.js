@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchInstallmentsInLease } from '../../../store/slices/leasing/leaseSlice';
 import BasicTable from '../../../component/table/BasicTable';
 import { Typography } from '@mui/material';
+import { fetchInstallmentInformation } from '../../../store/slices/leasing/installmentSlice';
 
 function InstallmentsInLease(props) {
-    const {lease_id,companyName} = props;
+    const {lease_id,lease_code,companyName} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {installmentsLoading,installmentsInLease} = useSelector((store) => store.lease);
+    const {installmentInformation} = useSelector((store) => store.installment);
 
     const dispatch = useDispatch();
 
@@ -23,7 +25,9 @@ function InstallmentsInLease(props) {
     const [selectedUserCompanyId, setSelectedUserCompanyId] = useState(null)
 
     useEffect(() => {
-        dispatch(fetchInstallmentsInLease({activeCompany,lease_id}));
+        //dispatch(fetchInstallmentsInLease({activeCompany,lease_id}));
+        console.log(lease_id)
+        dispatch(fetchInstallmentInformation({lease_id:lease_id}));
     }, [])
 
     const handleClick = (event,params) => {
@@ -64,7 +68,7 @@ function InstallmentsInLease(props) {
          <>
             <BasicTable
             title="Kira Planı"
-            rows={installmentsInLease}
+            rows={installmentInformation}
             columns={userColumns}
             getRowId={(row) => row.id}
             checkboxSelection={false}

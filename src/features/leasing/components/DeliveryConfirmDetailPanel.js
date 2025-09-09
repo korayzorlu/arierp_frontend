@@ -108,7 +108,7 @@ function DeliveryConfirmDetailPanel(props) {
             dispatch(setPartnerDialog(true));
         }else if(params.field==="code"){
             dispatch(setInstallmentsLoading(true));
-            await dispatch(fetchInstallmentInformation(params.row.code)).unwrap();
+            await dispatch(fetchInstallmentInformation({lease_code: params.row.code})).unwrap();
             dispatch(setInstallmentDialog(true));
             dispatch(setInstallmentsLoading(false));
         };

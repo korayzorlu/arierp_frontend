@@ -44,7 +44,7 @@ function Leases() {
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
                 <Link
-                to={`/leasing/update/${params.row.uuid}/${params.row.contract}/`}
+                to={`/leasing/update/${params.row.uuid}/${params.row.contract_id}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
