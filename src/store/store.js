@@ -42,6 +42,7 @@ import financeReducer from './slices/finance/financeSlice';
 import amountDebitTransactionReducer from './slices/risk/amountDebitTransactionSlice';
 import bankAccountReducer from './slices/finance/bankAccountSlice';
 import bankAccountTransactionReducer from './slices/finance/bankAccountTransactionSlice';
+import partnerAdvanceReducer from './slices/finance/partnerAdvanceSlice';
 
 let navigate;
 
@@ -94,6 +95,7 @@ export const store = configureStore({
         amountDebitTransaction: amountDebitTransactionReducer,
         bankAccount: bankAccountReducer,
         bankAccountTransaction: bankAccountTransactionReducer,
+        partnerAdvance: partnerAdvanceReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
