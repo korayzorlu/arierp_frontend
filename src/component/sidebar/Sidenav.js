@@ -32,6 +32,7 @@ function Sidenav() {
         handshake: require("../../images/icons/sidebar/light/handshake.svg").ReactComponent,
         home: require("../../images/icons/sidebar/light/home-work.svg").ReactComponent,
         home_work: require("../../images/icons/sidebar/light/home_work-filled.svg").ReactComponent,
+        hub: require("../../images/icons/sidebar/light/hub-filled.svg").ReactComponent,
         in_home_mode: require("../../images/icons/sidebar/light/in_home_mode-filled.svg").ReactComponent,
         inventory: require("../../images/icons/sidebar/light/inventory-filled.svg").ReactComponent,
         invoice: require("../../images/icons/sidebar/light/request_page-filled.svg").ReactComponent,

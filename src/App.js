@@ -107,6 +107,7 @@ import BankAccounts from './features/finance/pages/BankAccounts.js';
 import BankAccountTransactions from './features/finance/pages/BankAccountTransactions.js';
 import FinanceSummary from './features/finance/pages/FinanceSummary.js';
 import PartnerAdvances from './features/finance/pages/PartnerAdvances.js';
+import BlackListPersons from './features/compliance/pages/BlackListPersons.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -248,6 +249,8 @@ function App() {
                 <Route path='/installments' element={<Installment></Installment>}></Route>
                 <Route path='/collections' element={<Collections></Collections>}></Route>
                 
+                {/* compliance */}
+                <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
 
                 {/* finance */}
                 <Route path='/bank-activities' element={<BankActivities></BankActivities>}></Route>

@@ -43,6 +43,7 @@ import amountDebitTransactionReducer from './slices/risk/amountDebitTransactionS
 import bankAccountReducer from './slices/finance/bankAccountSlice';
 import bankAccountTransactionReducer from './slices/finance/bankAccountTransactionSlice';
 import partnerAdvanceReducer from './slices/finance/partnerAdvanceSlice';
+import blackListPersonReducer from './slices/compliance/blackListPersonSlice';
 
 let navigate;
 
@@ -96,6 +97,7 @@ export const store = configureStore({
         bankAccount: bankAccountReducer,
         bankAccountTransaction: bankAccountTransactionReducer,
         partnerAdvance: partnerAdvanceReducer,
+        blackListPerson: blackListPersonReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
