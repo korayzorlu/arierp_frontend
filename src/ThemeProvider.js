@@ -114,6 +114,10 @@ export const ThemeProvider = ({ children }) => {
                 main: '#fff',
                 contrastText: '#000',
             },
+            paper: {
+                main: '#fff',
+                contrastText: '#000',
+            },
         },
         components: {
             ...commonTheme.components,
@@ -159,7 +163,11 @@ export const ThemeProvider = ({ children }) => {
             panelbox: {
                 main: '#1b1f23',
                 contrastText: '#fff',
-            }
+            },
+            paper: {
+                main: '#1b1f23',
+                contrastText: '#fff',
+            },
         },
         components: {
             ...commonTheme.components,
