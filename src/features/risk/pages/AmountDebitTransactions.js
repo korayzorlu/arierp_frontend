@@ -42,7 +42,7 @@ function AmountDebitTransactions() {
         { field: 'adat_amount', headerName: 'Adat', type: 'number', renderHeaderFilter: () => null },
         { field: 'interest_rate', headerName: 'Oran', type: 'number', renderHeaderFilter: () => null },
         { field: 'default_amount', headerName: 'Temerrüt(Vergisiz)', type: 'number', renderHeaderFilter: () => null },
-        { field: 'overdue_interest_rate', headerName: 'Hesaplanan Gecikme Faizi(KDV Dahil)', type: 'number', renderHeaderFilter: () => null },
+        { field: 'overdue_interest_rate', headerName: 'Hesaplanan Temerrüt Bedeli(KDV Dahil)', type: 'number', renderHeaderFilter: () => null },
     ]
 
     return (
