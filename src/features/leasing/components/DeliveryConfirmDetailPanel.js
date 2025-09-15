@@ -72,6 +72,10 @@ function DeliveryConfirmDetailPanel(props) {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
+        { field: 'temerrut_amount', headerName: 'Temerrüt Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+                return params.value > 0 ? 'bg-red' : '';
+            }
+        },
         { field: 'currency', headerName: 'PB', flex:1 },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
