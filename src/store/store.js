@@ -45,6 +45,9 @@ import bankAccountTransactionReducer from './slices/finance/bankAccountTransacti
 import partnerAdvanceReducer from './slices/finance/partnerAdvanceSlice';
 import blackListPersonReducer from './slices/compliance/blackListPersonSlice';
 import scanPartnerReducer from './slices/compliance/scanPartnerSlice';
+import contractInSupplier from './slices/operation/contractInSupplierSlice';
+import contractInArchive from './slices/operation/contractInArchiveSlice';
+import contractInProcess from './slices/operation/contractInProcessSlice';
 
 let navigate;
 
@@ -100,6 +103,9 @@ export const store = configureStore({
         partnerAdvance: partnerAdvanceReducer,
         blackListPerson: blackListPersonReducer,
         scanPartner: scanPartnerReducer,
+        contractInSupplier: contractInSupplier,
+        contractInArchive: contractInArchive,
+        contractInProcess: contractInProcess,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

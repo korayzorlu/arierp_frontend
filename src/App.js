@@ -109,6 +109,9 @@ import FinanceSummary from './features/finance/pages/FinanceSummary.js';
 import PartnerAdvances from './features/finance/pages/PartnerAdvances.js';
 import BlackListPersons from './features/compliance/pages/BlackListPersons.js';
 import ScanPartners from './features/compliance/pages/ScanPartners.js';
+import ContractInSuppliers from './features/operation/pages/ContractInSuppliers.js';
+import ContractInProcesss from './features/operation/pages/ContractInProcesss.js';
+import ContractInArchives from './features/operation/pages/ContractInArchives.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -253,6 +256,11 @@ function App() {
                 {/* compliance */}
                 <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
                 <Route path='/scan-partners' element={<ScanPartners></ScanPartners>}></Route>
+
+                {/* operation */}
+                <Route path='/contract-in-suppliers' element={<ContractInSuppliers></ContractInSuppliers>}></Route>
+                <Route path='/contract-in-processs' element={<ContractInProcesss></ContractInProcesss>}></Route>
+                <Route path='/contract-in-archives' element={<ContractInArchives></ContractInArchives>}></Route>
 
                 {/* finance */}
                 <Route path='/bank-activities' element={<BankActivities></BankActivities>}></Route>
