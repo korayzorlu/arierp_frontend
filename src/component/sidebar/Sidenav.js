@@ -125,15 +125,42 @@ function Sidenav() {
                             >
                                 {
                                     menuItem.items.map((item,index) => {
-                                        return  <MenuItem
-                                                    key={index}
-                                                    className={location.pathname.startsWith(item.route) ? "active" : ""}
-                                                    name={item.label}
-                                                    component={<Link to={item.route}></Link>}
-                                                    //icon={getIconComponent(item.icon)}
+                                        return(
+                                            item.type === "sub_menu"
+                                            ?
+                                                <SubMenu
+                                                key={index}
+                                                rootStyles={{"marginTop":"auto"}}
+                                                label={item.label}
+                                                >
+                                                    {
+                                                        item.items.map((subItem,index) => {
+                                                            return(
+                                                                <MenuItem
+                                                                key={index}
+                                                                className={location.pathname.startsWith(subItem.route) ? "active" : ""}
+                                                                name={subItem.label}
+                                                                component={<Link to={subItem.route}></Link>}
+                                                                //icon={getIconComponent(item.icon)}
+                                                                >
+                                                                    {subItem.label}
+                                                                </MenuItem>
+                                                            )
+                                                        })
+                                                    }
+                                                </SubMenu>
+                                            :
+                                                <MenuItem
+                                                key={index}
+                                                className={location.pathname.startsWith(item.route) ? "active" : ""}
+                                                name={item.label}
+                                                component={<Link to={item.route}></Link>}
+                                                //icon={getIconComponent(item.icon)}
                                                 >
                                                     {item.label}
                                                 </MenuItem>
+                                        )
+                                        
                                     })
                                 }
                             </SubMenu>
