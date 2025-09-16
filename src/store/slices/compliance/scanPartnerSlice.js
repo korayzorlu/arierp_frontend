@@ -12,6 +12,7 @@ const initialState = {
         format: 'datatables'
     },
     scanPartnersLoading:false,
+    scanning:false,
 }
 
 export const fetchScanPartners = createAsyncThunk('auth/fetchScanPartners', async ({activeCompany,serverModels=null,params=null}) => {
@@ -48,6 +49,9 @@ const scanPartnerSlice = createSlice({
                 format: 'datatables'
             };
         },
+        setScanning: (state,action) => {
+            state.scanning = action.payload;
+        },
         
     },
     extraReducers: (builder) => {
@@ -68,5 +72,12 @@ const scanPartnerSlice = createSlice({
   
 })
 
-export const {setScanPartnersLoading,setScanPartnersParams,resetScanPartnersParams,deleteScanPartners,setScanPartnersOverdues} = scanPartnerSlice.actions;
+export const {
+    setScanPartnersLoading,
+    setScanPartnersParams,
+    resetScanPartnersParams,
+    deleteScanPartners,
+    setScanPartnersOverdues,
+    setScanning
+} = scanPartnerSlice.actions;
 export default scanPartnerSlice.reducer;

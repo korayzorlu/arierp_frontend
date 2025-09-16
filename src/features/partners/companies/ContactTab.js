@@ -8,12 +8,24 @@ import { useSelector } from 'react-redux';
 import CurrencySelect from '../../../component/select/CurrencySelect';
 
 function ContactTab(props) {
-    const {valueEmail,valueWeb,valuePhoneCountry,valuePhoneNumber,onChangeEmail,onChangeWeb,onChangePhoneCountry,onChangePhoneNumber,valueCurrency,onChangeCurrency,disabled} = props;
+    const {
+        valueEmail,
+        valueWeb,
+        valuePhoneCountry,
+        valuePhoneNumber,
+        onChangeEmail,
+        onChangeWeb,
+        onChangePhoneCountry,
+        onChangePhoneNumber,
+        valueCurrency,
+        onChangeCurrency,
+        disabled
+    } = props;
 
     return (
         <Stack spacing={2}>
             <Grid container spacing={2}>
-                <Grid size={{xs:12,sm:3}}>
+                {/* <Grid size={{xs:12,sm:3}}>
                     <CountrySelect
                     label="Phone Code"
                     emptyValue={true}
@@ -21,11 +33,11 @@ function ContactTab(props) {
                     onChange={(value) => onChangePhoneCountry(value)}
                     isPhoneCountry={true}
                     />
-                </Grid>
-                <Grid size={{xs:12,sm:3}}>
+                </Grid> */}
+                <Grid size={{xs:12,sm:4}}>
                     <TextField
                     size="small"
-                    label={"Phone Number"}
+                    label={"Telefon Numarası"}
                     variant='outlined'
                     value={valuePhoneNumber}
                     onChange={(e) => onChangePhoneNumber(e.target.value)}
@@ -33,11 +45,11 @@ function ContactTab(props) {
                     fullWidth
                     />
                 </Grid>
-                <Grid size={{xs:12,sm:3}}>
+                <Grid size={{xs:12,sm:4}}>
                     <TextField
                     type="email"
                     size="small"
-                    label={"Email"}
+                    label={"E-Posta"}
                     variant='outlined'
                     value={valueEmail}
                     onChange={(e) => onChangeEmail(e.target.value)}
@@ -45,7 +57,7 @@ function ContactTab(props) {
                     fullWidth
                     />
                 </Grid>
-                <Grid size={{xs:12,sm:3}}>
+                <Grid size={{xs:12,sm:4}}>
                     <TextField
                     type="web"
                     size="small"
@@ -58,8 +70,8 @@ function ContactTab(props) {
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2}>
-                <Grid size={{xs:12,sm:3}}>
+            {/* <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:4}}>
                     <CurrencySelect
                     label="Currency"
                     emptyValue={true}
@@ -67,7 +79,7 @@ function ContactTab(props) {
                     onChange={(value) => onChangeCurrency(value)}
                     />
                 </Grid>
-            </Grid>
+            </Grid> */}
         </Stack>
     )
 }

@@ -102,9 +102,9 @@ function CountrySelect(props) {
         renderInput={(params) => (
             <TextField
               {...params}
-              label={label || "Country"}
+              label={label || "Ülke"}
               variant='outlined'
-              placeholder='Choose a country'
+              placeholder='Bir ülke seçin'
             />
           )}
         />

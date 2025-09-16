@@ -27,11 +27,59 @@ function AddressTab(props) {
         onChangeBillingCity,
         onChangeBillingAddress,
         onChangeBillingAddress2,
+        valueEmail,
+        valueWeb,
+        valuePhoneNumber,
+        onChangeEmail,
+        onChangeWeb,
+        onChangePhoneNumber,
         disabled
     } = props;
 
     return (
         <Stack spacing={2}>
+
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:4}}>
+                    <TextField
+                    size="small"
+                    label={"Telefon Numarası"}
+                    variant='outlined'
+                    value={valuePhoneNumber}
+                    onChange={(e) => onChangePhoneNumber(e.target.value)}
+                    disabled={disabled}
+                    fullWidth
+                    />
+                </Grid>
+                <Grid size={{xs:12,sm:4}}>
+                    <TextField
+                    type="email"
+                    size="small"
+                    label={"E-Posta"}
+                    variant='outlined'
+                    value={valueEmail}
+                    onChange={(e) => onChangeEmail(e.target.value)}
+                    disabled={disabled}
+                    fullWidth
+                    />
+                </Grid>
+                <Grid size={{xs:12,sm:4}}>
+                    <TextField
+                    type="web"
+                    size="small"
+                    label={"Web"}
+                    variant='outlined'
+                    value={valueWeb}
+                    onChange={(e) => onChangeWeb(e.target.value)}
+                    disabled={disabled}
+                    fullWidth
+                    />
+                </Grid>
+            </Grid>
+
+            <Typography variant='body1' sx={{textAlign:"left"}}>
+                Adres
+            </Typography>
 
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:4}}>
@@ -53,7 +101,7 @@ function AddressTab(props) {
                     <Stack spacing={2}>
                         <TextField
                         type="text"
-                        label={"Address Line 1"}
+                        label={"Adres Satırı 1"}
                         variant='outlined'
                         size='small'
                         value={valueAddress}
@@ -63,7 +111,7 @@ function AddressTab(props) {
                         />
                         <TextField
                         type="text"
-                        label={"Address Line 2"}
+                        label={"Adres Satırı 2"}
                         variant='outlined'
                         size='small'
                         value={valueAddress2}
@@ -76,7 +124,7 @@ function AddressTab(props) {
             </Grid>
 
             <AndroidSwitch
-            label="Use as billing address"
+            label="Fatura adresi olarak kullan"
             checked={isBillingSame}
             onChange={(value) => onChangeIsBillingSame(value)}
             />
@@ -88,7 +136,7 @@ function AddressTab(props) {
                 :
                     <>
                         <Typography variant='body1' sx={{textAlign:"left"}}>
-                            Billing Address
+                            Fatura Adresi
                         </Typography>
 
                         <Grid container spacing={2}>

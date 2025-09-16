@@ -22,6 +22,9 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ListTableServer from '../../../component/table/ListTableServer';
 import AccountTab from '../companies/AccountTab';
 import { deletePartner, fetchPartner, updatePartner } from '../../../store/slices/partners/partnerSlice';
+import PolicyIcon from '@mui/icons-material/Policy';
+import SecurityCheckTab from '../companies/SecurityCheckTab';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 
 function UpdatePartner() {
     const {user} = useSelector((store) => store.auth);
@@ -101,9 +104,10 @@ function UpdatePartner() {
                             onChange={handleChangeTabValue}
                             >
                                 <Tab label="Hakkında" value={0} icon={<InfoIcon/>} iconPosition="start"/>
-                                <Tab label="Adres" value={1} icon={<LocationOnIcon/>} iconPosition="start"/>
-                                <Tab label="iletişim" value={2} icon={<CallIcon/>} iconPosition="start"/>
-                                <Tab label="Cari Hesaplar" value={3} icon={<MonetizationOnIcon/>} iconPosition="start"/>
+                                <Tab label="İletişim" value={1} icon={<ContactPhoneIcon/>} iconPosition="start"/>
+                                {/* <Tab label="İletişim" value={2} icon={<CallIcon/>} iconPosition="start"/> */}
+                                <Tab label="Güvenlik Sorgulaması" value={3} icon={<PolicyIcon/>} iconPosition="start"/>
+                                {/* <Tab label="Cari Hesaplar" value={3} icon={<MonetizationOnIcon/>} iconPosition="start"/> */}
                             </Tabs>
                         </Grid>
                         <Grid>
@@ -172,10 +176,16 @@ function UpdatePartner() {
                         onChangeBillingCity={(value) => handleChangeField("billingCity",{id:value})}
                         onChangeBillingAddress={(value) => handleChangeField("billingAddress",value)}
                         onChangeBillingAddress2={(value) => handleChangeField("billingAddress2",value)}
+                        valueEmail={data.email || ""}
+                        valueWeb={data.web || ""}
+                        valuePhoneNumber={data.phoneNumber}
+                        onChangeEmail={(value) => handleChangeField("email",value)}
+                        onChangeWeb={(value) => handleChangeField("web",value)}
+                        onChangePhoneNumber={(value) => handleChangeField("phoneNumber",value)}
                         disabled={disabled}
                         />
                     </TabPanel>
-                    <TabPanel value={tabValue} index={2}>
+                    {/* <TabPanel value={tabValue} index={2}>
                         <ContactTab
                         valueEmail={data.email || ""}
                         valueWeb={data.web || ""}
@@ -189,12 +199,15 @@ function UpdatePartner() {
                         onChangeCurrency={(value) => handleChangeField("currency",value)}
                         disabled={disabled}
                         />
-                    </TabPanel>
+                    </TabPanel> */}
                     <TabPanel value={tabValue} index={3}>
+                        <SecurityCheckTab/>
+                    </TabPanel>
+                    {/* <TabPanel value={tabValue} index={3}>
                         <AccountTab
                         partnerUuid={uuid}
                         />
-                    </TabPanel>
+                    </TabPanel> */}
                 </Stack>
             </Stack>
             

@@ -136,9 +136,9 @@ function CitySelect(props) {
         renderInput={(params) => (
             <TextField
                 {...params}
-                label="City"
+                label="Şehir"
                 variant='outlined'
-                placeholder='Type at least 3 characters to search for a city...'
+                placeholder='En az 3 karakter yazarak şehir arayın...'
             />
             )}
         />
