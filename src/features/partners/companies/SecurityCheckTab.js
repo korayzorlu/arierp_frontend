@@ -4,8 +4,10 @@ import GppGoodIcon from '@mui/icons-material/GppGood';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScanning } from '../../../store/slices/compliance/scanPartnerSlice';
+import GppMaybeIcon from '@mui/icons-material/GppMaybe';
 
-function SecurityCheckTab() {
+function SecurityCheckTab(props) {
+    const {reliable} = props;
     const {scanning} = useSelector((store) => store.scanPartner);
 
     const dispatch = useDispatch();
@@ -22,7 +24,7 @@ function SecurityCheckTab() {
         
             scanning
             ?
-                <Stack spacing={4}>
+                <Stack spacing={8}>
 
                     <Grid
                     container
@@ -75,19 +77,33 @@ function SecurityCheckTab() {
 
                 </Stack>
             :
-                <Stack spacing={4}>
+                <Stack spacing={8}>
 
                     <Grid
                     container
                     spacing={2}
                     >
                         <Grid size={{xs:12,sm:12}}>
-                            <Typography variant='body1' sx={{textAlign:"center",color:"text.secondary"}}>
-                                <GppGoodIcon fontSize='large' />
-                            </Typography>
-                            <Typography variant='body1' sx={{textAlign:"center",color:"text.secondary"}}>
-                                Herhangi bir yasaklı listede bulunmamaktadır.
-                            </Typography>
+                            {reliable
+                            ?
+                                <>
+                                    <Typography variant='body1' sx={{textAlign:"center",color:"text.secondary"}}>
+                                        <GppGoodIcon sx={{fontSize: '5rem'}} />
+                                    </Typography>
+                                    <Typography variant='body1' sx={{textAlign:"center",color:"text.secondary"}}>
+                                        Herhangi bir yasaklı listede bulunmamaktadır.
+                                    </Typography>
+                                </>
+                            :
+                                <>
+                                    <Typography variant='body1' sx={{textAlign:"center",color:"text.error"}}>
+                                        <GppMaybeIcon color='error' sx={{fontSize: '5rem'}} />
+                                    </Typography>
+                                    <Typography variant='body1' sx={{textAlign:"center",color:"text.error"}}>
+                                        Kontrol edilen yasaklı listelerde bulunmuştur! Lütfen detaylı inceleyiniz.
+                                    </Typography>
+                                </>
+                            }
                         </Grid>
                     </Grid>
 

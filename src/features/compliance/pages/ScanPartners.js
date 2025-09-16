@@ -14,6 +14,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import WarningIcon from '@mui/icons-material/Warning';
+import { Link } from 'react-router-dom';
 
 function ScanPartners() {
     const {mobile} = useSelector((store) => store.sidebar);
@@ -30,33 +31,41 @@ function ScanPartners() {
     }, [activeCompany,scanPartnersParams,dispatch]);
 
     const columns = [
-        { field: 'name', headerName: 'İsim', width: 360 },
+        { field: 'name', headerName: 'İsim', width: 360, renderCell: (params) => (
+                <Link
+                to={`/partners/update/${params.row.id}/`}
+                style={{textDecoration:"underline"}}
+                >
+                    {params.value}
+                </Link>
+            )
+        },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', flex:1 },
         { field: 'crm_code', headerName: 'CRM Kodu', flex:1 },
         { field: 'last_scan_date', headerName: 'Son Sorgulama Tarihi', flex:1 },
         { field: 'next_scan_date', headerName: 'Sonraki Sorgulama Tarihi', flex:1 },
-        { field: 'check', headerName: 'Sorgu', flex:1, renderCell: (params) => (
-                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                    {
-                        params.row.scan
-                        ?
-                            <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Tahsilata Gönderildi" size='small'/>
+        // { field: 'check', headerName: 'Sorgu', flex:1, renderCell: (params) => (
+        //         <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+        //             {
+        //                 params.row.scan
+        //                 ?
+        //                     <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Tahsilata Gönderildi" size='small'/>
                             
-                        :
-                            <Button
-                                key={params.row.transaction_id}
-                                variant='contained'
-                                color="mars"
-                                endIcon={<ArrowOutwardIcon />}
-                                size='small'
-                                onClick={() => {console.log("clicked")}}
-                                >
-                                    Sorgula
-                                </Button>
-                    }
-                </Stack>
-            )
-        },
+        //                 :
+        //                     <Button
+        //                         key={params.row.transaction_id}
+        //                         variant='contained'
+        //                         color="mars"
+        //                         endIcon={<ArrowOutwardIcon />}
+        //                         size='small'
+        //                         onClick={() => {console.log("clicked")}}
+        //                         >
+        //                             Sorgula
+        //                         </Button>
+        //             }
+        //         </Stack>
+        //     )
+        // },
         { field: 'is_reliable_person', headerName: 'Sorgu Sonucu', flex:1, renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
@@ -90,7 +99,7 @@ function ScanPartners() {
                 </>
             }
             rowCount={scanPartnersCount}
-            checkboxSelection
+            //checkboxSelection
             disableRowSelectionOnClick
             setParams={(value) => dispatch(setScanPartnersParams(value))}
             headerFilters={true}

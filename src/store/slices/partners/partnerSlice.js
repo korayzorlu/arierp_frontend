@@ -46,7 +46,7 @@ export const fetchPartner = createAsyncThunk('auth/fetchPartner', async ({active
             return {}
         }
     } catch (error) {
-        dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        //dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
         return {}
     } finally {
         dispatch(setIsProgress(false));

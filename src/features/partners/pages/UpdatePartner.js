@@ -41,8 +41,8 @@ function UpdatePartner() {
     const [data, setData] = useState({})
 
     const fetchData = async () => {
-        await dispatch(fetchCountries()).unwrap();
-        await dispatch(fetchCurrencies()).unwrap();
+        //await dispatch(fetchCountries()).unwrap();
+        //await dispatch(fetchCurrencies()).unwrap();
         const response = await dispatch(fetchPartner({activeCompany,params:{uuid}})).unwrap();
         setData(response);
         //handleChangeShareholder(response.shareholder);
@@ -201,7 +201,9 @@ function UpdatePartner() {
                         />
                     </TabPanel> */}
                     <TabPanel value={tabValue} index={3}>
-                        <SecurityCheckTab/>
+                        <SecurityCheckTab
+                        reliable={data.is_reliable_person}
+                        />
                     </TabPanel>
                     {/* <TabPanel value={tabValue} index={3}>
                         <AccountTab
