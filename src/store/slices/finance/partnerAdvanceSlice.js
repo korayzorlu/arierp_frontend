@@ -28,6 +28,29 @@ export const fetchPartnerAdvances = createAsyncThunk('auth/fetchPartnerAdvances'
     }
 });
 
+export const addPartnerAdvanceActivity = createAsyncThunk('auth/addPartnerAdvanceActivity', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    
+    try {
+        const response = await axios.post(`/operation/add_partner_advance_activity/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const partnerAdvanceSlice = createSlice({
     name:"partnerAdvance",
     initialState,
@@ -48,6 +71,13 @@ const partnerAdvanceSlice = createSlice({
                 format: 'datatables'
             };
         },
+        updatePartnerAdvance(state, action) {
+            const { uuid } = action.payload;
+            const item = state.partnerAdvances.find(obj => obj.uuid === uuid);
+            if (item) {
+                item.partner_advance_activity = true;
+            }
+        }
         
     },
     extraReducers: (builder) => {
@@ -68,5 +98,5 @@ const partnerAdvanceSlice = createSlice({
   
 })
 
-export const {setPartnerAdvancesLoading,setPartnerAdvancesParams,resetPartnerAdvancesParams,deletePartnerAdvances,setPartnerAdvancesOverdues} = partnerAdvanceSlice.actions;
+export const {setPartnerAdvancesLoading,setPartnerAdvancesParams,resetPartnerAdvancesParams,deletePartnerAdvances,setPartnerAdvancesOverdues,updatePartnerAdvance} = partnerAdvanceSlice.actions;
 export default partnerAdvanceSlice.reducer;

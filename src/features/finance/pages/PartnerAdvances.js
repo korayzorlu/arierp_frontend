@@ -1,24 +1,15 @@
 import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLeases, resetLeasesParams, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
-import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
-import ImportDialog from '../../../component/feedback/ImportDialog';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid, TextField } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import { fetchPartnerAdvances, setPartnerAdvancesLoading, setPartnerAdvancesParams } from '../../../store/slices/finance/partnerAdvanceSlice';
+import { Button, Chip, Grid, Stack, TextField } from '@mui/material';
+import { addPartnerAdvanceActivity, fetchPartnerAdvances, setPartnerAdvancesLoading, setPartnerAdvancesParams, updatePartnerAdvance } from '../../../store/slices/finance/partnerAdvanceSlice';
+import CheckIcon from '@mui/icons-material/Check';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { updatePartnerAdvanceActivity } from '../../../store/slices/operation/partnerAdvanceActivitySlice';
 
 function PartnerAdvances() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -28,10 +19,6 @@ function PartnerAdvances() {
     const apiRef = useGridApiRef();
 
     const [isPending, startTransition] = useTransition();
-
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [switchDisabled, setSwitchDisabled] = useState(false);
-    const [switchPosition, setSwitchPosition] = useState(false);
 
     useEffect(() => {
         startTransition(() => {
@@ -45,6 +32,35 @@ function PartnerAdvances() {
         { field: 'crm_code', headerName: 'CRM Kodu', flex: 1 },
         { field: 'advance_amount', headerName: 'TL Bakiye', flex: 1, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'tahsilat', headerName: 'Avans İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    {
+                        params.row.debit === "+"
+                        ?
+                            params.row.partner_advance_activity
+                            ?
+                                <Chip key={params.row.uuid} variant='contained' color="success" icon={<CheckIcon />} label="Avans İşlemeye Gönderildi" size='small'/>
+                            :
+                                <Button
+                                key={params.row.uuid}
+                                variant='contained'
+                                color="info"
+                                endIcon={<ArrowOutwardIcon />}
+                                size='small'
+                                onClick={() => {
+                                    dispatch(addPartnerAdvanceActivity({data:params.row}));
+                                    dispatch(updatePartnerAdvance({uuid: params.row.uuid}));
+                                    
+                                }}
+                                >
+                                    Avans İşlemeye Gönder
+                                </Button>
+                        :
+                            null
+                    }
+                </Stack>
+            ) 
         },
     ]
 
