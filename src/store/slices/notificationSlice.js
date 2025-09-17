@@ -15,6 +15,7 @@ const initialState = {
     installmentDialog:false,
     overdueDialog:false,
     addBankActivityLeaseDialog:false,
+    addPartnerAdvanceActivityLeaseDialog:false,
     callDialog:false,
     messageDialog:false,
     contractPaymentDialog:false,
@@ -87,6 +88,9 @@ const notificationSlice = createSlice({
         setAddBankActivityLeaseDialog: (state,action) => {
             state.addBankActivityLeaseDialog = action.payload;
         },
+        setAddPartnerAdvanceActivityLeaseDialog: (state,action) => {
+            state.addPartnerAdvanceActivityLeaseDialog = action.payload;
+        },
         setCallDialog: (state,action) => {
             state.callDialog = action.payload;
         },
@@ -146,6 +150,7 @@ export const {
     setInstallmentDialog,
     setOverdueDialog,
     setAddBankActivityLeaseDialog,
+    setAddPartnerAdvanceActivityLeaseDialog,
     setCallDialog,
     setMessageDialog,
     setContractPaymentDialog,

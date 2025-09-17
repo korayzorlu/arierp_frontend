@@ -48,6 +48,8 @@ import scanPartnerReducer from './slices/compliance/scanPartnerSlice';
 import contractInSupplier from './slices/operation/contractInSupplierSlice';
 import contractInArchive from './slices/operation/contractInArchiveSlice';
 import contractInProcess from './slices/operation/contractInProcessSlice';
+import partnerAdvanceActivitySlice from './slices/operation/partnerAdvanceActivitySlice';
+import partnerAdvanceActivityLeaseSlice from './slices/operation/partnerAdvanceActivityLeaseSlice';
 
 let navigate;
 
@@ -106,6 +108,8 @@ export const store = configureStore({
         contractInSupplier: contractInSupplier,
         contractInArchive: contractInArchive,
         contractInProcess: contractInProcess,
+        partnerAdvanceActivity: partnerAdvanceActivitySlice,
+        partnerAdvanceActivityLease: partnerAdvanceActivityLeaseSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

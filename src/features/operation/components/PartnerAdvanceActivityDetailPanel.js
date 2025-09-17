@@ -5,24 +5,23 @@ import ListTable from '../../../component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOverdueInformation, setLeaseOverdues, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setAddBankActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setOverdueDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
+import { setAddPartnerAdvanceActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setOverdueDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
 import { setIsProgress } from '../../../store/slices/processSlice';
 import axios from 'axios';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { fetchBankActivities, fetchBankActivity, fetchBankActivityLeases, setBankActivitiesLoading } from '../../../store/slices/leasing/bankActivitySlice';
+import { fetchPartnerAdvanceActivity, setPartnerAdvanceActivitiesLoading, updateLeaseflexAutomationPartnerAdvanceActivityLeases } from '../../../store/slices/operation/partnerAdvanceActivitySlice';
 import ImportDialog from '../../../component/feedback/ImportDialog';
-import AddBankActivityLeaseDialog from '../../../component/feedback/AddPartnerAdvanceActivityLeaseDialog';
-import ContractPaymentDialog from './ContractPaymentDialog';
+import AddPartnerAdvanceActivityLeaseDialog from '../../../component/feedback/AddPartnerAdvanceActivityLeaseDialog';
 import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import OverdueDialog from '../../../component/dialog/OverdueDialog';
-import OverdueDetailDetailPanel from './OverdueDetailPanel';
 import { amountFormatter, parseLocalizedAmount } from '../../../utils/floatUtils';
+import ContractPaymentDialog from '../../leasing/components/ContractPaymentDialog';
+import OverdueDetailDetailPanel from '../../leasing/components/OverdueDetailPanel';
 
-function DetailPanel(props) {
+function PartnerAdvanceActivityDetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;
 
     const {user} = useSelector((store) => store.auth);
@@ -39,7 +38,7 @@ function DetailPanel(props) {
     
 
      const fetchData = async () => {
-        const response = await dispatch(fetchBankActivity({activeCompany,params:{uuid}})).unwrap();
+        const response = await dispatch(fetchPartnerAdvanceActivity({activeCompany,params:{uuid}})).unwrap();
         setData(response);
         
         
@@ -179,10 +178,10 @@ function DetailPanel(props) {
         const removed = [...previousSelectedRows.current].filter(id => !currentSelection.has(id));
 
         if (added.length > 0) {
-            dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:added,select:true}}))
+            dispatch(updateLeaseflexAutomationPartnerAdvanceActivityLeases({activeCompany,data:{uuids:added,select:true}}))
         }
         if (removed.length > 0) {
-            dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:removed,select:false}}))
+            dispatch(updateLeaseflexAutomationPartnerAdvanceActivityLeases({activeCompany,data:{uuids:removed,select:false}}))
         }
 
         previousSelectedRows.current = currentSelection;
@@ -245,7 +244,7 @@ function DetailPanel(props) {
                     <>
                         <CustomTableButton
                         title="Yeni"
-                        onClick={() => {dispatch(setAddBankActivityLeaseDialog(true));}}
+                        onClick={() => {dispatch(setAddPartnerAdvanceActivityLeaseDialog(true));}}
                         icon={<AddBoxIcon fontSize="small"/>}
                         />
                     </>
@@ -282,11 +281,11 @@ function DetailPanel(props) {
             getDetailPanelHeight={() => "auto"}
             getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
-            <AddBankActivityLeaseDialog
-            handleClose={() => dispatch(setAddBankActivityLeaseDialog(false))}
-            submitURL="/leasing/add_bank_activity_lease"
-            startEvent={() => dispatch(setBankActivitiesLoading(true))}
-            finalEvent={() => {/*dispatch(fetchBankActivities({activeCompany}));*/dispatch(setBankActivitiesLoading(false));}}
+            <AddPartnerAdvanceActivityLeaseDialog
+            handleClose={() => dispatch(setAddPartnerAdvanceActivityLeaseDialog(false))}
+            submitURL="/operation/add_partner_advance_activity_lease"
+            startEvent={() => dispatch(setPartnerAdvanceActivitiesLoading(true))}
+            finalEvent={() => {/*dispatch(fetchPartnerAdvanceActivities({activeCompany}));*/dispatch(setPartnerAdvanceActivitiesLoading(false));}}
             uuid={uuid}
             />
             <ContractPaymentDialog/>
@@ -295,4 +294,4 @@ function DetailPanel(props) {
     )
 }
 
-export default DetailPanel
+export default PartnerAdvanceActivityDetailPanel
