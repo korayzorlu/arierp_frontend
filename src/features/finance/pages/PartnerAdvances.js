@@ -33,31 +33,27 @@ function PartnerAdvances() {
         { field: 'advance_amount', headerName: 'TL Bakiye', flex: 1, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'tahsilat', headerName: 'Avans İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'partner_advance_activity', headerName: 'Avans İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
-                        params.row.debit === "+"
+                        params.value
                         ?
-                            params.row.partner_advance_activity
-                            ?
-                                <Chip key={params.row.uuid} variant='contained' color="success" icon={<CheckIcon />} label="Avans İşlemeye Gönderildi" size='small'/>
-                            :
-                                <Button
-                                key={params.row.uuid}
-                                variant='contained'
-                                color="info"
-                                endIcon={<ArrowOutwardIcon />}
-                                size='small'
-                                onClick={() => {
-                                    dispatch(addPartnerAdvanceActivity({data:params.row}));
-                                    dispatch(updatePartnerAdvance({uuid: params.row.uuid}));
-                                    
-                                }}
-                                >
-                                    Avans İşlemeye Gönder
-                                </Button>
+                            <Chip key={params.row.uuid} variant='contained' color="success" icon={<CheckIcon />} label="Avans İşlemeye Gönderildi" size='small'/>
                         :
-                            null
+                            <Button
+                            key={params.row.uuid}
+                            variant='contained'
+                            color="info"
+                            endIcon={<ArrowOutwardIcon />}
+                            size='small'
+                            onClick={() => {
+                                dispatch(addPartnerAdvanceActivity({data:params.row}));
+                                dispatch(updatePartnerAdvance({uuid: params.row.uuid}));
+                                
+                            }}
+                            >
+                                Avans İşlemeye Gönder
+                            </Button>
                     }
                 </Stack>
             ) 

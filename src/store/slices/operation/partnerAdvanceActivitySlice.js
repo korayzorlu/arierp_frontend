@@ -16,7 +16,7 @@ const initialState = {
 
 export const fetchPartnerAdvanceActivities = createAsyncThunk('auth/fetchPartnerAdvanceActivities', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/finance/partner_advance_activities/?ac=${activeCompany.id}`,
+        const response = await axios.get(`/operation/partner_advance_activities/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}

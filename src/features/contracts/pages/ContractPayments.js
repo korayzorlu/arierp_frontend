@@ -32,6 +32,7 @@ function ContractPayments() {
 
     const columns = [
         { field: 'contract', headerName: 'Sözleşme No' },
+        { field: 'project', headerName: 'Proje' },
         { field: 'trn_from_id', headerName: 'Nereden' },
         { field: 'type', headerName: 'Nereye' },
         { field: 'posting_type', headerName: 'İşlem Tipi', width: 150 },
