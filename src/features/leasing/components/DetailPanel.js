@@ -14,13 +14,13 @@ import CustomTableButton from '../../../component/table/CustomTableButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { fetchBankActivities, fetchBankActivity, fetchBankActivityLeases, setBankActivitiesLoading } from '../../../store/slices/leasing/bankActivitySlice';
 import ImportDialog from '../../../component/feedback/ImportDialog';
-import AddBankActivityLeaseDialog from '../../../component/feedback/AddPartnerAdvanceActivityLeaseDialog';
 import ContractPaymentDialog from './ContractPaymentDialog';
 import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import OverdueDialog from '../../../component/dialog/OverdueDialog';
 import OverdueDetailDetailPanel from './OverdueDetailPanel';
 import { amountFormatter, parseLocalizedAmount } from '../../../utils/floatUtils';
+import AddBankActivityLeaseDialog from '../../../component/feedback/AddBankActivityLeaseDialog';
 
 function DetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;
