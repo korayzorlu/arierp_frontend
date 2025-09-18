@@ -11,6 +11,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import ImportDialog from '../../../component/feedback/ImportDialog';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import { useGridApiRef } from '@mui/x-data-grid';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import dayjs from 'dayjs';
 
 function ContractPayments() {
     const {user} = useSelector((store) => store.auth);
@@ -60,10 +62,20 @@ function ContractPayments() {
         { field: 'user_name', headerName: 'Oluşturan' },
     ]
 
+    // Bugünün tarihini dayjs ile al
+    const today = dayjs();
+    const thirtyDaysAgo = dayjs().subtract(30, 'day');
+
+    const handleDateRangeChange = (newValue) => {
+        console.log(newValue[0].date)
+        console.log(newValue[1].date)
+    }
+
     return (
         <PanelContent>
             <ListTableServer
             title="Tahsilat Listesi"
+            autoHeight
             rows={contractPayments}
             columns={columns}
             getRowId={(row) => row.uuid}
@@ -77,6 +89,14 @@ function ContractPayments() {
                     />
 
                     
+                </>
+            }
+            customFiltersLeft={
+                <>
+                    <DateRangePicker
+                    defaultValue={[thirtyDaysAgo, today]}
+                    onAccept={(newValue) => handleDateRangeChange(newValue)}
+                    />
                 </>
             }
             onRowSelectionModelChange={(newRowSelectionModel) => {
