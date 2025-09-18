@@ -1,18 +1,20 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchContractPayments, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
-import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
+import { fetchContractPayments, setContractPaymentsLoading, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
+import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ImportDialog from '../../../component/feedback/ImportDialog';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import { useGridApiRef } from '@mui/x-data-grid';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import dayjs from 'dayjs';
+import DownloadIcon from '@mui/icons-material/Download';
+import ExportDialog from '../../../component/feedback/ExportDialog';
 
 function ContractPayments() {
     const {user} = useSelector((store) => store.auth);
@@ -25,6 +27,7 @@ function ContractPayments() {
     const [isPending, startTransition] = useTransition();
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [exportURL, setExportURL] = useState("")
 
     useEffect(() => {
         startTransition(() => {
@@ -80,8 +83,14 @@ function ContractPayments() {
             columns={columns}
             getRowId={(row) => row.uuid}
             loading={contractPaymentsLoading}
+            noDownloadButton
             customButtons={
                 <>  
+                    <CustomTableButton
+                    title="Excel'e Aktar"
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/contracts/export_contract_payments/")}}
+                    icon={<DownloadIcon fontSize="small"/>}
+                    />
                     <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchContractPayments({activeCompany,params:contractPaymentsParams})).unwrap()}
@@ -106,6 +115,12 @@ function ContractPayments() {
             setParams={(value) => dispatch(setContractPaymentsParams(value))}
             headerFilters={true}
             apiRef={apiRef}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL={exportURL}
+            startEvent={() => dispatch(setContractPaymentsLoading(true))}
+            finalEvent={() => {dispatch(fetchContractPayments({activeCompany,params:contractPaymentsParams}));dispatch(setContractPaymentsLoading(false));}}
             />
         </PanelContent>
     )
