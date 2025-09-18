@@ -15,6 +15,7 @@ import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import dayjs from 'dayjs';
 import DownloadIcon from '@mui/icons-material/Download';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import { set } from 'lodash';
 
 function ContractPayments() {
     const {user} = useSelector((store) => store.auth);
@@ -28,12 +29,16 @@ function ContractPayments() {
 
     const [selectedItems, setSelectedItems] = useState([]);
     const [exportURL, setExportURL] = useState("")
+    const [filterDate, setFilterDate] = useState({
+        start: dayjs().startOf('year').format('YYYY-MM-DD'),
+        end: dayjs().format('YYYY-MM-DD')
+    });
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchContractPayments({activeCompany,params:contractPaymentsParams}));
+            dispatch(fetchContractPayments({activeCompany,params:{...contractPaymentsParams, startDate: filterDate.start, endDate: filterDate.end}}));
         });
-    }, [activeCompany,contractPaymentsParams,dispatch]);
+    }, [activeCompany,contractPaymentsParams,filterDate,dispatch]);
 
     const columns = [
         { field: 'contract', headerName: 'Sözleşme No' },
@@ -44,34 +49,35 @@ function ContractPayments() {
         { field: 'group_name', headerName: 'İşlem Grubu' },
         { field: 'account_code', headerName: 'Hesap Kart Kodu' },
         { field: 'account_name', headerName: 'Cari Kart Adı', width: 250 },
-        { field: 'date', headerName: 'İşlem Tarihi' },
-        { field: 'debit_amount', headerName: 'Borç', type: 'number', valueFormatter: (value) => 
+        { field: 'date', headerName: 'İşlem Tarihi', renderHeaderFilter: () => null },
+        { field: 'debit_amount', headerName: 'Borç', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'credit_amount', headerName: 'Alacak', type: 'number', valueFormatter: (value) => 
+        { field: 'credit_amount', headerName: 'Alacak', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB' },
-        { field: 'local_debit_amount', headerName: 'Yerel Borç', type: 'number', valueFormatter: (value) => 
+        { field: 'local_debit_amount', headerName: 'Yerel Borç', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'local_credit_amount', headerName: 'Yerel Alacak', type: 'number', valueFormatter: (value) => 
+        { field: 'local_credit_amount', headerName: 'Yerel Alacak', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'exchange_rate', headerName: 'Kur(Yerel)', type: 'number', valueFormatter: (value) => 
+        { field: 'exchange_rate', headerName: 'Kur(Yerel)', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'description', headerName: 'Açıklama', width: 400 },
         { field: 'user_name', headerName: 'Oluşturan' },
     ]
 
-    // Bugünün tarihini dayjs ile al
     const today = dayjs();
-    const thirtyDaysAgo = dayjs().subtract(30, 'day');
+    const firstDayOfYear = dayjs().startOf('year');
+    //const thirtyDaysAgo = dayjs().subtract(30, 'day');
 
     const handleDateRangeChange = (newValue) => {
-        console.log(newValue[0].date)
-        console.log(newValue[1].date)
+        const startDate = newValue[0] ? dayjs(newValue[0]).format('YYYY-MM-DD') : null;
+        const endDate = newValue[1] ? dayjs(newValue[1]).format('YYYY-MM-DD') : null;
+        setFilterDate({start: startDate, end: endDate});
     }
 
     return (
@@ -96,15 +102,17 @@ function ContractPayments() {
                     onClick={() => dispatch(fetchContractPayments({activeCompany,params:contractPaymentsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
-
-                    
                 </>
             }
             customFiltersLeft={
                 <>
                     <DateRangePicker
-                    defaultValue={[thirtyDaysAgo, today]}
-                    onAccept={(newValue) => handleDateRangeChange(newValue)}
+                    defaultValue={[firstDayOfYear, today]}
+                    onAccept={handleDateRangeChange}
+                    format='DD.MM.YYYY'
+                    slotProps={{
+                        textField: { size: 'small' }
+                    }}
                     />
                 </>
             }
