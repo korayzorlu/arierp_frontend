@@ -54,7 +54,7 @@ export const fetchBankActivity = createAsyncThunk('auth/fetchBankActivity', asyn
         if(response.data.length > 0){
             return response.data[0];
         }else{
-            navigate("/bankActivities");
+            navigate("/bank-activities");
             return {}
         }
     } catch (error) {

@@ -80,7 +80,7 @@ function AddPartnerAdvanceActivityLeaseDialog(props) {
         const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
         if (Array.from(currentSelection).length > 0) {
             console.log('Seçilen:', currentSelection);
-            dispatch(updatePartnerAdvanceActivityLeases({data:{uuid:Array.from(currentSelection)[0],bank_activity_uuid:uuid}}))
+            dispatch(updatePartnerAdvanceActivityLeases({data:{uuid:Array.from(currentSelection)[0],partner_advance_activity_uuid:uuid}}))
         }
 
         previousSelectedRows.current = currentSelection;

@@ -22,7 +22,7 @@ import ContractPaymentDialog from '../../leasing/components/ContractPaymentDialo
 import OverdueDetailDetailPanel from '../../leasing/components/OverdueDetailPanel';
 
 function PartnerAdvanceActivityDetailPanel(props) {
-    const {uuid,bank_activity_leases,onOpen} = props;
+    const {uuid,partner_advance_activity_leases,onOpen} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
@@ -199,7 +199,7 @@ function PartnerAdvanceActivityDetailPanel(props) {
             }
 
             try {
-                const response = await axios.post(`/leasing/update_bank_activity_lease_processed_amount/`,
+                const response = await axios.post(`/operation/update_partner_advance_activity_lease_processed_amount/`,
                     {
                         uuid: newRow.id,
                         amount: convertedValue

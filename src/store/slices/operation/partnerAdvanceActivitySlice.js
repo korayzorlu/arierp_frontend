@@ -31,7 +31,7 @@ export const fetchPartnerAdvanceActivities = createAsyncThunk('auth/fetchPartner
 export const fetchPartnerAdvanceActivity = createAsyncThunk('auth/fetchPartnerAdvanceActivity', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
     dispatch(setIsProgress(true));
     try {
-        const response = await axios.get(`/operation/partner_advance_activities/?active_company=${activeCompany.id}&paginate=false`,
+        const response = await axios.get(`/operation/partner_advance_activities/?ac=${activeCompany.id}&paginate=false`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -40,7 +40,7 @@ export const fetchPartnerAdvanceActivity = createAsyncThunk('auth/fetchPartnerAd
         if(response.data.length > 0){
             return response.data[0];
         }else{
-            navigate("/partnerAdvanceActivities");
+            navigate("/partner-advance-activities");
             return {}
         }
     } catch (error) {
