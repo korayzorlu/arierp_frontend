@@ -15,7 +15,8 @@ const initialState = {
     installmentsInLease:[],
     installmentsLoading:false,
     overdueInformation:[],
-    leaseOverdues:[]
+    leaseOverdues:[],
+    leaseInformation:[],
 }
 
 export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCompany,serverModels=null,params=null}) => {
@@ -158,6 +159,20 @@ export const fetchOverdueInformation = createAsyncThunk('auth/fetchOverdueInform
     };
 });
 
+export const fetchLeaseInformation = createAsyncThunk('leasing/fetchLeaseInformation', async ({partner_uuid},{rejectWithValue}) => {
+    try {
+        const response = await axios.post('/leasing/lease_information/', { 
+            partner_uuid:partner_uuid,
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
+
 const leaseSlice = createSlice({
     name:"lease",
     initialState,
@@ -217,6 +232,18 @@ const leaseSlice = createSlice({
                 state.overdueInformation = action.payload.overdue;
             })
             .addCase(fetchOverdueInformation.rejected, (state,action) => {
+                state.authMessage = action.payload.status === 400
+                    ? {color:"text-red-500",icon:"",text:action.payload.message}
+                    : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
+            })
+            //fetch lease information
+            .addCase(fetchLeaseInformation.pending, (state) => {
+
+            })
+            .addCase(fetchLeaseInformation.fulfilled, (state,action) => {
+                state.leaseInformation = action.payload.lease;
+            })
+            .addCase(fetchLeaseInformation.rejected, (state,action) => {
                 state.authMessage = action.payload.status === 400
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}

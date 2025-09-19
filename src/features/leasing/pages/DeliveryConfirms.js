@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryConfirms, setDeliveryConfirmsLoading, setDeliveryConfirmsParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setLeaseDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
@@ -26,6 +26,7 @@ import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import { cellProgress } from '../../../component/progress/CellProgress';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import { fetchLeaseInformation, setLeasesLoading } from '../../../store/slices/leasing/leaseSlice';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -97,12 +98,17 @@ function DeliveryConfirms() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'main_paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'leases.paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) => cellProgress ({value: params.row.leases.paid_rate})
         },
-        { field: 'total_temerrut_amount', headerName: 'Toplam Temerrüt Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
+        },
+        { field: 'total_excluded_overdue_amount', headerName: 'Diğer Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_excluded_overdue_amount)
+        },
+        { field: 'total_temerrut_amount', headerName: 'Toplam Temerrüt Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_temerrut_amount)
         },
         { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
@@ -125,7 +131,12 @@ function DeliveryConfirms() {
         if(params.field==="name"){
             await dispatch(fetchPartnerInformation(params.row.crm_code)).unwrap();
             dispatch(setPartnerDialog(true));
-        }
+        }else if(params.field==="total_excluded_overdue_amount"){
+            dispatch(setLeasesLoading(true));
+            //await dispatch(fetchLeaseInformation({partner_uuid: params.row.id})).unwrap();
+            dispatch(setLeaseDialog(true));
+            dispatch(setLeasesLoading(false));
+        };
     };
 
     const handleCallDialog = async (params,event) => {
@@ -265,7 +276,7 @@ function DeliveryConfirms() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<DeliveryConfirmDetailPanel uuid={params.row.uuid} deliveryConfirmLeases={params.row.leases}></DeliveryConfirmDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<DeliveryConfirmDetailPanel uuid={params.row.uuid} deliveryConfirmLeases={params.row.leases.leases}></DeliveryConfirmDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
