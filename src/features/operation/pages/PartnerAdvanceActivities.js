@@ -112,7 +112,7 @@ function PartnerAdvanceActivites() {
             </Grid>
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_partner_advance_activities/"
+            exportURL="/operation/export_partner_advance_activities/"
             selectedItems={selectedItems}
             startEvent={() => dispatch(setPartnerAdvanceActivitiesLoading(true))}
             finalEvent={() => {dispatch(fetchPartnerAdvanceActivities({activeCompany,params:partnerAdvanceActivitiesParams}));dispatch(setPartnerAdvanceActivitiesLoading(false));}}
