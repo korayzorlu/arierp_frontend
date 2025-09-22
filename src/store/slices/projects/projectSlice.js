@@ -7,8 +7,8 @@ const initialState = {
     projects:[],
     projectsCount:0,
     projectsParams:{
-        start: 0 * 50,
-        end: (0 + 1) * 50,
+        // start: 0 * 50,
+        // end: (0 + 1) * 50,
         format: 'datatables'
     },
     projectsLoading:false,

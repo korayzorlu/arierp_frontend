@@ -27,10 +27,13 @@ import StarIcon from '@mui/icons-material/Star';
 import { cellProgress } from '../../../component/progress/CellProgress';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchLeaseInformation, setLeasesLoading } from '../../../store/slices/leasing/leaseSlice';
+import { fetchProjects } from '../../../store/slices/projects/projectSlice';
+import { set } from 'lodash';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {deliveryConfirms,deliveryConfirmsCount,deliveryConfirmsParams,deliveryConfirmsLoading} = useSelector((store) => store.riskPartner);
+    const {projects,projectsCount,projectsParams,projectsLoading} = useSelector((store) => store.project);
 
     const dispatch = useDispatch();
 
@@ -55,9 +58,9 @@ function DeliveryConfirms() {
 
     useEffect(() => {
         startTransition(() => {
+            //dispatch(fetchProjects({activeCompany,params:deliveryConfirmsParams}));
             dispatch(fetchDeliveryConfirms({activeCompany,params:{...deliveryConfirmsParams,project}}));
         });
-
         
     }, [activeCompany,deliveryConfirmsParams,dispatch]);
 
@@ -235,10 +238,16 @@ function DeliveryConfirms() {
                             onChange={(e) => changeProject(e.target.value)}
                             disabled={deliveryConfirmsLoading}
                             >
+                                {/* {
+                                    projects.map((item) => (
+                                        <MenuItem key={item.uuid} value={item.uuid}>{item.name}</MenuItem>
+                                    ))
+                                } */}
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
-                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
-                                <MenuItem value='kasaba'>KASABA</MenuItem>
-                                <MenuItem value='servet'>SERVET</MenuItem>
+                                <MenuItem value='kizilbuk2'>KIZILBÜK ETAP-II</MenuItem>
+                                <MenuItem value='kizilbukmavi'>KIZILBÜK MAVİ</MenuItem>
+                                <MenuItem value='sefakoy'>BOULEVARD SEFAKÖY</MenuItem>
+                                <MenuItem value='koruaura'>KORU AURA</MenuItem>
                                 <MenuItem value='diger'>Diğer</MenuItem>
                             </Select>
                         </FormControl>

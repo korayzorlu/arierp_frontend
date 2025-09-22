@@ -35,6 +35,13 @@ const initialState = {
     warningNoticesInLease:[],
     warningNoticesInLeaseCode:0,
     warningNoticeInformation:{},
+    //
+    projectss:[],
+    projectssCount:0,
+    projectsParamss:{
+        format: 'datatables'
+    },
+    projectssLoading:false,
 }
 
 export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({activeCompany,serverModels=null,params=null}) => {
@@ -197,6 +204,21 @@ export const fetchWarningNoticeInformation = createAsyncThunk('auth/fetchWarning
             message:error.response.data.message
         });
     };
+});
+
+export const fetchProjectss = createAsyncThunk('auth/fetchProjectss', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/projects/projects/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
 });
 
 const contractSlice = createSlice({
