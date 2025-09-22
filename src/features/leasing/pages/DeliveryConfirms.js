@@ -133,7 +133,7 @@ function DeliveryConfirms() {
             dispatch(setPartnerDialog(true));
         }else if(params.field==="total_excluded_overdue_amount"){
             dispatch(setLeasesLoading(true));
-            //await dispatch(fetchLeaseInformation({partner_uuid: params.row.id})).unwrap();
+            await dispatch(fetchLeaseInformation({partner_uuid: params.row.id})).unwrap();
             dispatch(setLeaseDialog(true));
             dispatch(setLeasesLoading(false));
         };
