@@ -244,10 +244,10 @@ function DeliveryConfirms() {
                                     ))
                                 } */}
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
-                                <MenuItem value='kizilbuk2'>KIZILBÜK ETAP-II</MenuItem>
-                                <MenuItem value='kizilbukmavi'>KIZILBÜK MAVİ</MenuItem>
                                 <MenuItem value='sefakoy'>BOULEVARD SEFAKÖY</MenuItem>
                                 <MenuItem value='koruaura'>KORU AURA</MenuItem>
+                                <MenuItem value='metrolife'>METROLIFE</MenuItem>
+                                <MenuItem value='metrolifepremium'>METROLIFE PREMIUM</MenuItem>
                                 <MenuItem value='diger'>Diğer</MenuItem>
                             </Select>
                         </FormControl>
