@@ -30,6 +30,7 @@ function AmountDebitTransactions() {
 
     const columns = [
         { field: 'lease', headerName: 'Kira Planı Kodu', width:120},
+        { field: 'partner', headerName: 'Müşteri', width:180},
         { field: 'process_group', headerName: 'İşlem Grubu' },
         { field: 'currency', headerName: 'PB' },
         { field: 'due_date', headerName: 'Tarih' },
