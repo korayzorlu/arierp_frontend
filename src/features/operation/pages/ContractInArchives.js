@@ -45,7 +45,7 @@ function ContractInArchives() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Tedarikçideki Sözleşmeler"
+                title="Arşivdeki Sözleşmeler"
                 autoHeight
                 rows={contractInArchives}
                 columns={columns}
@@ -61,7 +61,6 @@ function ContractInArchives() {
                     </>
                 }
                 rowCount={contractInArchivesCount}
-                checkboxSelection
                 setParams={(value) => dispatch(setContractInArchivesParams(value))}
                 headerFilters={true}
                 apiRef={apiRef}

@@ -38,13 +38,14 @@ export const updateContractOperationStatus = createAsyncThunk('auth/updateContra
             },
         );
         dispatch(setAlert({status:response.data.status,text:response.data.message}))
+        return response.data.status;
     } catch (error) {
         if(error.response.data){
             dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
         }else{
             dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
         };
-        return null
+        return error.response.data.status;
     } finally {
         dispatch(setIsProgress(false));
     }

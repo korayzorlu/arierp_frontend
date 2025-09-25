@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDialog } from '../../store/slices/notificationSlice';
 
 function Dialog(props) {
-    const {children,title,dismissText,onClickText,onClickColor,onClick,closeEvent} = props;
+    const {children,text,title,dismissText,onClickText,onClickColor,onClick,closeEvent} = props;
     const {dialog} = useSelector((store) => store.notification);
     const {theme} = useSelector((store) => store.auth);
 
@@ -36,15 +36,15 @@ function Dialog(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" component="div">
-                    {children}
+                    {text}
                 </DialogContentText>
             </DialogContent>
             <DialogActions className=''>
-                <Button color="neutral" onClick={handleClose}>{dismissText ? dismissText : "Cancel"}</Button>
+                <Button color="neutral" onClick={handleClose}>{dismissText ? dismissText : "Vazgeç"}</Button>
                 {
                     onClick
                     ?
-                    <Button variant="outlined" color={onClickColor ? onClickColor : "primary"} onClick={onClick} autoFocus>{onClickText ? onClickText : "Save"}</Button>
+                    <Button variant="contained" color={onClickColor ? onClickColor : "primary"} onClick={onClick} autoFocus>{onClickText ? onClickText : "Kaydet"}</Button>
                     :
                     <></>
                 }

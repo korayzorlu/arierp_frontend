@@ -2,16 +2,18 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLeases } from '../../../store/slices/leasing/leaseSlice';
-import { fetchContractInSuppliers, setContractInSuppliersLoading, setContractInSuppliersParams } from '../../../store/slices/operation/contractInSupplierSlice';
+import { fetchContractInSuppliers, setContractInSuppliersLoading, setContractInSuppliersParams, updateContractOperationStatus } from '../../../store/slices/operation/contractInSupplierSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
-import { setExportDialog } from '../../../store/slices/notificationSlice';
+import { setDialog, setExportDialog } from '../../../store/slices/notificationSlice';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import DeleteDialog from '../../../component/feedback/DeleteDialog';
+import Dialog from '../../../component/feedback/Dialog';
 
 function ContractInSuppliers() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -21,6 +23,11 @@ function ContractInSuppliers() {
     const apiRef = useGridApiRef();
 
     const [isPending, startTransition] = useTransition();
+
+    const [rowSelectionModel, setRowSelectionModel] = useState({
+        type: 'include',
+        ids: new Set(),
+    });
 
     useEffect(() => {
         startTransition(() => {
@@ -41,6 +48,19 @@ function ContractInSuppliers() {
         { field: 'status', headerName: "Statü", flex: 1 },
     ]
 
+    const handleUpdateContractOperationStatus = async () => {
+        dispatch(setDialog(false));
+        const response = await dispatch(updateContractOperationStatus({
+            data: {
+                uuids:Array.from(rowSelectionModel.ids),
+                operationStatus:"islemde"
+            }
+        })).unwrap();
+        if (response === "success"){
+            dispatch(fetchContractInSuppliers({activeCompany,params:contractInSuppliersParams}));
+        };
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
@@ -60,13 +80,41 @@ function ContractInSuppliers() {
                         />
                     </>
                 }
+                customFiltersLeft={
+                    <>
+                        {
+                            rowSelectionModel.ids.size > 0
+                            ?
+                                <Button
+                                variant='contained'
+                                color='primary'
+                                size='small'
+                                onClick={() => {dispatch(setDialog(true));}}
+                                >
+                                    İşleme Gönder
+                                </Button>
+                            :
+                            null
+                        } 
+                    </>
+                }
                 rowCount={contractInSuppliersCount}
                 checkboxSelection
+                onRowSelectionModelChange={(newRowSelectionModel) => {
+                    setRowSelectionModel(newRowSelectionModel);
+                }}
+                rowSelectionModel={rowSelectionModel}
+                noAllSelect
                 setParams={(value) => dispatch(setContractInSuppliersParams(value))}
                 headerFilters={true}
                 apiRef={apiRef}
                 />
             </Grid>
+            <Dialog
+            title="Seçili Kayıtları İşleme Gönder"
+            text="Devam Etmek İstiyor musun?"
+            onClick={handleUpdateContractOperationStatus}
+            />
         </PanelContent>
     )
 }

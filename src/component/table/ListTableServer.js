@@ -57,7 +57,7 @@ function ListTableServer(props) {
     onDetailPanelExpandedRowIdsChange,
     processRowUpdate,
     disableMultipleRowSelection,
-    noDownloadButton
+    noDownloadButton,
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
