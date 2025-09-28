@@ -67,7 +67,7 @@ function BankAccounts() {
                 }
                 setParams={(value) => dispatch(setBankAccountsParams(value))}
                 headerFilters={true}
-                noDownloadButton
+                //noDownloadButton
                 />
             </Grid>
         </PanelContent>
