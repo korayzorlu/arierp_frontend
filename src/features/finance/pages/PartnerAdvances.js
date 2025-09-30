@@ -10,6 +10,10 @@ import { addPartnerAdvanceActivity, fetchPartnerAdvances, setPartnerAdvancesLoad
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { updatePartnerAdvanceActivity } from '../../../store/slices/operation/partnerAdvanceActivitySlice';
+import ExportDialog from '../../../component/feedback/ExportDialog';
+import { setExportDialog } from '../../../store/slices/notificationSlice';
+import DownloadIcon from '@mui/icons-material/Download';
+import { fetchExportProcess } from '../../../store/slices/processSlice';
 
 function PartnerAdvances() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -72,6 +76,11 @@ function PartnerAdvances() {
             customButtons={
                 <>  
                     <CustomTableButton
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                    <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchPartnerAdvances({activeCompany,params:partnerAdvancesParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
@@ -80,11 +89,19 @@ function PartnerAdvances() {
                     
                 </>
             }
+            noDownloadButton
             rowCount={partnerAdvancesCount}
             setParams={(value) => dispatch(setPartnerAdvancesParams(value))}
             headerFilters={true}
             apiRef={apiRef}
             />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/operation/export_partner_advances/"
+            startEvent={() => dispatch(setPartnerAdvancesLoading(true))}
+            finalEvent={() => {dispatch(fetchPartnerAdvances({activeCompany,params:partnerAdvancesParams}));dispatch(setPartnerAdvancesLoading(false));}}
+            >
+            </ExportDialog>
         </PanelContent>
     )
 }
