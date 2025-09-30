@@ -109,7 +109,7 @@ function DeliveryConfirms() {
                         ?
                             <Chip key={params.row.id} variant='contained' color="ari" label="Ticari" size='small'/>
                         :
-                            <Chip key={params.row.id} variant='contained' color="primary" label="Bireysel" size='small'/>
+                            <Chip key={params.row.id} variant='contained' color="primary" label="Tüketici" size='small'/>
                     }
                 </Grid>
             </Grid>
