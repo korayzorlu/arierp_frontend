@@ -95,7 +95,7 @@ function RiskPartnersKDV() {
                     {
                         params.value
                         ?
-                            <Chip key={params.row.id} variant='contained' color="mars" label="Ticari" size='small'/>
+                            <Chip key={params.row.id} variant='contained' color="ari" label="Ticari" size='small'/>
                         :
                             <Chip key={params.row.id} variant='contained' color="primary" label="Bireysel" size='small'/>
                     }
