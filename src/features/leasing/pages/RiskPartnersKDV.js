@@ -89,6 +89,20 @@ function RiskPartnersKDV() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={12} sx={{textAlign: 'center'}}>
+                    {
+                        params.value
+                        ?
+                            <Chip key={params.row.id} variant='contained' color="mars" label="Ticari" size='small'/>
+                        :
+                            <Chip key={params.row.id} variant='contained' color="primary" label="Bireysel" size='small'/>
+                    }
+                </Grid>
+            </Grid>
+            ),
+        },
         { field: 'max_overdue_days', headerName: 'Maks. Gecikme Gün', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 if (params.value <= 30){
                     return 'bg-yellow'

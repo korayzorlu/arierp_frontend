@@ -88,6 +88,47 @@ function RiskPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={12} sx={{textAlign: 'center'}}>
+                    {
+                        params.value
+                        ?
+                            <Chip key={params.row.id} variant='contained' color="mars" label="Ticari" size='small'/>
+                        :
+                            <Chip key={params.row.id} variant='contained' color="primary" label="Bireysel" size='small'/>
+                    }
+                </Grid>
+            </Grid>
+            ),
+            // renderHeaderFilter: ({ value, setValue }) => (
+            //     <FormControl fullWidth size="small">
+            //         <Select
+            //             value={value ?? 'all'}
+            //             displayEmpty
+            //             onChange={(e) => setValue(e.target.value)}
+            //         >
+            //             <MenuItem value="all">Tümü</MenuItem>
+            //             <MenuItem value="true">Ticari</MenuItem>
+            //             <MenuItem value="false">Bireysel</MenuItem>
+            //         </Select>
+            //     </FormControl>
+            // ),
+            // filterOperators: [
+            //     {
+            //         label: 'eşittir',
+            //         value: 'equals',
+            //         getApplyFilterFn: (filterItem) => {
+            //             if (filterItem.value === undefined || filterItem.value === '') return null;
+            //             return (params) => {
+            //                 if (filterItem.value === "true") return params.value === true;
+            //                 if (filterItem.value === "false") return params.value === false;
+            //                 return true;
+            //             };
+            //         }
+            //     }
+            // ]
+        },
         { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
             // valueOptions: [
             //     { value: '0', label: '30 Günü Geçmeyenler' },
