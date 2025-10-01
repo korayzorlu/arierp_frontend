@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContracts, setContractsLoading, setContractsParams } from '../../../store/slices/contracts/contractSlice';
-import { Chip, Stack, Typography } from '@mui/material';
+import { Chip, Grid, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
@@ -16,6 +16,7 @@ import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
 
 function Contracts() {
     const {user} = useSelector((store) => store.auth);
@@ -52,6 +53,32 @@ function Contracts() {
         { field: 'code', headerName: 'Sözleşme No', flex: 1 },
         { field: 'partner', headerName: 'Müşteri', flex: 2 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={12} sx={{textAlign: 'center'}}>
+                    {
+                        params.value
+                        ?
+                            <Chip key={params.row.id} variant='contained' color="ari" label="Ticari" size='small'/>
+                        :
+                            <Chip key={params.row.id} variant='contained' color="primary" label="Tüketici" size='small'/>
+                    }
+                </Grid>
+            </Grid>
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'true', label: 'Ticari' },
+                    { value: 'false', label: 'Tüketici' },
+                ]}
+                />
+            )
+        },
         { field: 'quotation', headerName: 'Teklif', flex: 1 },
         { field: 'kof_tan_sozlesmeye_aktarim_tarihi', headerName: "Kof'tan Sözleşmeye Aktarım Tarihi", flex: 1 },
         { field: 'vendor', headerName: "Satıcı", flex: 3 },

@@ -116,6 +116,8 @@ import ContractInSuppliers from './features/operation/pages/ContractInSuppliers.
 import ContractInProcesss from './features/operation/pages/ContractInProcesss.js';
 import ContractInArchives from './features/operation/pages/ContractInArchives.js';
 import PartnerAdvanceActivites from './features/operation/pages/PartnerAdvanceActivities.js';
+import TuketiciPartners from './features/partners/pages/TuketiciPartners.js';
+import TicariPartners from './features/partners/pages/TicariPartners.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -239,6 +241,8 @@ function App() {
                   <Route path='/partners' element={<Partners></Partners>}></Route>
                   <Route path='/partners/add-partner' element={<AddPartner></AddPartner>}></Route>
                   <Route path='/partners/update/:uuid' element={<UpdatePartner></UpdatePartner>}></Route>
+                  <Route path='/tuketici-partners' element={<TuketiciPartners></TuketiciPartners>}></Route>
+                  <Route path='/ticari-partners' element={<TicariPartners></TicariPartners>}></Route>
 
                   <Route path='/projects' element={<Projects></Projects>}></Route>
 

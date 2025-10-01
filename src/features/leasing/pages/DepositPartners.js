@@ -26,6 +26,7 @@ import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
 
 function DepositPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -97,7 +98,7 @@ function DepositPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={12} sx={{textAlign: 'center'}}>
                     {
@@ -110,6 +111,18 @@ function DepositPartners() {
                 </Grid>
             </Grid>
             ),
+            renderHeaderFilter: (params) => (
+            <SelectHeaderFilter
+            {...params}
+            label="Müşteri Türü"
+            externalValue="all"
+            options={[
+                { value: 'all', label: 'Tümü' },
+                { value: 'true', label: 'Ticari' },
+                { value: 'false', label: 'Tüketici' },
+            ]}
+            />
+        )
         },
         { field: 'total_paid', headerName: 'Toplam Ödenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)

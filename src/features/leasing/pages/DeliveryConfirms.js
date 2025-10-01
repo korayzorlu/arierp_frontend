@@ -29,6 +29,7 @@ import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchLeaseInformation, setLeasesLoading } from '../../../store/slices/leasing/leaseSlice';
 import { fetchProjects } from '../../../store/slices/projects/projectSlice';
 import { set } from 'lodash';
+import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -101,7 +102,7 @@ function DeliveryConfirms() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={12} sx={{textAlign: 'center'}}>
                     {
@@ -114,6 +115,18 @@ function DeliveryConfirms() {
                 </Grid>
             </Grid>
             ),
+            renderHeaderFilter: (params) => (
+            <SelectHeaderFilter
+            {...params}
+            label="Müşteri Türü"
+            externalValue="all"
+            options={[
+                { value: 'all', label: 'Tümü' },
+                { value: 'true', label: 'Ticari' },
+                { value: 'false', label: 'Tüketici' },
+            ]}
+            />
+        )
         },
         { field: 'leases.paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) => cellProgress ({value: params.row.leases.paid_rate})

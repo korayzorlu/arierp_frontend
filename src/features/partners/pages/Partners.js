@@ -13,7 +13,7 @@ import ImportDialog from '../../../component/feedback/ImportDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
 import { fetchImportProcess } from '../../../store/slices/processSlice';
-import { Avatar, Button, Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { Avatar, Button, Chip, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -23,6 +23,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import StarIcon from '@mui/icons-material/Star';
 import { DataGrid } from '@mui/x-data-grid';
+import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
 
 function Partners() {
     const {user} = useSelector((store) => store.auth);

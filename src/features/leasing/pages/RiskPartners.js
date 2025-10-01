@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
@@ -21,6 +21,8 @@ import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import SmsIcon from '@mui/icons-material/Sms';
+import { gridFilterModelSelector, useGridApiContext, useGridSelector } from '@mui/x-data-grid-premium';
+import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -88,7 +90,7 @@ function RiskPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={12} sx={{textAlign: 'center'}}>
                     {
@@ -101,33 +103,18 @@ function RiskPartners() {
                 </Grid>
             </Grid>
             ),
-            // renderHeaderFilter: ({ value, setValue }) => (
-            //     <FormControl fullWidth size="small">
-            //         <Select
-            //             value={value ?? 'all'}
-            //             displayEmpty
-            //             onChange={(e) => setValue(e.target.value)}
-            //         >
-            //             <MenuItem value="all">Tümü</MenuItem>
-            //             <MenuItem value="true">Ticari</MenuItem>
-            //             <MenuItem value="false">Bireysel</MenuItem>
-            //         </Select>
-            //     </FormControl>
-            // ),
-            // filterOperators: [
-            //     {
-            //         label: 'eşittir',
-            //         value: 'equals',
-            //         getApplyFilterFn: (filterItem) => {
-            //             if (filterItem.value === undefined || filterItem.value === '') return null;
-            //             return (params) => {
-            //                 if (filterItem.value === "true") return params.value === true;
-            //                 if (filterItem.value === "false") return params.value === false;
-            //                 return true;
-            //             };
-            //         }
-            //     }
-            // ]
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'true', label: 'Ticari' },
+                    { value: 'false', label: 'Tüketici' },
+                ]}
+                />
+            )
         },
         { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
             // valueOptions: [

@@ -26,6 +26,7 @@ import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExportDialog from '../../../component/feedback/ExportDialog';
+import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
 
 function AgreedTerminatedPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -97,6 +98,32 @@ function AgreedTerminatedPartners() {
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
         { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
+        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderCell: (params) => (
+            <Grid container spacing={1}>
+                <Grid size={12} sx={{textAlign: 'center'}}>
+                    {
+                        params.value
+                        ?
+                            <Chip key={params.row.id} variant='contained' color="ari" label="Ticari" size='small'/>
+                        :
+                            <Chip key={params.row.id} variant='contained' color="primary" label="Tüketici" size='small'/>
+                    }
+                </Grid>
+            </Grid>
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'true', label: 'Ticari' },
+                    { value: 'false', label: 'Tüketici' },
+                ]}
+                />
+            )
+        },
         { field: '', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
             // valueOptions: [
             //     { value: '0', label: '30 Günü Geçmeyenler' },
