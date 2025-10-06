@@ -25,26 +25,26 @@ function BankAccounts() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankAccounts({activeCompany}));
+            dispatch(fetchBankAccounts({activeCompany,params:{...bankAccountsParams,paginate:false}})).unwrap();
         });
     }, [activeCompany,bankAccountsParams,dispatch]);
 
     const columns = [
-        { field: 'BankName', headerName: 'Banka', width: 140 },
-        { field: 'IBAN', headerName: 'IBAN', width: 140 },
-        { field: 'AccountNo', headerName: 'Hesap NO', width: 240 },
-        { field: 'BranchCode', headerName: 'Şube Kodu', width: 140 },
-        { field: 'BranchName', headerName: 'Şube Adı', width: 240 },
-        { field: 'Balance', headerName: 'Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'bank_name', headerName: 'Banka', width: 140 },
+        { field: 'iban', headerName: 'IBAN', width: 140 },
+        { field: 'account_no', headerName: 'Hesap NO', width: 240 },
+        { field: 'branch_code', headerName: 'Şube Kodu', width: 140 },
+        { field: 'branch_name', headerName: 'Şube Adı', width: 240 },
+        { field: 'balance', headerName: 'Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'AvailableBalance', headerName: 'Kullanılabilir Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'available_balance', headerName: 'Kullanılabilir Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'BlockedBalance', headerName: 'Bloke Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'blocked_balance', headerName: 'Bloke Bakiye', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'Currency', headerName: 'PB' },
+        { field: 'currency', headerName: 'PB' },
     ]
 
     return (
@@ -54,7 +54,7 @@ function BankAccounts() {
                 title="Banka Hesapları"
                 rows={bankAccounts}
                 columns={columns}
-                getRowId={(row) => row.BankAccountId}
+                getRowId={(row) => row.uuid}
                 loading={bankAccountsLoading}
                 customButtons={
                     <>
