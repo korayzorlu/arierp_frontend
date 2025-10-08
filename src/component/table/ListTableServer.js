@@ -58,6 +58,7 @@ function ListTableServer(props) {
     processRowUpdate,
     disableMultipleRowSelection,
     noDownloadButton,
+    disableVirtualization
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -352,6 +353,7 @@ function ListTableServer(props) {
       onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
       processRowUpdate={processRowUpdate}
       density={density}
+      disableVirtualization={disableVirtualization}
       />
     </TableContent>
   )

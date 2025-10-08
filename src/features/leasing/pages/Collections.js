@@ -59,7 +59,7 @@ function Collections() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));
+            dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
         });
     }, [activeCompany,bankActivitiesParams,dispatch]);
     
@@ -163,7 +163,7 @@ function Collections() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams})).unwrap()}
+                        onClick={() => dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>

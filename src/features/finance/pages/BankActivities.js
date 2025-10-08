@@ -98,13 +98,25 @@ function BankActivities() {
     
     const bankActivityColumns = [
         { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
-        { field: 'name', headerName: 'Name', flex: 2 },
+        // { field: 'is_third_person', headerName: 'Güvenlik Onayı', flex: 3, renderCell: (params) => (
+        //         params.value === true
+        //         ?
+        //             params.row.is_reliable_person === true
+        //             ?
+        //                 <Chip key={params.row.id} variant='contained' color="success" icon={<CheckCircleIcon />} label="Güvenilir" size='small'/>
+        //             :
+        //                 <Chip key={params.row.id} variant='contained' color="error" icon={<WarningIcon />} label="Kontrol Gerekiyor" size='small'/>
+        //         :
+        //             null
+                
+        //     )
+        // },
         { field: 'description', headerName: 'Açıklama',flex: 10 },
         { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.processed_amount)
         },
         { field: 'currency', headerName: 'PB', flex: 1 },
         { field: 'process_date_date', headerName: 'İşlem Tarihi', flex: 2 },
@@ -129,7 +141,7 @@ function BankActivities() {
     return (
         <PanelContent>
             <Grid container spacing={1}>
-                <ListTable
+                <ListTableServer
                 title="Banka Hareketleri"
                 rows={bankActivities}
                 columns={bankActivityColumns}
@@ -139,20 +151,21 @@ function BankActivities() {
                     <>
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams})).unwrap()}
+                        onClick={() => dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,created_date_after:'2025-01-01'}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
                 }
                 setParams={(value) => dispatch(setBankActivitiesParams(value))}
+                rowCount={bankActivitiesCount}
                 headerFilters={true}
                 noDownloadButton
                 getRowClassName={(params) => {
                     return `
                         super-app-theme--${
-                            params.row.leases
+                            params.row.leases.leases
                             ?
-                                params.row.leases.length > 0
+                                params.row.leases.leases.length > 0
                                     ?
                                         params.row.is_processed
                                         ?
@@ -166,7 +179,7 @@ function BankActivities() {
                     `
                 }}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases}></DetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases.leases}></DetailPanel>)}}
                 disableVirtualization
                 />
             </Grid>
