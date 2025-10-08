@@ -42,7 +42,7 @@ function DetailPanel(props) {
 
      const fetchData = async () => {
         const response = await dispatch(fetchBankActivity({activeCompany,params:{uuid}})).unwrap();
-        setData(response);
+        setData(response.leases);
         
         
     };

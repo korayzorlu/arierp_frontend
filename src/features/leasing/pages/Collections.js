@@ -117,8 +117,8 @@ function Collections() {
         { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.processed_amount)
         },
         { field: 'currency', headerName: 'PB', flex: 1 },
         { field: 'process_date_date', headerName: 'İşlem Tarihi', flex: 2 },
@@ -174,9 +174,9 @@ function Collections() {
                 getRowClassName={(params) => {
                     return `
                         super-app-theme--${
-                            params.row.leases
+                            params.row.leases.leases
                             ?
-                                params.row.leases.length > 0
+                                params.row.leases.leases.length > 0
                                     ?
                                         params.row.is_processed
                                         ?
@@ -190,7 +190,7 @@ function Collections() {
                     `
                 }}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases}></DetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases.leases}></DetailPanel>)}}
                 disableVirtualization
                 />
             </Grid>
