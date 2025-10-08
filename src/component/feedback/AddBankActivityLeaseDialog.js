@@ -128,6 +128,7 @@ function AddBankActivityLeaseDialog(props) {
                     noAllSelect
                     disableMultipleRowSelection
                     apiRef={apiRef}
+                    headerFilters
                     />
                 </DialogContentText>
             </DialogContent>
