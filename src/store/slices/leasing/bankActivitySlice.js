@@ -3,7 +3,8 @@ import axios from "axios";
 import { setIsProgress } from "../processSlice";
 import { setAlert, setDialog } from "../notificationSlice";
 
-const today = new Date().toISOString().split('T')[0];
+//const today = new Date().toISOString().split('T')[0];
+const today = new Date().toLocaleDateString('tr-TR', { timeZone: 'Europe/Istanbul' }).split('.').reverse().join('-');
 
 const initialState = {
     bankActivities:[],

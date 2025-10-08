@@ -28,7 +28,7 @@ function BankAccountTransactions() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankAccountTransactions({activeCompany}));
+            dispatch(fetchBankAccountTransactions({activeCompany})).unwrap();
         });
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 

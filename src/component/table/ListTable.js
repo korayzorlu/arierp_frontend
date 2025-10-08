@@ -144,7 +144,8 @@ function ListTable(props) {
     disableVirtualization,
     customFiltersLeft,
     density,
-    columnGroupingModel
+    columnGroupingModel,
+    slotProps,
   } = props;
 
   const {dark} = useSelector((store) => store.auth);
@@ -182,6 +183,7 @@ function ListTable(props) {
       }}
       showToolbar
       slotProps={{
+          ...slotProps,
           toolbar: {
               showQuickFilter: true,
               children: customButtons,
