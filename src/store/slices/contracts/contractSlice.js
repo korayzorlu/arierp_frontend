@@ -13,6 +13,15 @@ const initialState = {
     },
     contractsLoading:false,
     //
+    contractsSummary:[],
+    contractsSummaryCount:0,
+    contractsSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    contractsSummaryLoading:false,
+    //
     contractPayments:[],
     contractPaymentsCount:0,
     contractPaymentsParams:{
@@ -47,6 +56,21 @@ const initialState = {
 export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/contracts/contracts/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchContractsSummary = createAsyncThunk('auth/fetchContractsSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/contracts/contracts_summary/?active_company=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -234,6 +258,17 @@ const contractSlice = createSlice({
                 ...action.payload
             };
         },
+        //
+        setContractsSummaryLoading: (state,action) => {
+            state.contractsSummaryLoading = action.payload;
+        },
+        setContractsSummaryParams: (state,action) => {
+            state.contractsSummaryParams = {
+                ...state.contractsSummaryParams,
+                ...action.payload
+            };
+        },
+        //
         deleteContracts: (state,action) => {
             state.contracts = [];
         },
@@ -274,6 +309,18 @@ const contractSlice = createSlice({
             })
             .addCase(fetchContracts.rejected, (state,action) => {
                 state.contractsLoading = false
+            })
+            // contracts summary
+            .addCase(fetchContractsSummary.pending, (state) => {
+                state.contractsSummaryLoading = true
+            })
+            .addCase(fetchContractsSummary.fulfilled, (state,action) => {
+                state.contractsSummary = action.payload.data || action.payload;
+                state.contractsSummaryCount = action.payload.recordsTotal || 0;
+                state.contractsSummaryLoading = false
+            })
+            .addCase(fetchContractsSummary.rejected, (state,action) => {
+                state.contractsSummaryLoading = false
             })
             //contract payments
             .addCase(fetchContractPayments.pending, (state) => {
@@ -340,6 +387,8 @@ const contractSlice = createSlice({
 export const {
     setContractsLoading,
     setContractsParams,
+    setContractsSummaryLoading,
+    setContractsSummaryParams,
     deleteContracts,
     setContractPaymentsLoading,
     setContractPaymentsParams,

@@ -139,13 +139,12 @@ function PartnerAdvanceActivityDetailPanel(props) {
                         null
                 :
                     null
-                
             )
         },
         { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'collection_status', headerName: 'Statü', flex:2 },
+        { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 
     const handleProfileDialog = async (params,event) => {
