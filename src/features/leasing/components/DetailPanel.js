@@ -241,13 +241,13 @@ function DetailPanel(props) {
 
         if (added.length > 0) {
             dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:added,select:true}})).unwrap().then(() => {
-                dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));
+                dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
                 dispatch(setBankActivitiesLoading(false));
             });
         }
         if (removed.length > 0) {
             dispatch(updateLeaseflexAutomationBankActivityLeases({activeCompany,data:{uuids:removed,select:false}})).unwrap().then(() => {
-                dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));
+                dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
                 dispatch(setBankActivitiesLoading(false));
             });
         }
@@ -285,7 +285,7 @@ function DetailPanel(props) {
                 };
                 return null
             }  finally {
-                dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));
+                dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
             }
 
 

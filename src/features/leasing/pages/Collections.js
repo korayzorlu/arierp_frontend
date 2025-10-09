@@ -199,7 +199,7 @@ function Collections() {
             templateURL="/leasing/bank_activities_template"
             importURL="/leasing/import_bank_activities/"
             startEvent={() => dispatch(setBankActivitiesLoading(true))}
-            finalEvent={() => {dispatch(fetchBankActivities({activeCompany}));dispatch(setBankActivitiesLoading(false));}}
+            finalEvent={() => {dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));dispatch(setBankActivitiesLoading(false));}}
             >
 
             </ImportDialog>
@@ -208,7 +208,7 @@ function Collections() {
             exportURL="/leasing/export_bank_activities/"
             selectedItems={selectedItems}
             startEvent={() => dispatch(setBankActivitiesLoading(true))}
-            finalEvent={() => {dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}));dispatch(setBankActivitiesLoading(false));}}
+            finalEvent={() => {dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));dispatch(setBankActivitiesLoading(false));}}
             >
             </ExportDialog>
             <DeleteDialog

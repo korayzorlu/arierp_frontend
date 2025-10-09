@@ -12,6 +12,16 @@ const initialState = {
         format: 'datatables'
     },
     leasesLoading:false,
+    //
+    leasesSummary:{},
+    leasesSummaryCount:0,
+    leasesSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    leasesSummaryLoading:false,
+    //
     installmentsInLease:[],
     installmentsLoading:false,
     overdueInformation:[],
@@ -22,6 +32,20 @@ const initialState = {
 export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/leases/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchLeasesSummary = createAsyncThunk('auth/fetchLeasesSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/leases_summary/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -186,6 +210,17 @@ const leaseSlice = createSlice({
                 ...action.payload
             };
         },
+        //
+        setLeasesSummaryLoading: (state,action) => {
+            state.leasesSummaryLoading = action.payload;
+        },
+        setLeasesSummaryParams: (state,action) => {
+            state.leasesSummaryParams = {
+                ...state.leasesSummaryParams,
+                ...action.payload
+            };
+        },
+        //
         resetLeasesParams: (state,action) => {
             state.leasesParams = {
                 start: 0 * 50,
@@ -212,6 +247,18 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchLeases.rejected, (state,action) => {
                 state.leasesLoading = false
+            })
+            //leases summary
+            .addCase(fetchLeasesSummary.pending, (state) => {
+                state.leasesSummaryLoading = true
+            })
+            .addCase(fetchLeasesSummary.fulfilled, (state,action) => {
+                state.leasesSummary = action.payload.data || action.payload;
+                state.leasesSummaryCount = action.payload.recordsTotal || 0;
+                state.leasesSummaryLoading = false
+            })
+            .addCase(fetchLeasesSummary.rejected, (state,action) => {
+                state.leasesSummaryLoading = false
             })
             //fetch installemnts in lease
             .addCase(fetchInstallmentsInLease.pending, (state) => {
