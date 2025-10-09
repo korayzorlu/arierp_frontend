@@ -86,7 +86,7 @@ function AddBankActivityLeaseDialog(props) {
         previousSelectedRows.current = currentSelection;
 
         dispatch(setAddBankActivityLeaseDialog(false));
-        dispatch(fetchBankActivities({activeCompany,params:bankActivitiesParams}))
+        dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
     };
 
     return (

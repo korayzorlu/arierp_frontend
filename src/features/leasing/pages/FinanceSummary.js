@@ -39,7 +39,7 @@ function FinanceSummary() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,created_date_after:'2025-08-13'}}));
+            dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
         });
     }, [activeCompany,bankActivitiesParams,dispatch]);
 
