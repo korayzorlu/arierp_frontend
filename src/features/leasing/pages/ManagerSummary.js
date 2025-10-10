@@ -100,7 +100,7 @@ function ManagerSummary() {
                     <>
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchManagerSummary({activeCompany})).unwrap()}
+                        onClick={() => dispatch(fetchManagerSummary({activeCompany, project})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>

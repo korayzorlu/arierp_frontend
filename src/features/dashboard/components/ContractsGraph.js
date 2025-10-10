@@ -1,4 +1,4 @@
-import { Box, Card, Divider, Stack, Typography } from '@mui/material'
+import { Box, Card, Divider, Paper, Stack, Typography } from '@mui/material'
 import React, { startTransition, useEffect } from 'react'
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,12 +20,12 @@ function ContractsGraph() {
     }, [activeCompany,contractsSummaryParams,dispatch]);
 
     return (
-        <Card variant="outlined" square={true} sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+        <Paper elevation={0} square={true} sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <Box
             sx={{
                 p: 2,
-                backgroundColor: dark ? 'mars.main' : 'ari.main',
-                color: dark ? '#000' : '#fff',
+                backgroundColor: dark ? 'navyblack.main' : 'whitehole.main',
+                color: dark ? '#fff' : '#000',
                 height: 90
             }}
             >
@@ -38,7 +38,7 @@ function ContractsGraph() {
                 </Typography>
                 </Stack>
                 <Typography variant="body2">
-                    Son 30 gün içinde onaylanan günlük sözleşme grafiği.
+                    Son 30 gün içinde oluşturulan günlük sözleşme grafiği.
                 </Typography>
             </Box>
             <Divider />
@@ -61,13 +61,13 @@ function ContractsGraph() {
                     {
                         dataKey: 'count',
                         showMark: true,
-                        color: dark ? theme.palette.primary.main : theme.palette.primary.main,
+                        color: dark ? theme.palette.mars.main : theme.palette.ari.main,
                     },
                 ]}
                 //grid={{ vertical: true, horizontal: true }}
                 />
             </Box>
-        </Card>
+        </Paper>
     )
 }
 

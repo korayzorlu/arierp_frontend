@@ -1,4 +1,4 @@
-import { Box, Card, Chip, Divider, Stack, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Card, Chip, Divider, IconButton, Stack, Typography, useTheme } from '@mui/material'
 import React, { startTransition, useEffect } from 'react'
 import { Grid } from '@mui/material';
 import { ReactComponent as EagleIcon2 } from "../../../images/icons/global/eagle.svg";
@@ -15,7 +15,13 @@ import { fetchContractsSummary } from '../../../store/slices/contracts/contractS
 import OverSummaryCard from '../components/OverSummaryCard';
 import ContractsGraph from '../components/ContractsGraph';
 import ContractsPie from '../components/ContractsPie';
-
+import RisksBar from '../components/RisksBar';
+import EditDocumentIcon from '@mui/icons-material/EditDocument';
+import ReportIcon from '@mui/icons-material/Report';
+import CancelIcon from '@mui/icons-material/Cancel';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import Installment from '../../leasing/pages/Installment';
+import InstallmentPaymentWarningGraph from '../components/InstallmentPaymentWarningGraph';
 
 function Dashboard() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -38,29 +44,54 @@ function Dashboard() {
         
         user.authorization === "Admin"
         ?
-        <Stack spacing={2}>
+        <Stack spacing={1}>
 
-            <Grid container spacing={2}>
-                <Grid size={{xs:6,sm:3}}>
-                    <OverSummaryCard/>
+            <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:3}}>
+                    <OverSummaryCard
+                    icon={<IconButton color="success" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><EditDocumentIcon /></IconButton>}
+                    title="Son 7 günde"
+                    text="40 Sözleşme eklendi"
+                    />
                 </Grid>
-                <Grid size={{xs:6,sm:3}}>
-                    <OverSummaryCard/>
+                <Grid size={{xs:12,sm:3}}>
+                    <OverSummaryCard
+                    icon={<IconButton color="warning" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><ReportIcon /></IconButton>}
+                    title="Son 7 günde"
+                    text="30 İhtar çekildi"
+                    />
                 </Grid>
-                <Grid size={{xs:6,sm:3}}>
-                    <OverSummaryCard/>
+                <Grid size={{xs:12,sm:3}}>
+                    <OverSummaryCard
+                    icon={<IconButton color="error" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><CancelIcon /></IconButton>}
+                    title="Son 7 günde"
+                    text="20 Sözleşme feshedildi"
+                    />
                 </Grid>
-                <Grid size={{xs:6,sm:3}}>
-                    <OverSummaryCard/>
+                <Grid size={{xs:12,sm:3}}>
+                    <OverSummaryCard
+                    icon={<IconButton color="primary" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><PaymentsIcon /></IconButton>}
+                    title="Son 7 günde"
+                    text="35.256.312,56 TRY tahsilat yapıldı"
+                    />
                 </Grid>
             </Grid>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:9}}>
                     <ContractsGraph/>
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <ContractsPie/>
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:9}}>
+                    <InstallmentPaymentWarningGraph/>
+                </Grid>
+                <Grid size={{xs:12,sm:3}}>
+                    <RisksBar/>
                 </Grid>
             </Grid>
 

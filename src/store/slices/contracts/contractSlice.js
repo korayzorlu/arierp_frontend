@@ -22,6 +22,26 @@ const initialState = {
     },
     contractsSummaryLoading:false,
     //
+    //
+    contractPaymentsSummary:[],
+    contractPaymentsSummaryCount:0,
+    contractPaymentsSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    contractPaymentsSummaryLoading:false,
+    //
+    warningNoticesSummary:[],
+    warningNoticesSummaryCount:0,
+    warningNoticesSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    warningNoticesSummaryLoading:false,
+    //
+    //
     contractPayments:[],
     contractPaymentsCount:0,
     contractPaymentsParams:{
@@ -71,6 +91,36 @@ export const fetchContracts = createAsyncThunk('auth/fetchContracts', async ({ac
 export const fetchContractsSummary = createAsyncThunk('auth/fetchContractsSummary', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/contracts/contracts_summary/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchContractPaymentsSummary = createAsyncThunk('auth/fetchContractPaymentsSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/contracts/contract_payments_summary/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchWarningNoticesSummary = createAsyncThunk('auth/fetchWarningNoticesSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/contracts/warning_summary_notices/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -269,6 +319,26 @@ const contractSlice = createSlice({
             };
         },
         //
+        setContractPaymentsSummaryLoading: (state,action) => {
+            state.contractPaymentsSummaryLoading = action.payload;
+        },
+        setContractPaymentsSummaryParams: (state,action) => {
+            state.contractPaymentsSummaryParams = {
+                ...state.contractPaymentsSummaryParams,
+                ...action.payload
+            };
+        },
+        //
+        setWarningNoticesSummaryLoading: (state,action) => {
+            state.warningNoticesSummaryLoading = action.payload;
+        },
+        setWarningNoticesSummaryParams: (state,action) => {
+            state.warningNoticesSummaryParams = {
+                ...state.warningNoticesSummaryParams,
+                ...action.payload
+            };
+        },
+        //
         deleteContracts: (state,action) => {
             state.contracts = [];
         },
@@ -321,6 +391,30 @@ const contractSlice = createSlice({
             })
             .addCase(fetchContractsSummary.rejected, (state,action) => {
                 state.contractsSummaryLoading = false
+            })
+            // contract payments summary
+            .addCase(fetchContractPaymentsSummary.pending, (state) => {
+                state.contractPaymentsSummaryLoading = true
+            })
+            .addCase(fetchContractPaymentsSummary.fulfilled, (state,action) => {
+                state.contractPaymentsSummary = action.payload.data || action.payload;
+                state.contractPaymentsSummaryCount = action.payload.recordsTotal || 0;
+                state.contractPaymentsSummaryLoading = false
+            })
+            .addCase(fetchContractPaymentsSummary.rejected, (state,action) => {
+                state.contractPaymentsSummaryLoading = false
+            })
+            // warning notices summary
+            .addCase(fetchWarningNoticesSummary.pending, (state) => {
+                state.warningNoticesSummaryLoading = true
+            })
+            .addCase(fetchWarningNoticesSummary.fulfilled, (state,action) => {
+                state.warningNoticesSummary = action.payload.data || action.payload;
+                state.warningNoticesSummaryCount = action.payload.recordsTotal || 0;
+                state.warningNoticesSummaryLoading = false
+            })
+            .addCase(fetchWarningNoticesSummary.rejected, (state,action) => {
+                state.warningNoticesSummaryLoading = false
             })
             //contract payments
             .addCase(fetchContractPayments.pending, (state) => {
@@ -389,6 +483,10 @@ export const {
     setContractsParams,
     setContractsSummaryLoading,
     setContractsSummaryParams,
+    setContractPaymentsSummaryLoading,
+    setContractPaymentsSummaryParams,
+    setWarningNoticesSummaryLoading,
+    setWarningNoticesSummaryParams,
     deleteContracts,
     setContractPaymentsLoading,
     setContractPaymentsParams,

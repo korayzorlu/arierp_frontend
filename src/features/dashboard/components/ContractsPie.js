@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { Box, Card, Divider, Stack, Typography } from '@mui/material'
+import { Box, Card, Divider, Paper, Stack, Typography } from '@mui/material'
 import React, { startTransition, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
@@ -25,15 +25,16 @@ function ContractsPie() {
         { label: 'Aktifleştirildi', value: leasesSummary.aktiflestirildi, color: '#0088FE' },
         { label: 'Planlandı', value: leasesSummary.planlandi, color: "#FF911F" },
         { label: 'Durduruldu', value: leasesSummary.durduruldu, color: '#CA3422' },
+        { label: 'Feshedildi', value: leasesSummary.feshedildi, color: '#0e9e2dff' },
     ];
 
     return (
-        <Card variant="outlined" square={true} sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+        <Paper elevation={0} square={true} sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <Box
             sx={{
                 p: 2,
-                backgroundColor: dark ? 'mars.main' : 'ari.main',
-                color: dark ? '#000' : '#fff',
+                backgroundColor: dark ? 'navyblack.main' : 'whitehole.main',
+                color: dark ? '#fff' : '#000',
                 height: 90
             }}
             >
@@ -56,7 +57,13 @@ function ContractsPie() {
             }}
             >
                 <PieChart
-                series={[{ innerRadius: 50, outerRadius: 100, data, arcLabel: 'value' }]}
+                series={[{
+                    data:data,
+                    innerRadius: 50,
+                    outerRadius: 100,
+                    paddingAngle: 0,
+                    arcLabel: 'value'
+                }]}
                 settings={{
                     margin: { right: 5 },
                     width: 300,
@@ -65,7 +72,7 @@ function ContractsPie() {
                 }}
                 />
             </Box>
-        </Card>
+        </Paper>
     )
 }
 

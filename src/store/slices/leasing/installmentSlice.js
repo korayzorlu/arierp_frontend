@@ -12,6 +12,15 @@ const initialState = {
         format: 'datatables'
     },
     installmentsLoading:false,
+    //
+    installmentsSummary:[],
+    installmentsSummaryCount:0,
+    installmentsSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    installmentsSummaryLoading:false,
     partnerInformation:{},
     installmentInformation:[],
 }
@@ -19,6 +28,21 @@ const initialState = {
 export const fetchInstallments = createAsyncThunk('leasing/fetchInstallments', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/installments/?active_company=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchInstallmentsSummary = createAsyncThunk('leasing/fetchInstallmentsSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/installments_summary/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -152,6 +176,15 @@ const installmentSlice = createSlice({
                 ...action.payload
             };
         },
+        setInstallmentsSummaryLoading: (state,action) => {
+            state.installmentsSummaryLoading = action.payload;
+        },
+        setInstallmentsSummaryParams: (state,action) => {
+            state.installmentsSummaryParams = {
+                ...state.installmentsSummaryParams,
+                ...action.payload
+            };
+        },
         resetInstallmentsParams: (state,action) => {
             state.installmentsParams = {
                 start: 0 * 50,
@@ -176,6 +209,18 @@ const installmentSlice = createSlice({
             .addCase(fetchInstallments.rejected, (state,action) => {
                 state.installmentsLoading = false
             })
+            // fetch installments summary
+            .addCase(fetchInstallmentsSummary.pending, (state) => {
+                state.installmentsSummaryLoading = true
+            })
+            .addCase(fetchInstallmentsSummary.fulfilled, (state,action) => {
+                state.installmentsSummary = action.payload.data || action.payload;
+                state.installmentsSummaryCount = action.payload.recordsTotal || 0;
+                state.installmentsSummaryLoading = false
+            })
+            .addCase(fetchInstallmentsSummary.rejected, (state,action) => {
+                state.installmentsSummaryLoading = false
+            })
             //fetch installment information
             .addCase(fetchInstallmentInformation.pending, (state) => {
 
@@ -192,5 +237,5 @@ const installmentSlice = createSlice({
   
 })
 
-export const {setInstallmentsLoading,setInstallmentsParams,resetInstallmentsParams,deleteInstallments} = installmentSlice.actions;
+export const {setInstallmentsLoading,setInstallmentsParams,setInstallmentsSummaryLoading,setInstallmentsSummaryParams,resetInstallmentsParams,deleteInstallments} = installmentSlice.actions;
 export default installmentSlice.reducer;
