@@ -22,6 +22,15 @@ const initialState = {
     },
     leasesSummaryLoading:false,
     //
+    terminatedSummary:[],
+    terminatedSummaryCount:0,
+    terminatedSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    terminatedSummaryLoading:false,
+    //
     installmentsInLease:[],
     installmentsLoading:false,
     overdueInformation:[],
@@ -46,6 +55,20 @@ export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCo
 export const fetchLeasesSummary = createAsyncThunk('auth/fetchLeasesSummary', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/leases_summary/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchTerminatedSummary = createAsyncThunk('auth/fetchTerminatedSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/terminated_summary/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -221,6 +244,16 @@ const leaseSlice = createSlice({
             };
         },
         //
+        setTerminatedSummaryLoading: (state,action) => {
+            state.terminatedSummaryLoading = action.payload;
+        },
+        setTerminatedSummaryParams: (state,action) => {
+            state.terminatedSummaryParams = {
+                ...state.terminatedSummaryParams,
+                ...action.payload
+            };
+        },
+        //
         resetLeasesParams: (state,action) => {
             state.leasesParams = {
                 start: 0 * 50,
@@ -259,6 +292,18 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchLeasesSummary.rejected, (state,action) => {
                 state.leasesSummaryLoading = false
+            })
+            //terminated summary
+            .addCase(fetchTerminatedSummary.pending, (state) => {
+                state.terminatedSummaryLoading = true
+            })
+            .addCase(fetchTerminatedSummary.fulfilled, (state,action) => {
+                state.terminatedSummary = action.payload.data || action.payload;
+                state.terminatedSummaryCount = action.payload.recordsTotal || 0;
+                state.terminatedSummaryLoading = false
+            })
+            .addCase(fetchTerminatedSummary.rejected, (state,action) => {
+                state.terminatedSummaryLoading = false
             })
             //fetch installemnts in lease
             .addCase(fetchInstallmentsInLease.pending, (state) => {
@@ -300,5 +345,15 @@ const leaseSlice = createSlice({
   
 })
 
-export const {setLeasesLoading,setLeasesParams,resetLeasesParams,deleteLeases,setLeaseOverdues} = leaseSlice.actions;
+export const {
+    setLeasesLoading,
+    setLeasesParams,
+    setLeasesSummaryLoading,
+    setLeasesSummaryParams,
+    setTerminatedSummaryLoading,
+    setTerminatedSummaryParams,
+    resetLeasesParams,
+    deleteLeases,
+    setLeaseOverdues
+} = leaseSlice.actions;
 export default leaseSlice.reducer;

@@ -22,7 +22,6 @@ const initialState = {
     },
     contractsSummaryLoading:false,
     //
-    //
     contractPaymentsSummary:[],
     contractPaymentsSummaryCount:0,
     contractPaymentsSummaryParams:{

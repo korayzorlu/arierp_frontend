@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import  ctuIcon  from "../../../images/icons/global/ctu-logo.png";
 import EagleIcon from '../../../component/icon/EagleIcon';
 import ListTableServer from '../../../component/table/ListTableServer';
-import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
+import { fetchTerminatedSummary, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
 import { Link } from 'react-router-dom';
 import StarIcon from '@mui/icons-material/Star';
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
@@ -25,7 +25,17 @@ import InstallmentPaymentWarningGraph from '../components/InstallmentPaymentWarn
 
 function Dashboard() {
     const {dark,user} = useSelector((store) => store.auth);
-    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading} = useSelector((store) => store.bankActivity);
+    const {activeCompany} = useSelector((store) => store.organization);
+    const {contractsSummary,contractPaymentsSummary,warningNoticesSummary} = useSelector((store) => store.contract);
+    const {terminatedSummary,terminatedSummaryParams} = useSelector((store) => store.lease);
+
+        const dispatch = useDispatch();
+
+    useEffect(() => {
+        startTransition(() => {
+            dispatch(fetchTerminatedSummary({activeCompany,params:{...terminatedSummaryParams,paginate:false}}));
+        });
+    }, [activeCompany,terminatedSummaryParams,dispatch]);
     
     const endDate = new Date('2025-08-14');
     const dates = [];
@@ -40,9 +50,13 @@ function Dashboard() {
 
     const today = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Istanbul' });
 
+    function formatTRY(amount) {
+        return amount.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
     return (
         
-        user.authorization === "Admin"
+        user.authorization === "Admin" || user.authorization === "Genel Müdürlük" || user.authorization === "Muhasebe"
         ?
         <Stack spacing={1}>
 
@@ -51,28 +65,36 @@ function Dashboard() {
                     <OverSummaryCard
                     icon={<IconButton color="success" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><EditDocumentIcon /></IconButton>}
                     title="Son 7 günde"
-                    text="40 Sözleşme eklendi"
+                    text={`${contractsSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme eklendi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <OverSummaryCard
                     icon={<IconButton color="warning" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><ReportIcon /></IconButton>}
                     title="Son 7 günde"
-                    text="30 İhtar çekildi"
+                    text={`${warningNoticesSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} İhtar çekildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <OverSummaryCard
                     icon={<IconButton color="error" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><CancelIcon /></IconButton>}
                     title="Son 7 günde"
-                    text="20 Sözleşme feshedildi"
+                    text={`${terminatedSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme feshedildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <OverSummaryCard
                     icon={<IconButton color="primary" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><PaymentsIcon /></IconButton>}
                     title="Son 7 günde"
-                    text="35.256.312,56 TRY tahsilat yapıldı"
+                    text={`
+                            ${
+                                formatTRY(
+                                    contractPaymentsSummary.slice(-7).reduce((sum, item) => 
+                                        sum + (item.amount || 0), 0
+                                    )
+                                )
+                            } TRY tahsilat yapıldı
+                        `}
                     />
                 </Grid>
             </Grid>
