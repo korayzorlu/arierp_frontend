@@ -119,6 +119,7 @@ import PartnerAdvanceActivites from './features/operation/pages/PartnerAdvanceAc
 import TuketiciPartners from './features/partners/pages/TuketiciPartners.js';
 import TicariPartners from './features/partners/pages/TicariPartners.js';
 import TrialBalances from './features/accounting/pages/TrialBalances.js';
+import UnderReviews from './features/risk/pages/UnderReviews.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -289,6 +290,7 @@ function App() {
                   <Route path='/to-warned-risk-partners' element={<ToWarnedRiskPartners></ToWarnedRiskPartners>}></Route>
                   <Route path='/warned-risk-partners' element={<WarnedRiskPartners></WarnedRiskPartners>}></Route>
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
+                  <Route path='/under-reviews' element={<UnderReviews></UnderReviews>}></Route>
                   <Route path='/delivery-confirm' element={<DeliveryConfirms></DeliveryConfirms>}></Route>
                   <Route path='/tomorrow-partners' element={<TomorrowPartners></TomorrowPartners>}></Route>
                   <Route path='/today-partners' element={<TodayPartners></TodayPartners>}></Route>

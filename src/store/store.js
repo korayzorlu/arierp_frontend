@@ -51,6 +51,7 @@ import contractInProcess from './slices/operation/contractInProcessSlice';
 import partnerAdvanceActivitySlice from './slices/operation/partnerAdvanceActivitySlice';
 import partnerAdvanceActivityLeaseSlice from './slices/operation/partnerAdvanceActivityLeaseSlice';
 import trialBalanceReducer from './slices/accounting/trialBalanceSlice';
+import underReviewReducer from './slices/risk/underReviewSlice';
 
 let navigate;
 
@@ -112,6 +113,7 @@ export const store = configureStore({
         partnerAdvanceActivity: partnerAdvanceActivitySlice,
         partnerAdvanceActivityLease: partnerAdvanceActivityLeaseSlice,
         trialBalance: trialBalanceReducer,
+        underReview: underReviewReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

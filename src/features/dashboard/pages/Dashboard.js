@@ -55,9 +55,6 @@ function Dashboard() {
     }
 
     return (
-        
-        user.authorization === "Admin" || user.authorization === "Genel Müdürlük" || user.authorization === "Muhasebe"
-        ?
         <Stack spacing={1}>
 
             <Grid container spacing={1}>
@@ -118,8 +115,7 @@ function Dashboard() {
             </Grid>
 
         </Stack>
-        :
-        null
+        
         
     )
 }
