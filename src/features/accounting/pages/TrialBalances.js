@@ -33,37 +33,37 @@ function TrialBalances() {
     }, [activeCompany,trialBalancesParams,dispatch]);
 
     const columns = [
-        { field: 'account_code', headerName: 'Hesap Kodu', flex: 2 },
-        { field: 'account_name', headerName: 'Hesap Adı', flex: 2 },
-        { field: 'currency', headerName: 'PB', flex: 1 },
-        { field: 'balance_debit', headerName: 'Borç Toplamı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'account_code', headerName: 'Hesap Kodu', width: 200 },
+        { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
+        { field: 'currency', headerName: 'PB' },
+        { field: 'balance_debit', headerName: 'Borç Toplamı', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'balance_credit', headerName: 'Alacak Toplamı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'balance_credit', headerName: 'Alacak Toplamı', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'total_debit', headerName: 'Borç Bakiyesi', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'total_debit', headerName: 'Borç Bakiyesi', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'total_credit', headerName: 'Alacak Bakiyesi', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'total_credit', headerName: 'Alacak Bakiyesi', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'total_tl', headerName: 'TL Bakiye', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'total_tl', headerName: 'TL Bakiye', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'balance_debit_alternate', headerName: 'Borç Toplam', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'balance_debit_alternate', headerName: 'Borç Toplam', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'balance_credit_alternate', headerName: 'Alacak Toplamı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'balance_credit_alternate', headerName: 'Alacak Toplamı', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'total_debit_alternate', headerName: 'Borç Bakiyesi', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'total_debit_alternate', headerName: 'Borç Bakiyesi', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'total_credit_alternate', headerName: 'Alacak Bakiyesi', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'total_credit_alternate', headerName: 'Alacak Bakiyesi', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'total_currency', headerName: 'Döviz Bakiye', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'total_currency', headerName: 'Döviz Bakiye', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         
