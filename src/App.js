@@ -118,6 +118,7 @@ import ContractInArchives from './features/operation/pages/ContractInArchives.js
 import PartnerAdvanceActivites from './features/operation/pages/PartnerAdvanceActivities.js';
 import TuketiciPartners from './features/partners/pages/TuketiciPartners.js';
 import TicariPartners from './features/partners/pages/TicariPartners.js';
+import TrialBalances from './features/accounting/pages/TrialBalances.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -301,6 +302,7 @@ function App() {
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>
 
                   <Route path='/trade-accounts' element={<TradeAccounts></TradeAccounts>}></Route>
+                  <Route path='/trial-balances' element={<TrialBalances></TrialBalances>}></Route>
 
                   <Route path='/ledger-accounts' element={<LedgerAccounts></LedgerAccounts>}></Route>
 

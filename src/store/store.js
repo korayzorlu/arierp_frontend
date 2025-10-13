@@ -50,6 +50,7 @@ import contractInArchive from './slices/operation/contractInArchiveSlice';
 import contractInProcess from './slices/operation/contractInProcessSlice';
 import partnerAdvanceActivitySlice from './slices/operation/partnerAdvanceActivitySlice';
 import partnerAdvanceActivityLeaseSlice from './slices/operation/partnerAdvanceActivityLeaseSlice';
+import trialBalanceReducer from './slices/accounting/trialBalanceSlice';
 
 let navigate;
 
@@ -110,6 +111,7 @@ export const store = configureStore({
         contractInProcess: contractInProcess,
         partnerAdvanceActivity: partnerAdvanceActivitySlice,
         partnerAdvanceActivityLease: partnerAdvanceActivityLeaseSlice,
+        trialBalance: trialBalanceReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
