@@ -208,7 +208,7 @@ function UnderReviews() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Gecikmesi Olan Müşteriler"
+                title="Hatalı veya Belirsiz Kayıt İnceleme Listesi"
                 autoHeight
                 rows={underReviews}
                 columns={underReviewColumns}
