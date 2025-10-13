@@ -231,7 +231,7 @@ function WarnedRiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}})).unwrap()}
+                        onClick={() => dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
