@@ -12,6 +12,8 @@ const initialState = {
         format: 'datatables'
     },
     tradeTransactionsLoading:false,
+    tradeTransactionsInLease:[],
+    tradeTransactionsInLeaseCode:0,
 }
 
 export const fetchTradeTransactions = createAsyncThunk('auth/fetchTradeTransactions', async ({activeCompany,serverModels=null,params=null}) => {
@@ -52,73 +54,9 @@ export const fetchTradeTransaction = createAsyncThunk('auth/fetchTradeTransactio
     }
 });
 
-export const addTradeTransaction = createAsyncThunk('auth/addTradeTransaction', async ({data=null},{dispatch,extra: {navigate}}) => {
-    dispatch(setIsProgress(true));
-    try {
-        const response = await axios.post(`/trade/add_trade_transaction/`,
-            data,
-            { 
-                withCredentials: true
-            },
-        );
-        dispatch(setAlert({status:response.data.status,text:response.data.message}))
-        navigate("/tradeTransactions");
-    } catch (error) {
-        if(error.response.data){
-            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        }else{
-            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
-        };
-        return null
-    } finally {
-        dispatch(setIsProgress(false));
-    }
-});
-
-export const updateTradeTransaction = createAsyncThunk('auth/updateTradeTransaction', async ({data=null},{dispatch}) => {
-    dispatch(setIsProgress(true));
-    try {
-        const response = await axios.post(`/trade/update_trade_transaction/`,
-            data,
-            { 
-                withCredentials: true
-            },
-        );
-        dispatch(setAlert({status:response.data.status,text:response.data.message}))
-    } catch (error) {
-        if(error.response.data){
-            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        }else{
-            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
-        };
-        return null
-    } finally {
-        dispatch(setIsProgress(false));
-    }
-});
-
-export const deleteTradeTransaction = createAsyncThunk('auth/deleteTradeTransaction', async ({data=null},{dispatch,extra: {navigate}}) => {
-    dispatch(setIsProgress(true));
-    try {
-        const response = await axios.post(`/trade/delete_trade_transaction/`,
-            data,
-            { 
-                withCredentials: true
-            },
-        );
-        dispatch(setAlert({status:response.data.status,text:response.data.message}))
-    } catch (error) {
-        if(error.response.data){
-            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
-        }else{
-            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
-        };
-        return null
-    } finally {
-        dispatch(setIsProgress(false));
-        dispatch(setDialog(false));
-        navigate("/tradeTransactions");
-    }
+export const fetchTradeTransactionsInLease = createAsyncThunk('organization/fetchTradeTransactionsInLease', async ({activeCompany,lease_id}) => {
+    const response = await axios.get(`/trade/trade_transactions/?ac=${activeCompany.id}&lease_id=${lease_id}`, {withCredentials: true});
+    return response.data;
 });
 
 const tradeTransactionSlice = createSlice({
@@ -147,6 +85,9 @@ const tradeTransactionSlice = createSlice({
         setTradeTransactionOverdues: (state,action) => {
             state.leaseOverdues = action.payload;
         },
+        setTradeTransactionsInLeaseCode: (state,action) => {
+            state.tradeTransactionsInLeaseCode = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -161,6 +102,17 @@ const tradeTransactionSlice = createSlice({
             .addCase(fetchTradeTransactions.rejected, (state,action) => {
                 state.tradeTransactionsLoading = false
             })
+            //fetch trade transactions in lease
+            .addCase(fetchTradeTransactionsInLease.pending, (state) => {
+                state.tradeTransactionsLoading = true;
+            })
+            .addCase(fetchTradeTransactionsInLease.fulfilled, (state,action) => {
+                state.tradeTransactionsInLease = action.payload;
+                state.tradeTransactionsLoading = false;
+            })
+            .addCase(fetchTradeTransactionsInLease.rejected, (state,action) => {
+                state.tradeTransactionsLoading = false;
+            })
     },
   
 })
@@ -170,6 +122,7 @@ export const {
     setTradeTransactionsParams,
     resetTradeTransactionsParams,
     deleteTradeTransactions,
-    setTradeTransactionOverdues
+    setTradeTransactionOverdues,
+    setTradeTransactionsInLeaseCode,
 } = tradeTransactionSlice.actions;
 export default tradeTransactionSlice.reducer;

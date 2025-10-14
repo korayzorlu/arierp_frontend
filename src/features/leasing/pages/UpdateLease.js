@@ -14,6 +14,8 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PaidIcon from '@mui/icons-material/Paid';
 import TabPanel from '../../../component/tab/TabPanel';
 import ContractPaymentsInLease from '../components/ContractPaymentsInLease';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import TradeTransactionsInLease from '../components/TradeTransactionsInLease';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -268,6 +270,7 @@ function UpdateLease() {
                             >
                                 <Tab label="Ödeme Tablosu" value={0} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
                                 <Tab label="TAHSİLATLAR" value={1} icon={<PaidIcon/>} iconPosition="start"/>
+                                <Tab label="CARİ HESAP EKSTRESİ" value={2} icon={<ReceiptLongIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                     </Grid>
@@ -283,6 +286,13 @@ function UpdateLease() {
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <ContractPaymentsInLease contract_id={contract_id}></ContractPaymentsInLease>
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={2}>
+                        <Grid container spacing={2}>
+                            <Grid size={{xs:12,sm:12}}>
+                                <TradeTransactionsInLease lease_id={uuid}></TradeTransactionsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
