@@ -14,6 +14,7 @@ import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import { fetchPurchaseDocumentsInPurchasePayment } from '../../../store/slices/purchasing/purchaseDocumentSlice';
 import PurchaseDocumentDialog from '../components/PurchaseDocumentDialog';
+import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 
 function PurchasePayments() {
     const {user} = useSelector((store) => store.auth);
@@ -28,6 +29,7 @@ function PurchasePayments() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
+    const [kdvSwitchPosition, setKdvSwitchPosition] = useState(false);
 
     useEffect(() => {
         startTransition(() => {
@@ -97,7 +99,6 @@ function PurchasePayments() {
     ]
 
     const handleProfileDialog = async (params,event) => {
-        console.log(params)
         if (event) {
             event.stopPropagation();
         }
@@ -107,11 +108,17 @@ function PurchasePayments() {
         }
     };
 
+    const handleChangeKDV = async (value) => {
+        dispatch(setPurchasePaymentsParams({kdv:value}));
+        setKdvSwitchPosition(value);
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
                 title="Satıcı Ödemeleri"
+                autoHeight
                 rows={purchasePayments}
                 columns={columns}
                 getRowId={(row) => row.uuid}
@@ -127,6 +134,15 @@ function PurchasePayments() {
                         title="Yenile"
                         onClick={() => dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
+                        />
+                    </>
+                }
+                customFilters={
+                    <>  
+                        <AndroidSwitch
+                        label="KDV Farkı Uygulananlar"
+                        checked={kdvSwitchPosition}
+                        onChange={(value) => handleChangeKDV(value)}
                         />
                     </>
                 }
