@@ -15,9 +15,9 @@ function TradeTransactionDialog(props) {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchTradeTransactionsInLease({activeCompany,tradeTransactionsInLeaseCode}));
-    }, [])
+    // useEffect(() => {
+    //     dispatch(fetchTradeTransactionsInLease({activeCompany,tradeTransactionsInLeaseCode}));
+    // }, [])
 
     const handleClose = () => {
         dispatch(setTradeTransactionDialog(false))

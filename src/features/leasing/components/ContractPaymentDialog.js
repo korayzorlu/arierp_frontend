@@ -15,10 +15,9 @@ function ContractPaymentDialog(props) {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log(contractPaymentsInLeaseCode)
-        dispatch(fetchContractPaymentsInLease({activeCompany,contractPaymentsInLeaseCode}));
-    }, [])
+    // useEffect(() => {
+    //     dispatch(fetchContractPaymentsInLease({activeCompany,contractPaymentsInLeaseCode}));
+    // }, [])
 
     const handleClose = () => {
         dispatch(setContractPaymentDialog(false))
