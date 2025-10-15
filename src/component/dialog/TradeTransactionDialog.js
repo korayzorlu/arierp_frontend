@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setTradeTransactionDialog, setMessageDialog } from '../../../store/slices/notificationSlice';
+import { setTradeTransactionDialog, setMessageDialog } from '../../store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
 import { Button, DialogActions, DialogContent, DialogContentText, Stack, Typography } from '@mui/material';
-import BasicTable from '../../../component/table/BasicTable';
+import BasicTable from '../table/BasicTable';
 import { fetchTradeTransactionsInLease } from '../../store/slices/trade/tradeTransactionSlice';
 
 function TradeTransactionDialog(props) {
@@ -152,10 +152,24 @@ function TradeTransactionDialog(props) {
                     <Stack spacing={2}>
                         <>
                             <BasicTable
-                            title={`Sözleşme - ${tradeTransactionsInLease ? tradeTransactionsInLease.length > 0 ? tradeTransactionsInLease[0]["lease"] : "" : ""}`}
-                            rows={tradeTransactionsInLease}
+                            title={
+                                `
+                                ${
+                                    tradeTransactionsInLease
+                                    ?
+                                        tradeTransactionsInLease.length > 0
+                                        ?
+                                            tradeTransactionsInLease[0]["lease"]
+                                        : ""
+                                    :
+                                        ""
+                                }
+                                `
+                            }
+                            rows={rowsWithBalance}
                             columns={columns}
                             getRowId={(row) => row.uuid}
+                            checkboxSelection={false}
                             disableRowSelectionOnClick={true}
                             loading={tradeTransactionsLoading}
                             getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}

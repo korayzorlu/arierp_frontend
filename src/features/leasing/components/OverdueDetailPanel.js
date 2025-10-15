@@ -1,6 +1,9 @@
 import { Box, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from '../../../component/table/BasicTable';
+import { fetchTradeTransactionsInLease } from '../../../store/slices/trade/tradeTransactionSlice';
+import TradeTransactionDialog from '../../../component/dialog/TradeTransactionDialog';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 function OverdueDetailDetailPanel(props) {
     const {leaseOverdues} = props;
