@@ -72,7 +72,7 @@ function InstallmentPaymentWarningGraph() {
                 </Typography>
                 </Stack>
                 <Typography variant="body2">
-                    Son 30 gün içinde günlük olarak taksit tutarı toplamı, tahsilat tutarı toplamı ve çekilen ihtar sayısı..
+                    Son 30 gün içinde günlük olarak taksit tutarı toplamı, tahsilat tutarı toplamı ve çekilen ihtar tutarı.
                 </Typography>
             </Box>
             <Divider />
@@ -91,7 +91,7 @@ function InstallmentPaymentWarningGraph() {
                 series={[
                     {
                         dataKey: 'installment',
-                        label: 'Müşteri Ödemeleri',
+                        label: 'Ödemeler',
                         showMark: false,
                         color: dark ? theme.palette.mars.main : theme.palette.warning.main,
                     },

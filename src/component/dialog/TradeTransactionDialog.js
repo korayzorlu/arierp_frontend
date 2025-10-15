@@ -1,66 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { setTradeTransactionDialog, setMessageDialog } from '../../../store/slices/notificationSlice';
+import MUIDialog from '@mui/material/Dialog';
+import { Button, DialogActions, DialogContent, DialogContentText, Stack, Typography } from '@mui/material';
 import BasicTable from '../../../component/table/BasicTable';
-import { fetchTradeTransactionsInLease } from '../../../store/slices/trade/tradeTransactionSlice';
-import { Typography } from '@mui/material';
+import { fetchTradeTransactionsInLease } from '../../store/slices/trade/tradeTransactionSlice';
 
-function TradeTransactionsInLease(props) {
-    const {lease_id,companyName} = props;
+function TradeTransactionDialog(props) {
+    const {user} = props;
 
-    const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {tradeTransactionsLoading,tradeTransactionsInLease} = useSelector((store) => store.tradeTransaction);
+    const {tradeTransactionDialog} = useSelector((store) => store.notification);
+    const {tradeTransactionsLoading,tradeTransactionsInLease,tradeTransactionsInLeaseCode} = useSelector((store) => store.tradeTransaction);
 
     const dispatch = useDispatch();
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const [anchorElUserStatus, setAnchorElUserStatus] = useState(null);
-    const openUserStatus = Boolean(anchorElUserStatus);
-    const [openUserStatusDialog, setOpenUserStatusDialog] = useState(false);
-    const [openInviteDialog, setOpenInviteDialog] = useState(false);
-    const [selectedUserEmail, setSelectedUserEmail] = useState(null);
-    const [selectedUserCompanyId, setSelectedUserCompanyId] = useState(null)
-
     useEffect(() => {
-        dispatch(fetchTradeTransactionsInLease({activeCompany,lease_id}));
+        dispatch(fetchTradeTransactionsInLease({activeCompany,tradeTransactionsInLeaseCode}));
     }, [])
 
-    const handleClick = (event,params) => {
-        setAnchorEl(event.currentTarget);
-        setSelectedUserEmail(params.row.email);
-    };
-
     const handleClose = () => {
-        setAnchorEl(null);
+        dispatch(setTradeTransactionDialog(false))
     };
 
-    // const rowsWithBalance = tradeTransactionsInLease.map((row, idx) => {
-    //     console.log(tradeTransactionsInLease[idx - 1])
-    //     let newRow = { ...row };
-    //     const prevBalance = idx === 0 ? 0 : tradeTransactionsInLease[idx - 1].__balance;
-    //     console.log(prevBalance)
-    //     const amount = newRow.amount_type === '1' ? newRow.amount : -newRow.amount;
-    //     newRow.__balance = prevBalance + amount
-    //     return newRow;
-    // });
-
-    // const prevBalance = idx === 0 ? 0 : acc[idx - 1].__balance;
-    //     const amount = row.amount_type === '1' ? row.amount : -row.amount;
-    //     acc.push({
-    //         ...row,
-    //         __balance: prevBalance + amount
-    //     });
-    //     return acc;
-
-    const handleBalance = (params) => {
-        const idx = tradeTransactionsInLease.findIndex(row => row.uuid === params.row.uuid);
-        const prevRow = idx > 0 ? tradeTransactionsInLease[idx - 1] : null;
-        
-        const prevBalance = prevRow ? prevRow.__balance : 0;
-        const currentAmount = params.row.amount_type === '1' ? params.row.amount : -params.row.amount;
-        return Number(currentAmount) + Number(prevBalance)
-    }
     const rowsWithBalance = [];
     let newIndex = 0;
     tradeTransactionsInLease.map((row, index) => {
@@ -106,10 +68,7 @@ function TradeTransactionsInLease(props) {
         }
     })
 
-
-    
-
-    const userColumns = [
+    const columns = [
         { field: 'due_date', headerName: 'Vade Tarihi', flex: 1, sortable: false },
         { field: 'record_date', headerName: 'Kayıt Tarihi', flex: 1.5, sortable: false },
         { field: 'posting_group_name', headerName: 'İşlem Grubu', flex: 1.5, sortable: false },
@@ -177,29 +136,49 @@ function TradeTransactionsInLease(props) {
     ]
 
     return (
-        <>
-            <BasicTable
-            title="Cari Hesap Ekstresi"
-            rows={rowsWithBalance}
-            columns={userColumns}
-            getRowId={(row) => row.uuid}
-            checkboxSelection={false}
-            disableRowSelectionOnClick={true}
-            loading={tradeTransactionsLoading}
-            getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
-            // initialState={{
-            //     aggregation: {
-            //         model: {
-            //             debit_amount: 'sum',
-            //             credit_amount: 'sum',
-            //             local_debit_amount: 'sum',
-            //             local_credit_amount: 'sum',
-            //         },
-            //     },
-            // }}
-            />
-        </>
+        <MUIDialog
+        open={tradeTransactionDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        elevation={3}
+        variant="outlined"
+        maxWidth="xl"
+        fullWidth
+        >
+            
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    <Stack spacing={2}>
+                        <>
+                            <BasicTable
+                            title={`Sözleşme - ${tradeTransactionsInLease ? tradeTransactionsInLease.length > 0 ? tradeTransactionsInLease[0]["lease"] : "" : ""}`}
+                            rows={tradeTransactionsInLease}
+                            columns={columns}
+                            getRowId={(row) => row.uuid}
+                            disableRowSelectionOnClick={true}
+                            loading={tradeTransactionsLoading}
+                            getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
+                            // initialState={{
+                            //     aggregation: {
+                            //         model: {
+                            //             debit_amount: 'sum',
+                            //             credit_amount: 'sum',
+                            //             local_debit_amount: 'sum',
+                            //             local_credit_amount: 'sum',
+                            //         },
+                            //     },
+                            // }}
+                            />
+                        </>
+                    </Stack>
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions className=''>
+                <Button color="neutral" onClick={handleClose}>Cancel</Button>
+            </DialogActions>
+        </MUIDialog>
     )
 }
 
-export default TradeTransactionsInLease
+export default TradeTransactionDialog

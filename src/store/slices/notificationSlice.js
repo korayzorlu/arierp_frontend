@@ -22,6 +22,7 @@ const initialState = {
     contractPaymentDialog:false,
     warningNoticeDialog:false,
     purchaseDocumentDialog:false,
+    tradeTransactionDialog:false,
     modal:false,
     notifications:[],
     unreadNotifications:0
@@ -104,6 +105,9 @@ const notificationSlice = createSlice({
         setContractPaymentDialog: (state,action) => {
             state.contractPaymentDialog = action.payload;
         },
+        setTradeTransactionDialog: (state,action) => {
+            state.tradeTransactionDialog = action.payload;
+        },
         setWarningNoticeDialog: (state,action) => {
             state.warningNoticeDialog = action.payload;
         },
@@ -159,6 +163,7 @@ export const {
     setCallDialog,
     setMessageDialog,
     setContractPaymentDialog,
+    setTradeTransactionDialog,
     setWarningNoticeDialog,
     setPurchaseDocumentDialog,
 } = notificationSlice.actions;

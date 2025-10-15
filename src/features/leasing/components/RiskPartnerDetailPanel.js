@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
+import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setTradeTransactionDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
 import { Box, Grid, IconButton } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
@@ -15,6 +15,7 @@ import { cellProgress } from '../../../component/progress/CellProgress';
 import FeedIcon from '@mui/icons-material/Feed';
 import WarningNoticeDialog from './WarningNoticeDialog';
 import OverdueDetailDetailPanel from './OverdueDetailPanel';
+import { fetchTradeTransactionsInLease } from '../../../store/slices/trade/tradeTransactionSlice';
 
 function RiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases} = props;
@@ -70,6 +71,13 @@ function RiskPartnerDetailPanel(props) {
                 
             )
         },
+        // { field: '-trade_transactions', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
+        //         <IconButton aria-label='back' onClick={()=>{dispatch(fetchTradeTransactionsInLease({activeCompany,lease_id:params.row.code}));dispatch(setTradeTransactionDialog(true))}}>
+        //             <PaidIcon/>
+        //         </IconButton>
+                
+        //     )
+        // },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
@@ -104,18 +112,18 @@ function RiskPartnerDetailPanel(props) {
                     null
             )
         },
-        { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
-                params.value
-                ?
-                    "Kdv Farkı Var"
-                :
-                    ""
+        // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
+        //         params.value
+        //         ?
+        //             "Kdv Farkı Var"
+        //         :
+        //             ""
                 
-            ),
-            cellClassName: (params) => {
-                return params.value ? 'bg-orange' : '';
-            }
-        },
+        //     ),
+        //     cellClassName: (params) => {
+        //         return params.value ? 'bg-orange' : '';
+        //     }
+        // },
         { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 

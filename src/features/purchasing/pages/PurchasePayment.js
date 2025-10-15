@@ -52,6 +52,9 @@ function PurchasePayments() {
         { field: 'total_contract_amount', headerName: 'Toplam Sözleşme Bedeli', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'updated_amount', headerName: 'KDV Farkı Eklenmiş Bedel', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'before_total_payment', headerName: 'Ödeme Toplam Öncesi', type: 'number', cellClassName: () => 'bg-cream', headerClassName: () => 'bg-cream',
             renderHeaderFilter: () => null, valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
