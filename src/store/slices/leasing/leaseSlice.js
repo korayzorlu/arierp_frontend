@@ -31,6 +31,16 @@ const initialState = {
     },
     leasesSummaryLoading:false,
     //
+    portfoliosSummary:[],
+    portfoliosSummaryCount:0,
+    portfoliosSummaryParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    portfoliosSummaryLoading:false,
+    //
+    //
     terminatedSummary:[],
     terminatedSummaryCount:0,
     terminatedSummaryParams:{
@@ -78,6 +88,20 @@ export const fetchActiveLeases = createAsyncThunk('auth/fetchActiveLeases', asyn
 export const fetchLeasesSummary = createAsyncThunk('auth/fetchLeasesSummary', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/leases_summary/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchPortfoliosSummary = createAsyncThunk('auth/fetchPortfoliosSummary', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/portfolios_summary/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -277,6 +301,16 @@ const leaseSlice = createSlice({
             };
         },
         //
+        setPortfoliosSummaryLoading: (state,action) => {
+            state.portfoliosSummaryLoading = action.payload;
+        },
+        setPortfoliosSummaryParams: (state,action) => {
+            state.portfoliosSummaryParams = {
+                ...state.portfoliosSummaryParams,
+                ...action.payload
+            };
+        },
+        //
         setTerminatedSummaryLoading: (state,action) => {
             state.terminatedSummaryLoading = action.payload;
         },
@@ -338,6 +372,18 @@ const leaseSlice = createSlice({
             .addCase(fetchLeasesSummary.rejected, (state,action) => {
                 state.leasesSummaryLoading = false
             })
+            //portfolios summary
+            .addCase(fetchPortfoliosSummary.pending, (state) => {
+                state.portfoliosSummaryLoading = true
+            })
+            .addCase(fetchPortfoliosSummary.fulfilled, (state,action) => {
+                state.portfoliosSummary = action.payload.data || action.payload;
+                state.portfoliosSummaryCount = action.payload.recordsTotal || 0;
+                state.portfoliosSummaryLoading = false
+            })
+            .addCase(fetchPortfoliosSummary.rejected, (state,action) => {
+                state.portfoliosSummaryLoading = false
+            })
             //terminated summary
             .addCase(fetchTerminatedSummary.pending, (state) => {
                 state.terminatedSummaryLoading = true
@@ -397,6 +443,8 @@ export const {
     setActiveLeasesParams,
     setLeasesSummaryLoading,
     setLeasesSummaryParams,
+    setPortfoliosSummaryLoading,
+    setPortfoliosSummaryParams,
     setTerminatedSummaryLoading,
     setTerminatedSummaryParams,
     resetLeasesParams,
