@@ -121,6 +121,7 @@ import TicariPartners from './features/partners/pages/TicariPartners.js';
 import TrialBalances from './features/accounting/pages/TrialBalances.js';
 import UnderReviews from './features/risk/pages/UnderReviews.js';
 import TradeTransactions from './features/trade/pages/TradeTransactions.js';
+import ActiveLeases from './features/leasing/pages/ActiveLeases.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -262,6 +263,7 @@ function App() {
                   <Route path='/leases' element={<Leases></Leases>}></Route>
                   <Route path='/leasing/add-lease' element={<AddLease></AddLease>}></Route>
                   <Route path='/leasing/update/:uuid/:contract_id' element={<UpdateLease></UpdateLease>}></Route>
+                  <Route path='/active-leases' element={<ActiveLeases></ActiveLeases>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
                   

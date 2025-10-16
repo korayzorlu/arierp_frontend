@@ -12,7 +12,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
 import { faker } from '@faker-js/faker';
 import { fetchContractsSummary } from '../../../store/slices/contracts/contractSlice';
-import OverSummaryCard from '../components/OverSummaryCard';
+import SummaryCard from '../components/SummaryCard';
 import ContractsGraph from '../components/ContractsGraph';
 import ContractsPie from '../components/ContractsPie';
 import RisksBar from '../components/RisksBar';
@@ -22,6 +22,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import Installment from '../../leasing/pages/Installment';
 import InstallmentPaymentWarningGraph from '../components/InstallmentPaymentWarningGraph';
+import PortfoysPie from '../components/PortfoysPie';
+import PortfolioGraph from '../components/PortfolioGraph';
 
 function Dashboard() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -59,28 +61,28 @@ function Dashboard() {
 
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:3}}>
-                    <OverSummaryCard
+                    <SummaryCard
                     icon={<IconButton color="success" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><EditDocumentIcon /></IconButton>}
                     title="Son 7 günde"
                     text={`${contractsSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme eklendi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
-                    <OverSummaryCard
+                    <SummaryCard
                     icon={<IconButton color="warning" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><ReportIcon /></IconButton>}
                     title="Son 7 günde"
                     text={`${warningNoticesSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} İhtar çekildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
-                    <OverSummaryCard
+                    <SummaryCard
                     icon={<IconButton color="error" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><CancelIcon /></IconButton>}
                     title="Son 7 günde"
                     text={`${terminatedSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme feshedildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
-                    <OverSummaryCard
+                    <SummaryCard
                     icon={<IconButton color="primary" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><PaymentsIcon /></IconButton>}
                     title="Son 7 günde"
                     text={`
@@ -95,6 +97,15 @@ function Dashboard() {
                     />
                 </Grid>
             </Grid>
+
+            {/* <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <PortfolioGraph/>
+                </Grid>
+                <Grid size={{xs:12,sm:6}}>
+                    <RisksBar/>
+                </Grid>
+            </Grid> */}
 
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:9}}>

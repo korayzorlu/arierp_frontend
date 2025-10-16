@@ -2,7 +2,7 @@ import { Card, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 
 
-function OverSummaryCard(props) {
+function SummaryCard(props) {
     const {icon,title,text} = props;
     return (
         <Paper elevation={0} square={true} sx={{p: 1}}>
@@ -25,4 +25,4 @@ function OverSummaryCard(props) {
     )
 }
 
-export default OverSummaryCard
+export default SummaryCard

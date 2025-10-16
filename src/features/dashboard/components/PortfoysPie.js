@@ -3,10 +3,9 @@ import { Box, Card, Divider, Paper, Stack, Typography } from '@mui/material'
 import React, { startTransition, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
-import { fetchContractsSummary } from '../../../store/slices/contracts/contractSlice';
 import { fetchLeasesSummary } from '../../../store/slices/leasing/leaseSlice';
 
-function ContractsPie() {
+function PortfoysPie() {
     const {dark,user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {leasesSummary,leasesSummaryCount,leasesSummaryParams,leasesSummaryLoading} = useSelector((store) => store.lease);
@@ -44,11 +43,11 @@ function ContractsPie() {
                 sx={{ justifyContent: 'space-between', alignItems: 'center' }}
                 >
                 <Typography gutterBottom variant="h6" component="div">
-                    KİRA PLANI STATÜ DAĞILIMI
+                    PORTFÖY BÜYÜKLÜĞÜ
                 </Typography>
                 </Stack>
                 <Typography variant="body2">
-                    Yürürlükteki kira planlarının statü bazlı dağılımı.
+                    Aktif portföylerin satıcı bazında büyüklük dağılımı.
                 </Typography>
             </Box>
             <Divider />
@@ -77,4 +76,4 @@ function ContractsPie() {
     )
 }
 
-export default ContractsPie
+export default PortfoysPie
