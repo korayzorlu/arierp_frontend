@@ -98,7 +98,14 @@ function Dashboard() {
                 </Grid>
             </Grid>
 
-            
+            {/* <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <PortfolioGraph/>
+                </Grid>
+                <Grid size={{xs:12,sm:6}}>
+                    <RisksBar/>
+                </Grid>
+            </Grid> */}
 
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:9}}>
@@ -115,12 +122,6 @@ function Dashboard() {
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <RisksBar/>
-                </Grid>
-            </Grid>
-
-            <Grid container spacing={1}>
-                <Grid size={{xs:12,sm:12}}>
-                    <PortfolioGraph/>
                 </Grid>
             </Grid>
 
