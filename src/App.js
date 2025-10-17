@@ -122,6 +122,7 @@ import TrialBalances from './features/accounting/pages/TrialBalances.js';
 import UnderReviews from './features/risk/pages/UnderReviews.js';
 import TradeTransactions from './features/trade/pages/TradeTransactions.js';
 import ActiveLeases from './features/leasing/pages/ActiveLeases.js';
+import SMSs from './features/communication/pages/SMSs.js';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -287,6 +288,7 @@ function App() {
                   <Route path='/bank-accounts' element={<BankAccounts></BankAccounts>}></Route>
                   <Route path='/bank-account-transactions' element={<BankAccountTransactions></BankAccountTransactions>}></Route>
 
+                  {/* risk */}
                   <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
                   <Route path='/kdv-risk-partners' element={<RiskPartnersKDV></RiskPartnersKDV>}></Route>
@@ -302,6 +304,7 @@ function App() {
                   <Route path='/agreed-terminated-partners' element={<AgreedTerminatedPartners></AgreedTerminatedPartners>}></Route>
                   <Route path='/manager-summary' element={<ManagerSummary></ManagerSummary>}></Route>
                   <Route path='/amount-debit-transaction' element={<AmountDebitTransactions></AmountDebitTransactions>}></Route>
+                  <Route path='/sent-sms' element={<SMSs></SMSs>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>

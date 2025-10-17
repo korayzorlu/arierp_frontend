@@ -53,6 +53,7 @@ import partnerAdvanceActivityLeaseSlice from './slices/operation/partnerAdvanceA
 import trialBalanceReducer from './slices/accounting/trialBalanceSlice';
 import underReviewReducer from './slices/risk/underReviewSlice';
 import tradeTransactionReducer from './slices/trade/tradeTransactionSlice';
+import smsReducer from './slices/communication/smsSlice';
 
 let navigate;
 
@@ -116,6 +117,7 @@ export const store = configureStore({
         trialBalance: trialBalanceReducer,
         underReview: underReviewReducer,
         tradeTransaction: tradeTransactionReducer,
+        sms: smsReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
