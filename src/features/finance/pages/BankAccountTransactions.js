@@ -36,7 +36,7 @@ function BankAccountTransactions() {
 
     const columns = [
         { field: 'transaction_date', headerName: 'Tarih', width: 160, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
-        { field: 'transaction_id', headerName: 'İşlem ID', width: 240 },
+        { field: 'transaction_id', headerName: 'İşlem ID', width: 120 },
         { field: 'explanation_field', headerName: 'Açıklama', width: 520 },
         { field: 'amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null },
         { field: 'bank_name', headerName: 'Banka', width: 140 },
