@@ -64,6 +64,7 @@ function ContractsGraph() {
                         color: dark ? theme.palette.mars.main : theme.palette.ari.main,
                     },
                 ]}
+                loading={contractsSummaryLoading}
                 //grid={{ vertical: true, horizontal: true }}
                 />
             </Box>

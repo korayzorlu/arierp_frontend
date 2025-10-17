@@ -27,7 +27,7 @@ const initialState = {
     leasesSummaryParams:{
         start: 0 * 50,
         end: (0 + 1) * 50,
-        format: 'datatables'
+        format: 'datatables',
     },
     leasesSummaryLoading:false,
     //
@@ -95,7 +95,7 @@ export const fetchLeasesSummary = createAsyncThunk('auth/fetchLeasesSummary', as
         );
         return response.data;
     } catch (error) {
-        return [];
+        return {};
     }
 });
 

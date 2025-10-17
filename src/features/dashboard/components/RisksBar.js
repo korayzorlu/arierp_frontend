@@ -54,6 +54,7 @@ function RisksBar() {
                 }]}
                 series={[{ data: managerSummary.slice(0, -1).map(item => item.quantity), color: '#CA3422' }]}
                 height={300}
+                loading={managerSummaryLoading}
                 />
             </Box>
         </Paper>

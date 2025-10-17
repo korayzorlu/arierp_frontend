@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import { Box, Card, Divider, Paper, Stack, Typography } from '@mui/material'
-import React, { startTransition, useEffect } from 'react'
+import React, { startTransition, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
 import { fetchContractsSummary } from '../../../store/slices/contracts/contractSlice';
@@ -14,6 +14,8 @@ function ContractsPie() {
     const dispatch = useDispatch();
     const theme = useTheme();
 
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchLeasesSummary({activeCompany,params:{...leasesSummaryParams,paginate:false}}));
@@ -22,11 +24,12 @@ function ContractsPie() {
 
     
     const data = [
-        { label: 'Aktifleştirildi', value: leasesSummary.aktiflestirildi, color: '#0088FE' },
-        { label: 'Planlandı', value: leasesSummary.planlandi, color: "#FF911F" },
-        { label: 'Durduruldu', value: leasesSummary.durduruldu, color: '#CA3422' },
-        { label: 'Feshedildi', value: leasesSummary.feshedildi, color: '#5c636bff' },
-        { label: 'Devredildi', value: leasesSummary.devredildi, color: '#0e9e2dff' },
+        { label: 'Aktifleştirildi', value: leasesSummary.aktiflestirildi || 0, color: '#0088FE' },
+        { label: 'Planlandı', value: leasesSummary.planlandi || 0, color: "#FF911F" },
+        { label: 'Durduruldu', value: leasesSummary.durduruldu || 0, color: '#CA3422' },
+        { label: 'Feshedildi', value: leasesSummary.feshedildi || 0, color: '#5c636bff' },
+        { label: 'Devredilecek', value: leasesSummary.devredilecek || 0, color: '#4ce46dff' },
+        { label: 'Devredildi', value: leasesSummary.devredildi || 0, color: '#0e9e2dff' },
     ];
 
     return (
@@ -56,14 +59,15 @@ function ContractsPie() {
             sx={{
                 height: 300
             }}
-            >
+            >   
                 <PieChart
                 series={[{
                     data:data,
                     innerRadius: 50,
                     outerRadius: 100,
                     paddingAngle: 0,
-                    arcLabel: 'value'
+                    arcLabel: 'value',
+                    arcLabelMinAngle: 10
                 }]}
                 settings={{
                     margin: { right: 5 },
@@ -71,6 +75,7 @@ function ContractsPie() {
                     height: 300,
                     hideLegend: true,
                 }}
+                loading={leasesSummaryLoading}
                 />
             </Box>
         </Paper>

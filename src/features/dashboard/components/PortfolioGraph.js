@@ -85,6 +85,7 @@ function PortfolioGraph() {
                         color: dark ? theme.palette.bluelemonade.main : theme.palette.bluelemonade.main,
                     },
                 ]}
+                loading={portfoliosSummaryLoading}
                 />
             </Box>
         </Paper>
