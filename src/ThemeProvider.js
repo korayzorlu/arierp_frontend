@@ -52,6 +52,14 @@ const commonTheme = {
             main: '#980748',
             contrastText: '#fff',
         },
+        snowfall: {
+            main: '#E7DFD9',
+            contrastText: '#000',
+        },
+        silvercoin: {
+            main: '#E5DDD2',
+            contrastText: '#000',
+        },
     },
     components: {
         MuiDataGrid: {
@@ -142,6 +150,13 @@ export const ThemeProvider = ({ children }) => {
                 styleOverrides: {
                     root: {
                         color: "#000",
+                    },
+                },
+            },
+            MuiAccordion: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: "#f4f2ee",
                     },
                 },
             },

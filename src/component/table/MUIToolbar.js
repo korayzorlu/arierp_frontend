@@ -72,12 +72,12 @@ function MUIToolbar(props) {
     // </ToolbarContainer>
 
 
-    <Toolbar sx={{padding:"0.5rem",flexDirection: mobile ? 'column' : 'row',justifyContent:'space-between'}}>
+    <Toolbar sx={{padding:"0.5rem",flexDirection: mobile ? 'column' : 'row',justifyContent:'space-between', minHeight: 'auto'}}>
       <Grid
       container
       sx={{
         justifyContent: "space-between",
-        width: "100%"
+        width: "100%",
       }}
       direction="column"
       >

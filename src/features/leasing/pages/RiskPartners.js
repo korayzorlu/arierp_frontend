@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
@@ -21,14 +21,18 @@ import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import SmsIcon from '@mui/icons-material/Sms';
-import { gridFilterModelSelector, useGridApiContext, useGridSelector } from '@mui/x-data-grid-premium';
+import { gridFilterModelSelector, useGridApiContext, useGridApiRef, useGridSelector } from '@mui/x-data-grid-premium';
 import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import { fetchSMSs, setSMSsLoading } from '../../../store/slices/communication/smsSlice';
+import SendSMSDialog from '../components/SendSMSDialog';
 
 function RiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {riskPartners,riskPartnersCount,riskPartnersParams,riskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
+    const apiRef = useGridApiRef();
 
     const [isPending, startTransition] = useTransition();
     
@@ -38,6 +42,7 @@ function RiskPartners() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [project, setProject] = useState("kizilbuk")
     const [exportURL, setExportURL] = useState("")
+    const [selectedItems, setSelectedItems] = useState([])
 
     // useEffect(() => {
     //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
@@ -145,7 +150,7 @@ function RiskPartners() {
                     </IconButton>
                 </Grid>
                 <Grid size={6} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
+                    <IconButton aria-label="delete" onClick={() => handleMessageDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}>
                         <MessageIcon />
                     </IconButton>
                 </Grid>
@@ -165,8 +170,14 @@ function RiskPartners() {
         dispatch(setCallDialog(true));
     };
 
-    const handleMessageDialog = async (params,event) => {
+    const handleMessageDialog = async ({partner_id,crm_code}) => {
         dispatch(setMessageDialog(true));
+        dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}}));
+        dispatch(fetchPartnerInformation(crm_code));
+    };
+
+    const handleSendSMSDialog = async ({partner_id,crm_code}) => {
+        dispatch(setSendSMSDialog(true));
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {
@@ -204,12 +215,17 @@ function RiskPartners() {
         dispatch(setRiskPartnersParams({project:newValue}));
     };
 
+    const handleSendSMS = () => {
+        const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
+        setSelectedItems(Array.from(currentSelection));
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
                 title="Gecikmesi Olan Müşteriler"
-                autoHeight
+                //autoHeight
                 rows={riskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
@@ -226,6 +242,11 @@ function RiskPartners() {
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_risk_partners_for_sms/")}}
                         icon={<SmsIcon fontSize="small"/>}
                         />
+                        {/* <CustomTableButton
+                        title="Toplu SMS Gönder"
+                        onClick={() => {dispatch(setSendSMSDialog(true));handleSendSMS()}}
+                        icon={<SmsIcon fontSize="small"/>}
+                        /> */}
                         <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}})).unwrap()}
@@ -281,6 +302,7 @@ function RiskPartners() {
                     </>
                 }
                 rowCount={riskPartnersCount}
+                //checkboxSelection
                 setParams={(value) => dispatch(setRiskPartnersParams(value))}
                 //density="compact"
                 onCellClick={handleProfileDialog}
@@ -288,7 +310,7 @@ function RiskPartners() {
                 noDownloadButton
                 //sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
-                //apiRef={apiRef}
+                apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
@@ -303,6 +325,12 @@ function RiskPartners() {
             project={project}
             />
             <CallDialog/>
+            <SendSMSDialog
+            items={selectedItems}
+            project={project}
+            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
+            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün ödenmesi hususunda gereğini rica ederiz. ${project === 'sinpas' ? "Ödemelerinizi aşağıda linki bulunan online sistemden kontrol edip ödeme yapabilirsiniz." : ""} ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. ${project === 'sinpas' ? "https://odeme.arileasing.com.tr/online-islemler//login.aspx" : ""} Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            />
             <MessageDialog/>
         </PanelContent>
     )

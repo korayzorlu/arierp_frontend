@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { startTransition, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessageDialog } from '../../../store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
-import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material';
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Button, Chip, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, Typography } from '@mui/material';
+import { fetchSMSs } from '../../../store/slices/communication/smsSlice';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import DoneIcon from '@mui/icons-material/Done';
+import SMSAccordion from '../../../component/surfaces/SMSAccordion';
 
 function MessageDialog(props) {
-    const {user} = props;
+    const {partner,partner_id} = props;
 
-    const {userInformation} = useSelector((store) => store.auth);
+    const {activeCompany} = useSelector((store) => store.organization);
     const {messageDialog} = useSelector((store) => store.notification);
     const {partnerInformation} = useSelector((store) => store.partner);
+   const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
 
@@ -28,12 +36,16 @@ function MessageDialog(props) {
         fullWidth
         >
             <DialogTitle id="alert-dialog-title">
-                Mesaj Kaydı
+                <Typography variant='body1'>
+                    {partnerInformation.name} - SMS Geçmişi
+                </Typography>
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    <Stack spacing={2}>
-                        
+                    <Stack spacing={0}>
+                        {smss.map((sms) => (
+                            <SMSAccordion sms={sms}/>
+                        ))}
                     </Stack>
                 </DialogContentText>
             </DialogContent>

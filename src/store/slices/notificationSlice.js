@@ -19,6 +19,7 @@ const initialState = {
     addPartnerAdvanceActivityLeaseDialog:false,
     callDialog:false,
     messageDialog:false,
+    sendSMSDialog:false,
     contractPaymentDialog:false,
     warningNoticeDialog:false,
     purchaseDocumentDialog:false,
@@ -102,6 +103,9 @@ const notificationSlice = createSlice({
         setMessageDialog: (state,action) => {
             state.messageDialog = action.payload;
         },
+        setSendSMSDialog: (state,action) => {
+            state.sendSMSDialog = action.payload;
+        },
         setContractPaymentDialog: (state,action) => {
             state.contractPaymentDialog = action.payload;
         },
@@ -162,6 +166,7 @@ export const {
     setAddPartnerAdvanceActivityLeaseDialog,
     setCallDialog,
     setMessageDialog,
+    setSendSMSDialog,
     setContractPaymentDialog,
     setTradeTransactionDialog,
     setWarningNoticeDialog,

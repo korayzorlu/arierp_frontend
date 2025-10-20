@@ -6,7 +6,7 @@ function TableContent(props) {
 
     return ( 
         <Box
-        sx={{width:width ? width : "100%",height:height ? height : "88vh"}}
+        sx={{width:width ? width : "100%",height:height ? height : "calc(100vh - 75px)",overflow:"auto"}}
         onKeyDown={onKeyDown}
         >
             {children}

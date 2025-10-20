@@ -52,6 +52,28 @@ export const fetchSMS = createAsyncThunk('auth/fetchSMS', async ({activeCompany,
     }
 });
 
+export const sendSMS = createAsyncThunk('auth/sendSMS', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/communication/send_sms/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const smsSlice = createSlice({
     name:"sms",
     initialState,
