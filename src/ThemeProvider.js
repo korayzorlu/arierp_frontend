@@ -28,38 +28,64 @@ const commonTheme = {
         ].join(','),
     },
     palette: {
+        ari: {
+            main: '#980748',
+            contrastText: '#fff',
+        },
         blackhole: {
             main: '#000',
             contrastText: '#fff',
         },
-        whitehole: {
-            main: '#fff',
+        celticglow: {
+            main: '#009562',
+            contrastText: '#000',
+        },
+        cream: {
+            main: '#F4F2EE',
+            contrastText: '#000',
+        },
+        frostedbirch: {
+            main: '#D1C6B8',
+            contrastText: '#000',
+        },
+        greengecko: {
+            main: '#46c22aff',
             contrastText: '#000',
         },
         navyblack: {
             main: '#1b1f23',
             contrastText: '#fff',
         },
-        cream: {
-            main: '#F4F2EE',
+        neonnavy: {
+            main: '#131937',
+            contrastText: '#fff',
+        },
+        neonnephrite: {
+            main: '#3D8C28',
+            contrastText: '#fff',
+        },
+        silvercoin: {
+            main: '#E4DDD3',
             contrastText: '#000',
-        },
-        bluelemonade: {
-            main: '#0045B0',
-            contrastText: '#fff',
-        },
-        ari: {
-            main: '#980748',
-            contrastText: '#fff',
         },
         snowfall: {
             main: '#E7DFD9',
             contrastText: '#000',
         },
-        silvercoin: {
-            main: '#E5DDD2',
+        steelplate: {
+            main: '#6E767A',
             contrastText: '#000',
         },
+        whitehole: {
+            main: '#fff',
+            contrastText: '#000',
+        },
+        
+        
+        
+        
+        
+        
     },
     components: {
         MuiDataGrid: {
@@ -110,6 +136,10 @@ export const ThemeProvider = ({ children }) => {
         palette: {
             ...commonTheme.palette,
             mode: 'light',
+            bluelemonade: {
+                main: '#0045B0',
+                contrastText: '#fff',
+            },
             opposite: {
                 main: '#000',
                 contrastText: '#fff',
@@ -117,6 +147,18 @@ export const ThemeProvider = ({ children }) => {
             mars: {
                 main: '#d9ce32',
                 contrastText: '#000',
+            },
+            metallicblue: {
+                main: '#05308C',
+                contrastText: '#fff',
+            },
+            metallicgold: {
+                main: '#DAA51D',
+                contrastText: '#fff',
+            },
+            metallicorange: {
+                main: '#EE9103',
+                contrastText: '#fff',
             },
             panelbox: {
                 main: '#fff',
@@ -167,6 +209,10 @@ export const ThemeProvider = ({ children }) => {
         palette: {
             ...commonTheme.palette,
             mode: 'dark',
+            bluelemonade: {
+                main: '#0045AC',
+                contrastText: '#fff',
+            },
             opposite: {
                 main: '#fff',
                 contrastText: '#000',
@@ -174,6 +220,18 @@ export const ThemeProvider = ({ children }) => {
             mars: {
                 main: '#efe237',
                 contrastText: '#000',
+            },
+            metallicblue: {
+                main: '#0045AC',
+                contrastText: '#fff',
+            },
+            metallicgold: {
+                main: '#D1CE21',
+                contrastText: '#fff',
+            },
+            metallicorange: {
+                main: '#EA9A00',
+                contrastText: '#fff',
             },
             panelbox: {
                 main: '#1b1f23',

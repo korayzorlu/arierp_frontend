@@ -24,12 +24,12 @@ function ContractsPie() {
 
     
     const data = [
-        { label: 'Aktifleştirildi', value: leasesSummary.aktiflestirildi || 0, color: '#0088FE' },
-        { label: 'Planlandı', value: leasesSummary.planlandi || 0, color: "#FF911F" },
-        { label: 'Durduruldu', value: leasesSummary.durduruldu || 0, color: '#CA3422' },
-        { label: 'Feshedildi', value: leasesSummary.feshedildi || 0, color: '#5c636bff' },
-        { label: 'Devredilecek', value: leasesSummary.devredilecek || 0, color: '#4ce46dff' },
-        { label: 'Devredildi', value: leasesSummary.devredildi || 0, color: '#0e9e2dff' },
+        { label: 'Aktifleştirildi', value: leasesSummary.aktiflestirildi || 0, color: theme.palette.metallicblue.main },
+        { label: 'Planlandı', value: leasesSummary.planlandi || 0, color: theme.palette.metallicgold.main },
+        { label: 'Durduruldu', value: leasesSummary.durduruldu || 0, color: theme.palette.ari.main },
+        { label: 'Feshedildi', value: leasesSummary.feshedildi || 0, color: theme.palette.steelplate.main },
+        { label: 'Devredilecek', value: leasesSummary.devredilecek || 0, color: theme.palette.greengecko.main },
+        { label: 'Devredildi', value: leasesSummary.devredildi || 0, color: theme.palette.neonnephrite.main },
     ];
 
     return (
@@ -74,6 +74,11 @@ function ContractsPie() {
                     width: 300,
                     height: 300,
                     hideLegend: true,
+                }}
+                sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                        fill: '#fff',
+                    }
                 }}
                 loading={leasesSummaryLoading}
                 />

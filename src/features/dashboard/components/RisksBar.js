@@ -52,7 +52,10 @@ function RisksBar() {
                 xAxis={[{
                     data: ['Gecikme(0-30)','İhtar Çekilecek','İhtar Çekilen','Fesih Edilecek'],
                 }]}
-                series={[{ data: managerSummary.slice(0, -1).map(item => item.quantity), color: '#CA3422' }]}
+                series={[{
+                    data: managerSummary.slice(0, -1).map(item => item.quantity),
+                    color: dark ? theme.palette.frostedbirch.main : theme.palette.ari.main,
+                }]}
                 height={300}
                 loading={managerSummaryLoading}
                 />
