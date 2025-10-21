@@ -155,7 +155,7 @@ function ToWarnedRiskPartners() {
                     </IconButton>
                 </Grid>
                 <Grid size={6} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
+                    <IconButton aria-label="delete" onClick={() => handleMessageDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}>
                         <MessageIcon />
                     </IconButton>
                 </Grid>
@@ -176,12 +176,10 @@ function ToWarnedRiskPartners() {
     };
 
     const handleMessageDialog = async ({partner_id,crm_code}) => {
-        dispatch(toWarnedRiskPartnersLoading(true));
         await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
         await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
         await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
-        dispatch(toWarnedRiskPartnersLoading(false));
         
     };
 
@@ -321,6 +319,7 @@ function ToWarnedRiskPartners() {
             example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün itibari ile ihtarname süreci başlatılmıştır. ${project === 'sinpas' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
             <WarningNoticeDialog/>
+            <MessageDialog/>
         </PanelContent>
     )
 }

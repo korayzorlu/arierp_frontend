@@ -156,7 +156,7 @@ function WarnedRiskPartners() {
                     </IconButton>
                 </Grid>
                 <Grid size={6} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
+                    <IconButton aria-label="delete" onClick={() => handleMessageDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}>
                         <MessageIcon />
                     </IconButton>
                 </Grid>
@@ -177,12 +177,10 @@ function WarnedRiskPartners() {
     };
 
     const handleMessageDialog = async ({partner_id,crm_code}) => {
-        dispatch(warnedRiskPartnersLoading(true));
         await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
         await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
         await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
-        dispatch(warnedRiskPartnersLoading(false));
         
     };
 
@@ -322,6 +320,7 @@ function WarnedRiskPartners() {
             example={`Değerli müşterimiz, {{proje}} projesi’ne ait {{tarih}} son ödeme tarihli {{tutar}} TL ödenmemiş taksitiniz bulunmaktadır. Takip sürecindeki ödemenizi gerçekleştirmenizi rica ederiz. Ödeme yapıldıysa mesajı dikkate almayınız. Arı Finansal Kiralama Tel:02123102721 Mernis No:0147005285500018`}
             />
             <WarningNoticeDialog/>
+            <MessageDialog/>
         </PanelContent>
     )
 }
