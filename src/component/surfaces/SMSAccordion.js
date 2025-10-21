@@ -12,9 +12,9 @@ function SMSAccordion(props) {
     const getStatusParams = (status) => {
         switch (status) {
             case "0":
-                return { color: "success", icon: <DoneAllIcon /> };
-            case "1":
                 return { color: "error", icon: <PriorityHighIcon /> };
+            case "1":
+                return { color: "success", icon: <DoneAllIcon /> };
             case "2":
                 return { color: "warning", icon: <HourglassBottomIcon /> };
             default:

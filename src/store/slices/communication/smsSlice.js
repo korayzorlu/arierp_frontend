@@ -74,6 +74,23 @@ export const sendSMS = createAsyncThunk('auth/sendSMS', async ({activeCompany,da
     }
 });
 
+export const checkSMS = createAsyncThunk('auth/checkSMS', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/communication/check_sms/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+    } catch (error) {
+        dispatch(setIsProgress(false));
+        return null
+    } finally {
+        //dispatch(setIsProgress(false));
+    }
+});
+
 const smsSlice = createSlice({
     name:"sms",
     initialState,

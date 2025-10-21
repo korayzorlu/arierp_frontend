@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMessageDialog } from '../../../store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Button, Chip, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, Typography } from '@mui/material';
-import { fetchSMSs } from '../../../store/slices/communication/smsSlice';
+import { checkSMS, fetchSMSs } from '../../../store/slices/communication/smsSlice';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import DoneIcon from '@mui/icons-material/Done';
 import SMSAccordion from '../../../component/surfaces/SMSAccordion';
+import SpeakerNotesOffIcon from '@mui/icons-material/SpeakerNotesOff';
+import FolderOffIcon from '@mui/icons-material/FolderOff';
 
 function MessageDialog(props) {
     const {partner,partner_id} = props;
@@ -17,7 +19,7 @@ function MessageDialog(props) {
     const {activeCompany} = useSelector((store) => store.organization);
     const {messageDialog} = useSelector((store) => store.notification);
     const {partnerInformation} = useSelector((store) => store.partner);
-   const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
+    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
 
@@ -43,9 +45,28 @@ function MessageDialog(props) {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={0}>
-                        {smss.map((sms) => (
-                            <SMSAccordion sms={sms}/>
-                        ))}
+                        {
+                            smssLoading
+                            ?
+                                null
+                            :
+                                smss.length > 0
+                                ?
+                                    smss.map((sms) => (
+                                        <SMSAccordion sms={sms}/>
+                                    ))
+                                :
+                                <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+                                    <Stack spacing={2}>
+                                        <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
+                                            <SpeakerNotesOffIcon sx={{fontSize:'64px',color:'text.secondary'}}></SpeakerNotesOffIcon>
+                                        </Typography>
+                                        <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
+                                            Gönderilmiş SMS bulunmamaktadır.
+                                        </Typography>
+                                    </Stack>
+                                </Grid>
+                        }
                     </Stack>
                 </DialogContentText>
             </DialogContent>

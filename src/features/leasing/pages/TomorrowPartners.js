@@ -26,10 +26,13 @@ import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import { setRiskPartnersLoading } from '../../../store/slices/leasing/riskPartnerSlice';
+import { checkSMS, fetchSMSs } from '../../../store/slices/communication/smsSlice';
 
 function TomorrowPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {tomorrowPartners,tomorrowPartnersCount,tomorrowPartnersParams,tomorrowPartnersLoading} = useSelector((store) => store.tomorrowPartner);
+    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
 
@@ -148,8 +151,14 @@ function TomorrowPartners() {
         dispatch(setCallDialog(true));
     };
 
-    const handleMessageDialog = async (params,event) => {
+    const handleMessageDialog = async ({partner_id,crm_code}) => {
+        dispatch(setRiskPartnersLoading(true));
+        await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
+        await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
+        dispatch(setRiskPartnersLoading(false));
+        
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {

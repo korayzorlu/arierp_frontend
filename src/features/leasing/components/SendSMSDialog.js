@@ -28,7 +28,8 @@ function SendSMSDialog({...props}) {
         };
         dispatch(setSendSMSDialog(false));
 
-        dispatch(sendSMS({data:{project:props.project}}))
+        await dispatch(sendSMS({data:{project:props.project,risk_status:props.risk_status}})).unwrap();
+        dispatch(setSMSsLoading(true));
         
     };
 
@@ -70,7 +71,6 @@ function SendSMSDialog({...props}) {
                 onClick={handleSubmit}
                 endIcon={<PlayArrowIcon/>}
                 autoFocus
-                loading={smssLoading}
                 >
                     Gönder
                 </Button>

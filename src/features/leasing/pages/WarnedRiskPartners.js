@@ -1,8 +1,8 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRiskPartners, fetchWarnedRiskPartners, setWarnedRiskPartnersLoading, setWarnedRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
+import { fetchRiskPartners, fetchWarnedRiskPartners, setRiskPartnersLoading, setWarnedRiskPartnersLoading, setWarnedRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
@@ -27,10 +27,13 @@ import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import SmsIcon from '@mui/icons-material/Sms';
 import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import { checkSMS, fetchSMSs } from '../../../store/slices/communication/smsSlice';
+import SendSMSDialog from '../components/SendSMSDialog';
 
 function WarnedRiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {warnedRiskPartners,warnedRiskPartnersCount,warnedRiskPartnersParams,warnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
 
@@ -173,8 +176,14 @@ function WarnedRiskPartners() {
         dispatch(setCallDialog(true));
     };
 
-    const handleMessageDialog = async (params,event) => {
+    const handleMessageDialog = async ({partner_id,crm_code}) => {
+        dispatch(warnedRiskPartnersLoading(true));
+        await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
+        await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
+        dispatch(warnedRiskPartnersLoading(false));
+        
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {
@@ -213,7 +222,6 @@ function WarnedRiskPartners() {
             <Grid container spacing={1}>
                 <ListTableServer
                 title="İhtar Çekilen Müşteriler"
-                autoHeight
                 rows={warnedRiskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
@@ -228,6 +236,11 @@ function WarnedRiskPartners() {
                         <CustomTableButton
                         title="SMS İçin Excel'e Aktar"
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_warned_risk_partners_for_sms/")}}
+                        icon={<SmsIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
+                        title="Toplu SMS Gönder"
+                        onClick={() => {dispatch(setSendSMSDialog(true));}}
                         icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
@@ -302,7 +315,12 @@ function WarnedRiskPartners() {
             project={project}
             />
             <CallDialog/>
-            <MessageDialog/>
+            <SendSMSDialog
+            risk_status="warned"
+            project={project}
+            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden ihtar hatırlatması için kısa mesaj gönderilecektir."
+            example={`Değerli müşterimiz, {{proje}} projesi’ne ait {{tarih}} son ödeme tarihli {{tutar}} TL ödenmemiş taksitiniz bulunmaktadır. Takip sürecindeki ödemenizi gerçekleştirmenizi rica ederiz. Ödeme yapıldıysa mesajı dikkate almayınız. Arı Finansal Kiralama Tel:02123102721 Mernis No:0147005285500018`}
+            />
             <WarningNoticeDialog/>
         </PanelContent>
     )

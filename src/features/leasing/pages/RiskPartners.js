@@ -23,7 +23,7 @@ import ExportDialog from '../../../component/feedback/ExportDialog';
 import SmsIcon from '@mui/icons-material/Sms';
 import { gridFilterModelSelector, useGridApiContext, useGridApiRef, useGridSelector } from '@mui/x-data-grid-premium';
 import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
-import { fetchSMSs, setSMSsLoading } from '../../../store/slices/communication/smsSlice';
+import { checkSMS, fetchSMSs, setSMSsLoading } from '../../../store/slices/communication/smsSlice';
 import SendSMSDialog from '../components/SendSMSDialog';
 
 function RiskPartners() {
@@ -42,7 +42,6 @@ function RiskPartners() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [project, setProject] = useState("kizilbuk")
     const [exportURL, setExportURL] = useState("")
-    const [selectedItems, setSelectedItems] = useState([])
 
     // useEffect(() => {
     //     dispatch(setRiskPartnersParams({bigger_than_100:true}));
@@ -171,9 +170,11 @@ function RiskPartners() {
     };
 
     const handleMessageDialog = async ({partner_id,crm_code}) => {
+        await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
+        await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
-        dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}}));
-        dispatch(fetchPartnerInformation(crm_code));
+        
     };
 
     const handleSendSMSDialog = async ({partner_id,crm_code}) => {
@@ -217,7 +218,6 @@ function RiskPartners() {
 
     const handleSendSMS = () => {
         const currentSelection = new Set(apiRef.current.getSelectedRows().keys());
-        setSelectedItems(Array.from(currentSelection));
     };
 
     return (
@@ -242,11 +242,11 @@ function RiskPartners() {
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_risk_partners_for_sms/")}}
                         icon={<SmsIcon fontSize="small"/>}
                         />
-                        {/* <CustomTableButton
+                        <CustomTableButton
                         title="Toplu SMS Gönder"
-                        onClick={() => {dispatch(setSendSMSDialog(true));handleSendSMS()}}
+                        onClick={() => {dispatch(setSendSMSDialog(true));}}
                         icon={<SmsIcon fontSize="small"/>}
-                        /> */}
+                        />
                         <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}})).unwrap()}
@@ -326,10 +326,10 @@ function RiskPartners() {
             />
             <CallDialog/>
             <SendSMSDialog
-            items={selectedItems}
+            risk_status="risk_partners"
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
-            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün ödenmesi hususunda gereğini rica ederiz. ${project === 'sinpas' ? "Ödemelerinizi aşağıda linki bulunan online sistemden kontrol edip ödeme yapabilirsiniz." : ""} ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. ${project === 'sinpas' ? "https://odeme.arileasing.com.tr/online-islemler//login.aspx" : ""} Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün ödenmesi hususunda gereğini rica ederiz. ${project === 'sinpas' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
             <MessageDialog/>
         </PanelContent>

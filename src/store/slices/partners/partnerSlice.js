@@ -122,7 +122,7 @@ export const deletePartner = createAsyncThunk('auth/deletePartner', async ({data
     }
 });
 
-export const fetchPartnerInformation = createAsyncThunk('auth/fetchPartnerInformation', async (crm_code,{rejectWithValue}) => {
+export const fetchPartnerInformation = createAsyncThunk('auth/fetchPartnerInformation', async (crm_code,{rejectWithValue,dispatch}) => {
     try {
         const response = await axios.post('/partners/partner_information/', { 
             crm_code:crm_code
@@ -133,7 +133,9 @@ export const fetchPartnerInformation = createAsyncThunk('auth/fetchPartnerInform
             status:error.status,
             message:error.response.data.message
         });
-    };
+    } finally {
+        dispatch(setIsProgress(false));
+    }
 });
 
 const partnerSlice = createSlice({
