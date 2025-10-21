@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
-import React, { startTransition, useEffect, useMemo } from 'react'
+import React, { startTransition, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContractPaymentsSummary, fetchContractsSummary, fetchWarningNoticesSummary } from '../../../store/slices/contracts/contractSlice';
-import { Box, Divider, Paper, Stack, Typography } from '@mui/material';
+import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
 import { fetchInstallmentsSummary } from '../../../store/slices/leasing/installmentSlice';
 
@@ -14,44 +14,104 @@ function InstallmentPaymentWarningGraph() {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+    const [month, setMonth] = useState(24);
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchInstallmentsSummary({activeCompany,params:{...installmentsSummaryParams,paginate:false}}));
-            dispatch(fetchContractPaymentsSummary({activeCompany,params:{...contractPaymentsSummaryParams,paginate:false}}));
+            dispatch(fetchInstallmentsSummary({activeCompany,month,params:{...installmentsSummaryParams,paginate:false}}));
+            dispatch(fetchContractPaymentsSummary({activeCompany,month,params:{...contractPaymentsSummaryParams,paginate:false}}));
             dispatch(fetchWarningNoticesSummary({activeCompany,params:{...warningNoticesSummaryParams,paginate:false}}));
         });
-    }, [activeCompany,installmentsSummaryParams,contractPaymentsSummaryParams,warningNoticesSummaryParams,dispatch]);
+    }, [activeCompany,installmentsSummaryParams,contractPaymentsSummaryParams,warningNoticesSummaryParams,month,dispatch]);
+
+    const installmentsDataset = installmentsSummary
+        .map(item => {
+            if (!item || !item.month) return { ...item, month: null };
+            if (item.month instanceof Date) return { ...item, month: item.month };
+            const parts = String(item.month).split('/');
+            if (parts.length === 2) {
+                const [mm, yyyy] = parts;
+                const monthIdx = parseInt(mm, 10) - 1;
+                const yearNum = parseInt(yyyy, 10);
+                if (!Number.isNaN(monthIdx) && !Number.isNaN(yearNum)) {
+                    return { ...item, month: new Date(yearNum, monthIdx, 1) };
+                }
+            }
+            const parsed = new Date(item.month);
+            return { ...item, month: isNaN(parsed) ? null : parsed };
+        })
+        .filter(item => item.month) // drop invalid entries
+        .sort((a, b) => a.month - b.month);
+
+    const contractPaymentsDataset = contractPaymentsSummary
+        .map(item => {
+            if (!item || !item.month) return { ...item, month: null };
+            if (item.month instanceof Date) return { ...item, month: item.month };
+            const parts = String(item.month).split('/');
+            if (parts.length === 2) {
+                const [mm, yyyy] = parts;
+                const monthIdx = parseInt(mm, 10) - 1;
+                const yearNum = parseInt(yyyy, 10);
+                if (!Number.isNaN(monthIdx) && !Number.isNaN(yearNum)) {
+                    return { ...item, month: new Date(yearNum, monthIdx, 1) };
+                }
+            }
+            const parsed = new Date(item.month);
+            return { ...item, month: isNaN(parsed) ? null : parsed };
+        })
+        .filter(item => item.month) // drop invalid entries
+        .sort((a, b) => a.month - b.month);
+
+    const warningNoticesDataset = warningNoticesSummary
+        .map(item => {
+            if (!item || !item.month) return { ...item, month: null };
+            if (item.month instanceof Date) return { ...item, month: item.month };
+            const parts = String(item.month).split('/');
+            if (parts.length === 2) {
+                const [mm, yyyy] = parts;
+                const monthIdx = parseInt(mm, 10) - 1;
+                const yearNum = parseInt(yyyy, 10);
+                if (!Number.isNaN(monthIdx) && !Number.isNaN(yearNum)) {
+                    return { ...item, month: new Date(yearNum, monthIdx, 1) };
+                }
+            }
+            const parsed = new Date(item.month);
+            return { ...item, month: isNaN(parsed) ? null : parsed };
+        })
+        .filter(item => item.month) // drop invalid entries
+        .sort((a, b) => a.month - b.month);
 
     const combinedData = useMemo(() => {
         const dataMap = new Map();
 
-        installmentsSummary.forEach(item => {
-            dataMap.set(item.day, {
-                ...dataMap.get(item.day),
-                day: new Date(item.day),
+        installmentsDataset.forEach(item => {
+            dataMap.set(item.month, {
+                ...dataMap.get(item.month),
+                month: new Date(item.month),
                 installment: item.amount || 0,
             });
         });
 
-        contractPaymentsSummary.forEach(item => {
-            dataMap.set(item.day, {
-                ...dataMap.get(item.day),
-                day: new Date(item.day),
+        contractPaymentsDataset.forEach(item => {
+            dataMap.set(item.month, {
+                ...dataMap.get(item.month),
+                month: new Date(item.month),
                 contractPayment: item.amount || 0,
             });
         });
 
-        warningNoticesSummary.forEach(item => {
-            dataMap.set(item.day, {
-                ...dataMap.get(item.day),
-                day: new Date(item.day),
+        warningNoticesDataset.forEach(item => {
+            dataMap.set(item.month, {
+                ...dataMap.get(item.month),
+                month: new Date(item.month),
                 warningNotice: item.amount || 0,
             });
         });
 
-        return Array.from(dataMap.values()).sort((a, b) => a.day - b.day);
-    }, [installmentsSummary, contractPaymentsSummary, warningNoticesSummary]);
+        return Array.from(dataMap.values());
+    }, [installmentsDataset, contractPaymentsDataset, warningNoticesDataset]);
+
+    
 
     return (
         <Paper elevation={0} square={true} sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -63,17 +123,40 @@ function InstallmentPaymentWarningGraph() {
                 height: 90
             }}
             >
-                <Stack
-                direction="row"
-                sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-                >
-                <Typography gutterBottom variant="h6" component="div">
-                    ÖDEME, TAHSİLAT VE İHTAR ANALİZİ
-                </Typography>
+                <Stack>
+                    <Grid container>
+                        <Grid size={{xs:12,sm:10}}>
+                            <Typography gutterBottom variant="h6">
+                                ÖDEME, TAHSİLAT VE İHTAR ANALİZİ
+                            </Typography>
+                        </Grid>
+                        <Grid size={{xs:12,sm:2}}>
+                            <FormControl sx={{mr: 2}} fullWidth>
+                                <InputLabel id="demo-simple-select-label">Tarih Aralığı</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                size='small'
+                                value={month}
+                                label="Tarih Aralığı"
+                                onChange={(e) => setMonth(e.target.value)}
+                                disabled={installmentsSummaryLoading || contractPaymentsSummaryLoading}
+                                >
+                                    <MenuItem value={12}>1 Yıl</MenuItem>
+                                    <MenuItem value={24}>2 Yıl</MenuItem>
+                                    <MenuItem value={60}>5 Yıl</MenuItem>
+                                    <MenuItem value={120}>10 Yıl</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid container sx={{}} spacing={2}>
+                        <Typography variant="body2">
+                            Son {month/12} yıl içinde aylık olarak taksit tutarı toplamı ve tahsilat tutarı toplamı.
+                        </Typography>
+                    </Grid>
                 </Stack>
-                <Typography variant="body2">
-                    Son 30 gün içinde günlük olarak taksit tutarı toplamı, tahsilat tutarı toplamı ve çekilen ihtar tutarı.
-                </Typography>
+                
             </Box>
             <Divider />
             <Box
@@ -84,30 +167,34 @@ function InstallmentPaymentWarningGraph() {
                 <LineChart
                 dataset={combinedData}
                 xAxis={[{ 
-                    dataKey: 'day',
-                    scaleType: 'time',
-                    valueFormatter: (date) => date.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' })
+                    dataKey: 'month',
+                    scaleType: 'band',
+                    valueFormatter: (date) => {
+                        const d = new Date(date);
+                        return `${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+                    },
                 }]}
                 series={[
                     {
-                        dataKey: 'installment',
+                        data: installmentsDataset.map(item => item.amount),
                         label: 'Ödemeler',
                         showMark: false,
                         color: dark ? theme.palette.mars.main : theme.palette.warning.main,
                     },
                     {
-                        dataKey: 'contractPayment',
+                        data: contractPaymentsDataset.map(item => item.amount),
                         label: 'Tahsilatlar',
                         showMark: false,
                         color: theme.palette.primary.main,
                     },
-                    {
-                        dataKey: 'warningNotice',
-                        label: 'İhtarlar',
-                        showMark: false,
-                        color: theme.palette.error.main,
-                    },
+                    // {
+                    //     data: warningNoticesDataset.map(item => item.amount),
+                    //     label: 'İhtarlar',
+                    //     showMark: false,
+                    //     color: theme.palette.error.main,
+                    // },
                 ]}
+                loading={installmentsSummaryLoading || contractPaymentsSummaryLoading}
                 //grid={{ vertical: true, horizontal: true }}
                 />
             </Box>

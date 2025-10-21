@@ -102,9 +102,9 @@ export const fetchContractsSummary = createAsyncThunk('auth/fetchContractsSummar
     }
 });
 
-export const fetchContractPaymentsSummary = createAsyncThunk('auth/fetchContractPaymentsSummary', async ({activeCompany,serverModels=null,params=null}) => {
+export const fetchContractPaymentsSummary = createAsyncThunk('auth/fetchContractPaymentsSummary', async ({activeCompany,month,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/contracts/contract_payments_summary/?ac=${activeCompany.id}`,
+        const response = await axios.get(`/contracts/contract_payments_summary/?ac=${activeCompany.id}&month=${month}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}

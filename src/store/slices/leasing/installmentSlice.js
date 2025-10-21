@@ -40,9 +40,9 @@ export const fetchInstallments = createAsyncThunk('leasing/fetchInstallments', a
     }
 });
 
-export const fetchInstallmentsSummary = createAsyncThunk('leasing/fetchInstallmentsSummary', async ({activeCompany,serverModels=null,params=null}) => {
+export const fetchInstallmentsSummary = createAsyncThunk('leasing/fetchInstallmentsSummary', async ({activeCompany,month,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/installments_summary/?ac=${activeCompany.id}`,
+        const response = await axios.get(`/leasing/installments_summary/?ac=${activeCompany.id}&month=${month}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
