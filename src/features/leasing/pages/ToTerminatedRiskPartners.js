@@ -238,11 +238,11 @@ function ToTerminatedRiskPartners() {
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_terminated_risk_partners/")}}
                         icon={<DownloadIcon fontSize="small"/>}
                         />
-                        <CustomTableButton
+                        {/* <CustomTableButton
                         title="SMS İçin Excel'e Aktar"
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_terminated_risk_partners_for_sms/")}}
                         icon={<SmsIcon fontSize="small"/>}
-                        />
+                        /> */}
                         <CustomTableButton
                         title="Toplu SMS Gönder"
                         onClick={() => {dispatch(setSendSMSDialog(true));}}
