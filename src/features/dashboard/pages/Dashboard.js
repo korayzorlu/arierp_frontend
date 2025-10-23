@@ -64,35 +64,41 @@ function Dashboard() {
                     <SummaryCard
                     icon={<IconButton color="success" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><EditDocumentIcon /></IconButton>}
                     title="Son 7 günde"
-                    text={`${contractsSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme eklendi`}
+                    //text={`${contractsSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme eklendi`}
+                    text={`0 Sözleşme eklendi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="warning" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><ReportIcon /></IconButton>}
                     title="Son 7 günde"
-                    text={`${warningNoticesSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} İhtar çekildi`}
+                    //text={`${warningNoticesSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} İhtar çekildi`}
+                    text={`0 İhtar çekildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="error" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><CancelIcon /></IconButton>}
                     title="Son 7 günde"
-                    text={`${terminatedSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme feshedildi`}
+                    //text={`${terminatedSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme feshedildi`}
+                    text={`0 Sözleşme feshedildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="primary" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><PaymentsIcon /></IconButton>}
                     title="Son 7 günde"
+                    // text={`
+                    //         ${
+                    //             formatTRY(
+                    //                 contractPaymentsSummary.slice(-7).reduce((sum, item) => 
+                    //                     sum + (item.amount || 0), 0
+                    //                 )
+                    //             )
+                    //         } TRY tahsilat yapıldı
+                    //     `}
                     text={`
-                            ${
-                                formatTRY(
-                                    contractPaymentsSummary.slice(-7).reduce((sum, item) => 
-                                        sum + (item.amount || 0), 0
-                                    )
-                                )
-                            } TRY tahsilat yapıldı
+                            0TRY tahsilat yapıldı
                         `}
                     />
                 </Grid>
