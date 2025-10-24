@@ -63,31 +63,31 @@ function Dashboard() {
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="success" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><EditDocumentIcon /></IconButton>}
-                    title="Son 7 günde"
+                    title="Ekim 2025"
                     //text={`${contractsSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme eklendi`}
-                    text={`0 Sözleşme eklendi`}
+                    text={`${contractsSummary.length > 0 ? contractsSummary[contractsSummary.length - 1].count : 0} Sözleşme eklendi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="warning" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><ReportIcon /></IconButton>}
-                    title="Son 7 günde"
+                    title="Ekim 2025"
                     //text={`${warningNoticesSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} İhtar çekildi`}
-                    text={`0 İhtar çekildi`}
+                    text={`${warningNoticesSummary.length > 0 ? warningNoticesSummary[warningNoticesSummary.length - 1].count : 0} İhtar çekildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="error" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><CancelIcon /></IconButton>}
-                    title="Son 7 günde"
+                    title="Ekim 2025"
                     //text={`${terminatedSummary.slice(-7).reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme feshedildi`}
-                    text={`0 Sözleşme feshedildi`}
+                    text={`${terminatedSummary.reduce((sum, item) => sum + (item.count || 0), 0)} Sözleşme feshedildi`}
                     />
                 </Grid>
                 <Grid size={{xs:12,sm:3}}>
                     <SummaryCard
                     icon={<IconButton color="primary" sx={{backgroundColor: dark ? '#00000040' : '#00000020'}}><PaymentsIcon /></IconButton>}
-                    title="Son 7 günde"
+                    title="Ekim 2025"
                     // text={`
                     //         ${
                     //             formatTRY(
@@ -98,7 +98,15 @@ function Dashboard() {
                     //         } TRY tahsilat yapıldı
                     //     `}
                     text={`
-                            0TRY tahsilat yapıldı
+                            ${
+                                formatTRY(
+                                    contractPaymentsSummary.length > 0
+                                    ?
+                                        contractPaymentsSummary[contractPaymentsSummary.length - 1].amount
+                                    :
+                                        0
+                                )
+                            } TRY tahsilat yapıldı
                         `}
                     />
                 </Grid>
