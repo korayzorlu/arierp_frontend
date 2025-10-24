@@ -35,7 +35,7 @@ function RisksBar() {
                 sx={{ justifyContent: 'space-between', alignItems: 'center' }}
                 >
                 <Typography gutterBottom variant="h6" component="div">
-                    VADESİ GEÇMİŞLER RAPORU
+                    VADESİ GEÇMİŞLER RAPORU (TEST)
                 </Typography>
                 </Stack>
                 <Typography variant="body2">
