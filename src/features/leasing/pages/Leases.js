@@ -1,23 +1,19 @@
-import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLeases, resetLeasesParams, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
-import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
-import PanelContent from '../../../component/panel/PanelContent';
-import ListTableServer from '../../../component/table/ListTableServer';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
-import ImportDialog from '../../../component/feedback/ImportDialog';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import { fetchLeases, setLeasesLoading, setLeasesParams } from 'store/slices/leasing/leaseSlice';
+import { setAlert, setDeleteDialog, setImportDialog } from 'store/slices/notificationSlice';
+import PanelContent from 'component/panel/PanelContent';
+import ListTableServer from 'component/table/ListTableServer';
+import CustomTableButton from 'component/table/CustomTableButton';
+import ImportDialog from 'component/feedback/ImportDialog';
+import DeleteDialog from 'component/feedback/DeleteDialog';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
-import './Installments.css';
+import AndroidSwitch from 'component/switch/AndroidSwitch';
+import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid, TextField } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 function Leases() {

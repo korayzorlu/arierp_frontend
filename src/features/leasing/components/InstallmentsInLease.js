@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInstallmentsInLease } from '../../../store/slices/leasing/leaseSlice';
-import BasicTable from '../../../component/table/BasicTable';
+import { fetchInstallmentsInLease } from 'store/slices/leasing/leaseSlice';
+import BasicTable from 'component/table/BasicTable';
 import { Typography } from '@mui/material';
-import { fetchInstallmentInformation } from '../../../store/slices/leasing/installmentSlice';
+import { fetchInstallmentInformation } from 'store/slices/leasing/installmentSlice';
 
 function InstallmentsInLease(props) {
     const {lease_id,lease_code,companyName} = props;

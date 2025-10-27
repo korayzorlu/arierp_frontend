@@ -1,21 +1,10 @@
-import React, { createRef, useCallback, useEffect, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCollections, resetCollectionsParams, setCollectionsLoading, setCollectionsParams } from '../../../store/slices/leasing/collectionSlice';
-import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setInstallmentDialog, setPartnerDialog, setUserDialog } from '../../../store/slices/notificationSlice';
-import PanelContent from '../../../component/panel/PanelContent';
-import './Installments.css';
-import { getGridStringOperators, useGridApiRef, useKeepGroupedColumnsHidden } from '@mui/x-data-grid-premium';
-import { Box, Grid, Paper, Stack, TextField, Typography, useTheme } from '@mui/material';
-import { fetchBankActivities, fetchBankActivityLeases, setBankActivitiesLoading, setBankActivitiesParams } from '../../../store/slices/leasing/bankActivitySlice';
-import ListTable from '../../../component/table/ListTable';
-import BasicTable from '../../../component/table/BasicTable';
-import DetailPanel from '../components/DetailPanel';
-import ExportDialog from '../../../component/feedback/ExportDialog';
-import DownloadIcon from '@mui/icons-material/Download';
-import OverdueDialog from '../../../component/dialog/OverdueDialog';
-import { fetchFinanceSummary, setFinanceSummaryLoading, setFinanceSummaryParams } from '../../../store/slices/finance/financeSlice';
+import PanelContent from 'component/panel/PanelContent';
+import 'static/css/Installment.css';
+import { Grid, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { fetchBankActivities } from 'store/slices/leasing/bankActivitySlice';
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
-import dayjs from "dayjs";
 import { faker } from '@faker-js/faker';
 
 function randomId(length = 8) {

@@ -1,20 +1,18 @@
-import React, { createRef, useCallback, useEffect, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setExportDialog } from '../../../store/slices/notificationSlice';
-import PanelContent from '../../../component/panel/PanelContent';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
+import { setExportDialog } from 'store/slices/notificationSlice';
+import PanelContent from 'component/panel/PanelContent';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { fetchExportProcess } from 'store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import '../../leasing/pages/Installments.css';
+import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Box, Chip, Grid, TextField, Typography } from '@mui/material';
-import { fetchPartnerAdvanceActivities, fetchPartnerAdvanceActivityLeases, setPartnerAdvanceActivitiesLoading, setPartnerAdvanceActivitiesParams } from '../../../store/slices/operation/partnerAdvanceActivitySlice';
-import ListTable from '../../../component/table/ListTable';
-import ExportDialog from '../../../component/feedback/ExportDialog';
+import { Grid } from '@mui/material';
+import { fetchPartnerAdvanceActivities, setPartnerAdvanceActivitiesLoading, setPartnerAdvanceActivitiesParams } from 'store/slices/operation/partnerAdvanceActivitySlice';
+import ListTable from 'component/table/ListTable';
+import ExportDialog from 'component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import WarningIcon from '@mui/icons-material/Warning';
-import PartnerAdvanceActivityDetailPanel from '../components/PartnerAdvanceActivityDetailPanel';
+import PartnerAdvanceActivityDetailPanel from 'features/operation/components/PartnerAdvanceActivityDetailPanel';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

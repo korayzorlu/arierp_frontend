@@ -1,23 +1,21 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInstallments, setInstallmentsLoading, setInstallmentsParams } from '../../../store/slices/leasing/installmentSlice';
-import { setAlert, setDeleteDialog, setImportDialog } from '../../../store/slices/notificationSlice';
-import PanelContent from '../../../component/panel/PanelContent';
-import ListTableServer from '../../../component/table/ListTableServer';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
-import ImportDialog from '../../../component/feedback/ImportDialog';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
+import { fetchInstallments, setInstallmentsLoading, setInstallmentsParams } from 'store/slices/leasing/installmentSlice';
+import { setAlert, setDeleteDialog, setImportDialog } from 'store/slices/notificationSlice';
+import PanelContent from 'component/panel/PanelContent';
+import ListTableServer from 'component/table/ListTableServer';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { fetchImportProcess } from 'store/slices/processSlice';
+import ImportDialog from 'component/feedback/ImportDialog';
+import DeleteDialog from 'component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
-import { darken, Grid, lighten, styled, Typography } from '@mui/material';
-import { DataGridPremium } from '@mui/x-data-grid-premium';
-import './Installments.css';
+import AndroidSwitch from 'component/switch/AndroidSwitch';
+import 'static/css/Installments.css';
 
 function Installment() {
     const {user} = useSelector((store) => store.auth);

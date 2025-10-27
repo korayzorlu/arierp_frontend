@@ -1,20 +1,20 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
-import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
 import { Box, Grid, IconButton } from '@mui/material';
-import ListTable from '../../../component/table/ListTable';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
-import { fetchContractPaymentsInLease, fetchWarningNoticeInformation } from '../../../store/slices/contracts/contractSlice';
+import ListTable from 'component/table/ListTable';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
+import { fetchContractPaymentsInLease, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
-import ContractPaymentDialog from '../../leasing/components/ContractPaymentDialog';
-import { cellProgress } from '../../../component/progress/CellProgress';
+import ContractPaymentDialog from 'component/dialog/ContractPaymentDialog';
+import { cellProgress } from 'component/progress/CellProgress';
 import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from '../../leasing/components/WarningNoticeDialog';
-import OverdueDetailDetailPanel from '../../leasing/components/OverdueDetailPanel';
+import WarningNoticeDialog from 'component/dialog/WarningNoticeDialog';
+import OverdueDetailDetailPanel from 'features/risk/components/OverdueDetailPanel';
 
 function UnderReviewDetailPanel(props) {
     const {uuid, underReviewLeases} = props;

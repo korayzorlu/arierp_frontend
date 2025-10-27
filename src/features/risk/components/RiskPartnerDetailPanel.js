@@ -6,15 +6,14 @@ import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setTr
 import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
 import { Box, Grid, IconButton } from '@mui/material';
 import ListTable from 'component/table/ListTable';
-import CustomTableButton from 'component/table/CustomTableButton';
 import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
 import { fetchContractPaymentsInLease, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
-import ContractPaymentDialog from 'features/leasing/components/ContractPaymentDialog';
+import ContractPaymentDialog from 'component/dialog/ContractPaymentDialog';
 import { cellProgress } from 'component/progress/CellProgress';
 import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from 'features/leasing/components/WarningNoticeDialog';
-import OverdueDetailDetailPanel from 'features/leasing/components/OverdueDetailPanel';
+import WarningNoticeDialog from 'component/dialog/WarningNoticeDialog';
+import OverdueDetailDetailPanel from 'features/risk/components/OverdueDetailPanel';
 import { fetchTradeTransactionsInLease } from 'store/slices/trade/tradeTransactionSlice';
 import TradeTransactionDialog from 'component/dialog/TradeTransactionDialog';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';

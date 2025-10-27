@@ -1,28 +1,26 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUnderReviews, setUnderReviewsLoading, setUnderReviewsParams } from '../../../store/slices/risk/underReviewSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
-import axios from 'axios';
-import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
+import { fetchUnderReviews, setUnderReviewsLoading, setUnderReviewsParams } from 'store/slices/risk/underReviewSlice';
+import { setCallDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import PanelContent from 'component/panel/PanelContent';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { fetchExportProcess } from 'store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
-import ListTableServer from '../../../component/table/ListTableServer';
-import UnderReviewDetailPanel from '../../risk/components/UnderReviewDetailPanel';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
+import ListTableServer from 'component/table/ListTableServer';
+import UnderReviewDetailPanel from 'features/risk/components/UnderReviewDetailPanel';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
-import CallDialog from '../../leasing/components/CallDialog';
-import MessageDialog from '../../leasing/components/MessageDialog';
-import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import CallDialog from 'component/dialog/CallDialog';
+import MessageDialog from 'component/dialog/MessageDialog';
+import { fetchWarningNoticesInLease } from 'store/slices/contracts/contractSlice';
+import AndroidSwitch from 'component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
-import ExportDialog from '../../../component/feedback/ExportDialog';
+import ExportDialog from 'component/feedback/ExportDialog';
 import SmsIcon from '@mui/icons-material/Sms';
-import { gridFilterModelSelector, useGridApiContext, useGridSelector } from '@mui/x-data-grid-premium';
-import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
 function UnderReviews() {
     const {activeCompany} = useSelector((store) => store.organization);

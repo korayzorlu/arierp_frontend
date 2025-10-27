@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import BasicTable from '../../../component/table/BasicTable';
-import { fetchContractPaymentsInLease } from '../../../store/slices/contracts/contractSlice';
+import BasicTable from 'component/table/BasicTable';
+import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 
 function ContractPaymentsInLease(props) {
     const {contract_id,companyName} = props;

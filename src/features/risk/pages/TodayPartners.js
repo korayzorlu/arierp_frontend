@@ -1,42 +1,44 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDepositPartners, setDepositPartnersLoading, setDepositPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
+import { fetchTodayPartners, setTodayPartnersLoading, setTodayPartnersParams } from 'store/slices/leasing/todayPartnerSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
-import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
+import PanelContent from 'component/panel/PanelContent';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, useTheme } from '@mui/material';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
+import DeleteDialog from 'component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
-import ListTableServer from '../../../component/table/ListTableServer';
-import DepositPartnerDetailPanel from '../components/DepositPartnerDetailPanel';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
+import ListTableServer from 'component/table/ListTableServer';
+import TodayPartnerDetailPanel from 'features/risk/components/TodayPartnerDetailPanel';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
-import CallDialog from '../components/CallDialog';
-import MessageDialog from '../components/MessageDialog';
+import CallDialog from 'component/dialog/CallDialog';
+import MessageDialog from 'component/dialog/MessageDialog';
 import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from '../components/WarningNoticeDialog';
-import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import WarningNoticeDialog from 'component/dialog/WarningNoticeDialog';
+import { fetchWarningNoticesInLease } from 'store/slices/contracts/contractSlice';
+import AndroidSwitch from 'component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ExportDialog from '../../../component/feedback/ExportDialog';
-import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import ExportDialog from 'component/feedback/ExportDialog';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import { setRiskPartnersLoading } from 'store/slices/leasing/riskPartnerSlice';
+import { checkSMS, fetchSMSs } from 'store/slices/communication/smsSlice';
 
-function DepositPartners() {
+function TodayPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {depositPartners,depositPartnersCount,depositPartnersParams,depositPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {todayPartners,todayPartnersCount,todayPartnersParams,todayPartnersLoading} = useSelector((store) => store.todayPartner);
+    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const [isPending, startTransition] = useTransition();
     
-    const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
@@ -44,24 +46,21 @@ function DepositPartners() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
-    const [projectOpen, setProjectOpen] = useState(false)
     const [project, setProject] = useState("kizilbuk")
 
     // useEffect(() => {
-    //     dispatch(setDepositPartnersParams({bigger_than_100:true}));
+    //     dispatch(setTodayPartnersParams({bigger_than_100:true}));
     // }, []);
-
-
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}}));
+            dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}}));
         });
 
         
-    }, [activeCompany,depositPartnersParams,dispatch]);
+    }, [activeCompany,todayPartnersParams,dispatch]);
 
-    const depositPartnerColumns = [
+    const todayPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     <Grid container spacing={2}>
@@ -110,6 +109,20 @@ function DepositPartners() {
                     }
                 </Grid>
             </Grid>
+                // params.value
+                // ?
+                //     <Grid container spacing={1} sx={{color: theme.palette.error.main}}>
+                //         <Grid size={12} sx={{textAlign: 'center'}}>
+                //             Ticari
+                //         </Grid>
+                //     </Grid>
+                // :
+                //     <Grid container spacing={1} sx={{ color: theme.palette.primary.main}}>
+                //         <Grid size={12} sx={{textAlign: 'center'}}>
+                //             Tüketici
+                //         </Grid>
+                //     </Grid>
+            
             ),
             renderHeaderFilter: (params) => (
             <SelectHeaderFilter
@@ -124,10 +137,7 @@ function DepositPartners() {
             />
         )
         },
-        { field: 'total_paid', headerName: 'Toplam Ödenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
-        },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>
@@ -155,8 +165,14 @@ function DepositPartners() {
         dispatch(setCallDialog(true));
     };
 
-    const handleMessageDialog = async (params,event) => {
+    const handleMessageDialog = async ({partner_id,crm_code}) => {
+        dispatch(setRiskPartnersLoading(true));
+        await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
+        await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
+        dispatch(setRiskPartnersLoading(false));
+        
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {
@@ -164,57 +180,57 @@ function DepositPartners() {
         dispatch(setWarningNoticeDialog(true));
     };
 
+    const handleAllDelete = async () => {
+        dispatch(setAlert({status:"info",text:"Removing items.."}));
+
+        try {
+
+            const response = await axios.post(`/leasing/delete_all_today_partners/`,
+                { withCredentials: true},
+            );
+        } catch (error) {
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        };
+    };
+
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setDepositPartnersParams({special:value,barter:false,virman:false}));
+        dispatch(setTodayPartnersParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
         setBarterSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeBarterPartners = async (value) => {
-        dispatch(setDepositPartnersParams({barter:value,special:false,virman:false}));
+        dispatch(setTodayPartnersParams({barter:value,special:false,virman:false}));
         setBarterSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeVirmanPartners = async (value) => {
-        dispatch(setDepositPartnersParams({virman:value,special:false,barter:false}));
+        dispatch(setTodayPartnersParams({virman:value,special:false,barter:false}));
         setVirmanSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setBarterSwitchPosition(false);
     };
 
-    const handleChangeField = (field,value) => {
-        setData(data => ({...data, [field]:value}));
-    };
-
     const changeProject = (newValue) => {
         setProject(newValue);
-        dispatch(setDepositPartnersParams({project:newValue}));
-    };
-
-    const handleChangeBiggerThan100 = async (value) => {
-        if(!value){
-            dispatch(setDepositPartnersParams({bigger_than_100:value,overdue_amount:true}));
-        }else{
-            dispatch(setDepositPartnersParams({bigger_than_100:value,overdue_amount:false}));
-        }
-        setBiggerThan100SwitchPosition(value);
+        dispatch(setTodayPartnersParams({project:newValue}));
     };
 
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Gecikmesi Olan Müşteriler"
+                title="Bugün Ödemesi Olan Müşteriler"
                 autoHeight
-                rows={depositPartners}
-                columns={depositPartnerColumns}
+                rows={todayPartners}
+                columns={todayPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={depositPartnersLoading}
+                loading={todayPartnersLoading}
                 customButtons={
-                    <>  
+                    <>
                         <CustomTableButton
                         title="İçe Aktar"
                         onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
@@ -227,7 +243,7 @@ function DepositPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}})).unwrap()}
+                        onClick={() => dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -243,7 +259,7 @@ function DepositPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
-                            disabled={depositPartnersLoading}
+                            disabled={todayPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
@@ -255,62 +271,58 @@ function DepositPartners() {
                     </>
                 }
                 customFilters={
-                    <>  
-                        {/* <AndroidSwitch
-                        label="100'den Büyük Olanlar"
-                        checked={biggerThan100SwitchPosition}
-                        onChange={(value) => handleChangeBiggerThan100(value)}
-                        disabled={biggerThan100SwitchDisabled}
-                        /> */}
-                        <AndroidSwitch
-                        label="Virman Göster"
-                        checked={virmanSwitchPosition}
-                        onChange={(value) => handleChangeVirmanPartners(value)}
-                        />
-                        <AndroidSwitch
-                        label="Barter Göster"
-                        checked={barterSwitchPosition}
-                        onChange={(value) => handleChangeBarterPartners(value)}
-                        />
-                        {/* <AndroidSwitch
-                        label="Özel Müşterileri Göster"
-                        checked={specialSwitchPosition}
-                        onChange={(value) => handleChangeSpecialPartners(value)}
-                        /> */}
-                    </>
-                }
-                rowCount={depositPartnersCount}
-                setParams={(value) => dispatch(setDepositPartnersParams(value))}
+                <>  
+                    {/* <AndroidSwitch
+                    label="100'den Büyük Olanlar"
+                    checked={biggerThan100SwitchPosition}
+                    onChange={(value) => handleChangeBiggerThan100(value)}
+                    disabled={biggerThan100SwitchDisabled}
+                    /> */}
+                    <AndroidSwitch
+                    label="Virman Göster"
+                    checked={virmanSwitchPosition}
+                    onChange={(value) => handleChangeVirmanPartners(value)}
+                    />
+                    <AndroidSwitch
+                    label="Barter Göster"
+                    checked={barterSwitchPosition}
+                    onChange={(value) => handleChangeBarterPartners(value)}
+                    />
+                </>
+                
+            }
+                rowCount={todayPartnersCount}
+                setParams={(value) => dispatch(setTodayPartnersParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
-                //sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchDepositPartners({activeCompany,params:depositPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<DepositPartnerDetailPanel uuid={params.row.uuid} depositPartnerLeases={params.row.leases}></DepositPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<TodayPartnerDetailPanel uuid={params.row.uuid} todayPartnerLeases={params.row.leases.leases}></TodayPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_risk_partners/"
+            deleteURL="/leasing/delete_today_partners/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setDepositPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchDepositPartners({activeCompany,params:depositPartnersParams}));dispatch(setDepositPartnersLoading(false));}}
+            startEvent={() => dispatch(setTodayPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));dispatch(setTodayPartnersLoading(false));}}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_deposite_partners/"
-            startEvent={() => dispatch(setDepositPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}}));dispatch(setDepositPartnersLoading(false));}}
+            exportURL="/leasing/export_today_partners/"
+            startEvent={() => dispatch(setTodayPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}}));dispatch(setTodayPartnersLoading(false));}}
             project={project}
             />
             <CallDialog/>
             <MessageDialog/>
+            <WarningNoticeDialog/>
         </PanelContent>
     )
 }
 
-export default DepositPartners
+export default TodayPartners

@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchCountries, fetchCurrencies } from '../../../store/slices/dataSlice';
-import { deletePartner, fetchPartner } from '../../../store/slices/partners/partnerSlice';
-import { deleteLease, fetchLease, updateLease } from '../../../store/slices/leasing/leaseSlice';
+import { fetchCountries, fetchCurrencies } from 'store/slices/dataSlice';
+import { deleteLease, fetchLease, updateLease } from 'store/slices/leasing/leaseSlice';
 import { Dialog, Divider, Grid, Paper, Stack, Tab, Tabs, TextField } from '@mui/material';
-import FormHeader from '../../../component/header/FormHeader';
-import { setDialog } from '../../../store/slices/notificationSlice';
-import PartnerSelect from '../../../component/select/PartnerSelect';
-import CurrencySelect from '../../../component/select/CurrencySelect';
-import InstallmentsInLease from '../components/InstallmentsInLease';
+import FormHeader from 'component/header/FormHeader';
+import { setDialog } from 'store/slices/notificationSlice';
+import InstallmentsInLease from 'features/leasing/components/InstallmentsInLease';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PaidIcon from '@mui/icons-material/Paid';
-import TabPanel from '../../../component/tab/TabPanel';
-import ContractPaymentsInLease from '../components/ContractPaymentsInLease';
+import TabPanel from 'component/tab/TabPanel';
+import ContractPaymentsInLease from 'features/leasing/components/ContractPaymentsInLease';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import TradeTransactionsInLease from '../components/TradeTransactionsInLease';
+import TradeTransactionsInLease from 'features/leasing/components/TradeTransactionsInLease';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);

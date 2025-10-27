@@ -1,69 +1,57 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRiskPartners, fetchToTerminatedRiskPartners, setRiskPartnersLoading, setToTerminatedRiskPartnersLoading, setToTerminatedRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
+import { fetchRiskPartners, fetchRiskPartnersKDV, setRiskPartnersKDVLoading, setRiskPartnersKDVParams, setRiskPartnersLoading, setRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
-import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
+import PanelContent from 'component/panel/PanelContent';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
+import DeleteDialog from 'component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
-import ListTableServer from '../../../component/table/ListTableServer';
-import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
+import ListTableServer from 'component/table/ListTableServer';
+import RiskPartnerKDVDetailPanel from 'features/risk/components/RiskPartnerKDVDetailPanel';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
-import CallDialog from '../components/CallDialog';
-import MessageDialog from '../components/MessageDialog';
+import CallDialog from 'component/dialog/CallDialog';
+import MessageDialog from 'component/dialog/MessageDialog';
 import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from '../components/WarningNoticeDialog';
-import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import WarningNoticeDialog from 'component/dialog/WarningNoticeDialog';
+import { fetchWarningNoticesInLease } from 'store/slices/contracts/contractSlice';
+import AndroidSwitch from 'component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
-import ExportDialog from '../../../component/feedback/ExportDialog';
-import SmsIcon from '@mui/icons-material/Sms';
-import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
-import { checkSMS, fetchSMSs } from '../../../store/slices/communication/smsSlice';
-import SendSMSDialog from '../components/SendSMSDialog';
+import ExportDialog from 'component/feedback/ExportDialog';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
-function ToTerminatedRiskPartners() {
+function RiskPartnersKDV() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {toTerminatedRiskPartners,toTerminatedRiskPartnersCount,toTerminatedRiskPartnersParams,toTerminatedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
-    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
+    const {riskPartnersKDV,riskPartnersKDVCount,riskPartnersKDVParams,riskPartnersKDVLoading} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
     const [isPending, startTransition] = useTransition();
     
-    const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [switchDisabled, setSwitchDisabled] = useState(false);
-    const [overdueTerminatedSwitchPosition, setOverdueTerminatedSwitchPosition] = useState(false);
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
     const [barterSwitchPosition, setBarterSwitchPosition] = useState(false);
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [project, setProject] = useState("kizilbuk")
-    const [exportURL, setExportURL] = useState("")
-
-    // useEffect(() => {
-    //     dispatch(setToTerminatedRiskPartnersParams({bigger_than_100:true}));
-    // }, []);
-
 
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}}));
+            dispatch(fetchRiskPartnersKDV({activeCompany,params:{...riskPartnersKDVParams,project}}));
         });
 
         
-    }, [activeCompany,toTerminatedRiskPartnersParams,dispatch]);
+    }, [activeCompany,riskPartnersKDVParams,dispatch]);
 
     const riskPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
@@ -128,12 +116,7 @@ function ToTerminatedRiskPartners() {
             />
         )
         },
-        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
-            // valueOptions: [
-            //     { value: '0', label: '30 Günü Geçmeyenler' },
-            //     { value: '30', label: '30 Günü Geçenler' },    
-            // ],
-            cellClassName: (params) => {
+        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Gün', flex: 2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 if (params.value <= 30){
                     return 'bg-yellow'
                 } else if (params.value > 30 && params.value <= 60){
@@ -145,10 +128,10 @@ function ToTerminatedRiskPartners() {
                 }
             }
         },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>
@@ -156,7 +139,7 @@ function ToTerminatedRiskPartners() {
                     </IconButton>
                 </Grid>
                 <Grid size={6} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={() => handleMessageDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}>
+                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
                         <MessageIcon />
                     </IconButton>
                 </Grid>
@@ -176,12 +159,8 @@ function ToTerminatedRiskPartners() {
         dispatch(setCallDialog(true));
     };
 
-    const handleMessageDialog = async ({partner_id,crm_code}) => {
-        await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
-        await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
-        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+    const handleMessageDialog = async (params,event) => {
         dispatch(setMessageDialog(true));
-        
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {
@@ -189,66 +168,79 @@ function ToTerminatedRiskPartners() {
         dispatch(setWarningNoticeDialog(true));
     };
 
-    const handleChangeOverdueTerminatedPartners = async (value) => {
-        dispatch(setToTerminatedRiskPartnersParams({overdue_terminated:value}));
-        setOverdueTerminatedSwitchPosition(value);
+    const handleAllDelete = async () => {
+        dispatch(setAlert({status:"info",text:"Removing items.."}));
+
+        try {
+
+            const response = await axios.post(`/leasing/delete_all_risk_partners/`,
+                { withCredentials: true},
+            );
+        } catch (error) {
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        };
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setToTerminatedRiskPartnersParams({special:value,barter:false,virman:false}));
+        dispatch(setRiskPartnersKDVParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
         setBarterSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeBarterPartners = async (value) => {
-        dispatch(setToTerminatedRiskPartnersParams({barter:value,special:false,virman:false}));
+        dispatch(setRiskPartnersKDVParams({barter:value,special:false,virman:false}));
         setBarterSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeVirmanPartners = async (value) => {
-        dispatch(setToTerminatedRiskPartnersParams({virman:value,special:false,barter:false}));
+        dispatch(setRiskPartnersKDVParams({virman:value,special:false,barter:false}));
         setVirmanSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setBarterSwitchPosition(false);
     };
 
+    const handleChangeBiggerThan100 = async (value) => {
+        if(!value){
+            dispatch(setRiskPartnersKDVParams({bigger_than_100:value,overdue_amount:true}));
+        }else{
+            dispatch(setRiskPartnersKDVParams({bigger_than_100:value,overdue_amount:false}));
+        }
+        setBiggerThan100SwitchPosition(value);
+    };
+
     const changeProject = (newValue) => {
         setProject(newValue);
-        dispatch(setToTerminatedRiskPartnersParams({project:newValue}));
+        dispatch(setRiskPartnersKDVParams({project:newValue}));
     };
 
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Sözleşmesi Fesih Edilecek Müşteriler"
-                rows={toTerminatedRiskPartners}
+                title="KDV Farkı Uygulanan Müşteriler"
+                autoHeight
+                rows={riskPartnersKDV}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={toTerminatedRiskPartnersLoading}
+                loading={riskPartnersKDVLoading}
                 customButtons={
                     <>
                         <CustomTableButton
-                        title="Excel Hazırla ve İndir"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_terminated_risk_partners/")}}
-                        icon={<DownloadIcon fontSize="small"/>}
+                        title="İçe Aktar"
+                        onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
+                        icon={<UploadFileIcon fontSize="small"/>}
                         />
-                        {/* <CustomTableButton
-                        title="SMS İçin Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_terminated_risk_partners_for_sms/")}}
-                        icon={<SmsIcon fontSize="small"/>}
-                        /> */}
                         <CustomTableButton
-                        title="Toplu SMS Gönder"
-                        onClick={() => {dispatch(setSendSMSDialog(true));}}
-                        icon={<SmsIcon fontSize="small"/>}
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}})).unwrap()}
+                        onClick={() => dispatch(fetchRiskPartnersKDV({activeCompany,params:{...riskPartnersKDVParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -264,7 +256,7 @@ function ToTerminatedRiskPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
-                            disabled={toTerminatedRiskPartnersLoading}
+                            disabled={riskPartnersKDVLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
@@ -283,11 +275,6 @@ function ToTerminatedRiskPartners() {
                     onChange={(value) => handleChangeBiggerThan100(value)}
                     disabled={biggerThan100SwitchDisabled}
                     /> */}
-                    {/* <AndroidSwitch
-                    label="Fesih Tarihi Gelenler"
-                    checked={overdueTerminatedSwitchPosition}
-                    onChange={(value) => handleChangeOverdueTerminatedPartners(value)}
-                    /> */}
                     <AndroidSwitch
                     label="Virman Göster"
                     checked={virmanSwitchPosition}
@@ -301,45 +288,38 @@ function ToTerminatedRiskPartners() {
                 </>
                 
             }
-                rowCount={toTerminatedRiskPartnersCount}
-                setParams={(value) => dispatch(setToTerminatedRiskPartnersParams(value))}
+                rowCount={riskPartnersKDVCount}
+                setParams={(value) => dispatch(setRiskPartnersKDVParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
-                //sortModel={[{ field: 'overdue_days', sort: 'desc' }]}
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerKDVDetailPanel uuid={params.row.uuid} riskPartnerKDVLeases={params.row.leases}></RiskPartnerKDVDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
             deleteURL="/leasing/delete_risk_partners/"
             selectedItems={selectedItems}
-            startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
+            startEvent={() => dispatch(setRiskPartnersKDVLoading(true))}
+            finalEvent={() => {dispatch(fetchRiskPartnersKDV({activeCompany,params:riskPartnersKDVParams}));dispatch(setRiskPartnersKDVLoading(false));}}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL={exportURL}
-            startEvent={() => dispatch(setToTerminatedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}}));dispatch(setToTerminatedRiskPartnersLoading(false));}}
+            exportURL="/leasing/export_kdv_risk_partners/"
+            startEvent={() => dispatch(setRiskPartnersKDVLoading(true))}
+            finalEvent={() => {dispatch(fetchRiskPartnersKDV({activeCompany,params:{...riskPartnersKDVParams,project}}));dispatch(setRiskPartnersKDVLoading(false));}}
             project={project}
             />
             <CallDialog/>
-            <SendSMSDialog
-            risk_status="to_terminated"
-            project={project}
-            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden fesih uyarısı için kısa mesaj gönderilecektir."
-            example={`Değerli müşterimiz, {{proje}} projesi’ne ait {{tarih}} son ödeme tarihli {{tutar}} TL ihtar bakiyeniz bulunmaktadır. Fesih sürecindeki ödemenizi gerçekleştirmenizi rica ederiz. Ödeme yapıldıysa mesajı dikkate almayınız. Arı Finansal Kiralama Tel:02123102721 Mernis No:0147005285500018`}
-            />
-            <WarningNoticeDialog/>
             <MessageDialog/>
+            <WarningNoticeDialog/>
         </PanelContent>
     )
 }
 
-export default ToTerminatedRiskPartners
+export default RiskPartnersKDV

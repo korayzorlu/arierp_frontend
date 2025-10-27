@@ -1,25 +1,22 @@
 import { Box, IconButton } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
-import ListTable from '../../../component/table/ListTable';
+import ListTable from 'component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOverdueInformation, setLeaseOverdues, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setAddPartnerAdvanceActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setOverdueDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
-import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { setIsProgress } from '../../../store/slices/processSlice';
+import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { setAddPartnerAdvanceActivityLeaseDialog, setAlert, setContractPaymentDialog, setInstallmentDialog, setPartnerDialog } from 'store/slices/notificationSlice';
+import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
 import axios from 'axios';
-import CustomTableButton from '../../../component/table/CustomTableButton';
+import CustomTableButton from 'component/table/CustomTableButton';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { fetchPartnerAdvanceActivity, setPartnerAdvanceActivitiesLoading, updateLeaseflexAutomationPartnerAdvanceActivityLeases } from '../../../store/slices/operation/partnerAdvanceActivitySlice';
-import ImportDialog from '../../../component/feedback/ImportDialog';
-import AddPartnerAdvanceActivityLeaseDialog from '../../../component/feedback/AddPartnerAdvanceActivityLeaseDialog';
-import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
+import { fetchPartnerAdvanceActivity, setPartnerAdvanceActivitiesLoading, updateLeaseflexAutomationPartnerAdvanceActivityLeases } from 'store/slices/operation/partnerAdvanceActivitySlice';
+import AddPartnerAdvanceActivityLeaseDialog from 'component/feedback/AddPartnerAdvanceActivityLeaseDialog';
+import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
-import OverdueDialog from '../../../component/dialog/OverdueDialog';
-import { amountFormatter, parseLocalizedAmount } from '../../../utils/floatUtils';
-import ContractPaymentDialog from '../../leasing/components/ContractPaymentDialog';
-import OverdueDetailDetailPanel from '../../leasing/components/OverdueDetailPanel';
+import { parseLocalizedAmount } from 'utils/floatUtils';
+import ContractPaymentDialog from 'component/dialog/ContractPaymentDialog';
+import OverdueDetailDetailPanel from 'features/risk/components/OverdueDetailPanel';
 
 function PartnerAdvanceActivityDetailPanel(props) {
     const {uuid,partner_advance_activity_leases,onOpen} = props;

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setIsProgress } from '../../../store/slices/processSlice';
-import { fetchCountries, fetchCurrencies } from '../../../store/slices/dataSlice';
-import { addLease } from '../../../store/slices/leasing/leaseSlice';
+import { setIsProgress } from 'store/slices/processSlice';
+import { fetchCountries, fetchCurrencies } from 'store/slices/dataSlice';
+import { addLease } from 'store/slices/leasing/leaseSlice';
 import { Divider, Grid, Paper, Stack, TextField } from '@mui/material';
-import FormHeader from '../../../component/header/FormHeader';
-import PartnerSelect from '../../../component/select/PartnerSelect';
-import CurrencySelect from '../../../component/select/CurrencySelect';
+import FormHeader from 'component/header/FormHeader';
+import PartnerSelect from 'component/select/PartnerSelect';
+import CurrencySelect from 'component/select/CurrencySelect';
 
 function AddLease() {
     const {user,dark} = useSelector((store) => store.auth);

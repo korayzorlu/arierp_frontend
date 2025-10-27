@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import BasicTable from '../../../component/table/BasicTable';
-import { fetchTradeTransactionsInLease } from '../../../store/slices/trade/tradeTransactionSlice';
+import BasicTable from 'component/table/BasicTable';
+import { fetchTradeTransactionsInLease } from 'store/slices/trade/tradeTransactionSlice';
 import { Typography } from '@mui/material';
 
 function TradeTransactionsInLease(props) {

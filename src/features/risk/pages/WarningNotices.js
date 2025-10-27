@@ -1,12 +1,10 @@
-import { useGridApiRef } from '@mui/x-data-grid';
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWarningNotices, setWarningNoticesParams } from '../../../store/slices/contracts/contractSlice';
-import PanelContent from '../../../component/panel/PanelContent';
+import { fetchWarningNotices, setWarningNoticesParams } from 'store/slices/contracts/contractSlice';
+import PanelContent from 'component/panel/PanelContent';
 import { Grid } from '@mui/material';
-import ListTableServer from '../../../component/table/ListTableServer';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
+import ListTableServer from 'component/table/ListTableServer';
+import CustomTableButton from 'component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 function WarningNotices() {

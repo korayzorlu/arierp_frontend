@@ -1,39 +1,31 @@
-import { useGridApiRef } from '@mui/x-data-grid';
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRiskPartners, fetchToWarnedRiskPartners, setRiskPartnersLoading, setToWarnedRiskPartnersLoading, setToWarnedRiskPartnersParams } from '../../../store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
-import axios from 'axios';
-import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
+import { fetchDepositPartners, setDepositPartnersLoading, setDepositPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
+import { setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import PanelContent from 'component/panel/PanelContent';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
+import DeleteDialog from 'component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
-import ListTableServer from '../../../component/table/ListTableServer';
-import RiskPartnerDetailPanel from '../components/RiskPartnerDetailPanel';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
+import ListTableServer from 'component/table/ListTableServer';
+import DepositPartnerDetailPanel from 'features/risk/components/DepositPartnerDetailPanel';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
-import CallDialog from '../components/CallDialog';
-import MessageDialog from '../components/MessageDialog';
-import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from '../components/WarningNoticeDialog';
-import { fetchWarningNoticesInLease } from '../../../store/slices/contracts/contractSlice';
-import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import CallDialog from 'component/dialog/CallDialog';
+import MessageDialog from 'component/dialog/MessageDialog';
+import { fetchWarningNoticesInLease } from 'store/slices/contracts/contractSlice';
+import AndroidSwitch from 'component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
-import ExportDialog from '../../../component/feedback/ExportDialog';
-import SmsIcon from '@mui/icons-material/Sms';
-import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
-import { checkSMS, fetchSMSs } from '../../../store/slices/communication/smsSlice';
-import SendSMSDialog from '../components/SendSMSDialog';
+import ExportDialog from 'component/feedback/ExportDialog';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
-function ToWarnedRiskPartners() {
+function DepositPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {toWarnedRiskPartners,toWarnedRiskPartnersCount,toWarnedRiskPartnersParams,toWarnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
-    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
+    const {depositPartners,depositPartnersCount,depositPartnersParams,depositPartnersLoading} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
@@ -47,24 +39,24 @@ function ToWarnedRiskPartners() {
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
+    const [projectOpen, setProjectOpen] = useState(false)
     const [project, setProject] = useState("kizilbuk")
-    const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
-    //     dispatch(setToWarnedRiskPartnersParams({bigger_than_100:true}));
+    //     dispatch(setDepositPartnersParams({bigger_than_100:true}));
     // }, []);
 
 
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}}))
+            dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}}));
         });
 
         
-    }, [activeCompany,toWarnedRiskPartnersParams,dispatch]);
+    }, [activeCompany,depositPartnersParams,dispatch]);
 
-    const riskPartnerColumns = [
+    const depositPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     <Grid container spacing={2}>
@@ -127,27 +119,10 @@ function ToWarnedRiskPartners() {
             />
         )
         },
-        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
-            // valueOptions: [
-            //     { value: '0', label: '30 Günü Geçmeyenler' },
-            //     { value: '30', label: '30 Günü Geçenler' },    
-            // ],
-            cellClassName: (params) => {
-                if (params.value <= 30){
-                    return 'bg-yellow'
-                } else if (params.value > 30 && params.value <= 60){
-                    return 'bg-orange'
-                } else if (params.value > 60 && params.value <= 90){
-                    return 'bg-light-red'
-                } else if (params.value > 90){
-                    return 'bg-dark-red'
-                }
-            }
-        },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
+        { field: 'total_paid', headerName: 'Toplam Ödenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>
@@ -155,7 +130,7 @@ function ToWarnedRiskPartners() {
                     </IconButton>
                 </Grid>
                 <Grid size={6} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={() => handleMessageDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}>
+                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
                         <MessageIcon />
                     </IconButton>
                 </Grid>
@@ -175,12 +150,8 @@ function ToWarnedRiskPartners() {
         dispatch(setCallDialog(true));
     };
 
-    const handleMessageDialog = async ({partner_id,crm_code}) => {
-        await dispatch(checkSMS({data:{uuid:partner_id}})).unwrap();
-        await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
-        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+    const handleMessageDialog = async (params,event) => {
         dispatch(setMessageDialog(true));
-        
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {
@@ -189,60 +160,69 @@ function ToWarnedRiskPartners() {
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({special:value,barter:false,virman:false}));
+        dispatch(setDepositPartnersParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
         setBarterSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeBarterPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({barter:value,special:false,virman:false}));
+        dispatch(setDepositPartnersParams({barter:value,special:false,virman:false}));
         setBarterSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeVirmanPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({virman:value,special:false,barter:false}));
+        dispatch(setDepositPartnersParams({virman:value,special:false,barter:false}));
         setVirmanSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setBarterSwitchPosition(false);
     };
 
+    const handleChangeField = (field,value) => {
+        setData(data => ({...data, [field]:value}));
+    };
+
     const changeProject = (newValue) => {
         setProject(newValue);
-        dispatch(setToWarnedRiskPartnersParams({project:newValue}));
+        dispatch(setDepositPartnersParams({project:newValue}));
+    };
+
+    const handleChangeBiggerThan100 = async (value) => {
+        if(!value){
+            dispatch(setDepositPartnersParams({bigger_than_100:value,overdue_amount:true}));
+        }else{
+            dispatch(setDepositPartnersParams({bigger_than_100:value,overdue_amount:false}));
+        }
+        setBiggerThan100SwitchPosition(value);
     };
 
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="İhtar Çekilecek Müşteriler"
-                rows={toWarnedRiskPartners}
-                columns={riskPartnerColumns}
+                title="Gecikmesi Olan Müşteriler"
+                autoHeight
+                rows={depositPartners}
+                columns={depositPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={toWarnedRiskPartnersLoading}
+                loading={depositPartnersLoading}
                 customButtons={
-                    <>
+                    <>  
                         <CustomTableButton
-                        title="Sözleşme Bazında Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_warned_risk_partners/")}}
-                        icon={<DownloadIcon fontSize="small"/>}
+                        title="İçe Aktar"
+                        onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
+                        icon={<UploadFileIcon fontSize="small"/>}
                         />
-                        {/* <CustomTableButton
-                        title="SMS İçin Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_warned_risk_partners_for_sms/")}}
-                        icon={<SmsIcon fontSize="small"/>}
-                        /> */}
                         <CustomTableButton
-                        title="Toplu SMS Gönder"
-                        onClick={() => {dispatch(setSendSMSDialog(true));}}
-                        icon={<SmsIcon fontSize="small"/>}
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}})).unwrap()}
+                        onClick={() => dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -258,7 +238,7 @@ function ToWarnedRiskPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
-                            disabled={toWarnedRiskPartnersLoading}
+                            disabled={depositPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
@@ -270,28 +250,32 @@ function ToWarnedRiskPartners() {
                     </>
                 }
                 customFilters={
-                <>  
-                    {/* <AndroidSwitch
-                    label="100'den Büyük Olanlar"
-                    checked={biggerThan100SwitchPosition}
-                    onChange={(value) => handleChangeBiggerThan100(value)}
-                    disabled={biggerThan100SwitchDisabled}
-                    /> */}
-                    <AndroidSwitch
-                    label="Virman Göster"
-                    checked={virmanSwitchPosition}
-                    onChange={(value) => handleChangeVirmanPartners(value)}
-                    />
-                    <AndroidSwitch
-                    label="Barter Göster"
-                    checked={barterSwitchPosition}
-                    onChange={(value) => handleChangeBarterPartners(value)}
-                    />
-                </>
-                
-            }
-                rowCount={toWarnedRiskPartnersCount}
-                setParams={(value) => dispatch(setToWarnedRiskPartnersParams(value))}
+                    <>  
+                        {/* <AndroidSwitch
+                        label="100'den Büyük Olanlar"
+                        checked={biggerThan100SwitchPosition}
+                        onChange={(value) => handleChangeBiggerThan100(value)}
+                        disabled={biggerThan100SwitchDisabled}
+                        /> */}
+                        <AndroidSwitch
+                        label="Virman Göster"
+                        checked={virmanSwitchPosition}
+                        onChange={(value) => handleChangeVirmanPartners(value)}
+                        />
+                        <AndroidSwitch
+                        label="Barter Göster"
+                        checked={barterSwitchPosition}
+                        onChange={(value) => handleChangeBarterPartners(value)}
+                        />
+                        {/* <AndroidSwitch
+                        label="Özel Müşterileri Göster"
+                        checked={specialSwitchPosition}
+                        onChange={(value) => handleChangeSpecialPartners(value)}
+                        /> */}
+                    </>
+                }
+                rowCount={depositPartnersCount}
+                setParams={(value) => dispatch(setDepositPartnersParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
@@ -299,29 +283,29 @@ function ToWarnedRiskPartners() {
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toWarnedRiskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchDepositPartners({activeCompany,params:depositPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<DepositPartnerDetailPanel uuid={params.row.uuid} depositPartnerLeases={params.row.leases}></DepositPartnerDetailPanel>)}}
                 />
             </Grid>
+            <DeleteDialog
+            handleClose={() => dispatch(setDeleteDialog(false))}
+            deleteURL="/leasing/delete_risk_partners/"
+            selectedItems={selectedItems}
+            startEvent={() => dispatch(setDepositPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchDepositPartners({activeCompany,params:depositPartnersParams}));dispatch(setDepositPartnersLoading(false));}}
+            />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL={exportURL}
-            startEvent={() => dispatch(setToWarnedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}}));dispatch(setToWarnedRiskPartnersLoading(false));}}
+            exportURL="/leasing/export_deposite_partners/"
+            startEvent={() => dispatch(setDepositPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchDepositPartners({activeCompany,params:{...depositPartnersParams,project}}));dispatch(setDepositPartnersLoading(false));}}
             project={project}
             />
             <CallDialog/>
-            <SendSMSDialog
-            risk_status="to_warned"
-            project={project}
-            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması ve ihtar uyarısı için kısa mesaj gönderilecektir."
-            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün itibari ile ihtarname süreci başlatılmıştır. ${project === 'sinpas' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
-            />
-            <WarningNoticeDialog/>
             <MessageDialog/>
         </PanelContent>
     )
 }
 
-export default ToWarnedRiskPartners
+export default DepositPartners

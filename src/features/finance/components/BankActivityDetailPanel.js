@@ -1,26 +1,19 @@
 import { Box, IconButton } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
-import ListTable from '../../../component/table/ListTable';
+import ListTable from 'component/table/ListTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOverdueInformation, setLeaseOverdues, setLeasesLoading, setLeasesParams } from '../../../store/slices/leasing/leaseSlice';
-import { fetchPartnerInformation } from '../../../store/slices/partners/partnerSlice';
-import { setAddBankActivityLeaseDialog, setAlert, setContractPaymentDialog, setImportDialog, setInstallmentDialog, setOverdueDialog, setPartnerDialog } from '../../../store/slices/notificationSlice';
-import { fetchInstallmentInformation, setInstallmentsLoading } from '../../../store/slices/leasing/installmentSlice';
-import { updateLeaseflexAutomationBankActivityLeases } from '../../../store/slices/leasing/collectionSlice';
-import { setIsProgress } from '../../../store/slices/processSlice';
-import axios from 'axios';
-import CustomTableButton from '../../../component/table/CustomTableButton';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { fetchBankActivities, fetchBankActivity, fetchBankActivityLeases, setBankActivitiesLoading } from '../../../store/slices/leasing/bankActivitySlice';
-import ImportDialog from '../../../component/feedback/ImportDialog';
-import AddBankActivityLeaseDialog from '../../../component/feedback/AddPartnerAdvanceActivityLeaseDialog';
-import { fetchContractPaymentsInLease, setContractPaymentsInLeaseCode, setContractPaymentsParams } from '../../../store/slices/contracts/contractSlice';
+import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
+import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog } from 'store/slices/notificationSlice';
+import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
+import { updateLeaseflexAutomationBankActivityLeases } from 'store/slices/leasing/collectionSlice';
+import { fetchBankActivity } from 'store/slices/leasing/bankActivitySlice';
+import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
-import OverdueDialog from '../../../component/dialog/OverdueDialog';
-import { amountFormatter, parseLocalizedAmount } from '../../../utils/floatUtils';
-import OverdueDetailDetailPanel from '../../leasing/components/OverdueDetailPanel';
-import ContractPaymentDialog from '../../leasing/components/ContractPaymentDialog';
+import { parseLocalizedAmount } from 'utils/floatUtils';
+import OverdueDetailDetailPanel from 'features/risk/components/OverdueDetailPanel';
+import ContractPaymentDialog from 'component/dialog/ContractPaymentDialog';
 
 function BankActivityDetailPanel(props) {
     const {uuid,bank_activity_leases,onOpen} = props;

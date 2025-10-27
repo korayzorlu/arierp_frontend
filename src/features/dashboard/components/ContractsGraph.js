@@ -3,7 +3,7 @@ import React, { startTransition, useEffect } from 'react'
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@emotion/react';
-import { fetchContractsSummary } from '../../../store/slices/contracts/contractSlice';
+import { fetchContractsSummary } from 'store/slices/contracts/contractSlice';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 function ContractsGraph() {
