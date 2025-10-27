@@ -137,7 +137,6 @@ function TomorrowPartners() {
             </Grid>
             )
         },
-        { field: 's', headerName: 'Statü', flex: 2 },
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -289,7 +288,7 @@ function TomorrowPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchTomorrowPartners({activeCompany,params:tomorrowPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<TomorrowPartnerDetailPanel uuid={params.row.uuid} tomorrowPartnerLeases={params.row.leases}></TomorrowPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<TomorrowPartnerDetailPanel uuid={params.row.uuid} tomorrowPartnerLeases={params.row.leases.leases}></TomorrowPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog

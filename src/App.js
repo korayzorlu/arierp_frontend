@@ -86,7 +86,7 @@ import LedgerAccounts from './features/ledger/pages/LedgerAccounts.js';
 import AddLease from './features/leasing/pages/AddLease.js';
 import UpdateLease from './features/leasing/pages/UpdateLease.js';
 import Collections from './features/leasing/pages/Collections.js';
-import RiskPartners from './features/leasing/pages/RiskPartners.js';
+import RiskPartners from './features/risk/pages/RiskPartners.js';
 import ContractPayments from './features/contracts/pages/ContractPayments.js';
 import OverdueLeases from './features/leasing/pages/OverdueLeases.js';
 import WarningNotices from './features/leasing/pages/WarningNotices.js';

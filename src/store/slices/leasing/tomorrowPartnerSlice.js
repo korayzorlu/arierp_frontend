@@ -19,7 +19,7 @@ const initialState = {
 
 export const fetchTomorrowPartners = createAsyncThunk('auth/fetchTomorrowPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.get(`/leasing/tomorrow_partners/?ac=${activeCompany.id}`,
+        const response = await axios.get(`/risk/tomorrow_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -35,7 +35,7 @@ export const fetchTomorrowPartners = createAsyncThunk('auth/fetchTomorrowPartner
 export const fetchTomorrowPartner = createAsyncThunk('auth/fetchTomorrowPartner', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
     dispatch(setIsProgress(true));
     try {
-        const response = await axios.get(`/leasing/tomorrow_partners/?ac=${activeCompany.id}`,
+        const response = await axios.get(`/risk/tomorrow_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}

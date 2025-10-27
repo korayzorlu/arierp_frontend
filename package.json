@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:8000",
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@datatables.net/editor-dt": "^2.3.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

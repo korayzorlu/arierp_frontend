@@ -5,7 +5,7 @@ import { fetchTodayPartners, setTodayPartnersLoading, setTodayPartnersParams } f
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from '../../../store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, useTheme } from '@mui/material';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
@@ -35,6 +35,7 @@ function TodayPartners() {
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const [isPending, startTransition] = useTransition();
     
@@ -108,6 +109,20 @@ function TodayPartners() {
                     }
                 </Grid>
             </Grid>
+                // params.value
+                // ?
+                //     <Grid container spacing={1} sx={{color: theme.palette.error.main}}>
+                //         <Grid size={12} sx={{textAlign: 'center'}}>
+                //             Ticari
+                //         </Grid>
+                //     </Grid>
+                // :
+                //     <Grid container spacing={1} sx={{ color: theme.palette.primary.main}}>
+                //         <Grid size={12} sx={{textAlign: 'center'}}>
+                //             Tüketici
+                //         </Grid>
+                //     </Grid>
+            
             ),
             renderHeaderFilter: (params) => (
             <SelectHeaderFilter
@@ -137,7 +152,6 @@ function TodayPartners() {
             </Grid>
             )
         },
-        { field: 's', headerName: 'Statü', flex: 2 },
     ]
 
     const handleProfileDialog = async (params,event) => {
@@ -287,7 +301,7 @@ function TodayPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchTodayPartners({activeCompany,params:todayPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<TodayPartnerDetailPanel uuid={params.row.uuid} todayPartnerLeases={params.row.leases}></TodayPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<TodayPartnerDetailPanel uuid={params.row.uuid} todayPartnerLeases={params.row.leases.leases}></TodayPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
