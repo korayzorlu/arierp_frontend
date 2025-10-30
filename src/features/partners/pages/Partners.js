@@ -84,8 +84,26 @@ function Partners() {
         { field: 'customerCode', headerName: 'Müşteri Kodu', flex: 1},
         { field: 'crmCode', headerName: 'CRM Kodu', flex: 1},
         { field: 'tcVknNo', headerName: 'TC/VKN No', flex: 2 },
-        { field: 'country_name', headerName: 'Ülke', flex: 1 },
-        { field: 'city_name', headerName: 'Şehir', flex: 1 },
+        { field: 'kep', headerName: 'Kep Adresi', flex: 2 },
+        { field: 'is_turkkep', headerName: 'Kep Var mı?', flex: 1,
+            renderCell: (params) => (
+                <>
+                    {params.value ? "Var" : ""}
+                </>
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'true', label: 'Var' },
+                    { value: 'false', label: 'Yok' },
+                ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
+                />
+            )
+         },
         // { field: 'address', headerName: 'Adres', flex: 4, renderCell: (params) => (
         //     <>
         //         {params.value} {params.row.address2}

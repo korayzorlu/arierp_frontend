@@ -111,6 +111,15 @@ function PartnerDialog(props) {
                         disabled={false}
                         fullWidth
                         />
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Kep Adresi"}
+                        variant='standard'
+                        value={partnerInformation.kep}
+                        disabled={false}
+                        fullWidth
+                        />
                     </Stack>
                 </DialogContentText>
             </DialogContent>

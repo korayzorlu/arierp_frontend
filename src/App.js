@@ -71,6 +71,10 @@ import BankaTahsilatlari from './features/converters/pages/BankaTahsilatlari.js'
 import BankaTahsilatlariOdoo from './features/converters/pages/BankaTahsilatlariOdoo.js';
 import BankaHareketleri from './features/converters/pages/BankaHareketleri.js';
 
+//projects
+import Parcels from './features/project/pages/Parcels.js';
+import RealEstates from './features/project/pages/RealEstates.js';
+
 import { LicenseInfo } from '@mui/x-license';
 import Sectors from './features/partners/pages/Sectors.js';
 import AddSector from './features/partners/pages/AddSector.js';
@@ -251,7 +255,10 @@ function App() {
                   <Route path='/tuketici-partners' element={<TuketiciPartners></TuketiciPartners>}></Route>
                   <Route path='/ticari-partners' element={<TicariPartners></TicariPartners>}></Route>
 
+                  {/* projects */}
                   <Route path='/projects' element={<Projects></Projects>}></Route>
+                  <Route path='/parcels' element={<Parcels></Parcels>}></Route>
+                  <Route path='/real-estates' element={<RealEstates></RealEstates>}></Route>
 
                   <Route path='/categories' element={<Categories></Categories>}>
                     <Route path='add-category' element={<AddCategory></AddCategory>}></Route>

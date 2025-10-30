@@ -54,6 +54,8 @@ import trialBalanceReducer from './slices/accounting/trialBalanceSlice';
 import underReviewReducer from './slices/risk/underReviewSlice';
 import tradeTransactionReducer from './slices/trade/tradeTransactionSlice';
 import smsReducer from './slices/communication/smsSlice';
+import realEstateReducer from './slices/projects/realEstateSlice';
+import parcelReducer from './slices/projects/parcelSlice';
 
 let navigate;
 
@@ -117,7 +119,9 @@ export const store = configureStore({
         trialBalance: trialBalanceReducer,
         underReview: underReviewReducer,
         tradeTransaction: tradeTransactionReducer,
-        sms: smsReducer
+        sms: smsReducer,
+        realEstate: realEstateReducer,
+        parcel: parcelReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
