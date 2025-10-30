@@ -12,11 +12,34 @@ const initialState = {
         format: 'datatables'
     },
     trialBalancesLoading:false,
+    //
+    mainAccountCodes:[],
+    mainAccountCodesCount:0,
+    mainAccountCodesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    mainAccountCodesLoading:false,
 }
 
 export const fetchTrialBalances = createAsyncThunk('auth/fetchTrialBalances', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/accounting/trial_balances/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchMainAccountCodes = createAsyncThunk('auth/fetchMainAccountCodes', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/accounting/main_account_codes/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -147,6 +170,23 @@ const trialBalanceSlice = createSlice({
         setTrialBalanceOverdues: (state,action) => {
             state.leaseOverdues = action.payload;
         },
+        //
+        setMainAccountCodesLoading: (state,action) => {
+            state.mainAccountCodesLoading = action.payload;
+        },
+        setMainAccountCodesParams: (state,action) => {
+            state.mainAccountCodesParams = {
+                ...state.mainAccountCodesParams,
+                ...action.payload
+            };
+        },
+        resetMainAccountCodesParams: (state,action) => {
+            state.mainAccountCodesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -161,6 +201,18 @@ const trialBalanceSlice = createSlice({
             .addCase(fetchTrialBalances.rejected, (state,action) => {
                 state.trialBalancesLoading = false
             })
+            // main account codes
+            .addCase(fetchMainAccountCodes.pending, (state) => {
+                state.mainAccountCodesLoading = true
+            })
+            .addCase(fetchMainAccountCodes.fulfilled, (state,action) => {
+                state.mainAccountCodes = action.payload.data || action.payload;
+                state.mainAccountCodesCount = action.payload.recordsTotal || 0;
+                state.mainAccountCodesLoading = false
+            })
+            .addCase(fetchMainAccountCodes.rejected, (state,action) => {
+                state.mainAccountCodesLoading = false
+            })
     },
   
 })
@@ -170,6 +222,10 @@ export const {
     setTrialBalancesParams,
     resetTrialBalancesParams,
     deleteTrialBalances,
-    setTrialBalanceOverdues
+    setTrialBalanceOverdues,
+    //
+    setMainAccountCodesLoading,
+    setMainAccountCodesParams,
+    resetMainAccountCodesParams,
 } = trialBalanceSlice.actions;
 export default trialBalanceSlice.reducer;

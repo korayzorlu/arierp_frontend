@@ -1,5 +1,5 @@
-import { Box, Card, Divider, Paper, Stack, Typography } from '@mui/material'
-import React, { startTransition, useEffect } from 'react'
+import { Box, Card, Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
+import React, { startTransition, useEffect, useState } from 'react'
 import { LineChart, lineElementClasses, markElementClasses } from '@mui/x-charts/LineChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@emotion/react';
@@ -13,12 +13,13 @@ function ContractsGraph() {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+    const [month, setMonth] = useState(24);
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchContractsSummary({activeCompany,params:{...contractsSummaryParams,paginate:false}}));
+            dispatch(fetchContractsSummary({activeCompany,month,params:{...contractsSummaryParams,paginate:false}}));
         });
-    }, [activeCompany,contractsSummaryParams,dispatch]);
+    }, [activeCompany,contractsSummaryParams,month,dispatch]);
 
     const dataset = contractsSummary
         .map(item => {
@@ -49,17 +50,39 @@ function ContractsGraph() {
                 height: 90
             }}
             >
-                <Stack
-                direction="row"
-                sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-                >
-                <Typography gutterBottom variant="h6" component="div">
-                    SÖZLEŞME RAPORU
-                </Typography>
+                <Stack>
+                    <Grid container>
+                        <Grid size={{xs:12,sm:10}}>
+                            <Typography gutterBottom variant="h6">
+                                 SÖZLEŞME RAPORU
+                            </Typography>
+                        </Grid>
+                        <Grid size={{xs:12,sm:2}}>
+                            <FormControl sx={{mr: 2}} fullWidth>
+                                <InputLabel id="demo-simple-select-label">Tarih Aralığı</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                size='small'
+                                value={month}
+                                label="Tarih Aralığı"
+                                onChange={(e) => setMonth(e.target.value)}
+                                disabled={contractsSummaryLoading}
+                                >
+                                    <MenuItem value={12}>1 Yıl</MenuItem>
+                                    <MenuItem value={24}>2 Yıl</MenuItem>
+                                    <MenuItem value={60}>5 Yıl</MenuItem>
+                                    <MenuItem value={120}>10 Yıl</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid container sx={{}} spacing={2}>
+                        <Typography variant="body2">
+                            Son {month/12} yıl içinde oluşturulan aylık sözleşme grafiği.
+                        </Typography>
+                    </Grid>
                 </Stack>
-                <Typography variant="body2">
-                    Son 1 yıl içinde oluşturulan aylık sözleşme grafiği.
-                </Typography>
             </Box>
             <Divider />
             <Box

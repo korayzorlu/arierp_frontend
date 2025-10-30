@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTrialBalances, setTrialBalancesParams } from '../../../store/slices/accounting/trialBalanceSlice';
+import { fetchMainAccountCodes, fetchTrialBalances, setTrialBalancesParams } from '../../../store/slices/accounting/trialBalanceSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
@@ -11,11 +11,12 @@ import { fetchExportProcess } from '../../../store/slices/processSlice';
 import ListTableServer from '../../../component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
 function TrialBalances() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {trialBalances,trialBalancesCount,trialBalancesParams,trialBalancesLoading} = useSelector((store) => store.trialBalance);
+    const {trialBalances,trialBalancesCount,trialBalancesParams,trialBalancesLoading,mainAccountCodes,mainAccountCodesParams} = useSelector((store) => store.trialBalance);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -29,10 +30,24 @@ function TrialBalances() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchTrialBalances({activeCompany,params:trialBalancesParams}));
+            dispatch(fetchMainAccountCodes({activeCompany,params:mainAccountCodesParams}));
         });
-    }, [activeCompany,trialBalancesParams,dispatch]);
+    }, [activeCompany,trialBalancesParams,mainAccountCodesParams,dispatch]);
 
     const columns = [
+        { field: 'main_account_code', headerName: 'Ana Hesap Kodu', width: 100,
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                options={[
+                    { label: "Tümü", value: "all" },
+                    ...mainAccountCodes.map((code) => ({ label: code, value: code }))
+                ]}
+                />
+            )
+         },
         { field: 'account_code', headerName: 'Hesap Kodu', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
         { field: 'currency', headerName: 'PB' },
