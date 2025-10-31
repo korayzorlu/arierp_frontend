@@ -56,6 +56,7 @@ import tradeTransactionReducer from './slices/trade/tradeTransactionSlice';
 import smsReducer from './slices/communication/smsSlice';
 import realEstateReducer from './slices/projects/realEstateSlice';
 import parcelReducer from './slices/projects/parcelSlice';
+import titleDeedReducer from './slices/projects/titleDeedSlice';
 
 let navigate;
 
@@ -122,6 +123,7 @@ export const store = configureStore({
         sms: smsReducer,
         realEstate: realEstateReducer,
         parcel: parcelReducer,
+        titleDeed: titleDeedReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

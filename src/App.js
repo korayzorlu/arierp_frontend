@@ -129,6 +129,7 @@ import TrialBalances from './features/accounting/pages/TrialBalances.js';
 import TradeTransactions from './features/trade/pages/TradeTransactions.js';
 import ActiveLeases from './features/leasing/pages/ActiveLeases.js';
 import SMSs from './features/communication/pages/SMSs.js';
+import TitleDeeds from 'features/project/pages/TitleDeed';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -259,6 +260,7 @@ function App() {
                   <Route path='/projects' element={<Projects></Projects>}></Route>
                   <Route path='/parcels' element={<Parcels></Parcels>}></Route>
                   <Route path='/real-estates' element={<RealEstates></RealEstates>}></Route>
+                  <Route path='/title-deeds' element={<TitleDeeds></TitleDeeds>}></Route>
 
                   <Route path='/categories' element={<Categories></Categories>}>
                     <Route path='add-category' element={<AddCategory></AddCategory>}></Route>
