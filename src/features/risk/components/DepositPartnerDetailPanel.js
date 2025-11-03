@@ -108,22 +108,33 @@ function DepositPartnerDetailPanel(props) {
             )
         },
         { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
-        { field: 'paid', headerName: 'Ödenen Tutar', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.value > 0 ? 'bg-green' : '';
-            }
-        },
-        { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
-                params.value
+        { field: 'status', headerName: 'Durum', flex:2 },
+        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+                params.row.status === "İhtar Çekildi"
                 ?
-                    "Kdv Farkı Var"
+                    <Grid container spacing={1}>
+                        <Grid size={12} sx={{textAlign: 'center'}}>
+                            <IconButton aria-label="delete" onClick={() => handleWarningNoticeDialog(params.row.contract)}>
+                                <FeedIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
                 :
-                    ""
-                
-            ),
-            cellClassName: (params) => {
-                return params.value ? 'bg-orange' : '';
-            }
+                    null
+            )
         },
+        // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
+        //         params.value
+        //         ?
+        //             "Kdv Farkı Var"
+        //         :
+        //             ""
+                
+        //     ),
+        //     cellClassName: (params) => {
+        //         return params.value ? 'bg-orange' : '';
+        //     }
+        // },
         { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 
