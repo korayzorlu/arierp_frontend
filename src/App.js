@@ -130,6 +130,9 @@ import TradeTransactions from './features/trade/pages/TradeTransactions.js';
 import ActiveLeases from './features/leasing/pages/ActiveLeases.js';
 import SMSs from './features/communication/pages/SMSs.js';
 import TitleDeeds from 'features/project/pages/TitleDeed';
+import ToWarnedRiskPartnersDeposit from 'features/risk/pages/ToWarnedRiskPartnersDeposit';
+import ToWarnedRiskPartnersKep from 'features/risk/pages/ToWarnedRiskPartnersKep';
+import ToWarnedRiskPartnersPosta from 'features/risk/pages/ToWarnedRiskPartnersPosta';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -304,6 +307,9 @@ function App() {
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
                   <Route path='/kdv-risk-partners' element={<RiskPartnersKDV></RiskPartnersKDV>}></Route>
                   <Route path='/to-warned-risk-partners' element={<ToWarnedRiskPartners></ToWarnedRiskPartners>}></Route>
+                  <Route path='/deposit-to-warned-risk-partners' element={<ToWarnedRiskPartnersDeposit></ToWarnedRiskPartnersDeposit>}></Route>
+                  <Route path='/kep-to-warned-risk-partners' element={<ToWarnedRiskPartnersKep></ToWarnedRiskPartnersKep>}></Route>
+                  <Route path='/posta-to-warned-risk-partners' element={<ToWarnedRiskPartnersPosta></ToWarnedRiskPartnersPosta>}></Route>
                   <Route path='/warned-risk-partners' element={<WarnedRiskPartners></WarnedRiskPartners>}></Route>
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
                   <Route path='/under-reviews' element={<UnderReviews></UnderReviews>}></Route>
