@@ -13,7 +13,7 @@ function ContractsGraph() {
 
     const dispatch = useDispatch();
     const theme = useTheme();
-    const [month, setMonth] = useState(24);
+    const [month, setMonth] = useState(12);
 
     useEffect(() => {
         startTransition(() => {
