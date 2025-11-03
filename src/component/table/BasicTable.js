@@ -95,6 +95,30 @@ function BasicTable(props) {
           },
         },
       },
+      '& .table-row-cream': {
+        ...getBackgroundColor(theme.palette.cream.main, theme, 0.7),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.cream.main, theme, 0.6),
+        },
+        '&.Mui-selected': {
+          ...getBackgroundColor(theme.palette.cream.main, theme, 0.5),
+          '&:hover': {
+            ...getBackgroundColor(theme.palette.cream.main, theme, 0.4),
+          },
+        },
+      },
+      '& .table-row-celticglow': {
+        ...getBackgroundColor(theme.palette.celticglow.main, theme, 0.7),
+        '&:hover': {
+          ...getBackgroundColor(theme.palette.celticglow.main, theme, 0.6),
+        },
+        '&.Mui-selected': {
+          ...getBackgroundColor(theme.palette.celticglow.main, theme, 0.5),
+          '&:hover': {
+            ...getBackgroundColor(theme.palette.celticglow.main, theme, 0.4),
+          },
+        },
+      },
       '& .super-app-theme--pinned-total .MuiDataGrid-cell': {
         color: theme.palette.primary.main,
         fontWeight: 600,

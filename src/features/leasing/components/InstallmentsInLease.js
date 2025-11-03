@@ -8,7 +8,7 @@ import { fetchInstallmentInformation } from 'store/slices/leasing/installmentSli
 function InstallmentsInLease(props) {
     const {lease_id,lease_code,companyName} = props;
 
-    const {user} = useSelector((store) => store.auth);
+    const {user,dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {installmentsLoading,installmentsInLease} = useSelector((store) => store.lease);
     const {installmentInformation} = useSelector((store) => store.installment);
@@ -41,27 +41,13 @@ function InstallmentsInLease(props) {
 
     const userColumns = [
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
-        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
-        { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
-        { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
-        { field: 'interest', headerName: 'Kâr Payı', flex: 1, type: 'number' },
-        { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number' },
-        { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
-        // { field: 'overdue_days', headerName: 'Gecikme Süresi', flex: 1,  type: 'number', renderCell: (params) => (
-        //         params.row.overdue_amount > 0
-        //         ?
-        //             params.value >= 0
-        //             ?
-        //                 `${params.value} gün`
-        //             :
-        //                 null
-        //         :
-        //             null
-                
-        //     )
-        // },
+        { field: 'payment', headerName: 'Ödeme', flex: 1, type: 'number' },
+        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
+        { field: 'vat_amount', headerName: 'KDV Tutarı', flex: 1, type: 'number' },
+        { field: 'amount', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
+        { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
+        { field: 'type_display', headerName: 'Ödeme Tipi', flex: 1 },
     ]
 
     return (
@@ -74,7 +60,7 @@ function InstallmentsInLease(props) {
             checkboxSelection={false}
             disableRowSelectionOnClick={true}
             loading={installmentsLoading}
-            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            getRowClassName={(params) => params.row.type !== '1' ? `table-row-${dark ? "cream" : "celticglow"}` : ''}
             />
         </>
     )

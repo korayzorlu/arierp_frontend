@@ -9,7 +9,7 @@ import { GRID_CHECKBOX_SELECTION_COL_DEF } from '@mui/x-data-grid-premium';
 function InstallmentDialog(props) {
     const {lease_id} = props;
 
-    const {userInformation} = useSelector((store) => store.auth);
+    const {dark} = useSelector((store) => store.auth);
     const {installmentDialog} = useSelector((store) => store.notification);
     const {installmentInformation,installmentsLoading,overdueInformation,overduesLoading} = useSelector((store) => store.installment);
 
@@ -21,21 +21,14 @@ function InstallmentDialog(props) {
 
     const userColumns = [
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
-        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
-        { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
-        { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
-        { field: 'interest', headerName: 'Kâr Payı', flex: 1, type: 'number' },
-        { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number', valueFormatter: (value) => {
-                if (value == null) {
-                        return '';
-                }
-                return value.toLocaleString('tr-TR', {minimumFractionDigits: 2});
-            },
-        },
-        { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
-        {...GRID_CHECKBOX_SELECTION_COL_DEF, width: 100,},
+        { field: 'payment', headerName: 'Ödeme', flex: 1, type: 'number' },
+        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
+        { field: 'vat_amount', headerName: 'KDV Tutarı', flex: 1, type: 'number' },
+        { field: 'amount', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
+        { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
+        { field: 'type_display', headerName: 'Ödeme Tipi', flex: 1 },
+        //{...GRID_CHECKBOX_SELECTION_COL_DEF, width: 100,},
     ]
 
     const rows = installmentInformation.map((row) => ({
@@ -68,7 +61,7 @@ function InstallmentDialog(props) {
                             disableRowSelectionOnClick={true}
                             loading={installmentsLoading}
                             noToolbarButtons
-                            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+                            getRowClassName={(params) => params.row.type !== '1' ? `table-row-${dark ? "cream" : "celticglow"}` : ''}
                             />
                         </>
                     </Stack>

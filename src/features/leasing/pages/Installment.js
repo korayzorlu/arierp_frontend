@@ -59,12 +59,10 @@ function Installment() {
         { field: 'block', headerName: 'Blok', flex: 1 },
         { field: 'unit', headerName: 'Bağ. Bölüm', flex: 1 },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1 },
+        { field: 'payment', headerName: 'Ödeme', flex: 1, type: 'number' },
         { field: 'vat', headerName: 'Vergi Oranı', flex: 1, type: 'number' },
-        { field: 'amount', headerName: 'Taksit', flex: 1, type: 'number' },
-        { field: 'paid', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex: 1, type: 'number'},
-        { field: 'principal', headerName: 'Ana Para', flex: 1, type: 'number' },
-        { field: 'interest', headerName: 'Kâr Payı', flex: 1, type: 'number' },
+        { field: 'vat_amount', headerName: 'Vergi Tutarı', flex: 1, type: 'number' },
+        { field: 'amount', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
     ]
 
