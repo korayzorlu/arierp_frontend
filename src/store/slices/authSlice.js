@@ -129,6 +129,10 @@ export const fetchUserInformation = createAsyncThunk('auth/fetchUserInformation'
     };
 });
 
+function getDeviceTheme() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 const authSlice = createSlice({
     name:"auth",
     initialState,
@@ -142,6 +146,7 @@ const authSlice = createSlice({
         fetchTheme: (state,action) => {
             document.documentElement.setAttribute("data-mdb-theme", action.payload);
             state.theme = action.payload;
+            //console.log(getDeviceTheme())
             state.logo = require(`../../images/logo/${action.payload}/ari-logo-full.png`);
             document.cookie = `theme=${action.payload}; path=/; ${process.env.REACT_APP_SAME_SITE}`;
 
