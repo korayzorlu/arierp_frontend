@@ -101,6 +101,7 @@ import RiskPartnersKDV from './features/risk/pages/RiskPartnersKDV.js';
 import ToWarnedRiskPartners from './features/risk/pages/ToWarnedRiskPartners.js';
 import ToTerminatedRiskPartners from './features/risk/pages/ToTerminatedRiskPartners.js';
 import DeliveryConfirms from './features/risk/pages/DeliveryConfirms.js';
+import ToBeTransferreds from './features/risk/pages/ToBeTransferreds.js';
 import WarnedRiskPartners from './features/risk/pages/WarnedRiskPartners.js';
 import AgreedTerminatedPartners from './features/risk/pages/AgreedTerminatedPartners.js';
 import DepositPartners from './features/risk/pages/DepositPartners.js';
@@ -314,6 +315,7 @@ function App() {
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
                   <Route path='/under-reviews' element={<UnderReviews></UnderReviews>}></Route>
                   <Route path='/delivery-confirm' element={<DeliveryConfirms></DeliveryConfirms>}></Route>
+                  <Route path='/to-be-transferred' element={<ToBeTransferreds></ToBeTransferreds>}></Route>
                   <Route path='/tomorrow-partners' element={<TomorrowPartners></TomorrowPartners>}></Route>
                   <Route path='/today-partners' element={<TodayPartners></TodayPartners>}></Route>
                   <Route path='/warning-notices' element={<WarningNotices></WarningNotices>}></Route>

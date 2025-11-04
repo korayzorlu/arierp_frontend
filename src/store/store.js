@@ -57,6 +57,7 @@ import smsReducer from './slices/communication/smsSlice';
 import realEstateReducer from './slices/projects/realEstateSlice';
 import parcelReducer from './slices/projects/parcelSlice';
 import titleDeedReducer from './slices/projects/titleDeedSlice';
+import toBeTransferredReducer from './slices/risk/toBeTransferredSlice';
 
 let navigate;
 
@@ -124,6 +125,7 @@ export const store = configureStore({
         realEstate: realEstateReducer,
         parcel: parcelReducer,
         titleDeed: titleDeedReducer,
+        toBeTransferred: toBeTransferredReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
