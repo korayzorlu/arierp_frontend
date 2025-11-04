@@ -28,7 +28,7 @@ function TradeTransactions() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTradeTransactions({activeCompany,params:tradeTransactionsParams}));
+            dispatch(fetchTradeTransactions({activeCompany,params:{...tradeTransactionsParams,ordering:'-record_date'}}));
         });
     }, [activeCompany,tradeTransactionsParams,dispatch]);
 
@@ -94,7 +94,7 @@ function TradeTransactions() {
                     <>  
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchTradeTransactions({activeCompany,params:tradeTransactionsParams})).unwrap()}
+                        onClick={() => dispatch(fetchTradeTransactions({activeCompany,params:{...tradeTransactionsParams,ordering:'-record_date'}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
