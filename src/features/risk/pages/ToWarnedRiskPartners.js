@@ -301,7 +301,7 @@ function ToWarnedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toWarnedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog

@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRiskPartners, fetchToWarnedRiskPartners, setRiskPartnersLoading, setToWarnedRiskPartnersLoading, setToWarnedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
+import { fetchRiskPartners, fetchToWarnedRiskPartners, setRiskPartnersLoading, setKepToWarnedRiskPartnersLoading, setKepToWarnedRiskPartnersParams, fetchKepToWarnedRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
@@ -33,7 +33,7 @@ import { type } from 'jquery';
 
 function ToWarnedRiskPartnersKep() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {toWarnedRiskPartners,toWarnedRiskPartnersCount,toWarnedRiskPartnersParams,toWarnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {kepToWarnedRiskPartners,kepToWarnedRiskPartnersCount,kepToWarnedRiskPartnersParams,kepToWarnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
@@ -52,18 +52,18 @@ function ToWarnedRiskPartnersKep() {
     const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
-    //     dispatch(setToWarnedRiskPartnersParams({bigger_than_100:true}));
+    //     dispatch(setKepToWarnedRiskPartnersParams({bigger_than_100:true}));
     // }, []);
 
 
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project,type:'kep'}}))
+            dispatch(fetchKepToWarnedRiskPartners({activeCompany,params:{...kepToWarnedRiskPartnersParams,project}}))
         });
 
         
-    }, [activeCompany,toWarnedRiskPartnersParams,dispatch]);
+    }, [activeCompany,kepToWarnedRiskPartnersParams,dispatch]);
 
     const riskPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
@@ -134,19 +134,20 @@ function ToWarnedRiskPartnersKep() {
             //     { value: '30', label: '30 Günü Geçenler' },    
             // ],
             cellClassName: (params) => {
-                if (params.value <= 30){
+                if (params.row.leases.max_overdue_days <= 30){
                     return 'bg-yellow'
-                } else if (params.value > 30 && params.value <= 60){
+                } else if (params.row.leases.max_overdue_days > 30 && params.row.leases.max_overdue_days <= 60){
                     return 'bg-orange'
-                } else if (params.value > 60 && params.value <= 90){
+                } else if (params.row.leases.max_overdue_days > 60 && params.row.leases.max_overdue_days <= 90){
                     return 'bg-light-red'
-                } else if (params.value > 90){
+                } else if (params.row.leases.max_overdue_days > 90){
                     return 'bg-dark-red'
                 }
-            }
+            },
+            renderCell: (params) => params.row.leases.max_overdue_days
         },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
         },
         { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
@@ -190,21 +191,21 @@ function ToWarnedRiskPartnersKep() {
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({special:value,barter:false,virman:false}));
+        dispatch(setKepToWarnedRiskPartnersParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
         setBarterSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeBarterPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({barter:value,special:false,virman:false}));
+        dispatch(setKepToWarnedRiskPartnersParams({barter:value,special:false,virman:false}));
         setBarterSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeVirmanPartners = async (value) => {
-        dispatch(setToWarnedRiskPartnersParams({virman:value,special:false,barter:false}));
+        dispatch(setKepToWarnedRiskPartnersParams({virman:value,special:false,barter:false}));
         setVirmanSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setBarterSwitchPosition(false);
@@ -212,7 +213,7 @@ function ToWarnedRiskPartnersKep() {
 
     const changeProject = (newValue) => {
         setProject(newValue);
-        dispatch(setToWarnedRiskPartnersParams({project:newValue}));
+        dispatch(setKepToWarnedRiskPartnersParams({project:newValue}));
     };
 
     return (
@@ -220,10 +221,10 @@ function ToWarnedRiskPartnersKep() {
             <Grid container spacing={1}>
                 <ListTableServer
                 title="İhtar Çekilecek Müşteriler"
-                rows={toWarnedRiskPartners}
+                rows={kepToWarnedRiskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={toWarnedRiskPartnersLoading}
+                loading={kepToWarnedRiskPartnersLoading}
                 customButtons={
                     <>
                         <CustomTableButton
@@ -243,7 +244,7 @@ function ToWarnedRiskPartnersKep() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project,type:'kep'}})).unwrap()}
+                        onClick={() => dispatch(fetchKepToWarnedRiskPartners({activeCompany,params:{...kepToWarnedRiskPartnersParams,project,type:'kep'}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -259,7 +260,7 @@ function ToWarnedRiskPartnersKep() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
-                            disabled={toWarnedRiskPartnersLoading}
+                            disabled={kepToWarnedRiskPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
@@ -291,8 +292,8 @@ function ToWarnedRiskPartnersKep() {
                 </>
                 
             }
-                rowCount={toWarnedRiskPartnersCount}
-                setParams={(value) => dispatch(setToWarnedRiskPartnersParams(value))}
+                rowCount={kepToWarnedRiskPartnersCount}
+                setParams={(value) => dispatch(setKepToWarnedRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
@@ -300,16 +301,16 @@ function ToWarnedRiskPartnersKep() {
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toWarnedRiskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:kepToWarnedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL={exportURL}
-            startEvent={() => dispatch(setToWarnedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}}));dispatch(setToWarnedRiskPartnersLoading(false));}}
+            startEvent={() => dispatch(setKepToWarnedRiskPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchKepToWarnedRiskPartners({activeCompany,params:{...kepToWarnedRiskPartnersParams,project}}));dispatch(setKepToWarnedRiskPartnersLoading(false));}}
             project={project}
             />
             <CallDialog/>
