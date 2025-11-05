@@ -50,7 +50,7 @@ function RisksBar() {
             >
                 <BarChart
                 xAxis={[{
-                    data: ['Gecikme(0-30)','İhtar Çekilecek','İhtar Çekilen','Fesih Edilecek'],
+                    data: ['Gecikme(0-25)','İhtar Çekilecek(Kapora)','İhtar Çekilecek(Kep)','İhtar Çekilecek(Posta)','İhtar Çekilen','Fesih Edilecek'],
                 }]}
                 series={[{
                     data: managerSummary.slice(0, -1).map(item => item.quantity),
