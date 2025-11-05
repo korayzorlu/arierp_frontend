@@ -166,7 +166,7 @@ export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRis
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
-
+        
         return response.data;
     } catch (error) {
         return [];
@@ -551,7 +551,10 @@ const riskPartnerSlice = createSlice({
                 state.toWarnedRiskPartnersLoading = true
             })
             .addCase(fetchToWarnedRiskPartners.fulfilled, (state,action) => {
-                state.toWarnedRiskPartners = action.payload.data || action.payload;
+                state.toWarnedRiskPartners = (action.payload.data || action.payload).filter(
+                    (item, index, self) =>
+                        index === self.findIndex((t) => t.id === item.id)
+                );
                 state.toWarnedRiskPartnersCount = action.payload.recordsTotal || 0;
                 state.toWarnedRiskPartnersLoading = false
             })
