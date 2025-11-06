@@ -229,7 +229,7 @@ function ToWarnedRiskPartnersKep() {
                     <>
                         <CustomTableButton
                         title="Sözleşme Bazında Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_to_warned_risk_partners/")}}
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_kep_to_warned_risk_partners/")}}
                         icon={<DownloadIcon fontSize="small"/>}
                         />
                         {/* <CustomTableButton
