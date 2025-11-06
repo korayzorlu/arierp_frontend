@@ -11,6 +11,7 @@ import { parseDate } from '../../../utils/stirngUtils';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import ListTableServer from 'component/table/ListTableServer';
 
 function BankAccountTransactions() {
     const {user} = useSelector((store) => store.auth);
@@ -28,7 +29,7 @@ function BankAccountTransactions() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankAccountTransactions({activeCompany})).unwrap();
+            dispatch(fetchBankAccountTransactions({activeCompany,params:bankAccountTransactionsParams})).unwrap();
         });
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
@@ -75,12 +76,13 @@ function BankAccountTransactions() {
     return (
         <PanelContent>
             <Grid container spacing={1}>
-                <ListTable
+                <ListTableServer
                 title="Banka Hesap Hareketleri"
                 rows={bankAccountTransactions}
                 columns={columns}
                 getRowId={(row) => row.transaction_id}
                 loading={bankAccountTransactionsLoading}
+                rowCount={bankAccountTransactionsCount}
                 customButtons={
                     <>
                         <CustomTableButton
@@ -92,6 +94,7 @@ function BankAccountTransactions() {
                 }
                 setParams={(value) => dispatch(setBankAccountTransactionsParams(value))}
                 headerFilters={true}
+                apiRef={apiRef}
                 noDownloadButton
                 disableRowSelectionOnClick
                 initialState={{

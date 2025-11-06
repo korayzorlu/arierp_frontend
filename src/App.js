@@ -134,6 +134,7 @@ import TitleDeeds from 'features/project/pages/TitleDeed';
 import ToWarnedRiskPartnersDeposit from 'features/risk/pages/ToWarnedRiskPartnersDeposit';
 import ToWarnedRiskPartnersKep from 'features/risk/pages/ToWarnedRiskPartnersKep';
 import ToWarnedRiskPartnersPosta from 'features/risk/pages/ToWarnedRiskPartnersPosta';
+import ThirdPersons from 'features/compliance/pages/ThirdPersons';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -286,6 +287,7 @@ function App() {
                   {/* compliance */}
                   <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
                   <Route path='/scan-partners' element={<ScanPartners></ScanPartners>}></Route>
+                  <Route path='/third-persons' element={<ThirdPersons></ThirdPersons>}></Route>
 
                   {/* operation */}
                   <Route path='/contract-in-suppliers' element={<ContractInSuppliers></ContractInSuppliers>}></Route>
