@@ -87,7 +87,7 @@ function BankAccountTransactions() {
                     <>
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchBankAccountTransactions({activeCompany})).unwrap()}
+                        onClick={() => dispatch(fetchBankAccountTransactions({activeCompany,params:bankAccountTransactionsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
