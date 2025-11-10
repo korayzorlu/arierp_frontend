@@ -54,6 +54,7 @@ function TrialBalances() {
          },
         { field: 'account_code', headerName: 'Hesap Kodu', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
+        { field: 'contract', headerName: 'Sözleşme' },
         { field: 'currency', headerName: 'PB' },
         { field: 'balance_debit', headerName: 'Borç Toplamı', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)

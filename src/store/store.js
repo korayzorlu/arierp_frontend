@@ -51,6 +51,7 @@ import contractInProcess from './slices/operation/contractInProcessSlice';
 import partnerAdvanceActivitySlice from './slices/operation/partnerAdvanceActivitySlice';
 import partnerAdvanceActivityLeaseSlice from './slices/operation/partnerAdvanceActivityLeaseSlice';
 import trialBalanceReducer from './slices/accounting/trialBalanceSlice';
+import trialBalanceContractReducer from './slices/accounting/trialBalanceContractSlice';
 import underReviewReducer from './slices/risk/underReviewSlice';
 import tradeTransactionReducer from './slices/trade/tradeTransactionSlice';
 import smsReducer from './slices/communication/smsSlice';
@@ -120,6 +121,7 @@ export const store = configureStore({
         partnerAdvanceActivity: partnerAdvanceActivitySlice,
         partnerAdvanceActivityLease: partnerAdvanceActivityLeaseSlice,
         trialBalance: trialBalanceReducer,
+        trialBalanceContract: trialBalanceContractReducer,
         underReview: underReviewReducer,
         tradeTransaction: tradeTransactionReducer,
         sms: smsReducer,

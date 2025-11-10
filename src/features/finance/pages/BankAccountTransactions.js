@@ -37,8 +37,6 @@ function BankAccountTransactions() {
         });
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
-
-
     const columns = [
         { field: 'transaction_date', headerName: 'Tarih', width: 160, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
         { field: 'transaction_id', headerName: 'İşlem ID', width: 120 },

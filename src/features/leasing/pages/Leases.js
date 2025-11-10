@@ -95,6 +95,7 @@ function Leases() {
         },
         { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
+        { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
     ]
 
     const handleAllDelete = async () => {

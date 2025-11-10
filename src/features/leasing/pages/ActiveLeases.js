@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchActiveLeases, setActiveLeasesLoading, setActiveLeasesParams } from 'store/slices/leasing/leaseSlice';
-import { setDeleteDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -14,6 +14,9 @@ import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Chip, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import ExportDialog from 'component/feedback/ExportDialog';
+import { fetchExportProcess } from 'store/slices/processSlice';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function ActiveActiveLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -29,6 +32,8 @@ function ActiveActiveLeases() {
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
     const [project, setProject] = useState("all")
+    const [exportURL, setExportURL] = useState("")
+    const [status, setStatus] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
@@ -114,9 +119,11 @@ function ActiveActiveLeases() {
                     { value: 'planlandi', label: 'Planlandı' },
                     { value: 'revize_edildi', label: 'Revize Edildi' },
                 ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
+                changeValue={(newValue) => {setStatus(newValue);}}
                 />
             )
         },
+        { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
     ]
 
     return (
@@ -130,6 +137,11 @@ function ActiveActiveLeases() {
             customButtons={
                 <>  
                     <CustomTableButton
+                    title="Excel'e Aktar"
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/leasing/export_active_leases/`)}}
+                    icon={<DownloadIcon fontSize="small"/>}
+                    />
+                    <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchActiveLeases({activeCompany,params:activeLeasesParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
@@ -141,7 +153,15 @@ function ActiveActiveLeases() {
             setParams={(value) => dispatch(setActiveLeasesParams(value))}
             getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
+            noDownloadButton
             apiRef={apiRef}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL={exportURL}
+            startEvent={() => dispatch(setActiveLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchActiveLeases({activeCompany,params:activeLeasesParams}));dispatch(setActiveLeasesLoading(false));}}
+            status={status}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
