@@ -12,12 +12,17 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import axios from 'axios';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Grid } from '@mui/material';
+import { Button, Chip, Grid, Stack } from '@mui/material';
 import { fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from 'store/slices/leasing/bankActivitySlice';
 import ListTable from 'component/table/ListTable';
 import DetailPanel from 'features/leasing/components/DetailPanel';
 import ExportDialog from 'component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
+import CheckIcon from '@mui/icons-material/Check';
+import WarningIcon from '@mui/icons-material/Warning';
+import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -86,30 +91,32 @@ function Collections() {
 
     
     const bankActivityColumns = [
-        { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
-        // { field: 'is_third_person', headerName: 'Güvenlik Onayı', flex: 3, renderCell: (params) => (
-        //         params.value === true
-        //         ?
-        //             params.row.is_reliable_person === true
-        //             ?
-        //                 <Chip key={params.row.id} variant='contained' color="success" icon={<CheckCircleIcon />} label="Güvenilir" size='small'/>
-        //             :
-        //                 <Chip key={params.row.id} variant='contained' color="error" icon={<WarningIcon />} label="Kontrol Gerekiyor" size='small'/>
-        //         :
-        //             null
+        { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 140 },
+        { field: 'third_person_status', headerName: '3. Kişi Durumu', width: 160,
+            renderCell: (params) => (
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    {
+                        params.row.is_third_person
+                        ?
+                            <Chip variant='contained' color={getStatus(params.value).color} icon={getStatus(params.value).icon} label={getStatus(params.value).label} size='small'/>
+                        :
+                            null
+                    }
+                </Stack>
                 
-        //     )
-        // },
-        { field: 'description', headerName: 'Açıklama',flex: 10 },
-        { field: 'amount', headerName: 'Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            ),
+            renderHeaderFilter: () => null,
+        },
+        { field: 'description', headerName: 'Açıklama', width: 540 },
+        { field: 'amount', headerName: 'Tutar', type: 'number', width: 120, renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'processed_amount', headerName: 'İşlenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) =>
+        { field: 'processed_amount', headerName: 'İşlenen Tutar', width: 120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.processed_amount)
         },
-        { field: 'currency', headerName: 'PB', flex: 1 },
-        { field: 'process_date_date', headerName: 'İşlem Tarihi', flex: 2 },
-        { field: 'bank_account_no', headerName: 'Banka Hesap No', flex: 1 },
+        { field: 'currency', headerName: 'PB', width: 90 },
+        { field: 'process_date_date', headerName: 'İşlem Tarihi', width: 120 },
+        { field: 'bank_account_no', headerName: 'Banka Hesap No', width: 160 },
     ]
 
     
@@ -125,6 +132,19 @@ function Collections() {
         } catch (error) {
             dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
         };
+    };
+
+    const getStatus = (status) => {
+        switch (status) {
+            case "pending":
+                return { color: "warning", icon: <WarningIcon />, label: "Kontrol Edilecek" };
+            case "cleared":
+                return { color: "success", icon: <CheckIcon />, label: "Temiz" };
+            case "flagged":
+                return { color: "error", icon: <DoDisturbAltIcon />, label: "Yasaklı" };
+            default:
+                return { color: "primary", icon: <CheckIcon />, label: "Bilinmiyor" };
+        }
     };
 
     return (

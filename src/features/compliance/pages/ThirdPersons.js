@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Container, Grid, Paper, Stack, Typography } from '@mui/material'
-import React, { startTransition, useEffect } from 'react'
+import React, { startTransition, useEffect, useState } from 'react'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PolicyIcon from '@mui/icons-material/Policy';
@@ -16,6 +16,10 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Link } from 'react-router-dom';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import ThirdPersonStatusDialog from 'component/dialog/ThirdPersonStatusDialog';
+import { setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
+import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+
 
 function ThirdPersons() {
     const {mobile} = useSelector((store) => store.sidebar);
@@ -25,24 +29,51 @@ function ThirdPersons() {
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
 
+    const [selectedRow, setSelectedRow] = useState({})
+
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams}));
         });
     }, [activeCompany,thirdPersonsParams,dispatch]);
 
+    const getStatus = (status) => {
+        switch (status) {
+            case "pending":
+                return { color: "primary", icon: <WarningIcon />, label: "Kontrol Et" };
+            case "cleared":
+                return { color: "success", icon: <CheckIcon />, label: "Temiz" };
+            case "flagged":
+                return { color: "error", icon: <DoDisturbAltIcon />, label: "Yasaklı" };
+            default:
+                return { color: "primary", icon: <CheckIcon />, label: "Bilinmiyor" };
+        }
+    };
+
     const columns = [
         { field: 'name', headerName: 'İsim', width: 360 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', flex:1 },
-        { field: 'is_reliable_person', headerName: 'Sorgu Sonucu', flex:1,
+        { field: 'status', headerName: 'Sorgu Sonucu', flex:1,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
-                        params.row.is_reliable_person
+                        params.row.status === "pending"
                         ?
-                            <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Temiz" size='small'/>
+                            <Button
+                            key={params.row.transaction_id}
+                            variant='contained'
+                            color="info"
+                            endIcon={<ArrowOutwardIcon />}
+                            size='small'
+                            onClick={() => {
+                                dispatch(setThirdPersonStatusDialog(true));
+                                setSelectedRow(params.row);
+                            }}
+                            >
+                                Kontrol Et ve Güncelle
+                            </Button>
                         :
-                            <Chip key={params.row.transaction_id} variant='contained' color="error" icon={<WarningIcon />} label="Kontrol Et" size='small'/>
+                            <Chip key={params.row.transaction_id} variant='contained' color={getStatus(params.value).color} icon={getStatus(params.value).icon} label={getStatus(params.value).label} size='small'/>
                     }
                 </Stack>
             ),
@@ -53,8 +84,9 @@ function ThirdPersons() {
                 externalValue="all"
                 options={[
                     { value: 'all', label: 'Tümü' },
-                    { value: 'true', label: 'Temiz' },
-                    { value: 'false', label: 'Yasaklı/Şüpheli' },
+                    { value: 'pending', label: 'Kontrol Edilecek' },
+                    { value: 'cleared', label: 'Temiz' },
+                    { value: 'flagged', label: 'Yasaklı/Şüpheli' },
                 ]}
                 />
             )
@@ -85,6 +117,9 @@ function ThirdPersons() {
             setParams={(value) => dispatch(setThirdPersonsParams(value))}
             headerFilters={true}
             apiRef={apiRef}
+            />
+            <ThirdPersonStatusDialog
+            row={selectedRow}
             />
         </PanelContent>
     )

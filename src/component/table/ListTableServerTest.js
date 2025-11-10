@@ -60,7 +60,7 @@ function ListTableServer(props) {
     noDownloadButton
   } = props;
 
-  const {dark} = useSelector((store) => store.auth);
+  const {dark,lang} = useSelector((store) => store.auth);
 
   const dispatch = useDispatch();
 
@@ -172,7 +172,7 @@ function ListTableServer(props) {
     <Box sx={{mt: 2,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%'}}>
       <FolderOffIcon sx={{fontSize:'64px',color:'text.secondary'}}></FolderOffIcon>
       <Typography variant='body2' sx={{color:'text.secondary'}}>
-        No rows
+        {lang === "tr" ? "Gösterilecek kayıt yok." : "No records to display."}
       </Typography>
     </Box>
   );

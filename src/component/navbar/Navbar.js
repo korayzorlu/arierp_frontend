@@ -16,6 +16,7 @@ import Companies from './Companies';
 import Notifications from './Notifications';
 import User from './User';
 import ExportProcesses from './ExportProcesses';
+import Langs from './Langs';
 
 function Navbar() {
     const {dark,logo} = useSelector((store) => store.auth);
@@ -71,6 +72,7 @@ function Navbar() {
                     <ImportProcesses importProcesses={importProcesses}/>
                     <ExportProcesses exportProcesses={exportProcesses}/>
                     <Companies/>
+                    {/* <Langs/> */}
                     <Notifications/>
                     <User></User>
                 </div>

@@ -16,7 +16,8 @@ const initialState = {
     loading:true,
     authMessage:{color:"",icon:"",text:""},
     userInformation:{},
-    verifyPhoneNumber:""
+    verifyPhoneNumber:"",
+    lang:"tr",
 }
 
 export const fetchUser = createAsyncThunk('auth/fetchUser', async (_,{ dispatch,rejectWithValue,extra: { navigate } }) => {
@@ -160,6 +161,9 @@ const authSlice = createSlice({
         setVerifyPhoneNumber: (state,action) => {
             state.verifyPhoneNumber = action.payload;
         },
+        setLang: (state,action) => {
+            state.lang = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -299,5 +303,5 @@ const authSlice = createSlice({
 })
 
 
-export const {setLoading,setCSRFToken,fetchTheme,setAuthMessage,clearAuthMessage,setVerifyPhoneNumber} = authSlice.actions;
+export const {setLoading,setCSRFToken,fetchTheme,setAuthMessage,clearAuthMessage,setVerifyPhoneNumber,setLang} = authSlice.actions;
 export default authSlice.reducer;
