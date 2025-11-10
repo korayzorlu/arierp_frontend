@@ -6,7 +6,7 @@ import { Button, Chip, Grid, Stack } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { addBankActivity, fetchBankAccountTransactions, setBankAccountTransactionsParams, updateBankAccountTransaction } from '../../../store/slices/finance/bankAccountTransactionSlice';
+import { addBankActivity, fetchBankAccountTransactions, resetBankAccountTransactionsParams, setBankAccountTransactionsParams, updateBankAccountTransaction } from '../../../store/slices/finance/bankAccountTransactionSlice';
 import { parseDate } from '../../../utils/stirngUtils';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import CheckIcon from '@mui/icons-material/Check';
@@ -26,6 +26,10 @@ function BankAccountTransactions() {
     
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
+
+    useEffect(() => {
+            dispatch(resetBankAccountTransactionsParams());
+        }, [activeCompany,dispatch]);
 
     useEffect(() => {
         startTransition(() => {

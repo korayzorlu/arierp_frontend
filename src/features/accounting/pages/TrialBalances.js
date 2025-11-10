@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMainAccountCodes, fetchTrialBalances, setTrialBalancesParams } from '../../../store/slices/accounting/trialBalanceSlice';
+import { fetchMainAccountCodes, fetchTrialBalances, resetTrialBalancesParams, setTrialBalancesParams } from '../../../store/slices/accounting/trialBalanceSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
@@ -26,6 +26,10 @@ function TrialBalances() {
     
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
+
+    useEffect(() => {
+        dispatch(resetTrialBalancesParams());
+    }, [activeCompany,dispatch]);
 
     useEffect(() => {
         startTransition(() => {
