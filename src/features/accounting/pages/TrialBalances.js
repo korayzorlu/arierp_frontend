@@ -93,7 +93,7 @@ function TrialBalances() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Mizan Listesi"
+                title="Genel Mizan Listesi"
                 rows={trialBalances}
                 columns={columns}
                 getRowId={(row) => row.uuid}

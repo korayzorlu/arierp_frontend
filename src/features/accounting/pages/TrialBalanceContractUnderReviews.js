@@ -1,3 +1,6 @@
+
+
+
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { startTransition, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +17,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import TrialBalanceContractDetailPanel from '../components/TrialBalanceContractDetailPanel';
 
-function TrialBalanceContracts() {
+function TrialBalanceContractUnderReviews() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {trialBalanceContracts,trialBalanceContractsCount,trialBalanceContractsParams,trialBalanceContractsLoading} = useSelector((store) => store.trialBalanceContract);
@@ -22,7 +25,7 @@ function TrialBalanceContracts() {
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
     
-    const [filter, setFilter] = useState({lease_status: 'all', is_correct: true})
+    const [filter, setFilter] = useState({lease_status: 'planlandi', is_correct: false})
 
     useEffect(() => {
         dispatch(resetTrialBalanceContractsParams());
@@ -35,8 +38,8 @@ function TrialBalanceContracts() {
     }, [activeCompany,trialBalanceContractsParams,dispatch]);
 
     const changeProject = (newValue) => {
-        setFilter({lease_status: newValue, is_correct: true});
-        dispatch(setTrialBalanceContractsParams({lease_status: newValue, is_correct: true}));
+        setFilter({lease_status: newValue, is_correct: false});
+        dispatch(setTrialBalanceContractsParams({lease_status: newValue, is_correct: false}));
     };
 
     const columns = [
@@ -77,7 +80,7 @@ function TrialBalanceContracts() {
                             onChange={(e) => changeProject(e.target.value)}
                             disabled={trialBalanceContractsLoading}
                             >
-                                <MenuItem value='all'>Tümü</MenuItem>
+                                {/* <MenuItem value='all'>Tümü</MenuItem> */}
                                 <MenuItem value='planlandi'>Planlandı</MenuItem>
                                 <MenuItem value='aktiflestirildi'>Aktifleştirildi</MenuItem>
                                 {/* <MenuItem value='durduruldu'>Durduruldu</MenuItem> */}
@@ -97,4 +100,4 @@ function TrialBalanceContracts() {
     )
 }
 
-export default TrialBalanceContracts
+export default TrialBalanceContractUnderReviews

@@ -51,6 +51,7 @@ function ThirdPersons() {
     };
 
     const columns = [
+        { field: 'created_date', headerName: 'Sorgu Tarihi', width: 180 },
         { field: 'name', headerName: 'İsim', width: 360 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', flex:1 },
         { field: 'status', headerName: 'Sorgu Sonucu', flex:1,

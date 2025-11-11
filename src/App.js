@@ -137,6 +137,8 @@ import ToWarnedRiskPartnersDeposit from 'features/risk/pages/ToWarnedRiskPartner
 import ToWarnedRiskPartnersKep from 'features/risk/pages/ToWarnedRiskPartnersKep';
 import ToWarnedRiskPartnersPosta from 'features/risk/pages/ToWarnedRiskPartnersPosta';
 import ThirdPersons from 'features/compliance/pages/ThirdPersons';
+import TrialBalanceContractUnderReviews from 'features/accounting/pages/TrialBalanceContractUnderReviews';
+import TrialBalanceContractInactives from 'features/accounting/pages/TrialBalanceContractInactives';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -336,6 +338,8 @@ function App() {
                   <Route path='/trade-transactions' element={<TradeTransactions></TradeTransactions>}></Route>
                   <Route path='/trial-balances' element={<TrialBalances></TrialBalances>}></Route>
                   <Route path='/trial-balance-contracts' element={<TrialBalanceContracts></TrialBalanceContracts>}></Route>
+                  <Route path='/trial-balance-contract-under-reviews' element={<TrialBalanceContractUnderReviews></TrialBalanceContractUnderReviews>}></Route>
+                  <Route path='/trial-balance-contract-inactives' element={<TrialBalanceContractInactives></TrialBalanceContractInactives>}></Route>
                   <Route path='/accounting-under-reviews' element={<AccountingUnderReviews></AccountingUnderReviews>}></Route>
 
                   <Route path='/ledger-accounts' element={<LedgerAccounts></LedgerAccounts>}></Route>
