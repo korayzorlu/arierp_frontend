@@ -60,6 +60,7 @@ import parcelReducer from './slices/projects/parcelSlice';
 import titleDeedReducer from './slices/projects/titleDeedSlice';
 import toBeTransferredReducer from './slices/risk/toBeTransferredSlice';
 import thirdPersonReducer from './slices/compliance/thirdPersonSlice';
+import accountingUnderReviewReducer from './slices/accounting/underReviewSlice';
 
 let navigate;
 
@@ -130,6 +131,7 @@ export const store = configureStore({
         titleDeed: titleDeedReducer,
         toBeTransferred: toBeTransferredReducer,
         thirdPerson: thirdPersonReducer,
+        accountingUnderReview: accountingUnderReviewReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -128,6 +128,7 @@ import TuketiciPartners from './features/partners/pages/TuketiciPartners.js';
 import TicariPartners from './features/partners/pages/TicariPartners.js';
 import TrialBalances from './features/accounting/pages/TrialBalances.js';
 import TrialBalanceContracts from './features/accounting/pages/TrialBalanceContracts.js';
+import AccountingUnderReviews from './features/accounting/pages/AccountingUnderReviews.js';
 import TradeTransactions from './features/trade/pages/TradeTransactions.js';
 import ActiveLeases from './features/leasing/pages/ActiveLeases.js';
 import SMSs from './features/communication/pages/SMSs.js';
@@ -335,6 +336,7 @@ function App() {
                   <Route path='/trade-transactions' element={<TradeTransactions></TradeTransactions>}></Route>
                   <Route path='/trial-balances' element={<TrialBalances></TrialBalances>}></Route>
                   <Route path='/trial-balance-contracts' element={<TrialBalanceContracts></TrialBalanceContracts>}></Route>
+                  <Route path='/accounting-under-reviews' element={<AccountingUnderReviews></AccountingUnderReviews>}></Route>
 
                   <Route path='/ledger-accounts' element={<LedgerAccounts></LedgerAccounts>}></Route>
 

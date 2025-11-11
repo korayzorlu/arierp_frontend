@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTrialBalanceContracts, resetTrialBalanceContractsParams, setTrialBalanceContractsParams } from '../../../store/slices/accounting/trialBalanceContractSlice';
+import { fetchUnderReviews, resetUnderReviewsParams, setUnderReviewsParams } from '../../../store/slices/accounting/underReviewSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Chip, Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
@@ -14,10 +14,10 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import TrialBalanceContractDetailPanel from '../components/TrialBalanceContractDetailPanel';
 
-function TrialBalanceContracts() {
+function AccountingUnderReviews() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {trialBalanceContracts,trialBalanceContractsCount,trialBalanceContractsParams,trialBalanceContractsLoading} = useSelector((store) => store.trialBalanceContract);
+    const {underReviews,underReviewsCount,underReviewsParams,underReviewsLoading} = useSelector((store) => store.accountingUnderReview);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -29,14 +29,14 @@ function TrialBalanceContracts() {
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
 
     useEffect(() => {
-        dispatch(resetTrialBalanceContractsParams());
+        dispatch(resetUnderReviewsParams());
     }, [activeCompany,dispatch]);
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTrialBalanceContracts({activeCompany,params:trialBalanceContractsParams}));
+            dispatch(fetchUnderReviews({activeCompany,params:underReviewsParams}));
         });
-    }, [activeCompany,trialBalanceContractsParams,dispatch]);
+    }, [activeCompany,underReviewsParams,dispatch]);
 
     const columns = [
         { field: 'code', headerName: 'Sözleşme No', flex: 1 },
@@ -50,15 +50,15 @@ function TrialBalanceContracts() {
             <Grid container spacing={1}>
                 <ListTableServer
                 title="Mizan Listesi"
-                rows={trialBalanceContracts}
+                rows={underReviews}
                 columns={columns}
                 getRowId={(row) => row.uuid}
-                loading={trialBalanceContractsLoading}
+                loading={underReviewsLoading}
                 customButtons={
                     <>  
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchTrialBalanceContracts({activeCompany,params:trialBalanceContractsParams})).unwrap()}
+                        onClick={() => dispatch(fetchUnderReviews({activeCompany,params:underReviewsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -66,8 +66,8 @@ function TrialBalanceContracts() {
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     setSelectedItems(newRowSelectionModel);
                 }}
-                rowCount={trialBalanceContractsCount}
-                setParams={(value) => dispatch(setTrialBalanceContractsParams(value))}
+                rowCount={underReviewsCount}
+                setParams={(value) => dispatch(setUnderReviewsParams(value))}
                 headerFilters={true}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<TrialBalanceContractDetailPanel uuid={params.row.uuid} trialBalanceContractTBs={params.row.trial_balances.trial_balances}></TrialBalanceContractDetailPanel>)}}
@@ -78,4 +78,4 @@ function TrialBalanceContracts() {
     )
 }
 
-export default TrialBalanceContracts
+export default AccountingUnderReviews
