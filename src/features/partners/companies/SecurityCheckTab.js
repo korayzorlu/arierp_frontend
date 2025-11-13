@@ -106,25 +106,33 @@ function SecurityCheckTab(props) {
                             }
                         </Grid>
                     </Grid>
+                    
+                    {
+                        reliable
+                        ?
+                            <Grid
+                            container
+                            spacing={2}
+                            sx={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                            >
+                                <Grid size={{xs:6,sm:3}}>
+                                    <Button
+                                    variant='contained'
+                                    color='mars'
+                                    startIcon={<TravelExploreIcon />}
+                                    fullWidth
+                                    onClick={handleScan}
+                                    >Sorgula</Button>
+                                </Grid>
+                            </Grid>
+                        :
+                            null
 
-                    <Grid
-                    container
-                    spacing={2}
-                    sx={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                    >
-                        <Grid size={{xs:6,sm:3}}>
-                            <Button
-                            variant='contained'
-                            color='mars'
-                            startIcon={<TravelExploreIcon />}
-                            fullWidth
-                            onClick={handleScan}
-                            >Sorgula</Button>
-                        </Grid>
-                    </Grid>
+                    }
+                    
 
                 </Stack>
         

@@ -73,7 +73,7 @@ function ScanPartners() {
                         ?
                             <Chip key={params.row.transaction_id} variant='contained' color="success" icon={<CheckIcon />} label="Güvenilir" size='small'/>
                         :
-                            <Chip key={params.row.transaction_id} variant='contained' color="error" icon={<WarningIcon />} label="Kontrol Et" size='small'/>
+                            <Chip key={params.row.transaction_id} variant='contained' color="error" icon={<WarningIcon />} label="Yasaklı / Kontrol Edilecek" size='small'/>
                     }
                 </Stack>
             )
