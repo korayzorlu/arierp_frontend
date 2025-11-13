@@ -98,6 +98,28 @@ export const updatePartner = createAsyncThunk('auth/updatePartner', async ({data
     }
 });
 
+export const ignorePartner = createAsyncThunk('auth/ignorePartner', async ({data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/partners/ignore_partner/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const deletePartner = createAsyncThunk('auth/deletePartner', async ({data=null},{dispatch,extra: {navigate}}) => {
     dispatch(setIsProgress(true));
     try {

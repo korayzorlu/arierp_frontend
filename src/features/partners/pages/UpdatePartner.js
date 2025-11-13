@@ -21,7 +21,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ListTableServer from '../../../component/table/ListTableServer';
 import AccountTab from '../companies/AccountTab';
-import { deletePartner, fetchPartner, updatePartner } from '../../../store/slices/partners/partnerSlice';
+import { deletePartner, fetchPartner, ignorePartner, updatePartner } from '../../../store/slices/partners/partnerSlice';
 import PolicyIcon from '@mui/icons-material/Policy';
 import SecurityCheckTab from '../companies/SecurityCheckTab';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -75,6 +75,12 @@ function UpdatePartner() {
     const handleChangeField = (field,value) => {
         setData(data => ({...data, [field]:value}));
         setButtonDisabled(false);
+    };
+
+    const handleIgnore = async () => {
+        await dispatch(ignorePartner({data:{uuid:uuid}})).unwrap();
+        fetchData();
+        dispatch(setDialog(false));
     };
 
     return (
@@ -203,6 +209,8 @@ function UpdatePartner() {
                     <TabPanel value={tabValue} index={3}>
                         <SecurityCheckTab
                         reliable={data.is_reliable_person}
+                        uuid={data.uuid}
+                        ignoreClick={handleIgnore}
                         />
                     </TabPanel>
                     {/* <TabPanel value={tabValue} index={3}>
@@ -213,7 +221,7 @@ function UpdatePartner() {
                 </Stack>
             </Stack>
             
-            <Dialog
+            {/* <Dialog
             title="Delete company"
             onClickText="Delete"
             onClickColor="error"
@@ -221,7 +229,7 @@ function UpdatePartner() {
             onClick={handleDelete}
             >
                 Are you sure you want to delete {data.name}? You cant't undo this action.
-            </Dialog>
+            </Dialog> */}
         </Paper>
     )
 }
