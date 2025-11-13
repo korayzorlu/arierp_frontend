@@ -1,0 +1,184 @@
+{
+    "MatchStatusId": 2,
+    "RiskLevelId": 0,
+    "AssignedUserGuidId": null,
+    "TagList": [],
+    "TotalRecordCount": 1,
+    "ReturnRecordCount": 1,
+    "Start": 0,
+    "Limit": 20,
+    "ReferenceNumber": "D0004472351",
+    "NameSearchType": "Individual",
+    "OutReferenceNumber": "6b8aff46-f78b-4d4a-adfc-1007a29895c6",
+    "IsWhiteList": false,
+    "WhiteListMessage": null,
+    "MinMatchRate": 100,
+    "MaxMatchRate": 100,
+    "BirthYear": null,
+    "IsSafeList": false,
+    "NationalyFilter": null,
+    "IsZFS": false,
+    "TotalProfileCount": 1,
+    "NameSearchTypeId": 1,
+    "AutoResolvedProfileCount": 0,
+    "Result": [
+        {
+            "MatchRate": 100,
+            "IsMatchAka": false,
+            "FirstName": "JOSE",
+            "MiddleName": "ARNOLDO RUEDA",
+            "LastName": "MEDINA",
+            "FullName": "JOSE ARNOLDO RUEDA MEDINA",
+            "Nationality": "Mexico ",
+            "ListedOn": null,
+            "LastUpdateDate": "10/9/2025 7:02:14 PM",
+            "ProgramKey": null,
+            "ProgramName": "SDNTK",
+            "Position": null,
+            "Country": null,
+            "SanctionSet": null,
+            "Origin": null,
+            "Title": null,
+            "Gender": null,
+            "Function": null,
+            "Language": null,
+            "CitizenDetail": " ",
+            "CountryCode": "MX",
+            "HonoricPrefix": null,
+            "HonoricSuffix": null,
+            "ContactDetails": null,
+            "Email": null,
+            "BirthDate": null,
+            "DeathDate": null,
+            "EntityType": "Individual",
+            "Type": "Sanction",
+            "Remark": null,
+            "FirstSeen": null,
+            "LastSeen": null,
+            "Summary": null,
+            "FatherName": null,
+            "Committees": null,
+            "OtherInformation": null,
+            "Basis": null,
+            "BlackListTypeId": null,
+            "RecordUniqueNumber": "Ofac Id: 11803",
+            "Designation": null,
+            "SubmittedBy": null,
+            "Justification": null,
+            "DataSource": null,
+            "ListingInformation": null,
+            "BlacklistName": "OFAC - Specially Designated Nationals- Tresuary",
+            "BlacklistFlagCode": "em em-us",
+            "VesselCallSign": null,
+            "VesselType": null,
+            "VesselFlag": null,
+            "VesselTonnage": null,
+            "VesselGrossRegisteredTonnage": null,
+            "VesselOwner": null,
+            "RegisteredNumber": null,
+            "ProfileId": "IND9464",
+            "ProfileKey": "13069683062788787543",
+            "PepClass": null,
+            "PepClassId": null,
+            "DeathYear": null,
+            "ssid": "9/SkANSkccgFoemL4GyaEA==",
+            "IsAutoResolved": false,
+            "OtherNames": [
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "ARNOLDO LOPEZ HUERTA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "strong"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "EL FLACO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "FLACO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "JOSE ARNOLDO LOPEZ RUEDA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "strong"
+                },
+                {
+                    "NameType": "Full Name",
+                    "FullName": "JOSE ARNOLDO RUEDA MEDINA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": null
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "LA MINSA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "MODELO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                }
+            ],
+            "Documents": [
+                {
+                    "DocumentType": "Local Identity",
+                    "DocumentTypeInformation": "C.U.R.P.",
+                    "DocumentNumber": "RUMA691215HMNDDR08",
+                    "DocumentCountry": "Mexico",
+                    "DocumentCity": null,
+                    "IssueDate": null,
+                    "ExpirationDate": null,
+                    "OtherInformation": null
+                }
+            ],
+            "BirthDetails": [
+                {
+                    "BirthDate": "15 Dec 1969",
+                    "dtBirthDate": null,
+                    "BirthPlace": "Michoacan, Mexico",
+                    "BirthCountry": null,
+                    "OtherInformation": null,
+                    "BirthYear": null
+                },
+                {
+                    "BirthDate": "27 Dec 1969",
+                    "dtBirthDate": null,
+                    "BirthPlace": "Paracuaro, Mexico",
+                    "BirthCountry": null,
+                    "OtherInformation": null,
+                    "BirthYear": null
+                },
+                {
+                    "BirthDate": null,
+                    "dtBirthDate": null,
+                    "BirthPlace": null,
+                    "BirthCountry": null,
+                    "OtherInformation": null,
+                    "BirthYear": 1969
+                }
+            ],
+            "AddressDetails": [],
+            "Images": [],
+            "Links": [],
+            "Modifications": [],
+            "MemberShipData": [],
+            "MediaData": []
+        }
+    ]
+}
+

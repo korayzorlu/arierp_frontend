@@ -19,6 +19,7 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ThirdPersonStatusDialog from 'component/dialog/ThirdPersonStatusDialog';
 import { setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+import ThirdPersonDetailPanel from '../components/ThirdPersonDetailPanel';
 
 
 function ThirdPersons() {
@@ -118,6 +119,8 @@ function ThirdPersons() {
             setParams={(value) => dispatch(setThirdPersonsParams(value))}
             headerFilters={true}
             apiRef={apiRef}
+            getDetailPanelHeight={() => "auto"}
+            getDetailPanelContent={(params) => {return(<ThirdPersonDetailPanel uuid={params.row.uuid} thirdPersonResults={params.row.results}></ThirdPersonDetailPanel>)}}
             />
             <ThirdPersonStatusDialog
             row={selectedRow}

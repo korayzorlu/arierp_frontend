@@ -12,6 +12,7 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import ListTableServer from 'component/table/ListTableServer';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function BankAccountTransactions() {
     const {user} = useSelector((store) => store.auth);
@@ -87,6 +88,12 @@ function BankAccountTransactions() {
                 rowCount={bankAccountTransactionsCount}
                 customButtons={
                     <>
+                        {/* <CustomTableButton
+                        title="Yeni"
+                        link="/bank-account-transactions/add"
+                        disabled={activeCompany ? false : true}
+                        icon={<AddBoxIcon fontSize="small"/>}
+                        /> */}
                         <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchBankAccountTransactions({activeCompany,params:bankAccountTransactionsParams})).unwrap()}

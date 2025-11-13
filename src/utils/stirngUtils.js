@@ -13,3 +13,14 @@ export function parseDate(dateStr) {
   const [hours, minutes] = timePart.split(":").map(Number);
   return new Date(year, month - 1, day, hours, minutes);
 }
+
+export function truncateText(text, maxLines = 8){
+  return (
+    {
+      overflow: 'hidden',
+      display: '-webkit-box',
+      WebkitLineClamp: maxLines,
+      WebkitBoxOrient: 'vertical',
+    }
+  )
+}

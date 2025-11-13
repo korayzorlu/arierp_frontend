@@ -28,6 +28,29 @@ export const fetchBankAccountTransactions = createAsyncThunk('auth/fetchBankAcco
     }
 });
 
+export const addBankAccountTransaction = createAsyncThunk('auth/addBankAccountTransaction', async ({data=null},{dispatch,extra: {navigate}}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/finance/add_finmaks_transaction/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+        navigate("/bank-account-transactions");
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const addBankActivity = createAsyncThunk('auth/addBankActivity', async ({activeCompany,data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     

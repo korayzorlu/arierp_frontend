@@ -25,6 +25,7 @@ const initialState = {
     purchaseDocumentDialog:false,
     tradeTransactionDialog:false,
     thirdPersonStatusDialog:false,
+    thirdPersonDialog:false,
     modal:false,
     notifications:[],
     unreadNotifications:0
@@ -122,6 +123,9 @@ const notificationSlice = createSlice({
         setThirdPersonStatusDialog: (state,action) => {
             state.thirdPersonStatusDialog = action.payload;
         },
+        setThirdPersonDialog: (state,action) => {
+            state.thirdPersonDialog = action.payload;
+        },
         setModal: (state,action) => {
             state.modal = action.payload;
         },
@@ -176,5 +180,6 @@ export const {
     setWarningNoticeDialog,
     setPurchaseDocumentDialog,
     setThirdPersonStatusDialog,
+    setThirdPersonDialog,
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

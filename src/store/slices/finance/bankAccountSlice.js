@@ -48,6 +48,9 @@ const bankAccountSlice = createSlice({
                 format: 'datatables'
             };
         },
+        deleteBankAccounts: (state,action) => {
+            state.bankAccounts = [];
+        },
     },
     extraReducers: (builder) => {
         builder

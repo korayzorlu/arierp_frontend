@@ -139,6 +139,7 @@ import ToWarnedRiskPartnersPosta from 'features/risk/pages/ToWarnedRiskPartnersP
 import ThirdPersons from 'features/compliance/pages/ThirdPersons';
 import TrialBalanceContractUnderReviews from 'features/accounting/pages/TrialBalanceContractUnderReviews';
 import TrialBalanceContractInactives from 'features/accounting/pages/TrialBalanceContractInactives';
+import AddBankAccounTransaction from 'features/finance/pages/AddBankAccounTransaction';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -308,6 +309,7 @@ function App() {
                   <Route path='/purchase-documents' element={<PurchaseDocuments></PurchaseDocuments>}></Route>
                   <Route path='/bank-accounts' element={<BankAccounts></BankAccounts>}></Route>
                   <Route path='/bank-account-transactions' element={<BankAccountTransactions></BankAccountTransactions>}></Route>
+                  <Route path='/bank-account-transactions/add' element={<AddBankAccounTransaction></AddBankAccounTransaction>}></Route>
 
                   {/* risk */}
                   <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>

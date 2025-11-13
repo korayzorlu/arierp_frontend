@@ -82,7 +82,7 @@ function FormHeader(props) {
                     disabled={disabled || disabledAdd}
                     startIcon={<AddIcon/>}
                     >
-                        Create
+                        Oluştur
                     </Button>
                     :
                     <></>

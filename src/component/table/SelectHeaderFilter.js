@@ -25,7 +25,10 @@ function SelectHeaderFilter(props) {
                 ...(currentFieldFilters[0] || getDefaultFilter(colDef.field)),
                 value: event.target.value,
             });
-            changeValue(event.target.value);
+            if (changeValue){
+                changeValue(event.target.value);
+            }
+           
         },
         [apiRef, colDef.field, currentFieldFilters],
     );

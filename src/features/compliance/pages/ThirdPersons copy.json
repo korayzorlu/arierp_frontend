@@ -1,0 +1,222 @@
+{
+    "MatchStatusId": 2,
+    "RiskLevelId": 0,
+    "AssignedUserGuidId": null,
+    "TagList": [],
+    "TotalRecordCount": 1,
+    "ReturnRecordCount": 1,
+    "Start": 0,
+    "Limit": 20,
+    "ReferenceNumber": "D0004472380",
+    "NameSearchType": "Individual",
+    "OutReferenceNumber": "ce693f07-5e5b-47cf-8d41-adef1bac675a",
+    "IsWhiteList": false,
+    "WhiteListMessage": null,
+    "MinMatchRate": 100,
+    "MaxMatchRate": 100,
+    "BirthYear": null,
+    "IsSafeList": false,
+    "NationalyFilter": null,
+    "IsZFS": false,
+    "TotalProfileCount": 1,
+    "NameSearchTypeId": 1,
+    "AutoResolvedProfileCount": 0,
+    "Result": [
+        {
+            "MatchRate": 100,
+            "IsMatchAka": false,
+            "FirstName": "NICANDRO",
+            "MiddleName": "BARRERA",
+            "LastName": "MEDRANO",
+            "FullName": "NICANDRO BARRERA MEDRANO",
+            "Nationality": " ",
+            "ListedOn": null,
+            "LastUpdateDate": "10/9/2025 7:02:14 PM",
+            "ProgramKey": null,
+            "ProgramName": "SDNTK",
+            "Position": null,
+            "Country": null,
+            "SanctionSet": null,
+            "Origin": null,
+            "Title": null,
+            "Gender": null,
+            "Function": null,
+            "Language": null,
+            "CitizenDetail": "Mexico ",
+            "CountryCode": "MX",
+            "HonoricPrefix": null,
+            "HonoricSuffix": null,
+            "ContactDetails": null,
+            "Email": null,
+            "BirthDate": null,
+            "DeathDate": null,
+            "EntityType": "Individual",
+            "Type": "Sanction",
+            "Remark": null,
+            "FirstSeen": null,
+            "LastSeen": null,
+            "Summary": null,
+            "FatherName": null,
+            "Committees": null,
+            "OtherInformation": null,
+            "Basis": null,
+            "BlackListTypeId": null,
+            "RecordUniqueNumber": "Ofac Id: 11804",
+            "Designation": null,
+            "SubmittedBy": null,
+            "Justification": null,
+            "DataSource": null,
+            "ListingInformation": null,
+            "BlacklistName": "OFAC - Specially Designated Nationals- Tresuary",
+            "BlacklistFlagCode": "em em-us",
+            "VesselCallSign": null,
+            "VesselType": null,
+            "VesselFlag": null,
+            "VesselTonnage": null,
+            "VesselGrossRegisteredTonnage": null,
+            "VesselOwner": null,
+            "RegisteredNumber": null,
+            "ProfileId": "IND9465",
+            "ProfileKey": "16144140408407046342",
+            "PepClass": null,
+            "PepClassId": null,
+            "DeathYear": null,
+            "ssid": "tCM6rTQ7XD+Ee2TaBB5WPA==",
+            "IsAutoResolved": false,
+            "OtherNames": [
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "BARRERA MENDOZA NICANDRO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "strong"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "CHAPARRO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "CHATO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "EL NICA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "EL NICE",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "EL NICO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "NICA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "NICANDRO BARRERA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "strong"
+                },
+                {
+                    "NameType": "Full Name",
+                    "FullName": "NICANDRO BARRERA MEDRANO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": null
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "NICANDRO BARRERA MENDOZA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "strong"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "NICO",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "weak"
+                },
+                {
+                    "NameType": "A.K.A",
+                    "FullName": "ROBERT BARRERA",
+                    "Language": null,
+                    "OtherInformation": null,
+                    "Quality": "strong"
+                }
+            ],
+            "Documents": [
+                {
+                    "DocumentType": "Local Identity",
+                    "DocumentTypeInformation": "C.U.R.P.",
+                    "DocumentNumber": "BAMN641102HMNRDC02",
+                    "DocumentCountry": "Mexico",
+                    "DocumentCity": null,
+                    "IssueDate": null,
+                    "ExpirationDate": null,
+                    "OtherInformation": null
+                }
+            ],
+            "BirthDetails": [
+                {
+                    "BirthDate": "02 Nov 1964",
+                    "dtBirthDate": null,
+                    "BirthPlace": "Michoacan, Mexico",
+                    "BirthCountry": null,
+                    "OtherInformation": null,
+                    "BirthYear": null
+                },
+                {
+                    "BirthDate": null,
+                    "dtBirthDate": null,
+                    "BirthPlace": null,
+                    "BirthCountry": null,
+                    "OtherInformation": null,
+                    "BirthYear": 1964
+                }
+            ],
+            "AddressDetails": [
+                {
+                    "Number": null,
+                    "Street": null,
+                    "State": null,
+                    "ZipCode": null,
+                    "City": "Uruapan",
+                    "Country": "Mexico",
+                    "IsoCode": null,
+                    "OtherInformation": "c/o Purepecha Trucking Co.\r\n",
+                    "AddressLine1": null
+                }
+            ],
+            "Images": [],
+            "Links": [],
+            "Modifications": [],
+            "MemberShipData": [],
+            "MediaData": []
+        }
+    ]
+}
