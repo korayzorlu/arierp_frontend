@@ -1,11 +1,15 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Menu, MenuItem } from '@mui/material';
 import { Button, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ChangePartnerDialog from 'component/feedback/ChangePartnerDialog';
+import { setChangePartnerDialog } from 'store/slices/notificationSlice';
+import { useDispatch } from 'react-redux';
 
 function FormHeader(props) {
     const {
@@ -20,11 +24,25 @@ function FormHeader(props) {
         loadingDelete,
         disabledDelete,
         onClickDelete,
+        onClickSettings,
+        loadingSettings,
         title,
         noBackButton,
+        disabledSettings,
+        uuid
     } = props;
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <Grid
@@ -89,6 +107,41 @@ function FormHeader(props) {
                 }
 
                 {
+                    onClickSettings
+                    ?
+                    <>
+                        <IconButton
+                        aria-label="settings"
+                        color="opposite"
+                        loading={loadingSettings}
+                        disabled={disabled || disabledSettings}
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                        >
+                            <SettingsIcon/>
+                        </IconButton>
+                        <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        slotProps={{
+                        list: {
+                            'aria-labelledby': 'basic-button',
+                        },
+                        }}
+                        >
+                            <MenuItem onClick={() => dispatch(setChangePartnerDialog(true))}>Kiracı Değişikliği</MenuItem>
+                        </Menu>
+                    </>
+                    
+                    :
+                    <></>
+                }
+
+                {
                     onClickSave
                     ?
                     <IconButton
@@ -121,6 +174,7 @@ function FormHeader(props) {
                 }
 
             </Grid>
+            <ChangePartnerDialog uuid={uuid}></ChangePartnerDialog>
         </Grid>
     )
 }

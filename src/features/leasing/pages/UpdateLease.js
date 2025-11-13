@@ -13,6 +13,7 @@ import TabPanel from 'component/tab/TabPanel';
 import ContractPaymentsInLease from 'features/leasing/components/ContractPaymentsInLease';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import TradeTransactionsInLease from 'features/leasing/components/TradeTransactionsInLease';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -74,7 +75,9 @@ function UpdateLease() {
                 loadingSave={disabled}
                 disabledSave={buttonDisabled}
                 onClickSave={() => handleSubmit()}
-                onClickDelete={() => dispatch(setDialog(true))}
+                onClickSettings={() => {}}
+                uuid={uuid}
+                //onClickDelete={() => dispatch(setDialog(true))}
                 />
                 <Divider></Divider>
                 <Stack spacing={2}>
