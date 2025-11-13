@@ -27,7 +27,7 @@ function UpdateLease() {
 
     const { uuid,contract_id } = useParams();
 
-    const [data, setData] = useState({})
+    const [data, setData] = useState({uuid})
 
     const fetchData = async () => {
         await dispatch(fetchCountries()).unwrap();
@@ -96,7 +96,7 @@ function UpdateLease() {
                             size="small"
                             label={"Sözleşme No"}
                             variant='outlined'
-                            value={data.contract}
+                            value={data.contract_id}
                             disabled={false}
                             fullWidth
                             />
