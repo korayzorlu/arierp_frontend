@@ -2,10 +2,10 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryConfirms, setDeliveryConfirmsLoading, setDeliveryConfirmsParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setLeaseDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setDialog, setExportDialog, setImportDialog, setLeaseDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
+import { Button, Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -30,6 +30,7 @@ import { fetchLeaseInformation, setLeasesLoading } from 'store/slices/leasing/le
 import { fetchProjects } from 'store/slices/projects/projectSlice';
 import { set } from 'lodash';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import Dialog from 'component/feedback/Dialog';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -50,6 +51,11 @@ function DeliveryConfirms() {
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [projectOpen, setProjectOpen] = useState(false)
     const [project, setProject] = useState("kizilbuk")
+
+    const [rowSelectionModel, setRowSelectionModel] = useState({
+        type: 'include',
+        ids: new Set(),
+    });
 
     // useEffect(() => {
     //     dispatch(setDeliveryConfirmsParams({bigger_than_100:true}));
@@ -281,26 +287,26 @@ function DeliveryConfirms() {
                     </>
                 }
                 customFilters={
-                <>  
-                    {/* <AndroidSwitch
-                    label="100'den Büyük Olanlar"
-                    checked={biggerThan100SwitchPosition}
-                    onChange={(value) => handleChangeBiggerThan100(value)}
-                    disabled={biggerThan100SwitchDisabled}
-                    /> */}
-                    <AndroidSwitch
-                    label="Virman Göster"
-                    checked={virmanSwitchPosition}
-                    onChange={(value) => handleChangeVirmanPartners(value)}
-                    />
-                    <AndroidSwitch
-                    label="Barter Göster"
-                    checked={barterSwitchPosition}
-                    onChange={(value) => handleChangeBarterPartners(value)}
-                    />
-                </>
+                    <>  
+                        {/* <AndroidSwitch
+                        label="100'den Büyük Olanlar"
+                        checked={biggerThan100SwitchPosition}
+                        onChange={(value) => handleChangeBiggerThan100(value)}
+                        disabled={biggerThan100SwitchDisabled}
+                        /> */}
+                        <AndroidSwitch
+                        label="Virman Göster"
+                        checked={virmanSwitchPosition}
+                        onChange={(value) => handleChangeVirmanPartners(value)}
+                        />
+                        <AndroidSwitch
+                        label="Barter Göster"
+                        checked={barterSwitchPosition}
+                        onChange={(value) => handleChangeBarterPartners(value)}
+                        />
+                    </>
                 
-            }
+                }
                 rowCount={deliveryConfirmsCount}
                 setParams={(value) => dispatch(setDeliveryConfirmsParams(value))}
                 onCellClick={handleProfileDialog}
@@ -312,7 +318,7 @@ function DeliveryConfirms() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchDeliveryConfirms({activeCompany,params:deliveryConfirmsParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<DeliveryConfirmDetailPanel uuid={params.row.uuid} deliveryConfirmLeases={params.row.leases.leases}></DeliveryConfirmDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<DeliveryConfirmDetailPanel uuid={params.row.id} deliveryConfirmLeases={params.row.leases.leases}></DeliveryConfirmDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
@@ -332,6 +338,7 @@ function DeliveryConfirms() {
             <CallDialog/>
             <MessageDialog/>
             <WarningNoticeDialog/>
+            
         </PanelContent>
     )
 }

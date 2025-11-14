@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Stack, Typography } from '@mui/material';
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,12 +63,20 @@ function ThirdPersonDetailPanel(props) {
                                                 title="person"
                                             />
                                             <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    {result.FullName}
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ color: 'text.secondary', ...truncateText(result.OtherInformation, 4) }}>
-                                                    {result.OtherInformation}
-                                                </Typography>
+                                                <Stack spacing={2}>
+                                                    <Typography gutterBottom variant="h5" component="div">
+                                                        {result.FullName}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={{ color: 'text.secondary', ...truncateText(result.Function, 1) }}>
+                                                        {result.Function}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={{ color: 'text.secondary', ...truncateText(result.Summary, 4) }}>
+                                                        {result.Summary}
+                                                    </Typography>
+                                                    <Typography variant="body2" sx={{ color: 'text.secondary', ...truncateText(result.OtherInformation, 4) }}>
+                                                        {result.OtherInformation}
+                                                    </Typography>
+                                                </Stack>
                                             </CardContent>
                                             <CardActions>
                                                 <Button

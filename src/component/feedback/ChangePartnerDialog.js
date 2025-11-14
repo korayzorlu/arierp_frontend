@@ -10,7 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import ListTableServer from '../table/ListTableServer';
 import CustomTableButton from '../table/CustomTableButton';
 import { fetchImportProcess } from '../../store/slices/processSlice';
-import { fetchPartners, setPartnersParams } from '../../store/slices/partners/partnerSlice';
+import { fetchPartners, resetPartnersParams, setPartnersParams } from '../../store/slices/partners/partnerSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useGridApiRef } from '@mui/x-data-grid';
 import { updateLeaseflexAutomationBankActivityLeases } from '../../store/slices/leasing/collectionSlice';
@@ -36,10 +36,13 @@ function ChangePartnerDialog(props) {
     const [selectedItems, setSelectedItems] = useState([]);
     const [currentSelection, setCurrentSelection] = useState(new Set())
     
+    useEffect(() => {
+        dispatch(resetPartnersParams());
+    }, [activeCompany,dispatch]);
 
     useEffect(() => {
-        console.log(uuid)
         startTransition(() => {
+            //dispatch(resetPartnersParams());
             dispatch(fetchPartners({activeCompany,params:partnersParams}));
         });
     }, [activeCompany,partnersParams,dispatch]);
