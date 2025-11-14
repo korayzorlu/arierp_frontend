@@ -56,7 +56,7 @@ function ThirdPersonDetailPanel(props) {
                             {   
                                 thirdPersonResults.map((result,index) => (
                                     <Grid size={{xs:12,sm:3}}>
-                                        <Card sx={{ maxWidth: 345 }}>
+                                        <Card sx={{ maxWidth: 345, height: 420 }} key={index}>
                                             <CardMedia
                                                 sx={{ height: 140, width: 140, marginLeft: 'auto', marginRight: 'auto', mt: 2,borderRadius: '50%',objectFit: 'cover', }}
                                                 image={UserDefaultPng}
@@ -78,7 +78,7 @@ function ThirdPersonDetailPanel(props) {
                                                     </Typography>
                                                 </Stack>
                                             </CardContent>
-                                            <CardActions>
+                                            <CardActions sx={{ mt: 'auto' }}>
                                                 <Button
                                                 variant='text'
                                                 color='primary'

@@ -222,8 +222,6 @@ function App() {
     </ThemeProvider>
   );
 
-
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeProvider>
