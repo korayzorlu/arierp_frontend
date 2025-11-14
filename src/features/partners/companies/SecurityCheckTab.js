@@ -1,5 +1,5 @@
 import { Button, Grid, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import GppGoodIcon from '@mui/icons-material/GppGood';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,11 +12,12 @@ import Dialog from 'component/feedback/Dialog';
 
 function SecurityCheckTab(props) {
     const {reliable,uuid,ignoreClick} = props;
+    const {user} = useSelector((store) => store.auth);
     const {scanning} = useSelector((store) => store.scanPartner);
     const {activeCompany,disabled} = useSelector((store) => store.organization);
 
     const dispatch = useDispatch();
-
+    
     const handleScan = () => {
         dispatch(setScanning(true));
 
@@ -140,30 +141,39 @@ function SecurityCheckTab(props) {
                                         >Sorgula</Button>
                                     </Grid>
                                 </Grid>
-                                <Grid
-                                container
-                                spacing={2}
-                                sx={{
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                                >
-                                    <Grid size={{xs:6,sm:3}}>
-                                        <Button
-                                        variant='contained'
-                                        color='error'
-                                        startIcon={<WarningIcon />}
-                                        fullWidth
-                                        onClick={() => dispatch(setDialog(true))}
-                                        >Yasaklı Listesine Ekle</Button>
-                                    </Grid>
-                                </Grid>
-                                <Dialog
-                                title={"Partneri Yasaklı Listesine Ekle"}
-                                text={"Bu partner yasaklı listesine eklemek istediğinize emin misiniz?"}
-                                onClickText={"Ekle"}
-                                onClick={() => ignoreClick()}
-                                />
+                                {
+                                    user.authorization.includes('Kredi Tahsis') || user.authorization.includes('Admin') || user.authorization.includes('Genel Müdürlük')
+                                    ?
+                                        <>
+                                            <Grid
+                                            container
+                                            spacing={2}
+                                            sx={{
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}
+                                            >
+                                                <Grid size={{xs:6,sm:3}}>
+                                                    <Button
+                                                    variant='contained'
+                                                    color='error'
+                                                    startIcon={<WarningIcon />}
+                                                    fullWidth
+                                                    onClick={() => dispatch(setDialog(true))}
+                                                    >Yasaklı Listesine Ekle</Button>
+                                                </Grid>
+                                            </Grid>
+                                            <Dialog
+                                            title={"Partneri Yasaklı Listesine Ekle"}
+                                            text={"Bu partner yasaklı listesine eklemek istediğinize emin misiniz?"}
+                                            onClickText={"Ekle"}
+                                            onClick={() => ignoreClick()}
+                                            />
+                                        </>
+                                    :
+                                        null
+                                }
+                                
                             </Stack>
                             
                         :
