@@ -154,6 +154,32 @@ function ThirdPersonDialog({...props}) {
                             )
                         }
                         {
+                            props.thirdPerson.Function && (
+                                <>
+                                    <Divider/>
+                                    <Typography color='primary'>
+                                        Bilgi
+                                    </Typography>
+                                    <Typography>
+                                        {props.thirdPerson.Function}
+                                    </Typography>
+                                </>
+                            )
+                        }
+                        {
+                            props.thirdPerson.Summary && (
+                                <>
+                                    <Divider/>
+                                    <Typography color='primary'>
+                                        Özet
+                                    </Typography>
+                                    <Typography>
+                                        {props.thirdPerson.Summary}
+                                    </Typography>
+                                </>
+                            )
+                        }
+                        {
                             (props.thirdPerson.BlacklistName || props.thirdPerson.OtherInformation) && (
                                 <>
                                     <Divider/>
