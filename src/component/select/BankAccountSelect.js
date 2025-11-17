@@ -19,7 +19,6 @@ function BankAccountSelect(props) {
 
     useEffect(() => {
         setSelectedValue(value);
-        console.log(value)
     }, [value])
     
     
@@ -37,7 +36,6 @@ function BankAccountSelect(props) {
     };
 
     const handleChange = (newValue) => {
-        console.log(newValue)
         onChange(newValue ? newValue : null);
         setSelectedValue(newValue ? newValue : null);
     }
@@ -56,7 +54,6 @@ function BankAccountSelect(props) {
     const handleInputChange = (newInputValue) => {
         setInputValue(newInputValue);
         debouncedHandleInputChange(newInputValue);
-        
     }
 
     return (
@@ -71,17 +68,16 @@ function BankAccountSelect(props) {
         onInputChange={(event, newInputValue) => handleInputChange(newInputValue)}
         inputValue={inputValue}
         autoHighlight
-
         options={bankAccounts}
         loading={bankAccountsLoading}
         value={selectedValue}
         isOptionEqualToValue={(option, val) => option.uuid === val.uuid}
-        getOptionLabel={(option) =>  option.name || ""}
+        getOptionLabel={(option) =>  `${option.bank_name} - ${option.currency}` || ""}
         renderOption={(props,option) => {
             const { key, ...optionProps } = props;
             return (
                 <Typography key={key} variant="body1" sx={{ color: 'text.primary' }} {...optionProps}>
-                    {option.name}
+                    {option.bank_name} - {option.currency}
                 </Typography>
             )
         }}
@@ -90,7 +86,7 @@ function BankAccountSelect(props) {
               {...params}
               label={label || "Autocomplete"}
               variant='outlined'
-              placeholder={placeholder || "Type at least 3 characters to search for a partner..."}
+              placeholder={placeholder || "En az 3 karakter yazarak banka hesabı arayın..."}
             />
         )}
         />

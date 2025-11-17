@@ -9,6 +9,9 @@ import FormHeader from 'component/header/FormHeader';
 import PartnerSelect from 'component/select/PartnerSelect';
 import CurrencySelect from 'component/select/CurrencySelect';
 import BankAccountSelect from 'component/select/BankAccountSelect';
+import { DatePicker, DateRangePicker, DateTimePicker } from '@mui/x-date-pickers-pro';
+import dayjs from 'dayjs';
+import { addBankAccountTransaction } from 'store/slices/finance/bankAccountTransactionSlice';
 
 function AddBankAccounTransaction() {
     const {user,dark} = useSelector((store) => store.auth);
@@ -21,7 +24,8 @@ function AddBankAccounTransaction() {
     const [disabled, setDisabled] = useState(false);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [tabValue, setTabValue] = useState(0);
-    const [data, setData] = useState({companyId: activeCompany ? activeCompany.companyId : null})
+    const [data, setData] = useState({companyId: activeCompany ? activeCompany.companyId : null, transaction_date: dayjs().startOf('day').format('YYYY-MM-DD HH:mm'), debit: "+"});
+    const [date, setDate] = useState(dayjs().startOf('day').format('YYYY-MM-DD HH:mm'));
 
     useEffect(() => {
         dispatch(setIsProgress(true));
@@ -35,7 +39,7 @@ function AddBankAccounTransaction() {
 
     const handleSubmit = async () => {
         setDisabled(true);
-        await dispatch(addLease({data})).unwrap();
+        await dispatch(addBankAccountTransaction({data})).unwrap();
         setDisabled(false);
     };
 
@@ -50,46 +54,73 @@ function AddBankAccounTransaction() {
         setButtonDisabled(false);
     };
 
+    const handleDateChange = (newValue) => {
+        const date = newValue ? dayjs(newValue).format('YYYY-MM-DD HH:mm') : null;
+        setDate(date);
+    }
+
+    const today = dayjs();
 
     return (
         <Paper elevation={0} sx={{p:2}} square>
             <Stack spacing={2}>
                 <FormHeader
-                title={`YENİ BANKA HAREKETİ`}
+                title={`YENİ BANKA HAREKETİ (GELEN PARA)`}
                 loadingAdd={disabled}
                 disabledAdd={buttonDisabled}
                 onClickAdd={() => handleSubmit()}
                 />
                 <Divider></Divider>
                 <Stack spacing={2}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2}>    
                         <Grid size={{xs:12,sm:12}}>
                             <BankAccountSelect
                             label="Banka Hesabı"
                             emptyValue={true}
                             value={data.bank_account}
-                            onChange={(value) => handleChangeField("bank_account",{uuid:value.uuid,bank_name:value.bank_name})}
+                            onChange={(value) => handleChangeField("bank_account",value ? value.uuid : null)}
                             />
                         </Grid>
                     </Grid>
                     <Grid container spacing={2}>
-                        <Grid size={{xs:12,sm:4}}>
+                        <Grid size={{xs:12,sm:3}}>
+                            <DateTimePicker
+                            label="İşlem Tarihi"
+                            defaultValue={dayjs().startOf('day')}
+                            format='DD.MM.YYYY HH:mm'
+                            onAccept={(newValue) => handleChangeField("transaction_date", newValue ? dayjs(newValue).format('YYYY-MM-DD HH:mm') : dayjs().startOf('day').format('YYYY-MM-DD HH:mm'))}
+                            slotProps={{
+                                textField: { size: 'small', fullWidth: true }
+                            }}
+                            />
+                        </Grid>
+                        <Grid size={{xs:12,sm:3}}>
                             <TextField
-                            type="text"
                             size="small"
-                            label={"Invoice No"}
+                            label={"Gönderen İsim"}
                             variant='outlined'
-                            value={data.invoice_no}
-                            onChange={(e) => handleChangeField("invoice_no",e.target.value)}
+                            value={data.sender_account_name}
+                            onChange={(e) => handleChangeField("sender_account_name",e.target.value)}
                             disabled={disabled}
                             fullWidth
                             />
                         </Grid>
-                        <Grid size={{xs:12,sm:4}}>
-                        <TextField
-                            type="number"
+                        <Grid size={{xs:12,sm:3}}>
+                            <TextField
                             size="small"
-                            label={"Amount"}
+                            label={"Gönderen TC/VKN"}
+                            variant='outlined'
+                            value={data.sender_vkn}
+                            onChange={(e) => handleChangeField("sender_vkn",e.target.value)}
+                            disabled={disabled}
+                            fullWidth
+                            />
+                        </Grid>
+                        <Grid size={{xs:12,sm:3}}>
+                            <TextField
+                            type='number'
+                            size="small"
+                            label={"Tutar"}
                             variant='outlined'
                             value={data.amount}
                             onChange={(e) => handleChangeField("amount",e.target.value)}
@@ -97,12 +128,19 @@ function AddBankAccounTransaction() {
                             fullWidth
                             />
                         </Grid>
-                        <Grid size={{xs:12,sm:4}}>
-                            <CurrencySelect
-                            label="Currency"
-                            emptyValue={true}
-                            value={data.currency}
-                            onChange={(value) => handleChangeField("currency",value)}
+                    </Grid>
+                    <Grid container spacing={2}>
+                        <Grid size={{xs:12,sm:12}}>
+                            <TextField
+                            size="small"
+                            label={"Açıklama"}
+                            variant='outlined'
+                            value={data.description}
+                            onChange={(e) => handleChangeField("description",e.target.value)}
+                            disabled={disabled}
+                            fullWidth
+                            multiline
+                            rows={4}
                             />
                         </Grid>
                     </Grid>

@@ -65,7 +65,8 @@ function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <a className="navbar-brand mt-2 mt-lg-0" href="/">
-                        <img src={logo} height="18" alt="Marswide" loading="lazy" />
+                        <img src={logo} height="18" alt="Arinet" loading="lazy" />
+                        {/* <span className="sansation-bold">ARINET</span> */}
                     </a>
                 </div>
                 <div className="d-flex align-items-end">

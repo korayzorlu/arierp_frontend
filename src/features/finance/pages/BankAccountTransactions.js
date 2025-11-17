@@ -88,12 +88,12 @@ function BankAccountTransactions() {
                 rowCount={bankAccountTransactionsCount}
                 customButtons={
                     <>
-                        {/* <CustomTableButton
+                        <CustomTableButton
                         title="Yeni"
                         link="/bank-account-transactions/add"
                         disabled={activeCompany ? false : true}
                         icon={<AddBoxIcon fontSize="small"/>}
-                        /> */}
+                        />
                         <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchBankAccountTransactions({activeCompany,params:bankAccountTransactionsParams})).unwrap()}

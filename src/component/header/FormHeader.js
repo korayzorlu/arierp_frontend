@@ -98,9 +98,9 @@ function FormHeader(props) {
                     onClick={() => onClickAdd()}
                     loading={loadingAdd}
                     disabled={disabled || disabledAdd}
-                    startIcon={<AddIcon/>}
+                    startIcon={<SaveIcon/>}
                     >
-                        Oluştur
+                        Kaydet
                     </Button>
                     :
                     <></>
