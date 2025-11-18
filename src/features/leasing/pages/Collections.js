@@ -91,7 +91,17 @@ function Collections() {
 
     
     const bankActivityColumns = [
-        { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 140 },
+        { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 120 },
+        { field: 'name', headerName: 'Gönderen', width: 140,
+            renderCell: (params) => (
+                
+                    params.value && params.value !== 'None'
+                    ?
+                        params.value
+                    :
+                        null
+            ),
+        },
         { field: 'third_person_status', headerName: '3. Kişi Durumu', width: 160,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
@@ -103,7 +113,6 @@ function Collections() {
                             null
                     }
                 </Stack>
-                
             ),
             renderHeaderFilter: () => null,
         },

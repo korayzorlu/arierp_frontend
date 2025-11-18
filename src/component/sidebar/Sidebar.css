@@ -8,6 +8,9 @@
     --sidebar-submenu-background-color: #f7f7f7;
     --sidebar-menu-button-background-color: #EBEBEB;
     --sidebar-menu-button-active-background-color: #e7dddd;
+
+    --scrollbar-color: rgba(100, 100, 100, 0.3);
+    --scrollbar-hover-color: rgba(100, 100, 100, 0.7);
 }
   
 [data-mdb-theme="dark"] {
@@ -19,6 +22,9 @@
     --sidebar-submenu-background-color: #151515;
     --sidebar-menu-button-background-color: #44474B;
     --sidebar-menu-button-active-background-color: #2c2a2a;
+
+    --scrollbar-color: rgba(255, 255, 255, 0.3);
+    --scrollbar-hover-color: rgba(255, 255, 255, 0.7);
 }
 
 .sidebarContent .ps-sidebar-container{
@@ -53,6 +59,29 @@
     /*display: none;*/
 }
 
+/* .sidebarContent .ps-sidebar-container::-webkit-scrollbar {
+  display: none;
+} */
+
+::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+
+::-webkit-scrollbar:hover {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-color);
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border-radius: 3px;
+    background: var(--scrollbar-hover-color);
+}   
 
   
 .sideBarIcon {
