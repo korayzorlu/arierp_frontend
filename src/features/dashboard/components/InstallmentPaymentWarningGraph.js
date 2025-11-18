@@ -127,7 +127,7 @@ function InstallmentPaymentWarningGraph() {
                     <Grid container>
                         <Grid size={{xs:12,sm:10}}>
                             <Typography gutterBottom variant="h6">
-                                ÖDEME, TAHSİLAT VE İHTAR ANALİZİ
+                                MÜŞTERİ BORCU VE TAHSİLAT GRAFİĞİ
                             </Typography>
                         </Grid>
                         <Grid size={{xs:12,sm:2}}>
