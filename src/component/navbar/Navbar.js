@@ -2,15 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/js/dist/dropdown.js";
 import { Dropdown } from "mdb-ui-kit";
-import { Link } from 'react-router-dom';
 import { ReactComponent as NavbarLogo } from '../../images/logo/light/marswide-logo.svg';
 //import { ReactComponent as DarkModeIcon } from '../../images/icons/navbar/dark-mode.svg';
 //import { ReactComponent as LightModeIcon } from '../../images/icons/navbar/light-mode.svg';
-import ProgressBar from '../progress/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeTheme, logoutAuth } from '../../store/slices/authSlice';
 import { setSidebar } from '../../store/slices/sidebarSlice';
-import { Badge, Box, CircularProgress, Divider, IconButton, LinearProgress, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, LinearProgress, Typography } from '@mui/material';
 import ImportProcesses from './ImportProcesses';
 import Companies from './Companies';
 import Notifications from './Notifications';
@@ -66,7 +63,7 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <a className="navbar-brand mt-2 mt-lg-0" href="/">
                         <img src={logo} height="18" alt="Arinet" loading="lazy" />
-                        {/* <span className="sansation-bold">ARINET</span> */}
+                        {/* <Typography className="boldonse-regular" color={dark ? 'whitehole' : 'blackhole'}>ARINET</Typography> */}
                     </a>
                 </div>
                 <div className="d-flex align-items-end">

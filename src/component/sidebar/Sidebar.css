@@ -1,6 +1,7 @@
 
 :root {
     --sidebar-icon-color: #000;
+    --sidebar-text-color: #000;
     /* --sidebar-icon-active-color: #1976d2; */
     --sidebar-icon-active-color: #000;
     --sidebar-background-color: #fff;
@@ -11,6 +12,7 @@
   
 [data-mdb-theme="dark"] {
     --sidebar-icon-color: #fff;
+    --sidebar-text-color: #fff;
     /* --sidebar-icon-active-color: #90caf9; */
     --sidebar-icon-active-color: #efe237;
     --sidebar-background-color: #111;
@@ -65,4 +67,8 @@
     /*background-color: var(--sidebar-menu-button-active-background-color); 1976d2*/
     color: var(--sidebar-icon-active-color);
     font-weight: 600;
+}
+
+.sidebarContent .ps-menu-label {
+    color: var(--sidebar-text-color)
 }

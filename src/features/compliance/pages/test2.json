@@ -1,0 +1,313 @@
+[
+    {
+        "Type": "Watchlist",
+        "ssid": "P3eyRMFw7CfThVhy5uopDA==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "Function": "Öğretmen",
+        "Country": "Turkey",
+        "CountryCode": "TR",
+        "BlacklistName": "KHK – Dismissed Ministry Personnel in Türkiye",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "TRABZON \r\n",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901m1-1.htm" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-1.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-2.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-3.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-14.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-13.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-15.pdf" }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ListedOn": "9/1/2016 12:00:00 AM",
+        "ProfileId": "IND4205964",
+        "ProfileKey": "613364520826574348",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "pdipJBXyn/bUb5FR1Yt5EA==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "BlacklistName": "KHK – State Employee Dismissals in Türkiye",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Terör örgütlerine ... Sicil No: 220401 ... Görevi: Polis Memuru",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2018/07/20180708-1.pdf" }
+        ],
+        "Documents": [
+            { "DocumentType": "Local Identity", "DocumentNumber": "220401" }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "IND4160837",
+        "ProfileKey": "9596291356694622747",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "s8716z4Apbuf9sNM9bzysw==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "BlacklistName": "KHK – Expelled Employees from the Ministry of National Education",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Baba Adı: MUZAFFER , Doğum Tarihi: ../10/1978 , Görev Yeri: SAMSUN - LADİK",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-4.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-5.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-6.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-7.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-8.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-9.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-10.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-11.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-12.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-13.pdf" }
+        ],
+        "BirthDetails": [
+            { "BirthYear": 1978 },
+            { "BirthYear": 1978 }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "IND4145054",
+        "ProfileKey": "5534970583319864447",
+        "MatchRate": 100,
+        "LastUpdateDate": "6/28/2025 5:59:56 PM"
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "/lnqwT2+iQP2/k3/EHYhaw==",
+        "FullName": "Ali AYDIN",
+        "FirstName": "Ali",
+        "LastName": "AYDIN",
+        "BlacklistName": "KHK – State Employee Dismissals in Türkiye",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Terör örgütlerine ... Sicil No: 2006-M-736 ... Görevi: Hv. İs. Asb. Üçyş.",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2018/07/20180708-1.pdf" }
+        ],
+        "Documents": [
+            { "DocumentType": "Local Identity", "DocumentNumber": "2006-M-736" }
+        ],
+        "OtherNames": [
+            { "FullName": "Ali AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "IND4174309",
+        "ProfileKey": "14075130750408625726",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "JXmCQoB2JwMLrCcYcPyNpg==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "BlacklistName": "KHK – State Employee Dismissals in Türkiye",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Terör örgütlerine ... Sicil No: 170475 ... Görevi: Polis Memuru",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2018/07/20180708-1.pdf" }
+        ],
+        "Documents": [
+            { "DocumentType": "Local Identity", "DocumentNumber": "170475" }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "IND4175621",
+        "ProfileKey": "17605063259849334070",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "ArmnPrnqH1DH7377hJX3Jg==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "Function": "3.Sınıf Emniyet Müdürü",
+        "BlacklistName": "KHK - Dismissed Security Directorate Personnel in Türkiye",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Karar Sayısı: KHK/672 ...",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-17.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-16.pdf" }
+        ],
+        "Documents": [
+            { "DocumentType": "Local Identity", "DocumentNumber": "183218" }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ListedOn": "9/1/2016 12:00:00 AM",
+        "ProfileId": "IND4058624",
+        "ProfileKey": "7951462382490120071",
+        "ProgramName": "KHK/672",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "69MDGLnVFhAclVIV9d9NKQ==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "BlacklistName": "KHK – Expelled Employees from the Ministry of National Education",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Baba Adı: ŞABAN , Doğum Tarihi: ../03/1964 , Görev Yeri: İSTANBUL - KARTAL",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-4.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-5.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-6.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-7.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-8.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-9.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-10.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-11.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-12.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-13.pdf" }
+        ],
+        "BirthDetails": [
+            { "BirthYear": 1964 },
+            { "BirthYear": 1964 }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "IND4133398",
+        "ProfileKey": "17680974617016760571",
+        "MatchRate": 100,
+        "LastUpdateDate": "6/28/2025 5:59:50 PM"
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "ZwadUOPJcb/N6NuNwNkFhw==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "BlacklistName": "KHK – Expelled Employees from the Ministry of National Education",
+        "BlacklistFlagCode": "em em-flag-tr",
+        "OtherInformation": "Baba Adı: SÜLEYMAN , Doğum Tarihi: ../03/1973 , Görev Yeri: TRABZON - AKÇAABAT",
+        "Links": [
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-4.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-5.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-6.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-7.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-8.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-9.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-10.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-11.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-12.pdf" },
+            { "Link": "https://www.resmigazete.gov.tr/eskiler/2016/09/20160901M1-1-13.pdf" }
+        ],
+        "BirthDetails": [
+            { "BirthYear": 1973 },
+            { "BirthYear": 1973 }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "IND4118289",
+        "ProfileKey": "9861983754605880801",
+        "MatchRate": 100,
+        "LastUpdateDate": "6/28/2025 5:59:46 PM"
+    },
+    {
+        "Type": "Watchlist",
+        "ssid": "LZDXOWUV5mqOuNR0CqF78Q==",
+        "FullName": " ALI AYDIN",
+        "MiddleName": "ALI",
+        "LastName": "AYDIN",
+        "BlacklistName": "The Gazette Insolvency Notices Individual ",
+        "BlacklistFlagCode": "em em-gb",
+        "OtherInformation": "Notice category: Personal Insolvency ... Bankruptcy order date: 21 January 2019 ...",
+        "Links": [
+            { "Link": "https://m.thegazette.co.uk/notice/3195912" }
+        ],
+        "AddressDetails": [
+            { "OtherInformation": "12a Uplands Drive, EXETER, EX4 7JZ" },
+            { "OtherInformation": "ALI AYDIN,a decorator of 12A Uplands Drive, Exeter, Devon, EX4 7JZ" }
+        ],
+        "OtherNames": [
+            { "FullName": " ALI AYDIN", "NameType": "Full Name" }
+        ],
+        "ListedOn": "1/29/2019 12:00:00 AM",
+        "ProfileId": "155744",
+        "ProfileKey": "1004688994593307137",
+        "ProgramName": "Bankruptcy Orders",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Pep",
+        "ssid": "RKMAcIX+szDdnjRTMUGajA==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "Function": "Köprübaşı Belediye Başkanı",
+        "Country": "",
+        "PepClass": "Class 3",
+        "PepClassId": 3,
+        "Summary": "Trabzon Belediye Meclisi \r\nParty: AK PARTİ",
+        "Links": [
+            { "Link": "https://www.trabzon.bel.tr/Web/MeclisUyeleri" }
+        ],
+        "Images": [
+            { "Link": "https://kurumsal.trabzon.bel.tr/Upload/TipDeger/353c70c2-017d-4b1b-ad2c-a4f08eaae6be/20240430100700a8ZxG.jpg" }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "PEP845298",
+        "ProfileKey": "14379386089223482369",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Pep",
+        "ssid": "IqZB0Dvz7cy2SdEtWxUN/w==",
+        "FullName": "Ali AYDIN",
+        "Function": "Mayor of KÖPRÜBAŞI/TRABZON",
+        "Country": "Turkey",
+        "PepClass": "Class 3",
+        "PepClassId": 3,
+        "Summary": "District Mayors Of Turkey",
+        "OtherNames": [
+            { "FullName": "Ali AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "PEP674711",
+        "ProfileKey": "12873673959965370373",
+        "CountryCode": "TR",
+        "MatchRate": 100
+    },
+    {
+        "Type": "Pep",
+        "ssid": "o4mjGdGLHSgARliUOy+Exw==",
+        "FullName": "ALİ AYDIN",
+        "FirstName": "ALİ",
+        "LastName": "AYDIN",
+        "Function": "Mayor of (Trabzon) KÖPRÜBAŞI",
+        "PepClass": "Class 3",
+        "PepClassId": 3,
+        "Summary": "District Mayors Of Turkey",
+        "Links": [
+            { "Link": "https://www.sozcu.com.tr/secim2019/" },
+            { "Link": "https://secim2024-storage.ntv.com.tr/secimsonuc2024/live/president/61.json?v=20240401150330" }
+        ],
+        "OtherNames": [
+            { "FullName": "ALİ AYDIN", "NameType": "Full Name" }
+        ],
+        "ProfileId": "13171015",
+        "ProfileKey": "7738489619122949324",
+        "LastUpdateDate": "18.09.2024",
+        "MemberShipData": [
+            { "PartyName": "AK Parti" }
+        ],
+        "MatchRate": 100
+    }
+]

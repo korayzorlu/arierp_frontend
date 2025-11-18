@@ -59,7 +59,7 @@ function ThirdPersonDetailPanel(props) {
                                         <Card sx={{ maxWidth: 345, height: 420 }} key={index}>
                                             <CardMedia
                                                 sx={{ height: 140, width: 140, marginLeft: 'auto', marginRight: 'auto', mt: 2,borderRadius: '50%',objectFit: 'cover', }}
-                                                image={UserDefaultPng}
+                                                image={result.Images.length > 0 ? result.Images[0].Link : UserDefaultPng}
                                                 title="person"
                                             />
                                             <CardContent>
