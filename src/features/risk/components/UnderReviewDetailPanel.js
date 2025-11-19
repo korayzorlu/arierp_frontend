@@ -64,7 +64,7 @@ function UnderReviewDetailPanel(props) {
         { field: 'block', headerName: 'Blok', flex:2 },
         { field: 'unit', headerName: 'Bağımsız Bölüm', flex:2 },
         { field: '', headerName: 'Tahsilatlar', flex:2, renderCell: (params) => (
-                <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract_code:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
+                <IconButton aria-label='back' onClick={()=>{dispatch(fetchContractPaymentsInLease({activeCompany,contract:params.row.contract}));dispatch(setContractPaymentDialog(true))}}>
                     <PaidIcon/>
                 </IconButton>
                 
