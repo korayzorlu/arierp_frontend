@@ -323,7 +323,7 @@ function DetailPanel(props) {
                         title="Yeni"
                         onClick={() => {dispatch(setAddBankActivityLeaseDialog(true));}}
                         icon={<AddBoxIcon fontSize="small"/>}
-                        disabled={data.third_person_status === "cleared" ? false : true}
+                        disabled={!data.is_third_person || (data.is_third_person && data.third_person_status === "cleared") ? false : true}
                         />
                     </>
                 }
