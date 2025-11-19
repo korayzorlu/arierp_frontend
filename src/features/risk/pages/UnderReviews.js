@@ -216,13 +216,8 @@ function UnderReviews() {
                     <>  
                         <CustomTableButton
                         title="Sözleşme Bazında Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_risk_partners/")}}
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_under_reviews/")}}
                         icon={<DownloadIcon fontSize="small"/>}
-                        />
-                        <CustomTableButton
-                        title="SMS İçin Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_risk_partners_for_sms/")}}
-                        icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
