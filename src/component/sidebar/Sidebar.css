@@ -1,9 +1,10 @@
 
 :root {
     --sidebar-icon-color: #000;
-    --sidebar-text-color: #000;
     /* --sidebar-icon-active-color: #1976d2; */
     --sidebar-icon-active-color: #000;
+    --sidebar-text-color: #000;
+    --sidebar-text-active-color: #000;
     --sidebar-background-color: #fff;
     --sidebar-submenu-background-color: #f7f7f7;
     --sidebar-menu-button-background-color: #EBEBEB;
@@ -15,9 +16,10 @@
   
 [data-mdb-theme="dark"] {
     --sidebar-icon-color: #fff;
-    --sidebar-text-color: #fff;
     /* --sidebar-icon-active-color: #90caf9; */
     --sidebar-icon-active-color: #efe237;
+    --sidebar-text-color: #fff;
+    --sidebar-text-active-color: #efe237;
     --sidebar-background-color: #111;
     --sidebar-submenu-background-color: #151515;
     --sidebar-menu-button-background-color: #44474B;
@@ -98,6 +100,10 @@
     font-weight: 600;
 }
 
-.sidebarContent .ps-menu-label {
+.sidebarContent .ps-menuitem-root .ps-menu-label {
     color: var(--sidebar-text-color)
+}
+
+.sidebarContent .ps-menuitem-root.active .ps-menu-label {
+    color: var(--sidebar-text-active-color)
 }

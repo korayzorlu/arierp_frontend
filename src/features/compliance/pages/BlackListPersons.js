@@ -7,6 +7,7 @@ import ListTableServer from '../../../component/table/ListTableServer';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function BlackListPersons() {
     const {user} = useSelector((store) => store.auth);
@@ -47,6 +48,12 @@ function BlackListPersons() {
             loading={blackListPersonsLoading}
             customButtons={
                 <>  
+                    <CustomTableButton
+                    title="Yeni"
+                    link="/blacklist-persons/add"
+                    disabled={activeCompany ? false : true}
+                    icon={<AddBoxIcon fontSize="small"/>}
+                    />
                     <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchBlackListPersons({activeCompany,params:blackListPersonsParams})).unwrap()}

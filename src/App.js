@@ -140,6 +140,7 @@ import ThirdPersons from 'features/compliance/pages/ThirdPersons';
 import TrialBalanceContractUnderReviews from 'features/accounting/pages/TrialBalanceContractUnderReviews';
 import TrialBalanceContractInactives from 'features/accounting/pages/TrialBalanceContractInactives';
 import AddBankAccounTransaction from 'features/finance/pages/AddBankAccounTransaction';
+import AddBlacklistPerson from 'features/compliance/pages/AddBlackListPerson';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -289,6 +290,7 @@ function App() {
                   
                   {/* compliance */}
                   <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
+                  <Route path='/blacklist-persons/add' element={<AddBlacklistPerson></AddBlacklistPerson>}></Route>
                   <Route path='/scan-partners' element={<ScanPartners></ScanPartners>}></Route>
                   <Route path='/third-persons' element={<ThirdPersons></ThirdPersons>}></Route>
 

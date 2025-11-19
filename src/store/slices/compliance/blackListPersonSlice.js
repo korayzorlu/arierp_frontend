@@ -28,6 +28,29 @@ export const fetchBlackListPersons = createAsyncThunk('auth/fetchBlackListPerson
     }
 });
 
+export const addBlackListPerson = createAsyncThunk('auth/addBlackListPerson', async ({data=null},{dispatch,extra: {navigate}}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/compliance/add_black_list_person/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+        navigate("/black-list-persons");
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const blackListPersonSlice = createSlice({
     name:"blackListPerson",
     initialState,
