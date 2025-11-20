@@ -25,6 +25,7 @@ import ThirdPersonDocumentDialog from 'component/dialog/ThirdPersonDocumentDialo
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 function ThirdPersons() {
     const {dark} = useSelector((store) => store.auth);
@@ -51,6 +52,8 @@ function ThirdPersons() {
                 return { color: "success", icon: <CheckIcon />, label: "Temiz" };
             case "flagged":
                 return { color: "error", icon: <DoDisturbAltIcon />, label: "Yasaklı" };
+            case "need_document":
+                return { color: "info", icon: <HourglassBottomIcon />, label: "Belge/Kimlik Gerekli" };
             default:
                 return { color: "primary", icon: <CheckIcon />, label: "Bilinmiyor" };
         }
@@ -93,6 +96,7 @@ function ThirdPersons() {
                     { value: 'all', label: 'Tümü' },
                     { value: 'pending', label: 'Kontrol Edilecek' },
                     { value: 'cleared', label: 'Temiz' },
+                    { value: 'need_document', label: 'Belge/Kimlik Gerekiyor' },
                     { value: 'flagged', label: 'Yasaklı/Şüpheli' },
                 ]}
                 />

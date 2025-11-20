@@ -51,7 +51,7 @@ function TrialBalances() {
                 ]}
                 />
             )
-         },
+        },
         { field: 'account_code', headerName: 'Hesap Kodu', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
         { field: 'contract', headerName: 'Sözleşme' },

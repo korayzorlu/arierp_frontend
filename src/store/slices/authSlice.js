@@ -12,7 +12,7 @@ const initialState = {
     wrongPath:false,
     dark:false,
     theme:theme,
-    logo:require(`../../images/logo/light/ari-logo-full.png`),
+    logo:require(`../../images/logo/light/ari-logo-full-2.png`),
     loading:true,
     authMessage:{color:"",icon:"",text:""},
     userInformation:{},
@@ -148,7 +148,7 @@ const authSlice = createSlice({
             document.documentElement.setAttribute("data-mdb-theme", action.payload);
             state.theme = action.payload;
             //console.log(getDeviceTheme())
-            state.logo = require(`../../images/logo/${action.payload}/ari-logo-full.png`);
+            state.logo = require(`../../images/logo/${action.payload}/ari-logo-full-2.png`);
             document.cookie = `theme=${action.payload}; path=/; ${process.env.REACT_APP_SAME_SITE}`;
 
         },
@@ -220,8 +220,8 @@ const authSlice = createSlice({
                 state.dark = action.payload;
                 state.theme = action.payload ? "dark" : "light";
                 state.logo = action.payload
-                    ? require(`../../images/logo/dark/ari-logo-full.png`)
-                    : require(`../../images/logo/light/ari-logo-full.png`)
+                    ? require(`../../images/logo/dark/ari-logo-full-2.png`)
+                    : require(`../../images/logo/light/ari-logo-full-2.png`)
                 document.cookie = action.payload
                     ? `theme=dark; path=/; ${process.env.REACT_APP_SAME_SITE}`
                     : `theme=light; path=/; ${process.env.REACT_APP_SAME_SITE}`
