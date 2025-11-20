@@ -146,6 +146,8 @@ function ListTable(props) {
     density,
     columnGroupingModel,
     slotProps,
+    getRowHeight,
+    sx
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -234,48 +236,49 @@ function ListTable(props) {
       keepNonExistentRowsSelected={keepNonExistentRowsSelected}
       rowCount={rowCount}
       autoHeight={autoHeight}
+      getRowHeight={getRowHeight}
       //getRowHeight={() => 'auto'}
-      sx={{
+      sx={{...sx,
           [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
             outline: 'none',
           },
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
               outline: 'none',
-          },
-          // Pinned toplam satırını veri satırlarının hemen altında göstermek için
-          // virtual scroller içerik alt boşluğunu kapat ve pinned rows'u akışa al
-          '& .MuiDataGrid-virtualScrollerContent': {
-            marginBottom: '0px !important',
-            paddingBottom: '0px !important',
-          },
-          '& .MuiDataGrid-pinnedRows, & .MuiDataGrid-pinnedRowsBottom': {
-            position: 'static !important',
-            bottom: 'auto !important',
-            transform: 'none !important',
-            boxShadow: 'none !important',
-            zIndex: 'auto !important',
-          },
-          '& .MuiDataGrid-footerContainer': {
-            paddingTop: 0,
-            marginTop: 0,
-          },
-          '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
-          '& .MuiDataGrid-columnHeader': {
-            '& .MuiDataGrid-columnHeaderTitleContainer': {
-              overflow: 'visible',
             },
-            '& .MuiDataGrid-columnHeaderTitleContainerContent': {
-              position: 'sticky',
-              left: 8,
+            // Pinned toplam satırını veri satırlarının hemen altında göstermek için
+            // virtual scroller içerik alt boşluğunu kapat ve pinned rows'u akışa al
+            '& .MuiDataGrid-virtualScrollerContent': {
+              marginBottom: '0px !important',
+              paddingBottom: '0px !important',
             },
-          },
-          '& .MuiDataGrid-root': {
-            border: 1,
-            borderColor: dark ? 'rgba(81,81,81,1)' : 'rgba(224,224,224,1)'
-          },
-          '& .ColumnGroupingModel .MuiDataGrid-columnHeaderTitleContainer': {
-            justifyContent: 'center',
-          },
+            '& .MuiDataGrid-pinnedRows, & .MuiDataGrid-pinnedRowsBottom': {
+              position: 'static !important',
+              bottom: 'auto !important',
+              transform: 'none !important',
+              boxShadow: 'none !important',
+              zIndex: 'auto !important',
+            },
+            '& .MuiDataGrid-footerContainer': {
+              paddingTop: 0,
+              marginTop: 0,
+            },
+            '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
+            '& .MuiDataGrid-columnHeader': {
+              '& .MuiDataGrid-columnHeaderTitleContainer': {
+                overflow: 'visible',
+              },
+              '& .MuiDataGrid-columnHeaderTitleContainerContent': {
+                position: 'sticky',
+                left: 8,
+              },
+            },
+            '& .MuiDataGrid-root': {
+              border: 1,
+              borderColor: dark ? 'rgba(81,81,81,1)' : 'rgba(224,224,224,1)'
+            },
+            '& .ColumnGroupingModel .MuiDataGrid-columnHeaderTitleContainer': {
+              justifyContent: 'center',
+            },
           ...(!dark
             ? {
                 '& .MuiDataGrid-detailPanel': {

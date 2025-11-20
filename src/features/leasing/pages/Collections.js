@@ -11,9 +11,9 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import axios from 'axios';
 import 'static/css/Installments.css';
-import { useGridApiRef } from '@mui/x-data-grid-premium';
+import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
 import { Button, Chip, Grid, Stack } from '@mui/material';
-import { fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from 'store/slices/leasing/bankActivitySlice';
+import { fetchAccountNos, fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from 'store/slices/leasing/bankActivitySlice';
 import ListTable from 'component/table/ListTable';
 import DetailPanel from 'features/leasing/components/DetailPanel';
 import ExportDialog from 'component/feedback/ExportDialog';
@@ -23,6 +23,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -38,7 +39,7 @@ function Collections() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {collections,collectionsCount,collectionsParams,collectionsLoading} = useSelector((store) => store.collection);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
-    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading} = useSelector((store) => store.bankActivity);
+    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading,accountNos,accountNosParams} = useSelector((store) => store.bankActivity);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -52,8 +53,9 @@ function Collections() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,paginate:false}}));
+            dispatch(fetchAccountNos({activeCompany,params:accountNosParams}));
         });
-    }, [activeCompany,bankActivitiesParams,dispatch]);
+    }, [activeCompany,bankActivitiesParams,accountNosParams,dispatch]);
     
 
     const columns = [
@@ -91,15 +93,17 @@ function Collections() {
 
     
     const bankActivityColumns = [
-        { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 120 },
+        // { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 120 },
         { field: 'name', headerName: 'Gönderen', width: 140,
             renderCell: (params) => (
                 
-                    params.value && params.value !== 'None'
-                    ?
-                        params.value
-                    :
-                        null
+                    // params.value && params.value !== 'None'
+                    // ?
+                    //     `${params.value} ${params.row.tc_vkn_no}`
+                    // :
+                    //     null
+
+                    `${params.value !== 'None' ? params.value : ''} ${params.row.tc_vkn_no}`
             ),
         },
         { field: 'third_person_status', headerName: '3. Kişi Durumu', width: 160,
@@ -125,7 +129,32 @@ function Collections() {
         },
         { field: 'currency', headerName: 'PB', width: 90 },
         { field: 'process_date_date', headerName: 'İşlem Tarihi', width: 120 },
-        { field: 'bank_account_no', headerName: 'Banka Hesap No', width: 160 },
+        { field: 'bank_account_no', headerName: 'Banka Hesap No', width: 160,
+            // filterOperators: [
+            //     {
+            //         label: 'Eşittir',
+            //         value: 'is', // Burayı 'is' yapın!
+            //         getApplyFilterFn: (filterItem) => {
+            //             if (!filterItem.value || filterItem.value === "all") {
+            //                 return null;
+            //             }
+            //             return (params) => params.value === filterItem.value;
+            //         },
+            //         InputComponent: SelectHeaderFilter,
+            //     },
+            // ],
+            // renderHeaderFilter: (params) => (
+            //     <SelectHeaderFilter
+            //     {...params}
+            //     label="Seç"
+            //     externalValue="all"
+            //     options={[
+            //         { label: "Tümü", value: "all" },
+            //         ...accountNos.map((code) => ({ label: code, value: code }))
+            //     ]}
+            //     />
+            // )
+        },
     ]
 
     
@@ -151,6 +180,8 @@ function Collections() {
                 return { color: "success", icon: <CheckIcon />, label: "Temiz" };
             case "flagged":
                 return { color: "error", icon: <DoDisturbAltIcon />, label: "Yasaklı" };
+            case "need_document":
+                return { color: "info", icon: <HourglassBottomIcon />, label: "Belge/Kimlik Gerekli" };
             default:
                 return { color: "primary", icon: <CheckIcon />, label: "Bilinmiyor" };
         }
@@ -204,6 +235,12 @@ function Collections() {
                             : ""
                         }
                     `
+                }}
+                getRowHeight={() => 'auto'}
+                sx={{
+                    [`& .${gridClasses.cell}`]: {
+                        py: 1,
+                    },
                 }}
                 getDetailPanelHeight={() => "auto"}
                 getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases.leases}></DetailPanel>)}}

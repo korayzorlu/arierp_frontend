@@ -26,6 +26,15 @@ const initialState = {
     bankActivitiesLoading:false,
     bankActivityLeasesLoading:false,
     partnerInformation:{},
+    //
+    accountNos:[],
+    accountNosCount:0,
+    accountNosParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    accountNosLoading:false,
 }
 
 export const fetchBankActivities = createAsyncThunk('auth/fetchBankActivities', async ({activeCompany,serverModels=null,params=null}) => {
@@ -63,6 +72,20 @@ export const fetchBankActivity = createAsyncThunk('auth/fetchBankActivity', asyn
         return {}
     } finally {
         dispatch(setIsProgress(false));
+    }
+});
+
+export const fetchAccountNos = createAsyncThunk('auth/fetchAccountNos', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/account_nos/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
     }
 });
 
@@ -210,6 +233,23 @@ const bankActivitySlice = createSlice({
         deleteBankActivities: (state,action) => {
             state.bankActivities = [];
         },
+        //
+        setAccountNosLoading: (state,action) => {
+            state.accountNosLoading = action.payload;
+        },
+        setAccountNosParams: (state,action) => {
+            state.accountNosParams = {
+                ...state.accountNosParams,
+                ...action.payload
+            };
+        },
+        resetAccountNosParams: (state,action) => {
+            state.accountNosParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -247,6 +287,18 @@ const bankActivitySlice = createSlice({
             })
             .addCase(fetchBankActivityLeases.rejected, (state,action) => {
                 state.bankActivityLeasesLoading = false
+            })
+            // account nos
+            .addCase(fetchAccountNos.pending, (state) => {
+                state.accountNosLoading = true
+            })
+            .addCase(fetchAccountNos.fulfilled, (state,action) => {
+                state.accountNos = action.payload.data || action.payload;
+                state.accountNosCount = action.payload.recordsTotal || 0;
+                state.accountNosLoading = false
+            })
+            .addCase(fetchAccountNos.rejected, (state,action) => {
+                state.accountNosLoading = false
             })
     },
   
