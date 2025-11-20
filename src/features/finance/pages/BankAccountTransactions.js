@@ -13,6 +13,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import ListTableServer from 'component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function BankAccountTransactions() {
     const {user} = useSelector((store) => store.auth);
@@ -39,8 +40,8 @@ function BankAccountTransactions() {
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
     const columns = [
-        { field: 'transaction_date', headerName: 'Tarih', width: 160, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
-        { field: 'transaction_id', headerName: 'İşlem ID', width: 120 },
+        { field: 'transaction_date', headerName: 'Tarih', width: 120, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
+        { field: 'transaction_id', headerName: 'İşlem ID', width: 90 },
         { field: 'explanation_field', headerName: 'Açıklama', width: 520 },
         { field: 'amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null },
         { field: 'bank_name', headerName: 'Banka', width: 140 },
@@ -114,6 +115,12 @@ function BankAccountTransactions() {
                             sort: 'desc',
                         },
                         ],
+                    },
+                }}
+                autoRowHeight
+                sx={{
+                    [`& .${gridClasses.cell}`]: {
+                        py: 1,
                     },
                 }}
                 />
