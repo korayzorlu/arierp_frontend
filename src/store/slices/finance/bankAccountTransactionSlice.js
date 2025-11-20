@@ -68,6 +68,7 @@ export const addBankActivity = createAsyncThunk('auth/addBankActivity', async ({
         }else{
             dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
         };
+        dispatch(updateBankAccountTransactionDowngrade({transaction_id: data.transaction_id}));
         return null
     } finally {
         dispatch(setIsProgress(false));
@@ -100,6 +101,13 @@ const bankAccountTransactionSlice = createSlice({
             if (item) {
                 item.bank_activity = true;
             }
+        },
+        updateBankAccountTransactionDowngrade(state, action) {
+            const { transaction_id } = action.payload;
+            const item = state.bankAccountTransactions.find(obj => obj.transaction_id === transaction_id);
+            if (item) {
+                item.bank_activity = false;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -120,5 +128,5 @@ const bankAccountTransactionSlice = createSlice({
   
 })
 
-export const {setBankAccountTransactionsLoading,setBankAccountTransactionsParams,resetBankAccountTransactionsParams,deleteBankAccountTransactions,setBankAccountTransactionsOverdues,updateBankAccountTransaction} = bankAccountTransactionSlice.actions;
+export const {setBankAccountTransactionsLoading,setBankAccountTransactionsParams,resetBankAccountTransactionsParams,deleteBankAccountTransactions,setBankAccountTransactionsOverdues,updateBankAccountTransaction,updateBankAccountTransactionDowngrade} = bankAccountTransactionSlice.actions;
 export default bankAccountTransactionSlice.reducer;

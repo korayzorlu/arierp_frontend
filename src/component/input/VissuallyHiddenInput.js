@@ -2,7 +2,7 @@ import React from 'react'
 import { styled } from '@mui/material/styles';
 
 function VissuallyHiddenInput(props) {
-    const {onChange} = props;
+    const {onChange,accept} = props;
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -21,6 +21,7 @@ function VissuallyHiddenInput(props) {
         type="file"
         onChange={onChange}
         multiple
+        accept={accept || null}
     />
   )
 }

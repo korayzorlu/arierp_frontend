@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Container, Grid, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Chip, Container, Grid, IconButton, Paper, Stack, Typography } from '@mui/material'
 import React, { startTransition, useEffect, useState } from 'react'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -17,12 +17,17 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { Link } from 'react-router-dom';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ThirdPersonStatusDialog from 'component/dialog/ThirdPersonStatusDialog';
-import { setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
+import { setThirdPersonDocumentDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import ThirdPersonDetailPanel from '../components/ThirdPersonDetailPanel';
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ThirdPersonDocumentDialog from 'component/dialog/ThirdPersonDocumentDialog';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FilePresentIcon from '@mui/icons-material/FilePresent';
+import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 
 function ThirdPersons() {
+    const {dark} = useSelector((store) => store.auth);
     const {mobile} = useSelector((store) => store.sidebar);
     const {activeCompany} = useSelector((store) => store.organization);
     const {thirdPersons,thirdPersonsCount,thirdPersonsParams,thirdPersonsLoading} = useSelector((store) => store.thirdPerson);
@@ -93,6 +98,41 @@ function ThirdPersons() {
                 />
             )
         },
+        { field: 'third_person_documents', headerName: 'Belge', flex: 1, renderHeaderFilter: () => null,
+            renderCell: (params) => (
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    {
+                        params.value.length > 0
+                        ?   
+                            <>
+                                <Link to={`${process.env.REACT_APP_BACKEND_URL}${params.value[0].url}`} target="_blank" component="a" sx={{ textDecoration: 'underline' }}>
+                                    <IconButton
+                                    color='opposite'
+                                    size='small'
+                                    >
+                                        <AttachFileRoundedIcon />
+                                    </IconButton>
+                                </Link>
+                                {params.value[0].label}
+                            </>
+                        :
+                            <Button
+                            key={params.row.id}
+                            variant='contained'
+                            color={dark ? 'silvercoin' : 'ari'}
+                            endIcon={<CloudUploadIcon />}
+                            size='small'
+                            onClick={() => {
+                                dispatch(setThirdPersonDocumentDialog(true));
+                                setSelectedRow(params.row);
+                            }}
+                            >
+                                Belge Ekle
+                            </Button>
+                    }
+                </Stack>
+            )
+        },
     ]
 
     return (
@@ -124,6 +164,10 @@ function ThirdPersons() {
             />
             <ThirdPersonStatusDialog
             row={selectedRow}
+            />
+            <ThirdPersonDocumentDialog
+            row={selectedRow}
+            finalEvent={() => dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap()}
             />
         </PanelContent>
     )
