@@ -124,34 +124,51 @@ function ListTableServer(props) {
   };
 
   const handleFilterModelChange = (model) => {
+    //console.log("filter model", model);
+    //console.log("--------Start--------");
     setFilterModel(model);
     if(model.quickFilterValues && model.quickFilterValues.length > 0){
+      //console.log("1");
       const value = model.quickFilterValues[model.quickFilterValues.length - 1];
       setFilterParams({ ...filterParams, "search[value]": value });
       debouncedSetParams({ "search[value]": value });
-  
     } else if(model.quickFilterValues && model.quickFilterValues.length === 0 && model.items.length > 0){
+      //console.log("2");
       model.items.forEach((item) => {
-          const isCodeLike = ['code','contract','lease'].includes(item.field);
-          if (item.value) {
-            setFilterParams({
-              ...filterParams,
-              ...(isCodeLike ? { "search[value]": item.value } : { [item.field]: item.value })
-            });
-            if (isCodeLike) {
-              setParams({ "search[value]": item.value });
-            } else {
-              setParams({ [item.field]: item.value });
-            }
+        //console.log("2-1");
+        const isCodeLike = ['code','contract','lease'].includes(item.field);
+        if (item.value) {
+          //console.log("2-1-1");
+          setFilterParams({
+            ...filterParams,
+            ...(isCodeLike ? { "search[value]": item.value } : { [item.field]: item.value })
+          });
+          if (isCodeLike) {
+            //console.log("2-1-1-1");
+            setParams({ "search[value]": item.value });
           } else {
-            if (isCodeLike) {
-              setParams({ "search[value]": "" });
-            } else {
-              setParams({ [item.field]: "" });
-            }
-          };
+            //console.log("2-1-1-2");
+            debouncedSetParams({ [item.field]: item.value });
+          }
+        } else {
+          //console.log("2-1-2");
+          if (isCodeLike) {
+            //console.log("2-1-2-1");
+            setParams({ "search[value]": "" });
+          } else {
+            //console.log("2-1-2-2");
+            setParams({ [item.field]: "" });
+            setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
+            const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
+              acc[key] = "";
+              return acc;
+            }, {});
+            debouncedSetParams(emptyParams);
+          }
+        };
       });
     } else if(model.items && model.items.length === 0 && model.quickFilterValues.length === 0){
+      //console.log("3");
       setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
       const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
         acc[key] = "";
@@ -159,10 +176,12 @@ function ListTableServer(props) {
       }, {});
       debouncedSetParams(emptyParams);
     } else {
+      //console.log("4");
       const cleared = {};
       Object.keys(filterParams).forEach(key => { cleared[key] = "" });
       debouncedSetParams(cleared);
     }
+    //console.log("--------Finish--------");
   };
 
   const handleKeyDown = (event) => {
