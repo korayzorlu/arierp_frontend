@@ -61,7 +61,7 @@ function ThirdPersons() {
 
     const columns = [
         { field: 'created_date', headerName: 'Sorgu Tarihi', width: 180 },
-        { field: 'name', headerName: 'İsim', width: 360 },
+        { field: 'name', headerName: 'İsim', width: 400 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 140 },
         { field: 'status', headerName: 'Sorgu Sonucu', width: 240,
             renderCell: (params) => (
