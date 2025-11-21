@@ -24,17 +24,6 @@ function ThirdPersonDialog({...props}) {
         dispatch(setThirdPersonDialog(false));
     };
 
-    const handleSubmit = async () => {
-        dispatch(setSMSsLoading(true));
-        if (props.startEvent) {
-            props.startEvent();
-        };
-        dispatch(setThirdPersonDialog(false));
-
-        await dispatch(sendSMS({data:{project:props.project,risk_status:props.risk_status}})).unwrap();
-        dispatch(setSMSsLoading(true));
-    };
-
     return (
         <MUIDialog
         open={thirdPersonDialog}

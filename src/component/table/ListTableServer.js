@@ -84,8 +84,6 @@ function ListTableServer(props) {
   };
 
   const handleSortModelChange = (model) => {
-    console.log(model)
-    
     setSortModel(model);
 
     if(model.length > 0){

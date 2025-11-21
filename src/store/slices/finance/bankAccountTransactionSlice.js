@@ -28,6 +28,20 @@ export const fetchBankAccountTransactions = createAsyncThunk('auth/fetchBankAcco
     }
 });
 
+export const fetchBankAccountTransaction = createAsyncThunk('auth/fetchBankAccountTransaction', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/finance/bank_account_transactions/?ac=${activeCompany.id}&uuid=${params.uuid}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
 export const addBankAccountTransaction = createAsyncThunk('auth/addBankAccountTransaction', async ({data=null},{dispatch,extra: {navigate}}) => {
     dispatch(setIsProgress(true));
     try {

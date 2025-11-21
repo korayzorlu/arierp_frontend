@@ -17,7 +17,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { Link } from 'react-router-dom';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ThirdPersonStatusDialog from 'component/dialog/ThirdPersonStatusDialog';
-import { setThirdPersonDocumentDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
+import { setThirdPersonDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import ThirdPersonDetailPanel from '../components/ThirdPersonDetailPanel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -27,6 +27,7 @@ import FilePresentIcon from '@mui/icons-material/FilePresent';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import dayjs from 'dayjs';
+import ThirdPersonPaymentDetailDialog from 'component/dialog/ThirdPersonPaymentDetailDialog';
 
 function ThirdPersons() {
     const {dark} = useSelector((store) => store.auth);
@@ -64,7 +65,32 @@ function ThirdPersons() {
         { field: 'created_date', headerName: 'Sorgu Tarihi', width: 180 },
         { field: 'name', headerName: 'İsim', width: 400 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 140 },
-        { field: 'status', headerName: 'Sorgu Sonucu', width: 240,
+        { field: 'finmaks_transaction', headerName: 'Ödeme Detayı', width: 140, renderHeaderFilter: () => null,
+            renderCell: (params) => (
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    {
+                        params.value
+                        ?
+                            <Button
+                            key={params.value.id}
+                            variant='contained'
+                            color="mars"
+                            endIcon={<VisibilityIcon />}
+                            size='small'
+                            onClick={() => {
+                                dispatch(setThirdPersonPaymentDetailDialog(true));
+                                setSelectedRow(params.row);
+                            }}
+                            >
+                                Ödeme Detayı
+                            </Button>
+                        :
+                            null
+                    }
+                </Stack>
+            ),
+        },
+        { field: 'status', headerName: 'Sorgu Sonucu', width: 240, 
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
@@ -177,6 +203,9 @@ function ThirdPersons() {
             <ThirdPersonDocumentDialog
             row={selectedRow}
             finalEvent={() => dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap()}
+            />
+            <ThirdPersonPaymentDetailDialog
+            row={selectedRow}
             />
         </PanelContent>
     )
