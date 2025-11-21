@@ -62,8 +62,8 @@ function ThirdPersons() {
     const columns = [
         { field: 'created_date', headerName: 'Sorgu Tarihi', width: 180 },
         { field: 'name', headerName: 'İsim', width: 360 },
-        { field: 'tc_vkn_no', headerName: 'TC/VKN No', flex:1 },
-        { field: 'status', headerName: 'Sorgu Sonucu', flex:1,
+        { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 140 },
+        { field: 'status', headerName: 'Sorgu Sonucu', width: 240,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
@@ -102,7 +102,7 @@ function ThirdPersons() {
                 />
             )
         },
-        { field: 'third_person_documents', headerName: 'Belge', flex: 1, renderHeaderFilter: () => null,
+        { field: 'third_person_documents', headerName: 'Belge', renderHeaderFilter: () => null, width: 400,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
