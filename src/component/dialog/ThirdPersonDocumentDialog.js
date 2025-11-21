@@ -139,7 +139,7 @@ function ThirdPersonDocumentDialog({...props}) {
             </DialogContent>
             <DialogActions className=''>
                 <Button variant="text" color="neutral" onClick={handleClose}>Vazgeç</Button>
-                <Button variant="outlined" color="primary" onClick={handleImport} autoFocus>Başlat</Button>
+                <Button variant="contained" color="opposite" onClick={handleImport} autoFocus>Yükle</Button>
             </DialogActions>
             
         </MUIDialog>
