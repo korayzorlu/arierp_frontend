@@ -7,13 +7,14 @@ import { ReactComponent as NavbarLogo } from '../../images/logo/light/marswide-l
 //import { ReactComponent as LightModeIcon } from '../../images/icons/navbar/light-mode.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSidebar } from '../../store/slices/sidebarSlice';
-import { Box, LinearProgress, Typography } from '@mui/material';
+import { Box, Grid, IconButton, LinearProgress, Typography } from '@mui/material';
 import ImportProcesses from './ImportProcesses';
 import Companies from './Companies';
 import Notifications from './Notifications';
 import User from './User';
 import ExportProcesses from './ExportProcesses';
 import Langs from './Langs';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function Navbar() {
     const {dark,logo} = useSelector((store) => store.auth);
@@ -52,31 +53,35 @@ function Navbar() {
                 <></>
             }
             
-            <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-body-tertiary" style={{"height":"40px"}}>
+            <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-body-tertiary" style={{"height":"40px", padding: '0px 10px 0px 10px' }}>
             {/* <ProgressBar value={progress.value} display={progress.display}></ProgressBar> */}
-        
-            <div className="container-fluid">
-                <button data-mdb-collapse-init className="navbar-toggler d-block" type="button" data-mdb-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={handleToggle}>
-                    <i className="fas fa-bars"></i>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <a className="navbar-brand mt-2 mt-lg-0" href="/">
-                        <img src={logo} height="18" alt="Arinet" loading="lazy" />
-                        {/* <Typography className="boldonse-regular" color={dark ? 'whitehole' : 'blackhole'}>ARINET</Typography> */}
-                    </a>
-                </div>
-                <div className="d-flex align-items-end">
-                    <ImportProcesses importProcesses={importProcesses}/>
-                    <ExportProcesses exportProcesses={exportProcesses}/>
-                    <Companies/>
-                    {/* <Langs/> */}
-                    <Notifications/>
-                    <User></User>
-                </div>
-            </div>
-        
-        </nav>
+
+                {/* <div className="container-fluid"> */}
+                <Grid container justifyContent='space-between' alignItems='center' width={'100%'}>
+                    {/* <button data-mdb-collapse-init className="navbar-toggler d-block" type="button" data-mdb-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={handleToggle}>
+                        <i className="fas fa-bars"></i>
+                    </button> */}
+                    <IconButton color='opposite' onClick={handleToggle}>
+                        <MenuIcon />
+                    </IconButton>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <a className="navbar-brand mt-2 mt-lg-0" href="/">
+                            <img src={logo} height="18" alt="Arinet" loading="lazy" />
+                            {/* <Typography className="boldonse-regular" color={dark ? 'whitehole' : 'blackhole'}>ARINET</Typography> */}
+                        </a>
+                    </div>
+                    <div className="d-flex align-items-end">
+                        <ImportProcesses importProcesses={importProcesses}/>
+                        <ExportProcesses exportProcesses={exportProcesses}/>
+                        <Companies/>
+                        {/* <Langs/> */}
+                        <Notifications/>
+                        <User></User>
+                    </div>
+                </Grid>
+            
+            </nav>
         </>
         
     );

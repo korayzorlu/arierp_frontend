@@ -26,6 +26,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import dayjs from 'dayjs';
 
 function ThirdPersons() {
     const {dark} = useSelector((store) => store.auth);
@@ -106,33 +107,37 @@ function ThirdPersons() {
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
-                        params.value.length > 0
-                        ?   
-                            <>
-                                <Link to={`${process.env.REACT_APP_BACKEND_URL}${params.value[0].url}`} target="_blank" component="a" sx={{ textDecoration: 'underline' }}>
-                                    <IconButton
-                                    color='opposite'
-                                    size='small'
-                                    >
-                                        <AttachFileRoundedIcon />
-                                    </IconButton>
-                                </Link>
-                                {params.value[0].label}
-                            </>
-                        :
-                            <Button
-                            key={params.row.id}
-                            variant='contained'
-                            color={dark ? 'silvercoin' : 'ari'}
-                            endIcon={<CloudUploadIcon />}
-                            size='small'
-                            onClick={() => {
-                                dispatch(setThirdPersonDocumentDialog(true));
-                                setSelectedRow(params.row);
-                            }}
-                            >
-                                Belge Ekle
-                            </Button>
+                        dayjs(params.row.created_date, "DD.MM.YYYY HH:mm").isBefore(dayjs("21.11.2025 00:00", "DD.MM.YYYY HH:mm"))
+                        ?
+                            null
+                        :     
+                            params.value.length > 0
+                            ?   
+                                <>
+                                    <Link to={`${process.env.REACT_APP_BACKEND_URL}${params.value[0].url}`} target="_blank" component="a" sx={{ textDecoration: 'underline' }}>
+                                        <IconButton
+                                        color='opposite'
+                                        size='small'
+                                        >
+                                            <AttachFileRoundedIcon />
+                                        </IconButton>
+                                    </Link>
+                                    {params.value[0].label}
+                                </>
+                            :
+                                <Button
+                                key={params.row.id}
+                                variant='contained'
+                                color={dark ? 'silvercoin' : 'ari'}
+                                endIcon={<CloudUploadIcon />}
+                                size='small'
+                                onClick={() => {
+                                    dispatch(setThirdPersonDocumentDialog(true));
+                                    setSelectedRow(params.row);
+                                }}
+                                >
+                                    Belge Ekle
+                                </Button>
                     }
                 </Stack>
             )
