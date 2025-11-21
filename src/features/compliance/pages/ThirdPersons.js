@@ -133,7 +133,7 @@ function ThirdPersons() {
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
-                        dayjs(params.row.created_date, "DD.MM.YYYY HH:mm").isBefore(dayjs("21.11.2025 00:00", "DD.MM.YYYY HH:mm"))
+                        dayjs(params.row.created_date, "DD.MM.YYYY HH:mm").isBefore(dayjs("22.11.2025 00:00", "DD.MM.YYYY HH:mm"))
                         ?
                             null
                         :     
