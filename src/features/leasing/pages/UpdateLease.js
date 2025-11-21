@@ -14,6 +14,7 @@ import ContractPaymentsInLease from 'features/leasing/components/ContractPayment
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import TradeTransactionsInLease from 'features/leasing/components/TradeTransactionsInLease';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -34,6 +35,7 @@ function UpdateLease() {
         await dispatch(fetchCountries()).unwrap();
         await dispatch(fetchCurrencies()).unwrap();
         const response = await dispatch(fetchLease({activeCompany,params:{uuid,project}})).unwrap();
+        await dispatch(fetchContractPaymentsInLease({activeCompany,contract_id})).unwrap();
         setData(response);
         handleChangeShareholder(response.shareholder);
     };
@@ -99,7 +101,7 @@ function UpdateLease() {
                             size="small"
                             label={"Sözleşme No"}
                             variant='outlined'
-                            value={data.contract_id}
+                            value={data.contract}
                             disabled={false}
                             fullWidth
                             />

@@ -4,7 +4,7 @@ import BasicTable from 'component/table/BasicTable';
 import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 
 function ContractPaymentsInLease(props) {
-    const {contract_id,companyName} = props;
+    const {contract,companyName} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
@@ -21,9 +21,9 @@ function ContractPaymentsInLease(props) {
     const [selectedUserEmail, setSelectedUserEmail] = useState(null);
     const [selectedUserCompanyId, setSelectedUserCompanyId] = useState(null)
 
-    useEffect(() => {
-        dispatch(fetchContractPaymentsInLease({activeCompany,contract_id}));
-    }, [])
+    // useEffect(() => {
+    //     dispatch(fetchContractPaymentsInLease({activeCompany,contract}))
+    // }, [])
 
     const handleClick = (event,params) => {
         setAnchorEl(event.currentTarget);
