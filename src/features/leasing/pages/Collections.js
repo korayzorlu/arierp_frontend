@@ -94,7 +94,7 @@ function Collections() {
     
     const bankActivityColumns = [
         // { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 120 },
-        { field: 'name', headerName: 'Gönderen', width: 140,
+        { field: 'tc_vkn_no', headerName: 'Gönderen', width: 140,
             renderCell: (params) => (
                 
                     // params.value && params.value !== 'None'
