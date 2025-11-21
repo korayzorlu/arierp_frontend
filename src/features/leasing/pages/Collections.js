@@ -103,7 +103,7 @@ function Collections() {
                     // :
                     //     null
 
-                    `${params.value !== 'None' ? params.value : ''} ${params.row.tc_vkn_no}`
+                    `${params.row.name !== 'None' ? params.row.name : ''} ${params.value}`
             ),
         },
         { field: 'third_person_status', headerName: '3. Kişi Durumu', width: 160,
