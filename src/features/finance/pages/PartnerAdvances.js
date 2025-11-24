@@ -14,6 +14,7 @@ import ExportDialog from '../../../component/feedback/ExportDialog';
 import { setExportDialog } from '../../../store/slices/notificationSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
+import PartnerAdvanceDetailPanel from '../components/PartnerAdvanceDetailPanel';
 
 function PartnerAdvances() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -40,31 +41,31 @@ function PartnerAdvances() {
         { field: 'trial_balance_amount', headerName: 'Mizan TL Bakiye', flex: 1, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'partner_advance_activity', headerName: 'Avans İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
-                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                    {
-                        params.value
-                        ?
-                            <Chip key={params.row.uuid} variant='contained' color="success" icon={<CheckIcon />} label="Avans İşlemeye Gönderildi" size='small'/>
-                        :
-                            <Button
-                            key={params.row.uuid}
-                            variant='contained'
-                            color="info"
-                            endIcon={<ArrowOutwardIcon />}
-                            size='small'
-                            onClick={() => {
-                                dispatch(addPartnerAdvanceActivity({data:params.row}));
-                                dispatch(updatePartnerAdvance({uuid: params.row.uuid}));
+        // { field: 'partner_advance_activity', headerName: 'Avans İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
+        //         <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+        //             {
+        //                 params.value
+        //                 ?
+        //                     <Chip key={params.row.uuid} variant='contained' color="success" icon={<CheckIcon />} label="Avans İşlemeye Gönderildi" size='small'/>
+        //                 :
+        //                     <Button
+        //                     key={params.row.uuid}
+        //                     variant='contained'
+        //                     color="info"
+        //                     endIcon={<ArrowOutwardIcon />}
+        //                     size='small'
+        //                     onClick={() => {
+        //                         dispatch(addPartnerAdvanceActivity({data:params.row}));
+        //                         dispatch(updatePartnerAdvance({uuid: params.row.uuid}));
                                 
-                            }}
-                            >
-                                Avans İşlemeye Gönder
-                            </Button>
-                    }
-                </Stack>
-            ) 
-        },
+        //                     }}
+        //                     >
+        //                         Avans İşlemeye Gönder
+        //                     </Button>
+        //             }
+        //         </Stack>
+        //     ) 
+        // },
     ]
 
     return (
@@ -97,6 +98,8 @@ function PartnerAdvances() {
             setParams={(value) => dispatch(setPartnerAdvancesParams(value))}
             headerFilters={true}
             apiRef={apiRef}
+            getDetailPanelHeight={() => "auto"}
+            getDetailPanelContent={(params) => {return(<PartnerAdvanceDetailPanel uuid={params.row.uuid} partnerAdvanceLeases={params.row.leases.leases}></PartnerAdvanceDetailPanel>)}}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
