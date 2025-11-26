@@ -150,20 +150,24 @@ function ThirdPersons() {
                                     </Link>
                                     {params.value[0].label}
                                 </>
-                            :
-                                <Button
-                                key={params.row.id}
-                                variant='contained'
-                                color={dark ? 'silvercoin' : 'ari'}
-                                endIcon={<CloudUploadIcon />}
-                                size='small'
-                                onClick={() => {
-                                    dispatch(setThirdPersonDocumentDialog(true));
-                                    setSelectedRow(params.row);
-                                }}
-                                >
-                                    Belge Ekle
-                                </Button>
+                            :   
+                                params.row.status === "need_document"
+                                ?
+                                    <Button
+                                    key={params.row.id}
+                                    variant='contained'
+                                    color={dark ? 'silvercoin' : 'ari'}
+                                    endIcon={<CloudUploadIcon />}
+                                    size='small'
+                                    onClick={() => {
+                                        dispatch(setThirdPersonDocumentDialog(true));
+                                        setSelectedRow(params.row);
+                                    }}
+                                    >
+                                        Belge Ekle
+                                    </Button>
+                                :
+                                    null
                     }
                 </Stack>
             )

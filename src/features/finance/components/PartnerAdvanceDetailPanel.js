@@ -121,6 +121,9 @@ function PartnerAdvanceDetailPanel(props) {
                     null
             )
         },
+        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
         //         params.value
         //         ?
@@ -133,7 +136,7 @@ function PartnerAdvanceDetailPanel(props) {
         //         return params.value ? 'bg-orange' : '';
         //     }
         // },
-        { field: 'lease_status', headerName: 'Statü', flex:2 },
+        // { field: 'lease_status', headerName: 'Statü', flex:2 },
     ]
 
     const handleProfileDialog = async (params,event) => {

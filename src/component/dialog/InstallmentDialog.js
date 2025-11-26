@@ -135,7 +135,6 @@ function InstallmentDialog(props) {
                             <Grid container spacing={2}>
                                 <Grid size={{xs:12,sm:12}}>
                                     <BasicTable
-                                    title={`Kira Planı: ${rows ? rows.length > 0 ? rows[0]["lease"] : "" : ""} | Proje: ${rows ? rows.length > 0 ? rows[0]["project"] : "" : ""}`}
                                     rows={rows}
                                     columns={userColumns}
                                     getRowId={(row) => row.id}
