@@ -119,7 +119,7 @@ function ThirdPersonDocumentDialog({...props}) {
                             Desteklenen dosya formatları: PDF, JPG, PNG
                         </Typography>
                         <Typography>
-                            Maksimum dosya boyutu 5MB
+                            Maksimum dosya boyutu 1MB
                         </Typography>
                         <Button
                         variant='contained'
