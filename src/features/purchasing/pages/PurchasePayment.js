@@ -30,6 +30,7 @@ function PurchasePayments() {
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
     const [kdvSwitchPosition, setKdvSwitchPosition] = useState(false);
+    const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
 
     useEffect(() => {
         startTransition(() => {
@@ -112,6 +113,10 @@ function PurchasePayments() {
         dispatch(setPurchasePaymentsParams({kdv:value}));
         setKdvSwitchPosition(value);
     };
+    const handleChangeSpecial = async (value) => {
+        dispatch(setPurchasePaymentsParams({special:value}));
+        setSpecialSwitchPosition(value);
+    };
 
     return (
         <PanelContent>
@@ -144,6 +149,11 @@ function PurchasePayments() {
                         checked={kdvSwitchPosition}
                         onChange={(value) => handleChangeKDV(value)}
                         />
+                        {/* <AndroidSwitch
+                        label="Özel"
+                        checked={specialSwitchPosition}
+                        onChange={(value) => handleChangeSpecial(value)}
+                        /> */}
                     </>
                 }
                 rowCount={purchasePaymentsCount}
