@@ -182,7 +182,6 @@ function ToWarnedRiskPartnersPosta() {
         await dispatch(fetchSMSs({activeCompany,params:{...smssParams,partner_id,status:"0"}})).unwrap();
         await dispatch(fetchPartnerInformation(crm_code)).unwrap();
         dispatch(setMessageDialog(true));
-        
     };
 
     const handleWarningNoticeDialog = async (crm_code) => {

@@ -88,6 +88,12 @@ function PartnerAdvanceDetailPanel(props) {
                 )
             }
         },
+        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'last_payment', headerName: 'Devir Bedeli', flex:2, type: 'number', valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             }
@@ -120,9 +126,6 @@ function PartnerAdvanceDetailPanel(props) {
                 :
                     null
             )
-        },
-        { field: 'next_payment', headerName: 'Gelecek Ödeme', flex:2, type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
         //         params.value
@@ -185,6 +188,8 @@ function PartnerAdvanceDetailPanel(props) {
                 aggregation: {
                     model: {
                         overdue_amount: 'sum',
+                        next_payment: 'sum',
+                        last_payment: 'sum',
                     },
                 },
             }}
