@@ -17,6 +17,7 @@ function ThirdPersonDialog({...props}) {
     const {thirdPersonDialog} = useSelector((store) => store.notification);
     const {partnerInformation} = useSelector((store) => store.partner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
+    const {thirdPerson} = useSelector((store) => store.thirdPerson);
 
     const dispatch = useDispatch();
 
@@ -36,19 +37,19 @@ function ThirdPersonDialog({...props}) {
         fullWidth
         >
             {/* <DialogTitle id="alert-dialog-title">
-                <PersonIcon/> {props.thirdPerson.FullName}
+                <PersonIcon/> {thirdPerson.FullName}
             </DialogTitle> */}
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
                         {
-                            props.thirdPerson.Images.length > 0
+                            thirdPerson.Images.length > 0
                             ?
                                 <Grid container spacing={2} sx={{justifyContent:'center',alignItems:'center'}}>
                                     <Grid size={{xs:12,sm:3}}>
                                         <CardMedia
                                         sx={{ height: 90, width: 90, marginLeft: 'auto', marginRight: 'auto', mt: 2,borderRadius: '50%',objectFit: 'cover', }}
-                                        image={props.thirdPerson.Images[0].Link}
+                                        image={thirdPerson.Images[0].Link}
                                         title="person"
                                         />
                                     </Grid>
@@ -65,28 +66,28 @@ function ThirdPersonDialog({...props}) {
                                 </Grid>
                         }
                         {
-                            props.thirdPerson.FullName && (
+                            thirdPerson.FullName && (
                                 <>  
                                     <Divider/>
                                     <Typography color='primary'>
                                         İsim
                                     </Typography>
                                     <Typography>
-                                        {props.thirdPerson.FullName}
+                                        {thirdPerson.FullName}
                                     </Typography>
                                 </>
                             )
                         }
                         {
-                            props.thirdPerson.OtherNames.length > 0 && (
+                            thirdPerson.OtherNames.length > 0 && (
                                 <>  
                                     <Divider/>
                                     <Typography color='primary'>
                                         Diğer İsimler
                                     </Typography>
                                     {
-                                        props.thirdPerson.OtherNames.map((otherName,index) => (
-                                            otherName.FullName !== props.thirdPerson.FullName &&
+                                        thirdPerson.OtherNames.map((otherName,index) => (
+                                            otherName.FullName !== thirdPerson.FullName &&
                                             <Typography key={index}>
                                                 {otherName.FullName}
                                             </Typography>
@@ -96,27 +97,27 @@ function ThirdPersonDialog({...props}) {
                             )
                         }
                         {
-                            props.thirdPerson.ProfileId && (
+                            thirdPerson.ProfileId && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Profile ID
                                     </Typography>
                                     <Typography>
-                                        {props.thirdPerson.ProfileId}
+                                        {thirdPerson.ProfileId}
                                     </Typography>
                                 </>
                             )
                         }
                         {
-                            props.thirdPerson.BirthDetails.length > 0 && (
+                            thirdPerson.BirthDetails.length > 0 && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Doğum Bilgileri
                                     </Typography>
                                     {
-                                        props.thirdPerson.BirthDetails.map((birthDetail,index) => (
+                                        thirdPerson.BirthDetails.map((birthDetail,index) => (
                                             <Typography key={index}>
                                                 {birthDetail.BirthDate}, {birthDetail.BirthPlace}
                                             </Typography>
@@ -126,14 +127,14 @@ function ThirdPersonDialog({...props}) {
                             )
                         }
                         {
-                            props.thirdPerson.AddressDetails.length > 0 && (
+                            thirdPerson.AddressDetails.length > 0 && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Adres Bilgileri
                                     </Typography>
                                     {
-                                        props.thirdPerson.AddressDetails.map((addressDetail,index) => (
+                                        thirdPerson.AddressDetails.map((addressDetail,index) => (
                                             <Typography key={index}>
                                                 {addressDetail.OtherInformation}, {addressDetail.City}, {addressDetail.Country}
                                             </Typography>
@@ -143,61 +144,61 @@ function ThirdPersonDialog({...props}) {
                             )
                         }
                         {
-                            props.thirdPerson.Function && (
+                            thirdPerson.Function && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Bilgi
                                     </Typography>
                                     <Typography>
-                                        {props.thirdPerson.Function}
+                                        {thirdPerson.Function}
                                     </Typography>
                                 </>
                             )
                         }
                         {
-                            props.thirdPerson.Summary && (
+                            thirdPerson.Summary && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Özet
                                     </Typography>
                                     <Typography>
-                                        {props.thirdPerson.Summary}
+                                        {thirdPerson.Summary}
                                     </Typography>
                                 </>
                             )
                         }
                         {
-                            (props.thirdPerson.BlacklistName || props.thirdPerson.OtherInformation) && (
+                            (thirdPerson.BlacklistName || thirdPerson.OtherInformation) && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Açıklama
                                     </Typography>
                                     <Grid container spacing={2}>
-                                        {props.thirdPerson.BlacklistFlagCode && (
-                                            <i class={props.thirdPerson.BlacklistFlagCode} aria-label="Flag"></i>
+                                        {thirdPerson.BlacklistFlagCode && (
+                                            <i class={thirdPerson.BlacklistFlagCode} aria-label="Flag"></i>
                                         )}
                                         <Typography variant='h6' sx={{fontWeight: 'bold'}}>
-                                            {props.thirdPerson.BlacklistName}
+                                            {thirdPerson.BlacklistName}
                                         </Typography>
                                     </Grid>
                                     <Typography>
-                                        {props.thirdPerson.OtherInformation}
+                                        {thirdPerson.OtherInformation}
                                     </Typography>
                                 </>
                             )
                         }
                         {
-                            props.thirdPerson.Links.length > 0 && (
+                            thirdPerson.Links.length > 0 && (
                                 <>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Belgeler
                                     </Typography>
                                     {
-                                        props.thirdPerson.Links.map((link,index) => (
+                                        thirdPerson.Links.map((link,index) => (
                                             <Typography key={index}>
                                                 <Link href={link.Link} target="_blank" component="a">{link.Link}</Link>
                                             </Typography>

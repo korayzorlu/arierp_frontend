@@ -7,6 +7,7 @@ import { truncateText } from 'utils/stirngUtils';
 import ThirdPersonDialog from 'component/dialog/ThirdPersonDialog';
 import { setThirdPersonDialog } from 'store/slices/notificationSlice';
 import { Links } from 'react-router-dom';
+import { setThirdPerson } from 'store/slices/compliance/thirdPersonSlice';
 
 function ThirdPersonDetailPanel(props) {
     const {uuid, thirdPersonResults} = props;
@@ -17,13 +18,13 @@ function ThirdPersonDetailPanel(props) {
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
     const isFirstSelection = useRef(true);
-    const [thirdPerson, setThirdPerson] = useState({
-        Images: [],
-        OtherNames: [],
-        BirthDetails: [],
-        AddressDetails: [],
-        Links: []
-    });
+    // const [thirdPerson, setThirdPerson] = useState({
+    //     Images: [],
+    //     OtherNames: [],
+    //     BirthDetails: [],
+    //     AddressDetails: [],
+    //     Links: []
+    // });
 
     useEffect(() => {
         let allSelectedRows = [];
@@ -83,7 +84,7 @@ function ThirdPersonDetailPanel(props) {
                                                 variant='text'
                                                 color='primary'
                                                 size="small"
-                                                onClick={() => {setThirdPerson(result);dispatch(setThirdPersonDialog(true));}}
+                                                onClick={() => {dispatch(setThirdPerson(result));dispatch(setThirdPersonDialog(true));}}
                                                 >
                                                     Daha Fazla Bilgi
                                                 </Button>
@@ -100,9 +101,6 @@ function ThirdPersonDetailPanel(props) {
                         </Typography>
                 }
             </Box>
-            <ThirdPersonDialog
-            thirdPerson={thirdPerson}
-            />
         </>
         
     )

@@ -28,12 +28,13 @@ import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import dayjs from 'dayjs';
 import ThirdPersonPaymentDetailDialog from 'component/dialog/ThirdPersonPaymentDetailDialog';
+import ThirdPersonDialog from 'component/dialog/ThirdPersonDialog';
 
 function ThirdPersons() {
     const {dark} = useSelector((store) => store.auth);
     const {mobile} = useSelector((store) => store.sidebar);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {thirdPersons,thirdPersonsCount,thirdPersonsParams,thirdPersonsLoading} = useSelector((store) => store.thirdPerson);
+    const {thirdPersons,thirdPersonsCount,thirdPersonsParams,thirdPersonsLoading,thirdPerson} = useSelector((store) => store.thirdPerson);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -210,6 +211,9 @@ function ThirdPersons() {
             />
             <ThirdPersonPaymentDetailDialog
             row={selectedRow}
+            />
+            <ThirdPersonDialog
+            thirdPerson={thirdPerson}
             />
         </PanelContent>
     )

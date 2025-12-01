@@ -13,6 +13,14 @@ const initialState = {
     },
     thirdPersonsLoading:false,
     scanning:false,
+    //
+    thirdPerson:{
+        Images: [],
+        OtherNames: [],
+        BirthDetails: [],
+        AddressDetails: [],
+        Links: []
+    },
 }
 
 export const fetchThirdPersons = createAsyncThunk('auth/fetchThirdPersons', async ({activeCompany,serverModels=null,params=null}) => {
@@ -74,7 +82,10 @@ const thirdPersonSlice = createSlice({
         setScanning: (state,action) => {
             state.scanning = action.payload;
         },
-        
+        //
+        setThirdPerson: (state,action) => {
+            state.thirdPerson = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -100,6 +111,7 @@ export const {
     resetThirdPersonsParams,
     deleteThirdPersons,
     setThirdPersonsOverdues,
-    setScanning
+    setScanning,
+    setThirdPerson
 } = thirdPersonSlice.actions;
 export default thirdPersonSlice.reducer;
