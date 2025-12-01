@@ -83,7 +83,7 @@ function ThirdPersonDetailPanel(props) {
                                                 variant='text'
                                                 color='primary'
                                                 size="small"
-                                                onClick={() => {dispatch(setThirdPersonDialog(true));setThirdPerson(result)}}
+                                                onClick={() => {setThirdPerson(result);dispatch(setThirdPersonDialog(true));}}
                                                 >
                                                     Daha Fazla Bilgi
                                                 </Button>
