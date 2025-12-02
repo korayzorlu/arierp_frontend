@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setAlert, setMessageDialog, setSendSMSDialog, setThirdPersonDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
+import { setAlert, setFinmaksTransactionNameDialog, setMessageDialog, setSendSMSDialog, setThirdPersonDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
 import MUIDialog from '@mui/material/Dialog';
 import SmsIcon from '@mui/icons-material/Sms';
@@ -18,12 +18,15 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import VissuallyHiddenInput from 'component/input/VissuallyHiddenInput';
 import axios from 'axios';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { fetchBankAccountTransaction, fetchBankAccountTransactions } from 'store/slices/finance/bankAccountTransactionSlice';
+import { fetchBankAccountTransaction, fetchBankAccountTransactions, updateBankAccountTransaction, updateBankAccountTransactionName } from 'store/slices/finance/bankAccountTransactionSlice';
+import WarningIcon from '@mui/icons-material/Warning';
+import { addBankActivity } from 'store/slices/finance/bankAccountTransactionSlice';
+import { update } from 'lodash';
 
 function FinmaksTransactionNameDialog({...props}) {
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {thirdPersonPaymentDetailDialog} = useSelector((store) => store.notification);
+    const {finmaksTransactionNameDialog} = useSelector((store) => store.notification);
     const {partnerInformation} = useSelector((store) => store.partner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
     const {thirdPersonsParams} = useSelector((store) => store.thirdPerson);
@@ -31,82 +34,94 @@ function FinmaksTransactionNameDialog({...props}) {
 
     const dispatch = useDispatch();
 
+    const [name, setName] = useState('');
+
     const handleClose = () => {
-        dispatch(setThirdPersonPaymentDetailDialog(false));
+        dispatch(setFinmaksTransactionNameDialog(false));
+    };
+
+    const handleSubmit = async () => {
+        if (props.startEvent) {
+            props.startEvent();
+        };
+        
+        await dispatch(updateBankAccountTransactionName({activeCompany,data:{id: props.row.uuid,name}})).unwrap();
+
+        dispatch(addBankActivity({data:props.row}));
+        dispatch(updateBankAccountTransaction({transaction_id: props.row.transaction_id}));
+
+        dispatch(setFinmaksTransactionNameDialog(false));
     };
 
     return (
         <MUIDialog
-        open={thirdPersonPaymentDetailDialog}
+        open={finmaksTransactionNameDialog}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         elevation={3}
         variant="outlined"
-        maxWidth="xs"
+        maxWidth="md"
         fullWidth
         >
             <DialogTitle id="alert-dialog-title">
-                <VisibilityIcon/> Ödeme Detayı
+                <WarningIcon/> İsim Bilgisi Gerekli
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
+                        <Typography variant='body1'>
+                            İlgili banka hareketinin tahsilat işlemi için Finmaks'ta tanımlı bir gönderen ismi bilgisi gerekmektedir. Aşağıdaki bilgileri kontrol ederek isim bilgisini ilgili alana girebilir ve Gönder butonu ile tahsilat işleme ekranına gönderebilirsiniz.</Typography>
                         {
-                            props.row.finmaks_transaction
+                            props.row
                             ?
                                 <>
                                     <Typography color='primary'>
                                         Ödeme Tarihi
                                     </Typography>
                                     <Typography>
-                                        {props.row.finmaks_transaction.transaction_date || ""}
-                                    </Typography>
-                                    <Divider/>
-                                    <Typography color='primary'>
-                                        Banka
-                                    </Typography>
-                                    <Typography>
-                                        {props.row.finmaks_transaction.bank_name || ""}
+                                        {props.row.transaction_date || ""}
                                     </Typography>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Banka Hesabı
                                     </Typography>
                                     <Typography>
-                                        {props.row.finmaks_transaction.bank_account_no || ""}
-                                    </Typography>
-                                    <Divider/>
-                                    <Typography color='primary'>
-                                        Para Birimi
-                                    </Typography>
-                                    <Typography>
-                                        {props.row.finmaks_transaction.currency || ""}
+                                        {props.row.bank_name || ""} - {props.row.bank_account_no || ""}
                                     </Typography>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Tutar
                                     </Typography>
                                     <Typography>
-                                        {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.row.finmaks_transaction.amount || 0)}
+                                        {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.row.amount || 0)} {props.row.currency || ""}
                                     </Typography>
                                     <Divider/>
                                     <Typography color='primary'>
                                         Açıklama
                                     </Typography>
                                     <Typography>
-                                        {props.row.finmaks_transaction.explanation_field || ""}
+                                        {props.row.explanation_field || ""}
                                     </Typography>
+                                    <Divider/>
                                 </>
                             :
                                 null
                         }
-                        
+                        <TextField
+                        size="small"
+                        label={"Gönderen İsmi"}
+                        variant='outlined'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        fullWidth
+                        />
                     </Stack>
                 </DialogContentText>
             </DialogContent>
             <DialogActions className=''>
                 <Button variant="text" color="neutral" onClick={handleClose}>Kapat</Button>
+                <Button variant="contained" color="opposite" onClick={handleSubmit} autoFocus>Gönder</Button>
             </DialogActions>
             
         </MUIDialog>

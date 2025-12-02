@@ -14,6 +14,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import ListTableServer from 'component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { gridClasses } from '@mui/x-data-grid-premium';
+import FinmaksTransactionNameDialog from 'component/dialog/FinmaksTransactionNameDialog';
 
 function BankAccountTransactions() {
     const {user} = useSelector((store) => store.auth);
@@ -28,6 +29,7 @@ function BankAccountTransactions() {
     
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
+    const [selectedRow, setSelectedRow] = useState({})
 
     useEffect(() => {
             dispatch(resetBankAccountTransactionsParams());
@@ -67,7 +69,7 @@ function BankAccountTransactions() {
                                 onClick={() => {
                                     dispatch(addBankActivity({data:params.row}));
                                     dispatch(updateBankAccountTransaction({transaction_id: params.row.transaction_id}));
-                                    
+                                    setSelectedRow(params.row);
                                 }}
                                 >
                                     Tahsilata Gönder
@@ -126,6 +128,9 @@ function BankAccountTransactions() {
                         py: 1,
                     },
                 }}
+                />
+                <FinmaksTransactionNameDialog
+                row={selectedRow}
                 />
             </Grid>
         </PanelContent>
