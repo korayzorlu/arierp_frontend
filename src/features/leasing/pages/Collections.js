@@ -191,7 +191,7 @@ function Collections() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTable
-                title="Banka Hareketleri"
+                title="Tahsilat İşleme"
                 rows={bankActivities}
                 columns={bankActivityColumns}
                 getRowId={(row) => row.uuid}
