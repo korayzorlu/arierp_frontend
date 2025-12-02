@@ -43,9 +43,12 @@ function BankAccountTransactions() {
         { field: 'transaction_date', headerName: 'Tarih', width: 120, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
         { field: 'transaction_id', headerName: 'İşlem ID', width: 90 },
         { field: 'explanation_field', headerName: 'Açıklama', width: 520 },
-        { field: 'amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null },
-        { field: 'bank_name', headerName: 'Banka', width: 140 },
-        { field: 'bank_account_no', headerName: 'Banka Hesabı', width: 240 },
+        { field: 'amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'currency', headerName: 'PB', width: 60 },
+        { field: 'bank_name', headerName: 'Banka', width: 120 },
+        { field: 'bank_account_no', headerName: 'Banka Hesabı', width: 220 },
         { field: 'tahsilat', headerName: 'Tahsilat İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {

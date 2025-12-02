@@ -77,6 +77,9 @@ export const addBankActivity = createAsyncThunk('auth/addBankActivity', async ({
         );
         dispatch(setAlert({status:response.data.status,text:response.data.message}))
     } catch (error) {
+        if(error.response.data.status === 'warning'){
+            dispatch(setDialog({status:'warning',text:error.response.data.message,open:true}));
+        }
         if(error.response.data){
             dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
         }else{
