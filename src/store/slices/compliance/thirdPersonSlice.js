@@ -14,6 +14,15 @@ const initialState = {
     thirdPersonsLoading:false,
     scanning:false,
     //
+    vPosThirdPersons:[],
+    vPosThirdPersonsCount:0,
+    vPosThirdPersonsParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    vPosThirdPersonsLoading:false,
+    //
     thirdPerson:{
         Images: [],
         OtherNames: [],
@@ -26,6 +35,20 @@ const initialState = {
 export const fetchThirdPersons = createAsyncThunk('auth/fetchThirdPersons', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/compliance/third_persons/?ac=${activeCompany.id}`,
+            {
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchVPosThirdPersons = createAsyncThunk('auth/fetchVPosThirdPersons', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/compliance/vpos_third_persons/?ac=${activeCompany.id}`,
             {
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -83,6 +106,23 @@ const thirdPersonSlice = createSlice({
             state.scanning = action.payload;
         },
         //
+        setVPosThirdPersonsLoading: (state,action) => {
+            state.vPosThirdPersonsLoading = action.payload;
+        },
+        setVPosThirdPersonsParams: (state,action) => {
+            state.vPosThirdPersonsParams = {
+                ...state.vPosThirdPersonsParams,
+                ...action.payload
+            };
+        },
+        resetVPosThirdPersonsParams: (state,action) => {
+            state.vPosThirdPersonsParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        //
         setThirdPerson: (state,action) => {
             state.thirdPerson = action.payload;
         },
@@ -110,6 +150,10 @@ export const {
     setThirdPersonsParams,
     resetThirdPersonsParams,
     deleteThirdPersons,
+    setVPosThirdPersonsLoading,
+    setVPosThirdPersonsParams,
+    resetVPosThirdPersonsParams,
+    deleteVPosThirdPersons,
     setThirdPersonsOverdues,
     setScanning,
     setThirdPerson
