@@ -111,6 +111,18 @@ const initialState = {
         format: 'datatables'
     },
     toTerminatedRiskPartnersLoading:false,
+    //terminated leases
+    terminatedLeases:[],
+    terminatedLeasesCount:0,
+    terminatedLeasesParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    terminatedLeasesLoading:false,
     //delivery confirm
     deliveryConfirms:[],
     deliveryConfirmsCount:0,
@@ -320,6 +332,21 @@ export const fetchComprehensiveWarnedRiskPartners = createAsyncThunk('auth/fetch
 export const fetchToTerminatedRiskPartners = createAsyncThunk('auth/fetchToTerminatedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/to_terminated_risk_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchTerminatedLeases = createAsyncThunk('auth/fetchTerminatedLeases', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/terminated_leases/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -652,6 +679,26 @@ const riskPartnerSlice = createSlice({
         deleteToTerminatedRiskPartners: (state,action) => {
             state.toTerminatedRiskPartners = [];
         },
+        //terminated leases
+        setTerminatedLeasesLoading: (state,action) => {
+            state.terminatedLeasesLoading = action.payload; 
+        },
+        setTerminatedLeasesParams: (state,action) => {
+            state.terminatedLeasesParams = {
+                ...state.terminatedLeasesParams,
+                ...action.payload
+            };
+        },
+        resetTerminatedLeasesParams: (state,action) => {
+            state.terminatedLeasesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteTerminatedLeases: (state,action) => {
+            state.terminatedLeases = [];
+        },
         //delivery confirm
         setDeliveryConfirmsLoading: (state,action) => {
             state.deliveryConfirmsLoading = action.payload;
@@ -851,6 +898,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchToTerminatedRiskPartners.rejected, (state,action) => {
                 state.toTerminatedRiskPartnersLoading = false
             })
+            //terminated leases
+            .addCase(fetchTerminatedLeases.pending, (state) => {
+                state.terminatedLeasesLoading = true
+            })
+            .addCase(fetchTerminatedLeases.fulfilled, (state,action) => {
+                state.terminatedLeases = action.payload.data || action.payload;
+                state.terminatedLeasesCount = action.payload.recordsTotal || 0;
+                state.terminatedLeasesLoading = false
+            })
+            .addCase(fetchTerminatedLeases.rejected, (state,action) => {
+                state.terminatedLeasesLoading = false
+            })
             //delivery confirm
             .addCase(fetchDeliveryConfirms.pending, (state) => {
                 state.deliveryConfirmsLoading = true
@@ -948,6 +1007,11 @@ export const {
     setToTerminatedRiskPartnersParams,
     resetToTerminatedRiskPartnersParams,
     deleteToTerminatedRiskPartners,
+
+    setTerminatedLeasesLoading,
+    setTerminatedLeasesParams,
+    resetTerminatedLeasesParams,
+    deleteTerminatedLeases,
 
     setDeliveryConfirmsLoading,
     setDeliveryConfirmsParams,

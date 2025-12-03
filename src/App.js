@@ -143,6 +143,7 @@ import AddBankAccounTransaction from 'features/finance/pages/AddBankAccounTransa
 import AddBlacklistPerson from 'features/compliance/pages/AddBlackListPerson';
 import VposThirdPersons from 'features/compliance/pages/VPosThirdPersons';
 import ComprehensiveWarnedRiskPartners from 'features/risk/pages/ComprehensiveWarnedRiskPartners';
+import TerminatedLeases from 'features/risk/pages/TerminatedLeases';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -289,6 +290,7 @@ function App() {
                   <Route path='/active-leases' element={<ActiveLeases></ActiveLeases>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
+                  <Route path='/terminated-leases' element={<TerminatedLeases></TerminatedLeases>}></Route>
                   
                   {/* compliance */}
                   <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
