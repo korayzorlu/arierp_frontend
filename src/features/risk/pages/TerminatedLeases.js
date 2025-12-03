@@ -11,7 +11,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid } from '@mui/material';
+import { Chip, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
@@ -31,7 +31,7 @@ function TerminatedLeases() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
-    const [project, setProject] = useState("all")
+    const [project, setProject] = useState("kizilbuk")
     const [exportURL, setExportURL] = useState("")
     const [status, setStatus] = useState("all")
 
@@ -44,7 +44,7 @@ function TerminatedLeases() {
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
                 <Link
-                to={`/leasing/update/${params.row.uuid}/${params.row.contract_id}/`}
+                to={`/leasing/update/${params.row.id}/${params.row.contract_id}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
@@ -70,69 +70,23 @@ function TerminatedLeases() {
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
-        //{ field: 'quotation', headerName: 'Teklif No' },
-        //{ field: 'kof', headerName: 'KOF No' },
-        { field: 'project_name', headerName: 'Proje', width:280 },
-        { field: 'block', headerName: 'Blok' },
-        { field: 'unit', headerName: 'Bağımsız Bölüm' },
-        //{ field: 'vade', headerName: 'Vade', type: 'number' },
-        //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
-        //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.value > 0 ? 'bg-red' : '';
-            },
-            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
-        },
-        { field: 'currency', headerName: 'PB' },
-        { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
-                params.row.overdue_amount > 0
-                ?
-                    params.value >= 0
-                    ?
-                        `${params.value} gün`
-                    :
-                        null
-                :
-                    null
-                
-            )
-        },
         { field: 'status', headerName: 'Alt Statü', width:120 },
-        { field: 'lease_status', headerName: 'Statü', width:120,
-            renderHeaderFilter: (params) => (
-                <SelectHeaderFilter
-                {...params}
-                label="Seç"
-                externalValue="all"
-                options={[
-                    { value: 'all', label: 'Tümü' },
-                    { value: 'aktiflestirildi', label: 'Aktifleştirildi' },
-                    { value: 'baskasina_transfer_edildi', label: 'Başkasına Transfer Edildi' },
-                    { value: 'devredildi', label: 'Devredildi' },
-                    { value: 'durduruldu', label: 'Durduruldu' },
-                    { value: 'envantere_alindi', label: 'Envantere Alındı' },
-                    { value: 'feshedildi', label: 'Feshedildi' },
-                    { value: 'iptal_edildi', label: 'İptal Edildi' },
-                    { value: 'kanuni_takibe_alindi', label: 'Kanuni Takibe Alındı' },
-                    { value: 'para_birimi_degisti', label: 'Para Birimi Değişti' },
-                    { value: 'pert', label: 'Pert' },
-                    { value: 'planlandi', label: 'Planlandı' },
-                    { value: 'revize_edildi', label: 'Revize Edildi' },
-                ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
-                changeValue={(newValue) => {setStatus(newValue);}}
-                />
-            )
-        },
+        { field: 'lease_status', headerName: 'Statü', width:120 },
         { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
     ]
+
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setTerminatedLeasesParams({project:newValue}));
+    };
 
     return (
         <PanelContent>
             <ListTableServer
-            title="Kira Planları Listesi"
+            title="Feshedilen Kira Planları Listesi"
             rows={terminatedLeases}
             columns={columns}
-            getRowId={(row) => row.uuid}
+            getRowId={(row) => row.id}
             loading={terminatedLeasesLoading}
             customButtons={
                 <>  
@@ -148,10 +102,30 @@ function TerminatedLeases() {
                     />
                 </>
             }
+            customFiltersLeft={
+                <>
+                    <FormControl sx={{mr: 2}}>
+                        <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        size='small'
+                        value={project}
+                        label="Proje"
+                        onChange={(e) => changeProject(e.target.value)}
+                        disabled={terminatedLeasesLoading}
+                        >
+                            <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                            <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
+                            <MenuItem value='kasaba'>KASABA</MenuItem>
+                            <MenuItem value='servet'>SERVET</MenuItem>
+                            <MenuItem value='diger'>Diğer</MenuItem>
+                        </Select>
+                    </FormControl>
+                </>
+            }
             rowCount={terminatedLeasesCount}
-            // checkboxSelection
             setParams={(value) => dispatch(setTerminatedLeasesParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}
