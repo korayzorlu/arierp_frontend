@@ -142,6 +142,7 @@ import TrialBalanceContractInactives from 'features/accounting/pages/TrialBalanc
 import AddBankAccounTransaction from 'features/finance/pages/AddBankAccounTransaction';
 import AddBlacklistPerson from 'features/compliance/pages/AddBlackListPerson';
 import VposThirdPersons from 'features/compliance/pages/VPosThirdPersons';
+import ComprehensiveWarnedRiskPartners from 'features/risk/pages/ComprehensiveWarnedRiskPartners';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -322,6 +323,7 @@ function App() {
                   <Route path='/kep-to-warned-risk-partners' element={<ToWarnedRiskPartnersKep></ToWarnedRiskPartnersKep>}></Route>
                   <Route path='/posta-to-warned-risk-partners' element={<ToWarnedRiskPartnersPosta></ToWarnedRiskPartnersPosta>}></Route>
                   <Route path='/warned-risk-partners' element={<WarnedRiskPartners></WarnedRiskPartners>}></Route>
+                  <Route path='/comprehensive-warned-risk-partners' element={<ComprehensiveWarnedRiskPartners></ComprehensiveWarnedRiskPartners>}></Route>
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
                   <Route path='/under-reviews' element={<UnderReviews></UnderReviews>}></Route>
                   <Route path='/delivery-confirm' element={<DeliveryConfirms></DeliveryConfirms>}></Route>

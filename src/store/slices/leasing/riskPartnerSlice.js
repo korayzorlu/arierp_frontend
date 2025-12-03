@@ -87,6 +87,18 @@ const initialState = {
         format: 'datatables'
     },
     warnedRiskPartnersLoading:false,
+    //comprehensive warned
+    comprehensiveWarnedRiskPartners:[],
+    comprehensiveWarnedRiskPartnersCount:0,
+    comprehensiveWarnedRiskPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    comprehensiveWarnedRiskPartnersLoading:false,
     //to terminated
     toTerminatedRiskPartners:[],
     toTerminatedRiskPartnersCount:0,
@@ -255,6 +267,44 @@ export const fetchPostaToWarnedRiskPartners = createAsyncThunk('auth/fetchPostaT
 export const fetchWarnedRiskPartners = createAsyncThunk('auth/fetchWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/warned_risk_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const updateWarningNoticeStatus = createAsyncThunk('auth/updateWarningNoticeStatus', async ({data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/risk/update_warning_notice_status/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+        return response.data.status;
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return error.response.data.status;
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
+export const fetchComprehensiveWarnedRiskPartners = createAsyncThunk('auth/fetchComprehensiveWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/comprehensive_warned_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -562,6 +612,26 @@ const riskPartnerSlice = createSlice({
         deleteWarnedRiskPartners: (state,action) => {
             state.warnedRiskPartners = [];
         },
+        //comprehensive warned
+        setComprehensiveWarnedRiskPartnersLoading: (state,action) => {
+            state.comprehensiveWarnedRiskPartnersLoading = action.payload;
+        },
+        setComprehensiveWarnedRiskPartnersParams: (state,action) => {
+            state.comprehensiveWarnedRiskPartnersParams = {
+                ...state.comprehensiveWarnedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetComprehensiveWarnedRiskPartnersParams: (state,action) => {
+            state.comprehensiveWarnedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteComprehensiveWarnedRiskPartners: (state,action) => {
+            state.comprehensiveWarnedRiskPartners = [];
+        },
         //to terminated
         setToTerminatedRiskPartnersLoading: (state,action) => {
             state.toTerminatedRiskPartnersLoading = action.payload;
@@ -757,6 +827,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchWarnedRiskPartners.rejected, (state,action) => {
                 state.warnedRiskPartnersLoading = false
             })
+            //comprehensive warned
+            .addCase(fetchComprehensiveWarnedRiskPartners.pending, (state) => {
+                state.comprehensiveWarnedRiskPartnersLoading = true
+            })
+            .addCase(fetchComprehensiveWarnedRiskPartners.fulfilled, (state,action) => {
+                state.comprehensiveWarnedRiskPartners = action.payload.data || action.payload;
+                state.comprehensiveWarnedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.comprehensiveWarnedRiskPartnersLoading = false
+            })
+            .addCase(fetchComprehensiveWarnedRiskPartners.rejected, (state,action) => {
+                state.comprehensiveWarnedRiskPartnersLoading = false
+            })  
             //to terminated
             .addCase(fetchToTerminatedRiskPartners.pending, (state) => {
                 state.toTerminatedRiskPartnersLoading = true
@@ -856,6 +938,11 @@ export const {
     setWarnedRiskPartnersParams,
     resetWarnedRiskPartnersParams,
     deleteWarnedRiskPartners,
+
+    setComprehensiveWarnedRiskPartnersLoading,
+    setComprehensiveWarnedRiskPartnersParams,
+    resetComprehensiveWarnedRiskPartnersParams,
+    deleteComprehensiveWarnedRiskPartners,
 
     setToTerminatedRiskPartnersLoading,
     setToTerminatedRiskPartnersParams,

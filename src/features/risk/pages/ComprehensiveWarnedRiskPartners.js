@@ -1,11 +1,11 @@
 import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWarnedRiskPartners, setWarnedRiskPartnersLoading, setWarnedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setCallDialog, setExportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { fetchComprehensiveWarnedRiskPartners, setComprehensiveWarnedRiskPartnersLoading, setComprehensiveWarnedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
+import { setCallDialog, setDialog, setExportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, Chip, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -26,11 +26,10 @@ import SmsIcon from '@mui/icons-material/Sms';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import { checkSMS, fetchSMSs } from 'store/slices/communication/smsSlice';
 import SendSMSDialog from 'component/dialog/SendSMSDialog';
-import WarnedRiskPartnerDetailPanel from '../components/WarnedRiskPartnerDetailPanel';
 
-function WarnedRiskPartners() {
+function ComprehensiveWarnedRiskPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {warnedRiskPartners,warnedRiskPartnersCount,warnedRiskPartnersParams,warnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {comprehensiveWarnedRiskPartners,comprehensiveWarnedRiskPartnersCount,comprehensiveWarnedRiskPartnersParams,comprehensiveWarnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
@@ -43,24 +42,22 @@ function WarnedRiskPartners() {
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
     const [barterSwitchPosition, setBarterSwitchPosition] = useState(false);
     const [virmanSwitchPosition, setVirmanSwitchPosition] = useState(false);
-    const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
-    const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [project, setProject] = useState("kizilbuk")
     const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
-    //     dispatch(setWarnedRiskPartnersParams({bigger_than_100:true}));
+    //     dispatch(setComprehensiveWarnedRiskPartnersParams({bigger_than_100:true}));
     // }, []);
 
 
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}}));
+            dispatch(fetchComprehensiveWarnedRiskPartners({activeCompany,params:{...comprehensiveWarnedRiskPartnersParams,project}}));
         });
 
         
-    }, [activeCompany,warnedRiskPartnersParams,dispatch]);
+    }, [activeCompany,comprehensiveWarnedRiskPartnersParams,dispatch]);
 
     const riskPartnerColumns = [
         { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
@@ -188,21 +185,21 @@ function WarnedRiskPartners() {
     };
 
     const handleChangeSpecialPartners = async (value) => {
-        dispatch(setWarnedRiskPartnersParams({special:value,barter:false,virman:false}));
+        dispatch(setComprehensiveWarnedRiskPartnersParams({special:value,barter:false,virman:false}));
         setSpecialSwitchPosition(value);
         setBarterSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeBarterPartners = async (value) => {
-        dispatch(setWarnedRiskPartnersParams({barter:value,special:false,virman:false}));
+        dispatch(setComprehensiveWarnedRiskPartnersParams({barter:value,special:false,virman:false}));
         setBarterSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setVirmanSwitchPosition(false);
     };
 
     const handleChangeVirmanPartners = async (value) => {
-        dispatch(setWarnedRiskPartnersParams({virman:value,special:false,barter:false}));
+        dispatch(setComprehensiveWarnedRiskPartnersParams({virman:value,special:false,barter:false}));
         setVirmanSwitchPosition(value);
         setSpecialSwitchPosition(false);
         setBarterSwitchPosition(false);
@@ -210,18 +207,20 @@ function WarnedRiskPartners() {
 
     const changeProject = (newValue) => {
         setProject(newValue);
-        dispatch(setWarnedRiskPartnersParams({project:newValue}));
+        dispatch(setComprehensiveWarnedRiskPartnersParams({project:newValue}));
     };
+
+
 
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
                 title="İhtar Çekilen Müşteriler"
-                rows={warnedRiskPartners}
+                rows={comprehensiveWarnedRiskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}
-                loading={warnedRiskPartnersLoading}
+                loading={comprehensiveWarnedRiskPartnersLoading}
                 customButtons={
                     <>
                         <CustomTableButton
@@ -229,11 +228,6 @@ function WarnedRiskPartners() {
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_warned_risk_partners/")}}
                         icon={<DownloadIcon fontSize="small"/>}
                         />
-                        {/* <CustomTableButton
-                        title="SMS İçin Excel'e Aktar"
-                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_warned_risk_partners_for_sms/")}}
-                        icon={<SmsIcon fontSize="small"/>}
-                        /> */}
                         <CustomTableButton
                         title="Toplu SMS Gönder"
                         onClick={() => {dispatch(setSendSMSDialog(true));}}
@@ -241,7 +235,7 @@ function WarnedRiskPartners() {
                         />
                         <CustomTableButton
                         title="Yenile"
-                        onClick={() => dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}})).unwrap()}
+                        onClick={() => dispatch(fetchComprehensiveWarnedRiskPartners({activeCompany,params:{...comprehensiveWarnedRiskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
                     </>
@@ -257,7 +251,7 @@ function WarnedRiskPartners() {
                             value={project}
                             label="Proje"
                             onChange={(e) => changeProject(e.target.value)}
-                            disabled={warnedRiskPartnersLoading}
+                            disabled={comprehensiveWarnedRiskPartnersLoading}
                             >
                                 <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                                 <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
@@ -270,12 +264,6 @@ function WarnedRiskPartners() {
                 }
                 customFilters={
                 <>  
-                    {/* <AndroidSwitch
-                    label="100'den Büyük Olanlar"
-                    checked={biggerThan100SwitchPosition}
-                    onChange={(value) => handleChangeBiggerThan100(value)}
-                    disabled={biggerThan100SwitchDisabled}
-                    /> */}
                     <AndroidSwitch
                     label="Virman Göster"
                     checked={virmanSwitchPosition}
@@ -289,8 +277,8 @@ function WarnedRiskPartners() {
                 </>
                 
             }
-                rowCount={warnedRiskPartnersCount}
-                setParams={(value) => dispatch(setWarnedRiskPartnersParams(value))}
+                rowCount={comprehensiveWarnedRiskPartnersCount}
+                setParams={(value) => dispatch(setComprehensiveWarnedRiskPartnersParams(value))}
                 onCellClick={handleProfileDialog}
                 headerFilters={true}
                 noDownloadButton
@@ -298,16 +286,16 @@ function WarnedRiskPartners() {
                 disableRowSelectionOnClick={true}
                 //apiRef={apiRef}
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:warnedRiskPartnersParams}));}}
+                //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:comprehensiveWarnedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<WarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></WarnedRiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL={exportURL}
-            startEvent={() => dispatch(setWarnedRiskPartnersLoading(true))}
-            finalEvent={() => {dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}}));dispatch(setWarnedRiskPartnersLoading(false));}}
+            startEvent={() => dispatch(setComprehensiveWarnedRiskPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchComprehensiveWarnedRiskPartners({activeCompany,params:{...comprehensiveWarnedRiskPartnersParams,project}}));dispatch(setComprehensiveWarnedRiskPartnersLoading(false));}}
             project={project}
             />
             <CallDialog/>
@@ -323,4 +311,4 @@ function WarnedRiskPartners() {
     )
 }
 
-export default WarnedRiskPartners
+export default ComprehensiveWarnedRiskPartners
