@@ -12,7 +12,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import axios from 'axios';
 import 'static/css/Installments.css';
 import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
-import { Button, Chip, Grid, Stack } from '@mui/material';
+import { Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import { fetchAccountNos, fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from 'store/slices/leasing/bankActivitySlice';
 import ListTable from 'component/table/ListTable';
 import DetailPanel from 'features/leasing/components/DetailPanel';
@@ -49,6 +49,7 @@ function Collections() {
     
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
+    const [status, setStatus] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
@@ -118,7 +119,26 @@ function Collections() {
                     }
                 </Stack>
             ),
-            renderHeaderFilter: () => null,
+            renderHeaderFilter: (params) => (
+                <FormControl sx={{mr: 2}}>
+                    <InputLabel id="demo-simple-select-label">Seç</InputLabel>
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    size='small'
+                    value={status}
+                    label="Proje"
+                    fullWidth
+                    onChange={(e) => {setStatus(e.target.value);dispatch(setBankActivitiesParams({...bankActivitiesParams,third_person_status:e.target.value}))}}
+                    >
+                        <MenuItem value='all'>Tümü</MenuItem>
+                        <MenuItem value='cleared'>Temiz</MenuItem>
+                        <MenuItem value='need_document'>Belge/Kimlik Gerekli</MenuItem>
+                        <MenuItem value='flagged'>Yasaklı</MenuItem>
+                        <MenuItem value='pending'>3. Kişi Olmayanlar</MenuItem>
+                    </Select>
+                </FormControl>
+            ),
         },
         { field: 'description', headerName: 'Açıklama', width: 540 },
         { field: 'amount', headerName: 'Tutar', type: 'number', width: 120, renderHeaderFilter: () => null, valueFormatter: (value) =>

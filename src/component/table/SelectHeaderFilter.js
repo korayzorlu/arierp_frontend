@@ -5,7 +5,7 @@ import React, { useCallback, useMemo } from 'react'
 const getDefaultFilter = (field) => ({ field, operator: 'is' });
 
 function SelectHeaderFilter(props) {
-    const { colDef, label, value: externalValue, options, changeValue } = props;
+    const { colDef, label, value: externalValue, options, changeValue, isServer } = props;
     const apiRef = useGridApiContext();
     const filterModel = useGridSelector(apiRef, gridFilterModelSelector);
     const currentFieldFilters = useMemo(
@@ -15,6 +15,10 @@ function SelectHeaderFilter(props) {
 
     const handleChange = useCallback(
         (event) => {
+            if(!isServer){
+                return event.target.value
+            }
+
             if (!event.target.value) {
                 if (currentFieldFilters[0]) {
                     apiRef.current.deleteFilterItem(currentFieldFilters[0]);
