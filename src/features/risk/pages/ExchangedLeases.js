@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTerminatedLeases, setTerminatedLeasesLoading, setTerminatedLeasesParams } from 'store/slices/leasing/riskPartnerSlice';
+import { fetchExchangedLeases, setExchangedLeasesLoading, setExchangedLeasesParams } from 'store/slices/leasing/riskPartnerSlice';
 import { setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
@@ -18,10 +18,10 @@ import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 
-function TerminatedLeases() {
+function ExchangedLeases() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {terminatedLeases,terminatedLeasesCount,terminatedLeasesParams,terminatedLeasesLoading} = useSelector((store) => store.riskPartner);
+    const {exchangedLeases,exchangedLeasesCount,exchangedLeasesParams,exchangedLeasesLoading} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -37,9 +37,9 @@ function TerminatedLeases() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTerminatedLeases({activeCompany,params:{...terminatedLeasesParams,project}}));
+            dispatch(fetchExchangedLeases({activeCompany,params:{...exchangedLeasesParams,project}}));
         });
-    }, [activeCompany,terminatedLeasesParams,dispatch]);
+    }, [activeCompany,exchangedLeasesParams,dispatch]);
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
@@ -70,29 +70,42 @@ function TerminatedLeases() {
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+                return params.value > 0 ? 'bg-red' : '';
+            },
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'currency', headerName: 'PB', flex:1 },
+        { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
+                params.row.overdue_amount > 0
+                ?
+                    params.value >= 0
+                    ?
+                        `${params.value} gün`
+                    :
+                        null
+                :
+                    null
+                
+            )
+        },
         { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
-        { field: 'terminated_date', headerName: 'Fesih Tarihi', width:120 },
-        { field: 'last_refund_date', headerName: 'Son İade Tarihi', width:120 },
-        { field: 'refund', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
-        },
-        { field: 'r', headerName: 'PB', flex: 2, renderCell: (params) => params.row.refund.currency },
     ]
 
     const changeProject = (newValue) => {
         setProject(newValue);
-        dispatch(setTerminatedLeasesParams({project:newValue}));
+        dispatch(setExchangedLeasesParams({project:newValue}));
     };
 
     return (
         <PanelContent>
             <ListTableServer
-            title="Feshedilen Kira Planları İade Listesi"
-            rows={terminatedLeases}
+            title="Feshedilen Kira Planları Listesi"
+            rows={exchangedLeases}
             columns={columns}
             getRowId={(row) => row.id}
-            loading={terminatedLeasesLoading}
+            loading={exchangedLeasesLoading}
             customButtons={
                 <>  
                     <CustomTableButton
@@ -102,7 +115,7 @@ function TerminatedLeases() {
                     />
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchTerminatedLeases({activeCompany,params:terminatedLeasesParams})).unwrap()}
+                    onClick={() => dispatch(fetchExchangedLeases({activeCompany,params:exchangedLeasesParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
                 </>
@@ -118,7 +131,7 @@ function TerminatedLeases() {
                         value={project}
                         label="Proje"
                         onChange={(e) => changeProject(e.target.value)}
-                        disabled={terminatedLeasesLoading}
+                        disabled={exchangedLeasesLoading}
                         >
                             <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
                             <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
@@ -129,8 +142,8 @@ function TerminatedLeases() {
                     </FormControl>
                 </>
             }
-            rowCount={terminatedLeasesCount}
-            setParams={(value) => dispatch(setTerminatedLeasesParams(value))}
+            rowCount={exchangedLeasesCount}
+            setParams={(value) => dispatch(setExchangedLeasesParams(value))}
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}
@@ -138,28 +151,28 @@ function TerminatedLeases() {
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL={exportURL}
-            startEvent={() => dispatch(setTerminatedLeasesLoading(true))}
-            finalEvent={() => {dispatch(fetchTerminatedLeases({activeCompany,params:terminatedLeasesParams}));dispatch(setTerminatedLeasesLoading(false));}}
+            startEvent={() => dispatch(setExchangedLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchExchangedLeases({activeCompany,params:exchangedLeasesParams}));dispatch(setExchangedLeasesLoading(false));}}
             status={status}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
-            templateURL="/leasing/terminatedLeases_template"
-            importURL="/leasing/import_terminatedLeases/"
-            startEvent={() => dispatch(setTerminatedLeasesLoading(true))}
-            finalEvent={() => {dispatch(fetchTerminatedLeases({activeCompany}));dispatch(setTerminatedLeasesLoading(false));}}
+            templateURL="/leasing/exchangedLeases_template"
+            importURL="/leasing/import_exchangedLeases/"
+            startEvent={() => dispatch(setExchangedLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchExchangedLeases({activeCompany}));dispatch(setExchangedLeasesLoading(false));}}
             >
 
             </ImportDialog>
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
-            deleteURL="/leasing/delete_terminatedLeases/"
+            deleteURL="/leasing/delete_exchangedLeases/"
             selectedItems={apiRef.current ? apiRef.current.getSelectedRows().values() : []}
-            startEvent={() => dispatch(setTerminatedLeasesLoading(true))}
-            finalEvent={() => {dispatch(fetchTerminatedLeases({activeCompany}));dispatch(setTerminatedLeasesLoading(false));}}
+            startEvent={() => dispatch(setExchangedLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchExchangedLeases({activeCompany}));dispatch(setExchangedLeasesLoading(false));}}
             />
         </PanelContent>
     )
 }
 
-export default TerminatedLeases
+export default ExchangedLeases

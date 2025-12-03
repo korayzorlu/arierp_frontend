@@ -144,6 +144,7 @@ import AddBlacklistPerson from 'features/compliance/pages/AddBlackListPerson';
 import VposThirdPersons from 'features/compliance/pages/VPosThirdPersons';
 import ComprehensiveWarnedRiskPartners from 'features/risk/pages/ComprehensiveWarnedRiskPartners';
 import TerminatedLeases from 'features/risk/pages/TerminatedLeases';
+import ExchangedLeases from 'features/risk/pages/ExchangedLeases';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -290,7 +291,7 @@ function App() {
                   <Route path='/active-leases' element={<ActiveLeases></ActiveLeases>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
-                  <Route path='/terminated-leases' element={<TerminatedLeases></TerminatedLeases>}></Route>
+                  
                   
                   {/* compliance */}
                   <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
@@ -338,6 +339,8 @@ function App() {
                   <Route path='/manager-summary' element={<ManagerSummary></ManagerSummary>}></Route>
                   <Route path='/amount-debit-transaction' element={<AmountDebitTransactions></AmountDebitTransactions>}></Route>
                   <Route path='/sent-sms' element={<SMSs></SMSs>}></Route>
+                  <Route path='/terminated-leases' element={<TerminatedLeases></TerminatedLeases>}></Route>
+                  <Route path='/exchanged-leases' element={<ExchangedLeases></ExchangedLeases>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>
