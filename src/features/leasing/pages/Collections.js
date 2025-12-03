@@ -135,7 +135,6 @@ function Collections() {
                         <MenuItem value='cleared'>Temiz</MenuItem>
                         <MenuItem value='need_document'>Belge/Kimlik Gerekli</MenuItem>
                         <MenuItem value='flagged'>Yasaklı</MenuItem>
-                        <MenuItem value='pending'>3. Kişi Olmayanlar</MenuItem>
                     </Select>
                 </FormControl>
             ),
