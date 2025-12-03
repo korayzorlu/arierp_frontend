@@ -134,7 +134,8 @@ function ListTableServer(props) {
       debouncedSetParams({ "search[value]": value });
     } else if(model.quickFilterValues && model.quickFilterValues.length === 0 && model.items.length > 0){
       //console.log("2");
-      model.items.forEach((item) => {
+      const items = model?.items ?? [];
+      items.forEach((item) => {
         //console.log("2-1");
         const isCodeLike = ['code','contract','lease'].includes(item.field);
         if (item.value) {
