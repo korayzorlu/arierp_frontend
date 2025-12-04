@@ -71,13 +71,13 @@ function ExchangedLeases() {
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', flex:2, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:120, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'currency', headerName: 'PB', flex:1 },
-        { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'currency', headerName: 'PB', width:90 },
+        { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
                 ?
                     params.value >= 0
@@ -89,9 +89,18 @@ function ExchangedLeases() {
                     null
             )
         },
-        { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
-        { field: 'exchanged_amounts', headerName: 'Bugüne Kadar Ödenmesi Gereken Yerel', flex:2, type: 'number', renderHeaderFilter: () => null,
+        { field: 'paid_rate', headerName: 'Oran', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
+        { field: 'exchanged_amounts', headerName: 'Bugüne Kadar Ödenmesi Gereken Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount_due_to_date_locale)
+        },
+        { field: 'amount_paid_to_date_locale', headerName: 'Bugüne Kadar Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_paid_to_date_locale)
+        },
+        { field: 'amount_due_to_date_usd', headerName: 'Bugüne Kadar Ödenmesi Gereken USD', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_due_to_date_usd)
+        },
+        { field: 'amount_paid_to_date_usd', headerName: 'Bugüne Kadar Ödenen USD', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_paid_to_date_usd)
         },
         { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
@@ -119,7 +128,7 @@ function ExchangedLeases() {
                     />
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchExchangedLeases({activeCompany,params:exchangedLeasesParams})).unwrap()}
+                    onClick={() => dispatch(fetchExchangedLeases({activeCompany,params:{...exchangedLeasesParams,project}})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
                 </>
