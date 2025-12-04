@@ -12,8 +12,8 @@ import axios from 'axios';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Grid } from '@mui/material';
-import { fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from 'store/slices/leasing/bankActivitySlice';
-import DetailPanel from 'features/finance/components/BankActivityDetailPanel';
+import { fetchAccountNos, fetchBankActivities, setBankActivitiesLoading, setBankActivitiesParams } from 'store/slices/leasing/bankActivitySlice';
+import BankActivityDetailPanel from 'features/finance/components/BankActivityDetailPanel';
 import ExportDialog from 'component/feedback/ExportDialog';
 
 function randomId(length = 8) {
@@ -30,7 +30,7 @@ function BankActivities() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {collections,collectionsCount,collectionsParams,collectionsLoading} = useSelector((store) => store.collection);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
-    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading} = useSelector((store) => store.bankActivity);
+    const {bankActivities,bankActivitiesCount,bankActivitiesParams,bankActivitiesLoading,accountNosParams} = useSelector((store) => store.bankActivity);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -44,8 +44,9 @@ function BankActivities() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchBankActivities({activeCompany,params:{...bankActivitiesParams,created_date_after:'2025-01-01'}}));
+            dispatch(fetchAccountNos({activeCompany,params:accountNosParams}));
         });
-    }, [activeCompany,bankActivitiesParams,dispatch]);
+    }, [activeCompany,bankActivitiesParams,accountNosParams,dispatch]);
     
 
     const columns = [
@@ -165,7 +166,7 @@ function BankActivities() {
                     `
                 }}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<DetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases.leases}></DetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<BankActivityDetailPanel uuid={params.row.uuid} bank_activity_leases={params.row.leases.leases}></BankActivityDetailPanel>)}}
                 disableVirtualization
                 />
             </Grid>

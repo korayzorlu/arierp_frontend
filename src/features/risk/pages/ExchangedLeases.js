@@ -87,7 +87,6 @@ function ExchangedLeases() {
                         null
                 :
                     null
-                
             )
         },
         { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
