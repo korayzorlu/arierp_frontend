@@ -17,6 +17,7 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
+import { cellProgress } from 'component/progress/CellProgress';
 
 function ExchangedLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -89,6 +90,10 @@ function ExchangedLeases() {
                 
             )
         },
+        { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
+        { field: 'exchanged_amounts', headerName: 'Bugüne Kadar Ödenmesi Gereken Yerel', flex:2, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount_due_to_date_locale)
+        },
         { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
@@ -101,7 +106,7 @@ function ExchangedLeases() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Feshedilen Kira Planları Listesi"
+            title="Kur Değerleme Kayıpları Listesi"
             rows={exchangedLeases}
             columns={columns}
             getRowId={(row) => row.id}
