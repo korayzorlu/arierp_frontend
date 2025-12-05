@@ -109,12 +109,12 @@ function ExchangedLeases() {
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.due_overdue_amount_usd)
         },
-        { field: 'kur_kaybi', headerName: 'Kurdan Kayıp', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'kur_kaybi', headerName: 'Kurdan Kayıp USD', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.row.exchanged_amounts.overdue_amount_usd > 0 ? 'bg-dark-red' : '';
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.kur_kaybi)
         },
-        { field: 'currency', headerName: 'PB', width:90 },
+        //{ field: 'currency', headerName: 'PB', width:90 },
         { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
     ]
