@@ -236,7 +236,7 @@ function App() {
             ?
             <>
               <Routes>
-
+                
                 <Route exact path='/' element={<Panel></Panel>}>
                   <Route index element={<Dashboard></Dashboard>}></Route>
                   <Route path='profile/:username' element={<Profile></Profile>}></Route>
@@ -291,7 +291,6 @@ function App() {
                   <Route path='/active-leases' element={<ActiveLeases></ActiveLeases>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
-                  
                   
                   {/* compliance */}
                   <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
