@@ -104,7 +104,7 @@ function ExchangedLeases() {
         { field: 'amount_paid_to_date_usd', headerName: 'Ödenen USD', width:120, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_paid_to_date_usd)
         },
-        { field: 'due_overdue_amount_usd', headerName: 'Geciken ÖDenmesi Gereken USD', width:200, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'due_overdue_amount_usd', headerName: 'Geciken ÖDenmesi Gereken USD', width:220, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.row.exchanged_amounts.overdue_amount_usd > 0 ? 'bg-red' : '';
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.due_overdue_amount_usd)
