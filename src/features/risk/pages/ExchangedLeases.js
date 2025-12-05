@@ -90,16 +90,16 @@ function ExchangedLeases() {
             )
         },
         { field: 'paid_rate', headerName: 'Oran', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
-        { field: 'exchanged_amounts', headerName: 'Bugüne Kadar Ödenmesi Gereken Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
+        { field: 'exchanged_amounts', headerName: 'Ödenmesi Gereken Yerel', width:180, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount_due_to_date_locale)
         },
-        { field: 'amount_paid_to_date_locale', headerName: 'Bugüne Kadar Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
+        { field: 'amount_paid_to_date_locale', headerName: 'Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_paid_to_date_locale)
         },
-        { field: 'amount_due_to_date_usd', headerName: 'Bugüne Kadar Ödenmesi Gereken USD', width:120, type: 'number', renderHeaderFilter: () => null,
+        { field: 'amount_due_to_date_usd', headerName: 'Ödenmesi Gereken USD', width:180, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_due_to_date_usd)
         },
-        { field: 'amount_paid_to_date_usd', headerName: 'Bugüne Kadar Ödenen USD', width:120, type: 'number', renderHeaderFilter: () => null,
+        { field: 'amount_paid_to_date_usd', headerName: 'Ödenen USD', width:120, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.amount_paid_to_date_usd)
         },
         { field: 'status', headerName: 'Alt Statü', width:120 },
