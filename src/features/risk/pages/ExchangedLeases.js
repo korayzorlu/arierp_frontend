@@ -84,27 +84,27 @@ function ExchangedLeases() {
             )
         },
         { field: 'paid_rate', headerName: 'Oran', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
-        // { field: 'exchanged_amounts', headerName: 'Ödenmesi Gereken Yerel', width:180, type: 'number', renderHeaderFilter: () => null,
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.odenmesi_gereken_yerel)
-        // },
-        // { field: 'odenen_yerel', headerName: 'Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.odenen_yerel)
-        // },
-        // { field: 'overdue_amount', headerName: 'Geciken Yerel', width:120, type: 'number', renderHeaderFilter: () => null, 
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
-        // },
-        //  { field: 'geciken_usd', headerName: 'Geciken USD', width:120, type: 'number', renderHeaderFilter: () => null, 
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.geciken_usd)
-        // },
-        // { field: 'odenmesi_gereken_usd', headerName: 'Ödenmesi Gereken USD', width:180, type: 'number', renderHeaderFilter: () => null,
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.odenmesi_gereken_usd)
-        // },
-        // { field: 'odenen_usd', headerName: 'Ödenen USD', width:120, type: 'number', renderHeaderFilter: () => null,
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.odenen_usd)
-        // },
-        // { field: 'geciken_odenmesi_gereken_usd', headerName: 'Geciken Ödenmesi Gereken USD', width:220, type: 'number', renderHeaderFilter: () => null,
-        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.geciken_odenmesi_gereken_usd)
-        // },
+        { field: 'exchanged_amounts', headerName: 'Ödenmesi Gereken Yerel', width:180, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.odenmesi_gereken_yerel)
+        },
+        { field: 'odenen_yerel', headerName: 'Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.odenen_yerel)
+        },
+        { field: 'overdue_amount', headerName: 'Geciken Yerel', width:120, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+         { field: 'geciken_usd', headerName: 'Geciken USD', width:120, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.geciken_usd)
+        },
+        { field: 'odenmesi_gereken_usd', headerName: 'Ödenmesi Gereken USD', width:180, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.odenmesi_gereken_usd)
+        },
+        { field: 'odenen_usd', headerName: 'Ödenen USD', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.odenen_usd)
+        },
+        { field: 'geciken_odenmesi_gereken_usd', headerName: 'Geciken Ödenmesi Gereken USD', width:220, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.exchanged_amounts.geciken_odenmesi_gereken_usd)
+        },
         { field: 'kur_kaybi', headerName: 'Kurdan Kayıp USD', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.row.exchanged_amounts.geciken_usd > 0 ? 'bg-red' : '';
             },
