@@ -1,9 +1,5 @@
-import { Box, Button, Chip, Container, Grid, IconButton, Paper, Stack, Typography } from '@mui/material'
+import { Button, Chip, IconButton, ListItemText, Menu, MenuItem, Stack} from '@mui/material'
 import React, { startTransition, useEffect, useState } from 'react'
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import GroupsIcon from '@mui/icons-material/Groups';
-import PolicyIcon from '@mui/icons-material/Policy';
-import PersonIcon from '@mui/icons-material/Person';
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
@@ -23,23 +19,32 @@ import ThirdPersonDetailPanel from '../components/ThirdPersonDetailPanel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ThirdPersonDocumentDialog from 'component/dialog/ThirdPersonDocumentDialog';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import FilePresentIcon from '@mui/icons-material/FilePresent';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import dayjs from 'dayjs';
 import ThirdPersonPaymentDetailDialog from 'component/dialog/ThirdPersonPaymentDetailDialog';
 import ThirdPersonDialog from 'component/dialog/ThirdPersonDialog';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function ThirdPersons() {
-    const {dark} = useSelector((store) => store.auth);
-    const {mobile} = useSelector((store) => store.sidebar);
+    const {dark,user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {thirdPersons,thirdPersonsCount,thirdPersonsParams,thirdPersonsLoading,thirdPerson} = useSelector((store) => store.thirdPerson);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     const [selectedRow, setSelectedRow] = useState({})
+    
 
     useEffect(() => {
         startTransition(() => {
@@ -63,10 +68,10 @@ function ThirdPersons() {
     };
 
     const columns = [
-        { field: 'created_date', headerName: 'Sorgu Tarihi', width: 180 },
-        { field: 'name', headerName: 'İsim', width: 400 },
+        { field: 'created_date', headerName: 'Sorgu Tarihi', width: 120 },
+        { field: 'name', headerName: 'İsim', width: 360 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 140 },
-        { field: 'finmaks_transaction', headerName: 'Ödeme Detayı', width: 140, renderHeaderFilter: () => null,
+        { field: 'finmaks_transaction', headerName: 'Ödeme Detayı', width: 180, renderHeaderFilter: () => null,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
@@ -111,7 +116,20 @@ function ThirdPersons() {
                                 Kontrol Et ve Güncelle
                             </Button>
                         :
-                            <Chip key={params.row.transaction_id} variant='contained' color={getStatus(params.value).color} icon={getStatus(params.value).icon} label={getStatus(params.value).label} size='small'/>
+                            <Chip
+                            key={params.row.transaction_id}
+                            variant='contained'
+                            color={getStatus(params.value).color}
+                            icon={getStatus(params.value).icon}
+                            label={getStatus(params.value).label}
+                            size='small'
+                            onClick={() => {
+                                if(user.authorization === 'Kredi Tahsis'){
+                                    dispatch(setThirdPersonStatusDialog(true));
+                                    setSelectedRow(params.row);
+                                }  
+                            }}
+                            />
                     }
                 </Stack>
             ),
@@ -194,6 +212,12 @@ function ThirdPersons() {
                 </>
             }
             rowCount={thirdPersonsCount}
+            autoRowHeight
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                    py: 1,
+                },
+            }}
             //checkboxSelection
             disableRowSelectionOnClick
             setParams={(value) => dispatch(setThirdPersonsParams(value))}
