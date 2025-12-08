@@ -80,6 +80,9 @@ function TrialBalanceContracts() {
                                 <MenuItem value='all'>Tümü</MenuItem>
                                 <MenuItem value='planlandi'>Planlandı</MenuItem>
                                 <MenuItem value='aktiflestirildi'>Aktifleştirildi</MenuItem>
+                                <MenuItem value='durduruldu'>Durduruldu</MenuItem>
+                                <MenuItem value='devredildi'>Devredildi</MenuItem>
+                                <MenuItem value='feshedildi'>Feshedildi</MenuItem>
                                 {/* <MenuItem value='durduruldu'>Durduruldu</MenuItem> */}
                             </Select>
                         </FormControl>
