@@ -1,12 +1,12 @@
 
 
 
-import { useGridApiRef } from '@mui/x-data-grid-premium';
+import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { startTransition, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTrialBalanceContracts, resetTrialBalanceContractsParams, setTrialBalanceContractsParams } from '../../../store/slices/accounting/trialBalanceContractSlice';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Chip, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
+import { Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { setExportDialog } from '../../../store/slices/notificationSlice';
@@ -18,7 +18,7 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import TrialBalanceContractDetailPanel from '../components/TrialBalanceContractDetailPanel';
 
 function TrialBalanceContractInactives() {
-    const {user} = useSelector((store) => store.auth);
+    const {user,dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {trialBalanceContracts,trialBalanceContractsCount,trialBalanceContractsParams,trialBalanceContractsLoading} = useSelector((store) => store.trialBalanceContract);
 
@@ -43,10 +43,23 @@ function TrialBalanceContractInactives() {
     };
 
     const columns = [
-        { field: 'code', headerName: 'Sözleşme No', flex: 1 },
-        { field: 'partner', headerName: 'Müşteri', flex: 2 },
-        { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
-        { field: 'lease_status', headerName: 'Statü', flex: 1 },
+        { field: 'code', headerName: 'Sözleşme No', width: 120 },
+        { field: 'trial_balances', headerName: 'Hesap Kodları', width: 400,
+            renderCell: (params) => (
+                
+                    
+                        params.value.trial_balances.map((tb) => (
+                            <Chip key={tb.id} label={tb.main_account_code} color={dark ? 'cream' : 'ari'} size="small" sx={{mr: 0.5, mb: 0.5}} />
+                        ))
+                    
+                    
+              
+                
+            )
+        },
+        { field: 'partner', headerName: 'Müşteri', flex: 1 },
+        { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width: 120 },
+        { field: 'lease_status', headerName: 'Statü', width: 120 },
     ]
 
     return (
@@ -81,11 +94,19 @@ function TrialBalanceContractInactives() {
                             disabled={trialBalanceContractsLoading}
                             >
                                 <MenuItem value='inactive'>Tümü</MenuItem>
+                                <MenuItem value='devredildi'>Devredildi</MenuItem>
+                                <MenuItem value='feshedildi'>Feshedildi</MenuItem>
                                 {/* <MenuItem value='durduruldu'>Durduruldu</MenuItem> */}
                             </Select>
                         </FormControl>
                     </>
                 }
+                autoRowHeight
+                sx={{
+                    [`& .${gridClasses.cell}`]: {
+                        py: 1,
+                    },
+                }}
                 rowCount={trialBalanceContractsCount}
                 setParams={(value) => dispatch(setTrialBalanceContractsParams(value))}
                 headerFilters={true}
