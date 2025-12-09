@@ -145,6 +145,7 @@ import VposThirdPersons from 'features/compliance/pages/VPosThirdPersons';
 import ComprehensiveWarnedRiskPartners from 'features/risk/pages/ComprehensiveWarnedRiskPartners';
 import TerminatedLeases from 'features/risk/pages/TerminatedLeases';
 import ExchangedLeases from 'features/risk/pages/ExchangedLeases';
+import TrialBalanceContractInactivesCount from 'features/accounting/pages/TrialBalanceContractInactivesCount';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -350,6 +351,7 @@ function App() {
                   <Route path='/trial-balance-contracts' element={<TrialBalanceContracts></TrialBalanceContracts>}></Route>
                   <Route path='/trial-balance-contract-under-reviews' element={<TrialBalanceContractUnderReviews></TrialBalanceContractUnderReviews>}></Route>
                   <Route path='/trial-balance-contract-inactives' element={<TrialBalanceContractInactives></TrialBalanceContractInactives>}></Route>
+                  <Route path='/count-trial-balance-contract-inactives' element={<TrialBalanceContractInactivesCount></TrialBalanceContractInactivesCount>}></Route>
                   <Route path='/accounting-under-reviews' element={<AccountingUnderReviews></AccountingUnderReviews>}></Route>
 
                   <Route path='/ledger-accounts' element={<LedgerAccounts></LedgerAccounts>}></Route>
