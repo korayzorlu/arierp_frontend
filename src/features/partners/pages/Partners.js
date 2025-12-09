@@ -96,6 +96,7 @@ function Partners() {
                 {...params}
                 label="Seç"
                 externalValue="all"
+                isServer
                 options={[
                     { value: 'all', label: 'Tümü' },
                     { value: 'true', label: 'Var' },

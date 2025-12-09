@@ -104,6 +104,7 @@ function ActiveActiveLeases() {
                 {...params}
                 label="Seç"
                 externalValue="all"
+                isServer
                 options={[
                     { value: 'all', label: 'Tümü' },
                     { value: 'aktiflestirildi', label: 'Aktifleştirildi' },
@@ -119,7 +120,7 @@ function ActiveActiveLeases() {
                     { value: 'planlandi', label: 'Planlandı' },
                     { value: 'revize_edildi', label: 'Revize Edildi' },
                 ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
-                changeValue={(newValue) => {setStatus(newValue);}}
+                changeValue={(newValue) => setStatus(newValue)}
                 />
             )
         },

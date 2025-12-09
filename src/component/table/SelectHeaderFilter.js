@@ -25,11 +25,14 @@ function SelectHeaderFilter(props) {
                 }
                 return;
             }
+
             apiRef.current.upsertFilterItem({
                 ...(currentFieldFilters[0] || getDefaultFilter(colDef.field)),
                 value: event.target.value,
             });
+            
             if (changeValue){
+                console.log("changeValue", event.target.value)
                 changeValue(event.target.value);
             }
            
