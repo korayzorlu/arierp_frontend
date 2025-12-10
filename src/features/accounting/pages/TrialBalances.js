@@ -45,6 +45,7 @@ function TrialBalances() {
                 {...params}
                 label="Seç"
                 externalValue="all"
+                isServer
                 options={[
                     { label: "Tümü", value: "all" },
                     ...mainAccountCodes.map((code) => ({ label: code, value: code }))
