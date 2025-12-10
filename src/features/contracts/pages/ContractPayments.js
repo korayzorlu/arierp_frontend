@@ -49,6 +49,7 @@ function ContractPayments() {
         { field: 'group_name', headerName: 'İşlem Grubu' },
         { field: 'account_code', headerName: 'Hesap Kart Kodu' },
         { field: 'account_name', headerName: 'Cari Kart Adı', width: 250 },
+        { field: 'description', headerName: 'Açıklama', width: 400 },
         { field: 'date', headerName: 'İşlem Tarihi', renderHeaderFilter: () => null },
         { field: 'debit_amount', headerName: 'Borç', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
@@ -66,7 +67,6 @@ function ContractPayments() {
         { field: 'exchange_rate', headerName: 'Kur(Yerel)', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'description', headerName: 'Açıklama', width: 400 },
         { field: 'user_name', headerName: 'Oluşturan' },
     ]
 
