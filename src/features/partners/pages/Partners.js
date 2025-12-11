@@ -200,6 +200,7 @@ function Partners() {
                     
                 </>
             }
+            noDownloadButton
             onRowSelectionModelChange={(newRowSelectionModel) => {
                 setSelectedItems(newRowSelectionModel);
             }}
