@@ -8,11 +8,11 @@ import { fetchPartners, setPartnersLoading, setPartnersParams } from '../../../s
 import { Link } from 'react-router-dom';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { setAlert, setDeleteDialog, setDialog, setImportDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import ImportDialog from '../../../component/feedback/ImportDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialog from '../../../component/feedback/DeleteDialog';
-import { fetchImportProcess } from '../../../store/slices/processSlice';
+import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
 import { Avatar, Button, Chip, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import PeopleIcon from '@mui/icons-material/People';
@@ -24,6 +24,8 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import StarIcon from '@mui/icons-material/Star';
 import { DataGrid } from '@mui/x-data-grid';
 import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import ExportDialog from 'component/feedback/ExportDialog';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function Partners() {
     const {user} = useSelector((store) => store.auth);
@@ -183,6 +185,11 @@ function Partners() {
                     onClick={handleTest}
                     icon={<KeyIcon fontSize="small"/>}
                     /> */}
+                    <CustomTableButton
+                    title="Excel Hazırla ve İndir"
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                    icon={<DownloadIcon fontSize="small"/>}
+                    />
 
                     <CustomTableButton
                     title="Yenile"
@@ -210,6 +217,12 @@ function Partners() {
             >
 
             </ImportDialog>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/partners/export_partners/"
+            startEvent={() => dispatch(setPartnersLoading(true))}
+            finalEvent={() => {dispatch(fetchPartners({activeCompany,params:partnersParams}));dispatch(setPartnersLoading(false));}}
+            />
             <DeleteDialog
             handleClose={() => dispatch(setDeleteDialog(false))}
             deleteURL="/partners/delete_partners/"
