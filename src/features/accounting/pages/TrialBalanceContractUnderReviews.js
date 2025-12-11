@@ -25,7 +25,7 @@ function TrialBalanceContractUnderReviews() {
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
     
-    const [filter, setFilter] = useState({lease_status: 'planlandi', is_correct: false})
+    const [filter, setFilter] = useState({lease_status: 'planlandi', is_correct: false, currency: 'TRY'})
 
     useEffect(() => {
         dispatch(resetTrialBalanceContractsParams());
@@ -33,13 +33,18 @@ function TrialBalanceContractUnderReviews() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTrialBalanceContracts({activeCompany,params:{...trialBalanceContractsParams,lease_status: filter.lease_status, is_correct: filter.is_correct}}));
+            dispatch(fetchTrialBalanceContracts({activeCompany,params:{...trialBalanceContractsParams,lease_status: filter.lease_status, is_correct: filter.is_correct, currency: filter.currency}}));
         });
     }, [activeCompany,trialBalanceContractsParams,dispatch]);
 
     const changeProject = (newValue) => {
-        setFilter({lease_status: newValue, is_correct: false});
-        dispatch(setTrialBalanceContractsParams({lease_status: newValue, is_correct: false}));
+        setFilter({lease_status: newValue, is_correct: false, currency: filter.currency});
+        dispatch(setTrialBalanceContractsParams({lease_status: newValue, is_correct: false, currency: filter.currency}));
+    };
+
+    const changeCurrency = (newValue) => {
+        setFilter({lease_status: filter.lease_status, is_correct: false, currency: newValue});
+        dispatch(setTrialBalanceContractsParams({lease_status: filter.lease_status, is_correct: false, currency: newValue}));
     };
 
     const columns = [
@@ -84,6 +89,22 @@ function TrialBalanceContractUnderReviews() {
                                 <MenuItem value='planlandi'>Planlandı</MenuItem>
                                 <MenuItem value='aktiflestirildi'>Aktifleştirildi</MenuItem>
                                 {/* <MenuItem value='durduruldu'>Durduruldu</MenuItem> */}
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel id="demo-simple-select-label-2">PB</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label-2"
+                            id="demo-simple-select-2"
+                            size='small'
+                            value={filter.currency}
+                            label="Proje"
+                            onChange={(e) => changeCurrency(e.target.value)}
+                            disabled={trialBalanceContractsLoading}
+                            >
+                                <MenuItem value='TRY'>TRY</MenuItem>
+                                <MenuItem value='USD'>USD</MenuItem>
+                                <MenuItem value='EUR'>EUR</MenuItem>
                             </Select>
                         </FormControl>
                     </>
