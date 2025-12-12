@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTodayPartners, setTodayPartnersLoading, setTodayPartnersParams } from 'store/slices/leasing/todayPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
 import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, useTheme } from '@mui/material';
@@ -28,6 +28,8 @@ import ExportDialog from 'component/feedback/ExportDialog';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import { setRiskPartnersLoading } from 'store/slices/leasing/riskPartnerSlice';
 import { checkSMS, fetchSMSs } from 'store/slices/communication/smsSlice';
+import SmsIcon from '@mui/icons-material/Sms';
+import SendSMSDialog from 'component/dialog/SendSMSDialog';
 
 function TodayPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -47,6 +49,7 @@ function TodayPartners() {
     const [biggerThan100SwitchDisabled, setBiggerThan100SwitchDisabled] = useState(false);
     const [biggerThan100SwitchPosition, setBiggerThan100SwitchPosition] = useState(true);
     const [project, setProject] = useState("kizilbuk")
+    const [exportURL, setExportURL] = useState("")
 
     // useEffect(() => {
     //     dispatch(setTodayPartnersParams({bigger_than_100:true}));
@@ -137,7 +140,7 @@ function TodayPartners() {
             />
         )
         },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>
@@ -145,7 +148,7 @@ function TodayPartners() {
                     </IconButton>
                 </Grid>
                 <Grid size={6} sx={{textAlign: 'center'}}>
-                    <IconButton aria-label="delete" onClick={handleMessageDialog}>
+                    <IconButton aria-label="delete" onClick={() => handleMessageDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}>
                         <MessageIcon />
                     </IconButton>
                 </Grid>
@@ -231,15 +234,25 @@ function TodayPartners() {
                 loading={todayPartnersLoading}
                 customButtons={
                     <>
-                        <CustomTableButton
+                        {/* <CustomTableButton
                         title="İçe Aktar"
                         onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());}}
                         icon={<UploadFileIcon fontSize="small"/>}
-                        />
-                        <CustomTableButton
+                        /> */}
+                        {/* <CustomTableButton
                         title="Excel Hazırla ve İndir"
                         onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
                         icon={<DownloadIcon fontSize="small"/>}
+                        /> */}
+                        <CustomTableButton
+                        title="Sözleşme Bazında Excel'e Aktar"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_today_partners/")}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
+                        title="Toplu SMS Gönder"
+                        onClick={() => {dispatch(setSendSMSDialog(true));}}
+                        icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
                         title="Yenile"
@@ -313,13 +326,19 @@ function TodayPartners() {
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
-            exportURL="/leasing/export_today_partners/"
+            exportURL={exportURL}
             startEvent={() => dispatch(setTodayPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchTodayPartners({activeCompany,params:{...todayPartnersParams,project}}));dispatch(setTodayPartnersLoading(false));}}
             project={project}
             />
             <CallDialog/>
             <MessageDialog/>
+            <SendSMSDialog
+            risk_status="today_partners"
+            project={project}
+            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
+            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin ödemelerini hatırlatmak isteriz. ${project === 'kizilbuk' || project === 'kasaba' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 4447680/rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            />
             <WarningNoticeDialog/>
         </PanelContent>
     )
