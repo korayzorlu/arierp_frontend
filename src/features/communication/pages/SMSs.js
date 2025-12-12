@@ -1,9 +1,9 @@
-import { useGridApiRef } from '@mui/x-data-grid-premium';
+import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSMSs, setSMSsParams } from '../../../store/slices/communication/smsSlice';
 import PanelContent from '../../../component/panel/PanelContent';
-import { Grid } from '@mui/material';
+import { Chip, Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import { setExportDialog } from '../../../store/slices/notificationSlice';
@@ -11,6 +11,11 @@ import { fetchExportProcess } from '../../../store/slices/processSlice';
 import ListTableServer from '../../../component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import DoneIcon from '@mui/icons-material/Done';
 
 function SMSs() {
     const {user} = useSelector((store) => store.auth);
@@ -33,10 +38,38 @@ function SMSs() {
     }, [activeCompany,smssParams,dispatch]);
 
     const columns = [
+        { field: 'send_date', headerName: 'Gönderim Tarihi', width: 120 },
         { field: 'partner', headerName: 'Müşteri', width: 400 },
-        { field: 'phone_number', headerName: 'Tel. No.', flex: 2 },
+        { field: 'phone_number', headerName: 'Tel. No.', width: 140 },
+        { field: 'text', headerName: 'Mesaj', flex: 1 },
+        { field: 'status_display', headerName: 'Durum', width: 120,
+            renderCell: (params) => {
+                <Chip
+                key={params.row.uuid}
+                variant='outlined'
+                color={getStatusParams(params.row.status).color}
+                icon={getStatusParams(params.row.status).icon}
+                label={params.value}
+                size='small'
+                sx={{border:'none'}}
+                />
+            }
+        },
         
     ]
+
+    const getStatusParams = (status) => {
+        switch (status) {
+            case "0":
+                return { color: "error", icon: <PriorityHighIcon /> };
+            case "1":
+                return { color: "success", icon: <DoneAllIcon /> };
+            case "2":
+                return { color: "warning", icon: <HourglassBottomIcon /> };
+            default:
+                return { color: "primary", icon: <DoneIcon /> };
+        }
+    };
 
     return (
         <PanelContent>
@@ -58,6 +91,14 @@ function SMSs() {
                 }
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     setSelectedItems(newRowSelectionModel);
+                }}
+                apiRef={apiRef}
+                autoRowHeight
+                getRowHeight={() => 'auto'}
+                sx={{
+                    [`& .${gridClasses.cell}`]: {
+                        py: 1,
+                    },
                 }}
                 rowCount={smssCount}
                 setParams={(value) => dispatch(setSMSsParams(value))}
