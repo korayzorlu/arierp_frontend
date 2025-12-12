@@ -216,8 +216,6 @@ function TomorrowPartners() {
         return `${day}.${month}.${year}`;
     };
 
-    console.log(getTomorrowDateString())
-
     return (
         <PanelContent>
             <Grid container spacing={1}>
