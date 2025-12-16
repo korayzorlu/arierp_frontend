@@ -136,7 +136,7 @@ function UpdateLease() {
                             size="small"
                             label={"Proje"}
                             variant='outlined'
-                            value={data.project}
+                            value={data.item}
                             disabled={false}
                             fullWidth
                             />
@@ -228,7 +228,7 @@ function UpdateLease() {
                             size="small"
                             label={"Aktivasyon Tarihi"}
                             variant='outlined'
-                            value={data.activition_date}
+                            value={data.activation_date}
                             disabled={false}
                             fullWidth
                             />

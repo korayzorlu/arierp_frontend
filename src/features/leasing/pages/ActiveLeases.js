@@ -72,7 +72,7 @@ function ActiveActiveLeases() {
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
-        { field: 'project_name', headerName: 'Proje', width:280 },
+        { field: 'item', headerName: 'Proje', width:280 },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
