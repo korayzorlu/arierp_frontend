@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
 import { setContractPaymentDialog, setInstallmentDialog, setPartnerDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Stack } from '@mui/material';
 import ListTable from 'component/table/ListTable';
 import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
 import { fetchContractPaymentsInLease, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
@@ -61,6 +61,7 @@ function TrialBalanceContractDetailPanel(props) {
         { field: 'account_code', headerName: 'Hesap Kodu', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
         { field: 'contract', headerName: 'Sözleşme' },
+        { field: 'lease_status', headerName: 'Statü' },
         { field: 'currency', headerName: 'PB' },
         { field: 'balance_debit', headerName: 'Borç Toplamı', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
@@ -113,40 +114,44 @@ function TrialBalanceContractDetailPanel(props) {
 
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
-            <ListTable
-            title={trialBalanceContractTBs.length > 1 ? `${trialBalanceContractTBs[0].contract} - Mizan` : ""}
-            height="auto"
-            autoHeight
-            //density="compact"
-            rows={trialBalanceContractTBs}
-            columns={columns}
-            getRowId={(row) => row ? row.id : 0}
-            loading={leasesLoading}
-            setParams={(value) => dispatch(setLeasesParams(value))}
-            onCellClick={handleProfileDialog}
-            showCellVerticalBorder
-            showColumnVerticalBorder
-            outline
-            noToolbarButtons
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
-            //noAllSelect
-            //rowSelectionModel={selectedRows}
-            //keepNonExistentRowsSelected
-            //isRowSelected={(row) => row.overdue_amount > 0}
-            //hideFooter
-            noPagination
-            apiRef={apiRef}
-            initialState={{
-                aggregation: {
-                    model: {
-                        overdue_amount: 'sum',
+            <Stack>
+                <ListTable
+                title={trialBalanceContractTBs.length > 1 ? `${trialBalanceContractTBs[0].contract} - ${trialBalanceContractTBs[0].lease_status}` : ""}
+                height="auto"
+                autoHeight
+                //density="compact"
+                rows={trialBalanceContractTBs}
+                columns={columns}
+                getRowId={(row) => row ? row.id : 0}
+                loading={leasesLoading}
+                setParams={(value) => dispatch(setLeasesParams(value))}
+                onCellClick={handleProfileDialog}
+                showCellVerticalBorder
+                showColumnVerticalBorder
+                outline
+                noToolbarButtons
+                getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+                //noAllSelect
+                //rowSelectionModel={selectedRows}
+                //keepNonExistentRowsSelected
+                //isRowSelected={(row) => row.overdue_amount > 0}
+                //hideFooter
+                noPagination
+                apiRef={apiRef}
+                initialState={{
+                    aggregation: {
+                        model: {
+                            overdue_amount: 'sum',
+                        },
                     },
-                },
-            }}
-            />
-            <ContractPaymentDialog/>
-            <WarningNoticeDialog/>
-            <TradeTransactionDialog/>
+                }}
+                />
+                <ContractPaymentDialog/>
+                <WarningNoticeDialog/>
+                <TradeTransactionDialog/>
+            </Stack>
+            
+            
         </Box>
     )
 }
