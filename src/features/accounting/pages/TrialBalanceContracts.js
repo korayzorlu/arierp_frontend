@@ -1,7 +1,7 @@
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { startTransition, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTrialBalanceContracts, resetTrialBalanceContractsParams, setTrialBalanceContractsParams } from '../../../store/slices/accounting/trialBalanceContractSlice';
+import { fetchTrialBalanceContracts, resetTrialBalanceContractsParams, setTrialBalanceContractsLoading, setTrialBalanceContractsParams } from '../../../store/slices/accounting/trialBalanceContractSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Chip, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
@@ -13,6 +13,8 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import TrialBalanceContractDetailPanel from '../components/TrialBalanceContractDetailPanel';
+import ExportDialog from 'component/feedback/ExportDialog';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function TrialBalanceContracts() {
     const {user} = useSelector((store) => store.auth);
@@ -43,10 +45,7 @@ function TrialBalanceContracts() {
         { field: 'code', headerName: 'Sözleşme No', flex: 1 },
         { field: 'partner', headerName: 'Müşteri', flex: 2 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
-        { field: 'trial_balances', headerName: 'Transfer Kaydı', flex: 1, renderHeaderFilter: () => null,
-            renderCell: (params) => {
-                return params.value.transfer_count
-            }
+        { field: 'transfer_count', headerName: 'Transfer Kaydı', flex: 1, renderHeaderFilter: () => null
         },
         { field: 'lease_status', headerName: 'Statü', flex: 1 },
     ]
@@ -62,6 +61,11 @@ function TrialBalanceContracts() {
                 loading={trialBalanceContractsLoading}
                 customButtons={
                     <>  
+                        <CustomTableButton
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
                         <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchTrialBalanceContracts({activeCompany,params:{...trialBalanceContractsParams,lease_status: filter.lease_status, is_correct: filter.is_correct}})).unwrap()}
@@ -91,6 +95,7 @@ function TrialBalanceContracts() {
                         </FormControl>
                     </>
                 }
+                noDownloadButton
                 rowCount={trialBalanceContractsCount}
                 setParams={(value) => dispatch(setTrialBalanceContractsParams(value))}
                 headerFilters={true}
@@ -98,6 +103,12 @@ function TrialBalanceContracts() {
                 getDetailPanelContent={(params) => {return(<TrialBalanceContractDetailPanel uuid={params.row.uuid} trialBalanceContractTBs={params.row.trial_balances.trial_balances}></TrialBalanceContractDetailPanel>)}}
                 />
             </Grid>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/accounting/export_trial_balances/"
+            startEvent={() => dispatch(setTrialBalanceContractsLoading(true))}
+            finalEvent={() => {dispatch(fetchTrialBalanceContracts({activeCompany,params:trialBalanceContractsParams}));dispatch(setTrialBalanceContractsLoading(false));}}
+            />
             
         </PanelContent>
     )
