@@ -43,9 +43,9 @@ function TrialBalanceContracts() {
         { field: 'code', headerName: 'Sözleşme No', flex: 1 },
         { field: 'partner', headerName: 'Müşteri', flex: 2 },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', flex: 1 },
-        { field: 'transfer_count', headerName: 'Transfer Kaydı', flex: 1,
+        { field: 'trial_balances', headerName: 'Transfer Kaydı', flex: 1, renderHeaderFilter: () => null,
             renderCell: (params) => {
-                return params.row.transfer_count
+                return params.value.transfer_count
             }
         },
         { field: 'lease_status', headerName: 'Statü', flex: 1 },
