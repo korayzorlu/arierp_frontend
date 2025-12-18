@@ -1,9 +1,9 @@
-import { Button, Chip, IconButton, ListItemText, Menu, MenuItem, Stack} from '@mui/material'
+import { Button, Checkbox, Chip, IconButton, ListItemText, Menu, MenuItem, Stack} from '@mui/material'
 import React, { startTransition, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
-import { fetchThirdPersons, setThirdPersonsParams } from '../../../store/slices/compliance/thirdPersonSlice';
+import { fetchThirdPersons, setThirdPersonsParams, updateThirdPerson, updateThirdPersonDowngrade, updateThirdPersonIsEmailSent, updateThirdPersonStatus } from '../../../store/slices/compliance/thirdPersonSlice';
 import { useGridApiRef } from '@mui/x-data-grid';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -44,6 +44,7 @@ function ThirdPersons() {
         setAnchorEl(null);
     };
     const [selectedRow, setSelectedRow] = useState({})
+    const [checkboxChecked, setCheckboxChecked] = useState(true);
     
 
     useEffect(() => {
@@ -69,9 +70,9 @@ function ThirdPersons() {
 
     const columns = [
         { field: 'created_date', headerName: 'Sorgu Tarihi', width: 120 },
-        { field: 'name', headerName: 'İsim', width: 360 },
+        { field: 'name', headerName: 'İsim', width: 320 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 140 },
-        { field: 'finmaks_transaction', headerName: 'Ödeme Detayı', width: 180, renderHeaderFilter: () => null,
+        { field: 'finmaks_transaction', headerName: 'Ödeme Detayı', width: 160, renderHeaderFilter: () => null,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
@@ -138,12 +139,45 @@ function ThirdPersons() {
                 {...params}
                 label="Seç"
                 externalValue="all"
+                isServer
                 options={[
                     { value: 'all', label: 'Tümü' },
                     { value: 'pending', label: 'Kontrol Edilecek' },
                     { value: 'cleared', label: 'Temiz' },
                     { value: 'need_document', label: 'Belge/Kimlik Gerekiyor' },
                     { value: 'flagged', label: 'Yasaklı/Şüpheli' },
+                ]}
+                />
+            )
+        },
+        { field: 'is_email_sent', headerName: 'Email Gönderildi mi?', width: 200, 
+            renderCell: (params) => (
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    <Checkbox
+                    checked={params.value ? true : false}
+                    onChange={(event) => {
+                        console.log(event.target.checked)
+                        dispatch(updateThirdPersonIsEmailSent({data:{id: params.row.id, is_email_sent: event.target.checked}}));
+                        if(event.target.checked){
+                            dispatch(updateThirdPerson({id: params.row.id}));
+                        }else{
+                            dispatch(updateThirdPersonDowngrade({id: params.row.id}));
+                        }
+                        setSelectedRow(params.row);
+                    }}
+                    />
+                </Stack>
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'true', label: 'Gönderilenler' },
+                    { value: 'false', label: 'Gönderilmeyenler' },
                 ]}
                 />
             )
@@ -192,6 +226,10 @@ function ThirdPersons() {
             )
         },
     ]
+
+    const handleCheckboxChange = (event) => {
+        setCheckboxChecked(event.target.checked);
+    };
 
     return (
         <PanelContent>

@@ -82,6 +82,30 @@ export const updateThirdPersonStatus = createAsyncThunk('auth/updateThirdPersonS
     }
 });
 
+export const updateThirdPersonIsEmailSent = createAsyncThunk('auth/updateThirdPersonIsEmailSent', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    
+    try {
+        const response = await axios.post(`/compliance/update_third_person_is_email_sent/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        dispatch(updateThirdPersonDowngrade({id: data.id}));
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const thirdPersonSlice = createSlice({
     name:"thirdPerson",
     initialState,
@@ -126,6 +150,21 @@ const thirdPersonSlice = createSlice({
         setThirdPerson: (state,action) => {
             state.thirdPerson = action.payload;
         },
+        //
+        updateThirdPerson(state, action) {
+            const { id } = action.payload;
+            const item = state.thirdPersons.find(obj => obj.id === id);
+            if (item) {
+                item.is_email_sent = true;
+            }
+        },
+        updateThirdPersonDowngrade(state, action) {
+            const { id } = action.payload;
+            const item = state.thirdPersons.find(obj => obj.id === id);
+            if (item) {
+                item.is_email_sent = false;
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -156,6 +195,8 @@ export const {
     deleteVPosThirdPersons,
     setThirdPersonsOverdues,
     setScanning,
-    setThirdPerson
+    setThirdPerson,
+    updateThirdPerson,
+    updateThirdPersonDowngrade
 } = thirdPersonSlice.actions;
 export default thirdPersonSlice.reducer;
