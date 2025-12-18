@@ -30,7 +30,7 @@ function SendSMSDialog({...props}) {
 
         await dispatch(sendSMS({data:{project:props.project,risk_status:props.risk_status}})).unwrap();
         await dispatch(sendSMS({data:{project:props.project,risk_status:'global_notification'}})).unwrap();
-        dispatch(setSMSsLoading(true));
+        dispatch(setSMSsLoading(false));
         
     };
 

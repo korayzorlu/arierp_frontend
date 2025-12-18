@@ -106,6 +106,29 @@ export const updateThirdPersonIsEmailSent = createAsyncThunk('auth/updateThirdPe
     }
 });
 
+export const updateThirdPersonIsCustomerSent = createAsyncThunk('auth/updateThirdPersonIsCustomerSent', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    
+    try {
+        const response = await axios.post(`/compliance/update_third_person_is_customer_sent/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const thirdPersonSlice = createSlice({
     name:"thirdPerson",
     initialState,
