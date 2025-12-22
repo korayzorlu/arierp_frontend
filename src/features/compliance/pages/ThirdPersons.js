@@ -76,7 +76,7 @@ function ThirdPersons() {
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
-                        params.row.status === "need_document" && !params.row.is_customer_sent && (!params.row.tc_vkn_no || params.row.tc_vkn_no === '')
+                        params.row.status === "need_document" && !params.row.is_customer_sent //&& (!params.row.tc_vkn_no || params.row.tc_vkn_no === '')
                         ?
                             <Button
                             key={params.value.id}
