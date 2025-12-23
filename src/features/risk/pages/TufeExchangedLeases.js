@@ -110,7 +110,7 @@ function TufeExchangedLeases() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Kur Değerleme Kayıpları Listesi"
+            title="Tüfe Değerleme Kayıpları Listesi"
             rows={tufeExchangedLeases}
             columns={columns}
             getRowId={(row) => row.id}
