@@ -294,7 +294,7 @@ function UpdateLease() {
                     <TabPanel value={tabValue} index={2}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
-                                <TradeTransactionsInLease lease_id={uuid}></TradeTransactionsInLease>
+                                <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>

@@ -5,7 +5,7 @@ import { fetchTradeTransactionsInLease } from 'store/slices/trade/tradeTransacti
 import { Typography } from '@mui/material';
 
 function TradeTransactionsInLease(props) {
-    const {lease_id,companyName} = props;
+    const {lease_uuid,companyName} = props;
 
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
@@ -23,7 +23,7 @@ function TradeTransactionsInLease(props) {
     const [selectedUserCompanyId, setSelectedUserCompanyId] = useState(null)
 
     useEffect(() => {
-        dispatch(fetchTradeTransactionsInLease({activeCompany,lease_id}));
+        dispatch(fetchTradeTransactionsInLease({activeCompany,lease_uuid}));
     }, [])
 
     const handleClick = (event,params) => {
