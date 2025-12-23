@@ -129,6 +129,15 @@ const initialState = {
         format: 'datatables'
     },
     exchangedLeasesLoading:false,
+    //tufe exchanged leases
+    tufeExchangedLeases:[],
+    tufeExchangedLeasesCount:0,
+    tufeExchangedLeasesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    tufeExchangedLeasesLoading:false,
     //delivery confirm
     deliveryConfirms:[],
     deliveryConfirmsCount:0,
@@ -368,6 +377,21 @@ export const fetchTerminatedLeases = createAsyncThunk('auth/fetchTerminatedLease
 export const fetchExchangedLeases = createAsyncThunk('auth/fetchExchangedLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/exchanged_leases/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchTufeExchangedLeases = createAsyncThunk('auth/fetchTufeExchangedLeases', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/tufe_exchanged_leases/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -740,6 +764,26 @@ const riskPartnerSlice = createSlice({
         deleteExchangedLeases: (state,action) => {
             state.exchangedLeases = [];
         },
+        //tufe exchanged leases
+        setTufeExchangedLeasesLoading: (state,action) => {
+            state.tufeExchangedLeasesLoading = action.payload;
+        },
+        setTufeExchangedLeasesParams: (state,action) => {
+            state.tufeExchangedLeasesParams = {
+                ...state.tufeExchangedLeasesParams,
+                ...action.payload
+            };
+        },
+        resetTufeExchangedLeasesParams: (state,action) => {
+            state.tufeExchangedLeasesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteTufeExchangedLeases: (state,action) => {
+            state.tufeExchangedLeases = [];
+        },
         //delivery confirm
         setDeliveryConfirmsLoading: (state,action) => {
             state.deliveryConfirmsLoading = action.payload;
@@ -963,6 +1007,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchExchangedLeases.rejected, (state,action) => {
                 state.exchangedLeasesLoading = false
             })
+            //tufe exchanged leases
+            .addCase(fetchTufeExchangedLeases.pending, (state) => {
+                state.tufeExchangedLeasesLoading = true
+            })
+            .addCase(fetchTufeExchangedLeases.fulfilled, (state,action) => {
+                state.tufeExchangedLeases = action.payload.data || action.payload;
+                state.tufeExchangedLeasesCount = action.payload.recordsTotal || 0;
+                state.tufeExchangedLeasesLoading = false
+            })
+            .addCase(fetchTufeExchangedLeases.rejected, (state,action) => {
+                state.tufeExchangedLeasesLoading = false
+            })
             //delivery confirm
             .addCase(fetchDeliveryConfirms.pending, (state) => {
                 state.deliveryConfirmsLoading = true
@@ -1070,6 +1126,11 @@ export const {
     setExchangedLeasesParams,
     resetExchangedLeasesParams,
     deleteExchangedLeases,
+
+    setTufeExchangedLeasesLoading,
+    setTufeExchangedLeasesParams,
+    resetTufeExchangedLeasesParams,
+    deleteTufeExchangedLeases,
 
     setDeliveryConfirmsLoading,
     setDeliveryConfirmsParams,

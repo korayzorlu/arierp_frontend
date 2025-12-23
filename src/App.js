@@ -146,6 +146,7 @@ import ComprehensiveWarnedRiskPartners from 'features/risk/pages/ComprehensiveWa
 import TerminatedLeases from 'features/risk/pages/TerminatedLeases';
 import ExchangedLeases from 'features/risk/pages/ExchangedLeases';
 import TrialBalanceContractInactivesCount from 'features/accounting/pages/TrialBalanceContractInactivesCount';
+import TufeExchangedLeases from 'features/risk/pages/TufeExchangedLeases';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -341,6 +342,7 @@ function App() {
                   <Route path='/sent-sms' element={<SMSs></SMSs>}></Route>
                   <Route path='/terminated-leases' element={<TerminatedLeases></TerminatedLeases>}></Route>
                   <Route path='/exchanged-leases' element={<ExchangedLeases></ExchangedLeases>}></Route>
+                  <Route path='/tufe-exchanged-leases' element={<TufeExchangedLeases></TufeExchangedLeases>}></Route>
 
                   <Route path='/quick-quotations' element={<QuickQuotations></QuickQuotations>}></Route>
                   <Route path='/quotations' element={<Quotations></Quotations>}></Route>
