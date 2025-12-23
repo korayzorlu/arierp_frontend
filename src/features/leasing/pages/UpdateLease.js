@@ -35,7 +35,7 @@ function UpdateLease() {
         await dispatch(fetchCountries()).unwrap();
         await dispatch(fetchCurrencies()).unwrap();
         const response = await dispatch(fetchLease({activeCompany,params:{uuid,project}})).unwrap();
-        await dispatch(fetchContractPaymentsInLease({activeCompany,contract_id})).unwrap();
+        //await dispatch(fetchContractPaymentsInLease({activeCompany,contract_id})).unwrap();
         setData(response);
         handleChangeShareholder(response.shareholder);
     };
@@ -287,7 +287,7 @@ function UpdateLease() {
                     <TabPanel value={tabValue} index={1}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
-                                <ContractPaymentsInLease contract_id={contract_id}></ContractPaymentsInLease>
+                                <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
