@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
 import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
+import { useGridApiRef } from '@mui/x-data-grid-premium';
 
 function ContractPaymentsInLease(props) {
     const {contract_uuid,companyName} = props;
@@ -11,6 +12,7 @@ function ContractPaymentsInLease(props) {
     const {contractPaymentsLoading,contractPaymentsInLease} = useSelector((store) => store.contract);
 
     const dispatch = useDispatch();
+    const apiRef = useGridApiRef();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -73,6 +75,7 @@ function ContractPaymentsInLease(props) {
             checkboxSelection={false}
             disableRowSelectionOnClick={true}
             loading={contractPaymentsLoading}
+            apiRef={apiRef}
             // initialState={{
             //     aggregation: {
             //         model: {

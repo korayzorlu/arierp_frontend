@@ -136,6 +136,7 @@ function BasicTable(props) {
                     children: customButtons,
                     title:title,
                     noToolbarButtons: noToolbarButtons,
+                    apiRef: apiRef,
                 },
                 loadingOverlay: {
                   variant: 'linear-progress',
