@@ -20,7 +20,16 @@ const initialState = {
             albaraka:{try:[],usd:[],eur:[]},
             vakifbank:{try:[],usd:[],eur:[]},
             vakif_katilim:{try:[],usd:[],eur:[]},
-            akbank:{try:[],usd:[],eur:[]}
+            akbank:{try:[],usd:[],eur:[]},
+            is_bank:{try:[],usd:[],eur:[]},
+            garanti:{try:[],usd:[],eur:[]},
+            halkbank:{try:[],usd:[],eur:[]},
+            ziraat:{try:[],usd:[],eur:[]},
+            ziraat_katilim:{try:[],usd:[],eur:[]},
+            turkiye_finans:{try:[],usd:[],eur:[]},
+            teb:{try:[],usd:[],eur:[]},
+            kuveytturk:{try:[],usd:[],eur:[]},
+            emlak_katilim:{try:[],usd:[],eur:[]}
         }
     },
     bankAccountBalancesCount:0,

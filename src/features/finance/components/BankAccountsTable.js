@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from '@mui/material'
+import { Grid, Paper, Stack, Typography } from '@mui/material'
 import ListTable from 'component/table/ListTable'
 import React from 'react'
 import { useSelector } from 'react-redux';
@@ -44,25 +44,29 @@ function BankAccountsTable(props) {
     ]
 
     return (
-        <Paper elevation={0} square={true} sx={{p: 1, height: '100%'}}>
-            <ListTable
-            title={
-                <Typography variant="body2">
-                    {props.title}
-                </Typography>
-            }
-            autoHeight
-            rows={props.rows}
-            columns={bankAccountColumns}
-            getRowId={(row) => row.id}
-            loading={bankAccountBalancesLoading}
-            noDownloadButton
-            noColumnHeaders
-            //noToolbar
-            noToolbarButtons
-            hideFooter
-            />
-        </Paper>
+        <Grid container spacing={1}>
+            <Grid size={{xs:12,sm:12}}>
+                <Paper elevation={0} square={true} sx={{p: 1, height: '100%'}}>
+                    <ListTable
+                    title={
+                        <Typography variant="body2">
+                            {props.title}
+                        </Typography>
+                    }
+                    autoHeight
+                    rows={props.rows}
+                    columns={bankAccountColumns}
+                    getRowId={(row) => row.id}
+                    loading={bankAccountBalancesLoading}
+                    noDownloadButton
+                    noColumnHeaders
+                    //noToolbar
+                    noToolbarButtons
+                    hideFooter
+                    />
+                </Paper>
+            </Grid>
+        </Grid>
         
     )
 }

@@ -306,140 +306,55 @@ function BankAccountBalances() {
                     </Grid>
                 </Grid>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="YAPI KREDİ - TRY"
-                        rows={bankAccountBalances.bank_accounts.yapi_kredi.try}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="YAPI KREDİ - TRY" rows={bankAccountBalances.bank_accounts.yapi_kredi.try}/>
+                <BankAccountsTable title="YAPI KREDİ - USD" rows={bankAccountBalances.bank_accounts.yapi_kredi.usd}/>
+                <BankAccountsTable title="YAPI KREDİ - EUR" rows={bankAccountBalances.bank_accounts.yapi_kredi.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="YAPI KREDİ - USD"
-                        rows={bankAccountBalances.bank_accounts.yapi_kredi.usd}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts.albaraka.try}/>
+                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts.albaraka.usd}/>
+                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts.albaraka.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="YAPI KREDİ - EUR"
-                        rows={bankAccountBalances.bank_accounts.yapi_kredi.eur}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="VAKIFBANK - TRY" rows={bankAccountBalances.bank_accounts.vakifbank.try}/>
+                <BankAccountsTable title="VAKIFBANK - USD" rows={bankAccountBalances.bank_accounts.vakifbank.usd}/>
+                <BankAccountsTable title="VAKIFBANK - EUR" rows={bankAccountBalances.bank_accounts.vakifbank.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="ALBARAKA TÜRK KATILIM BANKASI - TRY"
-                        rows={bankAccountBalances.bank_accounts.albaraka.try}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="VAKIF KATILIM - TRY" rows={bankAccountBalances.bank_accounts.vakif_katilim.try}/>
+                <BankAccountsTable title="VAKIF KATILIM - USD" rows={bankAccountBalances.bank_accounts.vakif_katilim.usd}/>
+                <BankAccountsTable title="VAKIF KATILIM - EUR" rows={bankAccountBalances.bank_accounts.vakif_katilim.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="ALBARAKA TÜRK KATILIM BANKASI - USD"
-                        rows={bankAccountBalances.bank_accounts.albaraka.usd}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="AKBANK - TRY" rows={bankAccountBalances.bank_accounts.akbank.try}/>
+                <BankAccountsTable title="AKBANK - USD" rows={bankAccountBalances.bank_accounts.akbank.usd}/>
+                <BankAccountsTable title="AKBANK - EUR" rows={bankAccountBalances.bank_accounts.akbank.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="ALBARAKA TÜRK KATILIM BANKASI - EUR"
-                        rows={bankAccountBalances.bank_accounts.albaraka.eur}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="İŞ BANKASI - TRY" rows={bankAccountBalances.bank_accounts.is_bank.try}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="VAKIFBANK - TRY"
-                        rows={bankAccountBalances.bank_accounts.vakifbank.try}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="GARANTİ - TRY" rows={bankAccountBalances.bank_accounts.garanti.try}/>
+                <BankAccountsTable title="GARANTİ - USD" rows={bankAccountBalances.bank_accounts.garanti.usd}/>
+                <BankAccountsTable title="GARANTİ - EUR" rows={bankAccountBalances.bank_accounts.garanti.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="VAKIFBANK - USD"
-                        rows={bankAccountBalances.bank_accounts.vakifbank.usd}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="HALKBANK - TRY" rows={bankAccountBalances.bank_accounts.halkbank.try}/>
+                <BankAccountsTable title="HALKBANK - USD" rows={bankAccountBalances.bank_accounts.halkbank.usd}/>
+                <BankAccountsTable title="HALKBANK - EUR" rows={bankAccountBalances.bank_accounts.halkbank.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="VAKIFBANK - EUR"
-                        rows={bankAccountBalances.bank_accounts.vakifbank.eur}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="ZİRAAT - TRY" rows={bankAccountBalances.bank_accounts.ziraat.try}/>
+                <BankAccountsTable title="ZİRAAT - USD" rows={bankAccountBalances.bank_accounts.ziraat.usd}/>
+                <BankAccountsTable title="ZİRAAT - EUR" rows={bankAccountBalances.bank_accounts.ziraat.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="VAKIF KATILIM - TRY"
-                        rows={bankAccountBalances.bank_accounts.vakif_katilim.try}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="ZİRAAT KATILIM - TRY" rows={bankAccountBalances.bank_accounts.ziraat_katilim.try}/>
+                <BankAccountsTable title="ZİRAAT KATILIM - USD" rows={bankAccountBalances.bank_accounts.ziraat_katilim.usd}/>
+                <BankAccountsTable title="ZİRAAT KATILIM - EUR" rows={bankAccountBalances.bank_accounts.ziraat_katilim.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="VAKIF KATILIM - USD"
-                        rows={bankAccountBalances.bank_accounts.vakif_katilim.usd}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts.turkiye_finans.try}/>
+                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts.turkiye_finans.usd}/>
+                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts.turkiye_finans.eur}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="VAKIF KATILIM - EUR"
-                        rows={bankAccountBalances.bank_accounts.vakif_katilim.eur}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="TÜRKİYE EKONOMİ BANKASI - TRY" rows={bankAccountBalances.bank_accounts.teb.try}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="AKBANK - TRY"
-                        rows={bankAccountBalances.bank_accounts.akbank.try}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="KUVEYTTÜRK - TRY" rows={bankAccountBalances.bank_accounts.kuveytturk.try}/>
 
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="AKBANK - USD"
-                        rows={bankAccountBalances.bank_accounts.akbank.usd}
-                        />
-                    </Grid>
-                </Grid>
-
-                <Grid container spacing={1}>
-                    <Grid size={{xs:12,sm:12}}>
-                        <BankAccountsTable
-                        title="AKBANK - EUR"
-                        rows={bankAccountBalances.bank_accounts.akbank.eur}
-                        />
-                    </Grid>
-                </Grid>
+                <BankAccountsTable title="EMLAK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts.emlak_katilim.try}/>
+                <BankAccountsTable title="EMLAK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts.emlak_katilim.usd}/>
+                <BankAccountsTable title="EMLAK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts.emlak_katilim.eur}/>
 
             </Stack>
         </PanelContent>
