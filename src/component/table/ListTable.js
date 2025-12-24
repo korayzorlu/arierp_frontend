@@ -147,7 +147,9 @@ function ListTable(props) {
     columnGroupingModel,
     slotProps,
     getRowHeight,
-    sx
+    sx,
+    noColumnHeaders,
+    noToolbar,
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -179,9 +181,10 @@ function ListTable(props) {
     <TableContent height={autoHeight ? 'auto' : (height || null)}>
       <StyledDataGridPremium
       slots={{
-        toolbar: MUIToolbar,
+        toolbar: noToolbar ? () => null : MUIToolbar,
         noRowsOverlay: noOverlay ? EmptyOverlay : NoRowsOverlay,
         ...(disableLoadingOverlay ? { loadingOverlay: EmptyOverlay } : {}),
+        columnHeaders: noColumnHeaders ? () => null : undefined,
       }}
       showToolbar
       slotProps={{

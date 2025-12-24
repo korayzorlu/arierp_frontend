@@ -13,7 +13,16 @@ const initialState = {
     },
     bankAccountsLoading:false,
     //bank account balances
-    bankAccountBalances:{},
+    bankAccountBalances:{
+        active_balances:{},
+        bank_accounts:{
+            yapi_kredi:{try:[],usd:[],eur:[]},
+            albaraka:{try:[],usd:[],eur:[]},
+            vakifbank:{try:[],usd:[],eur:[]},
+            vakif_katilim:{try:[],usd:[],eur:[]},
+            akbank:{try:[],usd:[],eur:[]}
+        }
+    },
     bankAccountBalancesCount:0,
     bankAccountBalancesLoading:false,
 }
