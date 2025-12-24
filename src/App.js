@@ -147,6 +147,7 @@ import TerminatedLeases from 'features/risk/pages/TerminatedLeases';
 import ExchangedLeases from 'features/risk/pages/ExchangedLeases';
 import TrialBalanceContractInactivesCount from 'features/accounting/pages/TrialBalanceContractInactivesCount';
 import TufeExchangedLeases from 'features/risk/pages/TufeExchangedLeases';
+import BankAccountBalances from 'features/finance/pages/BankAccountBalances';
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -314,6 +315,7 @@ function App() {
                   <Route path='/finance-summary' element={<FinanceSummary></FinanceSummary>}></Route>
                   <Route path='/status-control' element={<StatusControl></StatusControl>}></Route>
                   <Route path='/purchase-documents' element={<PurchaseDocuments></PurchaseDocuments>}></Route>
+                  <Route path='/bank-account-balances' element={<BankAccountBalances></BankAccountBalances>}></Route>
                   <Route path='/bank-accounts' element={<BankAccounts></BankAccounts>}></Route>
                   <Route path='/bank-account-transactions' element={<BankAccountTransactions></BankAccountTransactions>}></Route>
                   <Route path='/bank-account-transactions/add' element={<AddBankAccounTransaction></AddBankAccounTransaction>}></Route>

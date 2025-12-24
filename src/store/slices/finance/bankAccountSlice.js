@@ -12,6 +12,10 @@ const initialState = {
         format: 'datatables'
     },
     bankAccountsLoading:false,
+    //bank account balances
+    bankAccountBalances:{},
+    bankAccountBalancesCount:0,
+    bankAccountBalancesLoading:false,
 }
 
 export const fetchBankAccounts = createAsyncThunk('auth/fetchBankAccounts', async ({activeCompany,serverModels=null,params=null}) => {
@@ -26,6 +30,20 @@ export const fetchBankAccounts = createAsyncThunk('auth/fetchBankAccounts', asyn
     } catch (error) {
         return [];
     }
+});
+
+export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountBalances', async (params=null,{rejectWithValue}) => {
+    try {
+        const response = await axios.post('/finance/bank_account_balances/', { 
+          params:params  
+        },{ withCredentials: true, });
+        return response.data.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
 });
 
 const bankAccountSlice = createSlice({
@@ -51,6 +69,16 @@ const bankAccountSlice = createSlice({
         deleteBankAccounts: (state,action) => {
             state.bankAccounts = [];
         },
+        //bank account balances
+        setBankAccountBalancesLoading: (state,action) => {
+            state.bankAccountBalancesLoading = action.payload;
+        },
+        setBankAccountBalancesParams: (state,action) => {
+            state.bankAccountBalancesParams = {
+                ...state.bankAccountBalancesParams,
+                ...action.payload
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -65,10 +93,30 @@ const bankAccountSlice = createSlice({
             .addCase(fetchBankAccounts.rejected, (state,action) => {
                 state.bankAccountsLoading = false
             })
+            //bank account balances
+            .addCase(fetchBankAccountBalances.pending, (state) => {
+                state.bankAccountBalancesLoading = true
+            })
+            .addCase(fetchBankAccountBalances.fulfilled, (state,action) => {
+                state.bankAccountBalances = action.payload.data || action.payload;
+                state.bankAccountBalancesCount = action.payload.recordsTotal || 0;
+                state.bankAccountBalancesLoading = false
+            })
+            .addCase(fetchBankAccountBalances.rejected, (state,action) => {
+                state.bankAccountBalancesLoading = false
+            })
             
     },
   
 })
 
-export const {setBankAccountsLoading,setBankAccountsParams,resetBankAccountsParams,deleteBankAccounts,setBankAccountsOverdues} = bankAccountSlice.actions;
+export const {
+    setBankAccountsLoading,
+    setBankAccountsParams,
+    resetBankAccountsParams,
+    deleteBankAccounts,
+    setBankAccountsOverdues,
+    setBankAccountBalancesLoading,
+    setBankAccountBalancesParams,
+} = bankAccountSlice.actions;
 export default bankAccountSlice.reducer;
