@@ -31,6 +31,7 @@ function BankAccounts() {
 
     const columns = [
         { field: 'bank_name', headerName: 'Banka', width: 140 },
+        { field: 'bank_code', headerName: 'Banka Kodu', width: 140 },
         { field: 'iban', headerName: 'IBAN', width: 140 },
         { field: 'account_no', headerName: 'Hesap NO', width: 240 },
         { field: 'branch_code', headerName: 'Şube Kodu', width: 140 },
