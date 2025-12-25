@@ -13,14 +13,14 @@ function BankAccountsTable(props) {
                 ?
                     (
                         <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" color="primary">
                                 {params.value}
                             </Typography>
                         </Stack>
                     )
                 :   
                     <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="primary">
                             {params.value}
                         </Typography>
                     </Stack>

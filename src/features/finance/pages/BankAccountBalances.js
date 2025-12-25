@@ -203,7 +203,7 @@ function BankAccountBalances() {
                 <Grid container spacing={1}>
                     <Grid size={{xs:12,sm:12}}>
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
-                            <Typography gutterBottom variant="body2" color="text.secondary" sx={{textAlign: 'center'}}>
+                            <Typography gutterBottom variant="body2" color="primary" sx={{textAlign: 'center'}}>
                                 BANKA HESAP BAKİYELERİ
                             </Typography>
                             <Grid size={{xs:12,sm:12}} sx={{textAlign: 'center'}}>
@@ -224,7 +224,7 @@ function BankAccountBalances() {
                 <Grid container spacing={1}>
                     <Grid size={{xs:12,sm:12}}>
                         <Paper elevation={0} square={true} sx={{p: 2}}>
-                            <Typography gutterBottom variant="body2" color="text.secondary">
+                            <Typography gutterBottom variant="body2" color="primary">
                                 KULLANILABİLİR BAKİYE
                             </Typography>
                             <Typography gutterBottom variant="body2">
@@ -239,7 +239,7 @@ function BankAccountBalances() {
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={2}>
                                 <Grid size={{xs:12,sm:12}}>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
@@ -253,7 +253,7 @@ function BankAccountBalances() {
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={2}>
                                 <Grid size={{xs:12,sm:6}}>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         USD
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
@@ -261,13 +261,13 @@ function BankAccountBalances() {
                                     </Typography>
                                 </Grid>
                                 <Grid size={{xs:12,sm:6}}>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         <CompareArrowsIcon fontSize='1rem'/> TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.usd_try_balance : 0)}
                                     </Typography>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         USD/TRY
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
@@ -281,7 +281,7 @@ function BankAccountBalances() {
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={2}>
                                 <Grid size={{xs:12,sm:6}}>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         EUR
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
@@ -289,13 +289,13 @@ function BankAccountBalances() {
                                     </Typography>
                                 </Grid>
                                 <Grid size={{xs:12,sm:6}}>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         <CompareArrowsIcon fontSize='1rem'/> TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.eur_try_balance : 0)}
                                     </Typography>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         EUR/TRY
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
@@ -309,7 +309,7 @@ function BankAccountBalances() {
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={2}>
                                 <Grid size={{xs:12,sm:12}}>
-                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="body2" color="primary">
                                         GENEL TOPLAM TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body1" sx={{fontWeight: 'bold'}}>
@@ -334,7 +334,7 @@ function BankAccountBalances() {
                 <Grid container spacing={1}>
                     <Grid size={{xs:12,sm:12}}>
                         <Paper elevation={0} square={true} sx={{p: 2}}>
-                            <Typography gutterBottom variant="body2" color="text.secondary">
+                            <Typography gutterBottom variant="body2" color="primary">
                                 BANKA HESAP BAKİYELERİ
                             </Typography>
                             <Typography gutterBottom variant="body2">
@@ -385,7 +385,7 @@ function BankAccountBalances() {
                 <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.turkiye_finans.try : []}/>
                 <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.turkiye_finans.usd : []}/>
                 <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.turkiye_finans.eur : []}/>
-                
+
                 <BankAccountsTable title="TÜRKİYE EKONOMİ BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.teb.try : []}/>
 
                 <BankAccountsTable title="KUVEYTTÜRK - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.kuveytturk.try : []}/>
