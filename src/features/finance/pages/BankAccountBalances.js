@@ -14,6 +14,8 @@ import BankAccountsTable from '../components/BankAccountsTable';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import { fetchExchangeRates, fetchObjects } from 'store/slices/common/commonSlice';
+import { date } from 'yup';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -27,6 +29,7 @@ function randomId(length = 8) {
 function BankAccountBalances() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
+    const {exchangeRates,exchangeRatesCount,exchangeRatesLoading,exchangeRatesParams} = useSelector((store) => store.common);
     const {bankAccountBalances,bankAccountBalancesCount,bankAccountBalancesLoading} = useSelector((store) => store.bankAccount);
 
     const dispatch = useDispatch();
@@ -36,16 +39,28 @@ function BankAccountBalances() {
     const [isPending, startTransition] = useTransition();
     
     const [data, setData] = useState({})
+    const [exchangeRatesData, setExchangeRatesData] = useState({
+        usd_exchange_rate: 0,
+        eur_exchange_rate: 0
+    })
+    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
 
     const fetchData = async () => {
-        await dispatch(fetchBankAccountBalances({activeCompany,date:dayjs().format('YYYY-MM-DD')})).unwrap();
+        await dispatch(fetchBankAccountBalances({activeCompany,date})).unwrap();
+        const usd_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'USD',date}})).unwrap();
+        const eur_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'EUR',date}})).unwrap();
+        
+        setExchangeRatesData({
+            usd_exchange_rate: usd_exchange_rate_data.data.length > 0 ? usd_exchange_rate_data.data[0].forex_buying : 0,
+            eur_exchange_rate: eur_exchange_rate_data.data.length > 0 ? eur_exchange_rate_data.data[0].forex_buying : 0
+        });
     }
 
     useEffect(() => {
         startTransition(() => {
             fetchData();
         });
-    }, [activeCompany,dispatch]);
+    }, [activeCompany,date,dispatch]);
 
     const activeBalancesColumns = [
         { field: 'label', headerName: '', flex: 2 },
@@ -99,9 +114,7 @@ function BankAccountBalances() {
 
     const handleDateRangeChange = async (newValue) => {
         const date = newValue ? dayjs(newValue).format('YYYY-MM-DD') : null;
-        console.log(date)
-        await dispatch(fetchBankAccountBalances({activeCompany,date})).unwrap();
-        //setFilterDate({start: startDate, end: endDate});
+        setDate(date);
     }
 
     return (
@@ -257,7 +270,7 @@ function BankAccountBalances() {
                                         USD/TRY
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {formatTRY(bankAccountBalances.exchange_rates.usd_exchange_rate)}
+                                        {formatTRY(exchangeRatesData.usd_exchange_rate)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -285,7 +298,7 @@ function BankAccountBalances() {
                                         EUR/TRY
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {formatTRY(bankAccountBalances.exchange_rates.eur_exchange_rate)}
+                                        {formatTRY(exchangeRatesData.eur_exchange_rate)}
                                     </Typography>
                                 </Grid>
                             </Grid>
