@@ -5,9 +5,9 @@ import CustomTableButton from 'component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
+import { Button, Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import ListTable from 'component/table/ListTable';
-import { fetchBankAccountBalances, fetchBankAccounts, setBankAccountBalancesParams } from 'store/slices/finance/bankAccountSlice';
+import { fetchBankAccountBalances, fetchBankAccountDailyRecords, fetchBankAccounts, setBankAccountBalancesParams } from 'store/slices/finance/bankAccountSlice';
 import { DatePicker, DateRangePicker } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
 import BankAccountsTable from '../components/BankAccountsTable';
@@ -16,6 +16,7 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { fetchExchangeRates, fetchObjects } from 'store/slices/common/commonSlice';
 import { date } from 'yup';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -59,7 +60,12 @@ function BankAccountBalances() {
     useEffect(() => {
         startTransition(() => {
             //fetchData();
-            dispatch(fetchBankAccountBalances({activeCompany,params:{date}}));
+            if(date === dayjs().format('YYYY-MM-DD')){
+                dispatch(fetchBankAccountBalances({activeCompany,params:{date}}));
+            }else{
+                dispatch(fetchBankAccountDailyRecords({activeCompany,params:{date}}));
+            }
+            
         });
     }, [activeCompany,date,dispatch]);
 
@@ -203,18 +209,32 @@ function BankAccountBalances() {
                 <Grid container spacing={1}>
                     <Grid size={{xs:12,sm:12}}>
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
-                            <Typography gutterBottom variant="body2" color="primary" sx={{textAlign: 'center'}}>
+                            <Typography gutterBottom variant="body2" color="primary" sx={{textAlign: 'left'}}>
                                 BANKA HESAP BAKİYELERİ
                             </Typography>
-                            <Grid size={{xs:12,sm:12}} sx={{textAlign: 'center'}}>
-                                <DatePicker
-                                defaultValue={today}
-                                onAccept={handleDateRangeChange}
-                                format='DD.MM.YYYY'
-                                slotProps={{
-                                    textField: { size: 'small' }
-                                }}
-                                />
+                            <Grid container spacing={1}>
+                                <Grid size={{xs:12,sm:2}} sx={{textAlign: 'left'}}>
+                                    <DatePicker
+                                    defaultValue={today}
+                                    onAccept={handleDateRangeChange}
+                                    format='DD.MM.YYYY'
+                                    slotProps={{
+                                        textField: { size: 'small' }
+                                    }}
+                                    />
+                                </Grid>
+                                <Grid size={{xs:12,sm:2}} sx={{textAlign: 'left'}}>
+                                     <Button
+                                    variant="contained"
+                                    color="mars"
+                                    //onClick={handleSubmit}
+                                    endIcon={<InsertDriveFileIcon/>}
+                                    autoFocus
+                                    fullWidth
+                                    >
+                                        Excel'e Aktar
+                                    </Button>
+                                </Grid>
                             </Grid>
                             
                         </Paper>

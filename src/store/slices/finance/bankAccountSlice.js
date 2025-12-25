@@ -77,6 +77,20 @@ export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountB
     }
 });
 
+export const fetchBankAccountDailyRecords = createAsyncThunk('auth/fetchBankAccountDailyRecords', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/finance/bank_account_daily_records/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
 // export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountBalances', async (params=null,{rejectWithValue}) => {
 //     try {
 //         const response = await axios.post('/finance/bank_account_balances/', { 
@@ -155,6 +169,18 @@ const bankAccountSlice = createSlice({
                 state.bankAccountBalancesLoading = false
             })
             .addCase(fetchBankAccountBalances.rejected, (state,action) => {
+                state.bankAccountBalancesLoading = false
+            })
+            //bank account daily records
+            .addCase(fetchBankAccountDailyRecords.pending, (state) => {
+                state.bankAccountBalancesLoading = true
+            })
+            .addCase(fetchBankAccountDailyRecords.fulfilled, (state,action) => {
+                state.bankAccountBalances = action.payload.data || action.payload;
+                state.bankAccountBalancesCount = action.payload.recordsTotal || 0;
+                state.bankAccountBalancesLoading = false
+            })
+            .addCase(fetchBankAccountDailyRecords.rejected, (state,action) => {
                 state.bankAccountBalancesLoading = false
             })
             
