@@ -30,7 +30,8 @@ const initialState = {
             teb:{try:[],usd:[],eur:[]},
             kuveytturk:{try:[],usd:[],eur:[]},
             emlak_katilim:{try:[],usd:[],eur:[]}
-        }
+        },
+        exchange_rates:{}
     },
     bankAccountBalancesCount:0,
     bankAccountBalancesLoading:false,

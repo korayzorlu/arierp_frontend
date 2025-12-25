@@ -11,6 +11,9 @@ import { fetchBankAccountBalances, setBankAccountBalancesParams } from 'store/sl
 import { DatePicker, DateRangePicker } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
 import BankAccountsTable from '../components/BankAccountsTable';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -185,7 +188,7 @@ function BankAccountBalances() {
 
                 <Grid container spacing={1}>
                     <Grid size={{xs:12,sm:12}}>
-                        <Paper elevation={0} square={true} sx={{p: 2}}>
+                        <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Typography gutterBottom variant="body2" color="text.secondary" sx={{textAlign: 'center'}}>
                                 BANKA HESAP BAKİYELERİ
                             </Typography>
@@ -233,40 +236,56 @@ function BankAccountBalances() {
                         </Paper>
                     </Grid>
                     <Grid size={{xs:6,sm:3}}>
-                        <Paper elevation={0} square={true} sx={{p: 2}}>
+                        <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={2}>
-                                <Grid size={{xs:12,sm:12}}>
+                                <Grid size={{xs:12,sm:6}}>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         USD
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
                                         {formatTRY(bankAccountBalances.active_balances.usd_balance)}
                                     </Typography>
+                                </Grid>
+                                <Grid size={{xs:12,sm:6}}>
+                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                        <CompareArrowsIcon fontSize='1rem'/> TRY
+                                    </Typography>
+                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                        {formatTRY(bankAccountBalances.active_balances.usd_try_balance)}
+                                    </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         USD/TRY
                                     </Typography>
-                                    <Typography variant="body1">
-                                        {formatTRY(bankAccountBalances.active_balances.usd_try_balance)}
+                                    <Typography variant="body2" color="text.secondary">
+                                        {formatTRY(bankAccountBalances.exchange_rates.usd_exchange_rate)}
                                     </Typography>
                                 </Grid>
                             </Grid>
                         </Paper>
                     </Grid>
                     <Grid size={{xs:6,sm:3}}>
-                        <Paper elevation={0} square={true} sx={{p: 2}}>
+                        <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={2}>
-                                <Grid size={{xs:12,sm:12}}>
+                                <Grid size={{xs:12,sm:6}}>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         EUR
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
                                         {formatTRY(bankAccountBalances.active_balances.eur_balance)}
                                     </Typography>
+                                </Grid>
+                                <Grid size={{xs:12,sm:6}}>
+                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                        <CompareArrowsIcon fontSize='1rem'/> TRY
+                                    </Typography>
+                                    <Typography gutterBottom variant="body2" color="text.secondary">
+                                        {formatTRY(bankAccountBalances.active_balances.eur_try_balance)}
+                                    </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         EUR/TRY
                                     </Typography>
-                                    <Typography variant="body1">
-                                        {formatTRY(bankAccountBalances.active_balances.eur_try_balance)}
+                                    <Typography variant="body2" color="text.secondary">
+                                        {formatTRY(bankAccountBalances.exchange_rates.eur_exchange_rate)}
                                     </Typography>
                                 </Grid>
                             </Grid>
