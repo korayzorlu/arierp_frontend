@@ -34,9 +34,13 @@ function BankAccountBalances() {
     
     const [data, setData] = useState({})
 
+    const fetchData = async () => {
+        await dispatch(fetchBankAccountBalances({activeCompany,date:dayjs().format('YYYY-MM-DD')})).unwrap();
+    }
+
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankAccountBalances({activeCompany}));
+            fetchData();
         });
     }, [activeCompany,dispatch]);
 
@@ -90,9 +94,10 @@ function BankAccountBalances() {
     const today = dayjs();
     const firstDayOfYear = dayjs().startOf('year');
 
-    const handleDateRangeChange = (newValue) => {
-        const startDate = newValue[0] ? dayjs(newValue[0]).format('YYYY-MM-DD') : null;
-        const endDate = newValue[1] ? dayjs(newValue[1]).format('YYYY-MM-DD') : null;
+    const handleDateRangeChange = async (newValue) => {
+        const date = newValue ? dayjs(newValue).format('YYYY-MM-DD') : null;
+        console.log(date)
+        await dispatch(fetchBankAccountBalances({activeCompany,date})).unwrap();
         //setFilterDate({start: startDate, end: endDate});
     }
 
