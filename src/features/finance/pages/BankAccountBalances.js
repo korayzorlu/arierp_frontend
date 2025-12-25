@@ -7,7 +7,7 @@ import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import ListTable from 'component/table/ListTable';
-import { fetchBankAccountBalances, setBankAccountBalancesParams } from 'store/slices/finance/bankAccountSlice';
+import { fetchBankAccountBalances, fetchBankAccounts, setBankAccountBalancesParams } from 'store/slices/finance/bankAccountSlice';
 import { DatePicker, DateRangePicker } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
 import BankAccountsTable from '../components/BankAccountsTable';
@@ -30,7 +30,7 @@ function BankAccountBalances() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {exchangeRates,exchangeRatesCount,exchangeRatesLoading,exchangeRatesParams} = useSelector((store) => store.common);
-    const {bankAccountBalances,bankAccountBalancesCount,bankAccountBalancesLoading} = useSelector((store) => store.bankAccount);
+    const {bankAccountBalances,bankAccountBalancesCount,bankAccountBalancesLoading,bankAccounts,bankAccountsLoading,bankAccountsParams} = useSelector((store) => store.bankAccount);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -45,20 +45,21 @@ function BankAccountBalances() {
     })
     const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
 
-    const fetchData = async () => {
-        await dispatch(fetchBankAccountBalances({activeCompany,date})).unwrap();
-        const usd_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'USD',date}})).unwrap();
-        const eur_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'EUR',date}})).unwrap();
+    // const fetchData = async () => {
+    //     const usd_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'USD',date}})).unwrap();
+    //     const eur_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'EUR',date}})).unwrap();
         
-        setExchangeRatesData({
-            usd_exchange_rate: usd_exchange_rate_data.data.length > 0 ? usd_exchange_rate_data.data[0].forex_buying : 0,
-            eur_exchange_rate: eur_exchange_rate_data.data.length > 0 ? eur_exchange_rate_data.data[0].forex_buying : 0
-        });
-    }
+    //     setExchangeRatesData({
+    //         usd_exchange_rate: usd_exchange_rate_data.data.length > 0 ? usd_exchange_rate_data.data[0].forex_buying : 0,
+    //         eur_exchange_rate: eur_exchange_rate_data.data.length > 0 ? eur_exchange_rate_data.data[0].forex_buying : 0
+    //     });
+
+    // }
 
     useEffect(() => {
         startTransition(() => {
-            fetchData();
+            //fetchData();
+            dispatch(fetchBankAccountBalances({activeCompany,params:{date}}));
         });
     }, [activeCompany,date,dispatch]);
 
@@ -242,7 +243,7 @@ function BankAccountBalances() {
                                         TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
-                                        {formatTRY(bankAccountBalances.active_balances.try_balance)}
+                                        {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.try_balance : 0)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -256,7 +257,7 @@ function BankAccountBalances() {
                                         USD
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
-                                        {formatTRY(bankAccountBalances.active_balances.usd_balance)}
+                                        {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.usd_balance : 0)}
                                     </Typography>
                                 </Grid>
                                 <Grid size={{xs:12,sm:6}}>
@@ -264,13 +265,13 @@ function BankAccountBalances() {
                                         <CompareArrowsIcon fontSize='1rem'/> TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
-                                        {formatTRY(bankAccountBalances.active_balances.usd_try_balance)}
+                                        {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.usd_try_balance : 0)}
                                     </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         USD/TRY
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {formatTRY(exchangeRatesData.usd_exchange_rate)}
+                                        {formatTRY(bankAccountBalances.exchange_rates ? bankAccountBalances.exchange_rates.usd_exchange_rate : 0)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -284,7 +285,7 @@ function BankAccountBalances() {
                                         EUR
                                     </Typography>
                                     <Typography gutterBottom variant="body1">
-                                        {formatTRY(bankAccountBalances.active_balances.eur_balance)}
+                                        {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.eur_balance : 0)}
                                     </Typography>
                                 </Grid>
                                 <Grid size={{xs:12,sm:6}}>
@@ -292,13 +293,13 @@ function BankAccountBalances() {
                                         <CompareArrowsIcon fontSize='1rem'/> TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
-                                        {formatTRY(bankAccountBalances.active_balances.eur_try_balance)}
+                                        {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.eur_try_balance : 0)}
                                     </Typography>
                                     <Typography gutterBottom variant="body2" color="text.secondary">
                                         EUR/TRY
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {formatTRY(exchangeRatesData.eur_exchange_rate)}
+                                        {formatTRY(bankAccountBalances.exchange_rates ? bankAccountBalances.exchange_rates.eur_exchange_rate : 0)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -312,7 +313,7 @@ function BankAccountBalances() {
                                         GENEL TOPLAM TRY
                                     </Typography>
                                     <Typography gutterBottom variant="body1" sx={{fontWeight: 'bold'}}>
-                                        {formatTRY(bankAccountBalances.active_balances.total_try_balance)}
+                                        {formatTRY(bankAccountBalances.active_balances ? bankAccountBalances.active_balances.total_try_balance : 0)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -343,55 +344,55 @@ function BankAccountBalances() {
                     </Grid>
                 </Grid>
 
-                <BankAccountsTable title="YAPI KREDİ - TRY" rows={bankAccountBalances.bank_accounts.yapi_kredi.try}/>
-                <BankAccountsTable title="YAPI KREDİ - USD" rows={bankAccountBalances.bank_accounts.yapi_kredi.usd}/>
-                <BankAccountsTable title="YAPI KREDİ - EUR" rows={bankAccountBalances.bank_accounts.yapi_kredi.eur}/>
+                <BankAccountsTable title="YAPI KREDİ - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.yapi_kredi.try : []}/>
+                <BankAccountsTable title="YAPI KREDİ - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.yapi_kredi.usd : []}/>
+                <BankAccountsTable title="YAPI KREDİ - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.yapi_kredi.eur : []}/>
 
-                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts.albaraka.try}/>
-                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts.albaraka.usd}/>
-                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts.albaraka.eur}/>
+                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.albaraka.try : []}/>
+                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.albaraka.usd : []}/>
+                <BankAccountsTable title="ALBARAKA TÜRK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.albaraka.eur : []}/>
 
-                <BankAccountsTable title="VAKIFBANK - TRY" rows={bankAccountBalances.bank_accounts.vakifbank.try}/>
-                <BankAccountsTable title="VAKIFBANK - USD" rows={bankAccountBalances.bank_accounts.vakifbank.usd}/>
-                <BankAccountsTable title="VAKIFBANK - EUR" rows={bankAccountBalances.bank_accounts.vakifbank.eur}/>
+                <BankAccountsTable title="VAKIFBANK - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.vakifbank.try : []}/>
+                <BankAccountsTable title="VAKIFBANK - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.vakifbank.usd : []}/>
+                <BankAccountsTable title="VAKIFBANK - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.vakifbank.eur : []}/>
 
-                <BankAccountsTable title="VAKIF KATILIM - TRY" rows={bankAccountBalances.bank_accounts.vakif_katilim.try}/>
-                <BankAccountsTable title="VAKIF KATILIM - USD" rows={bankAccountBalances.bank_accounts.vakif_katilim.usd}/>
-                <BankAccountsTable title="VAKIF KATILIM - EUR" rows={bankAccountBalances.bank_accounts.vakif_katilim.eur}/>
+                <BankAccountsTable title="VAKIF KATILIM - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.vakif_katilim.try : []}/>
+                <BankAccountsTable title="VAKIF KATILIM - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.vakif_katilim.usd : []}/>
+                <BankAccountsTable title="VAKIF KATILIM - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.vakif_katilim.eur : []}/>
 
-                <BankAccountsTable title="AKBANK - TRY" rows={bankAccountBalances.bank_accounts.akbank.try}/>
-                <BankAccountsTable title="AKBANK - USD" rows={bankAccountBalances.bank_accounts.akbank.usd}/>
-                <BankAccountsTable title="AKBANK - EUR" rows={bankAccountBalances.bank_accounts.akbank.eur}/>
+                <BankAccountsTable title="AKBANK - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.akbank.try : []}/>
+                <BankAccountsTable title="AKBANK - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.akbank.usd : []}/>
+                <BankAccountsTable title="AKBANK - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.akbank.eur : []}/>
 
-                <BankAccountsTable title="İŞ BANKASI - TRY" rows={bankAccountBalances.bank_accounts.is_bank.try}/>
+                <BankAccountsTable title="İŞ BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.is_bank.try : []}/>
 
-                <BankAccountsTable title="GARANTİ - TRY" rows={bankAccountBalances.bank_accounts.garanti.try}/>
-                <BankAccountsTable title="GARANTİ - USD" rows={bankAccountBalances.bank_accounts.garanti.usd}/>
-                <BankAccountsTable title="GARANTİ - EUR" rows={bankAccountBalances.bank_accounts.garanti.eur}/>
+                <BankAccountsTable title="GARANTİ - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.garanti.try : []}/>
+                <BankAccountsTable title="GARANTİ - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.garanti.usd : []}/>
+                <BankAccountsTable title="GARANTİ - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.garanti.eur : []}/>
 
-                <BankAccountsTable title="HALKBANK - TRY" rows={bankAccountBalances.bank_accounts.halkbank.try}/>
-                <BankAccountsTable title="HALKBANK - USD" rows={bankAccountBalances.bank_accounts.halkbank.usd}/>
-                <BankAccountsTable title="HALKBANK - EUR" rows={bankAccountBalances.bank_accounts.halkbank.eur}/>
+                <BankAccountsTable title="HALKBANK - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.halkbank.try : []}/>
+                <BankAccountsTable title="HALKBANK - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.halkbank.usd : []}/>
+                <BankAccountsTable title="HALKBANK - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.halkbank.eur : []}/>
 
-                <BankAccountsTable title="ZİRAAT - TRY" rows={bankAccountBalances.bank_accounts.ziraat.try}/>
-                <BankAccountsTable title="ZİRAAT - USD" rows={bankAccountBalances.bank_accounts.ziraat.usd}/>
-                <BankAccountsTable title="ZİRAAT - EUR" rows={bankAccountBalances.bank_accounts.ziraat.eur}/>
+                <BankAccountsTable title="ZİRAAT - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.ziraat.try : []}/>
+                <BankAccountsTable title="ZİRAAT - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.ziraat.usd : []}/>
+                <BankAccountsTable title="ZİRAAT - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.ziraat.eur : []}/>
 
-                <BankAccountsTable title="ZİRAAT KATILIM - TRY" rows={bankAccountBalances.bank_accounts.ziraat_katilim.try}/>
-                <BankAccountsTable title="ZİRAAT KATILIM - USD" rows={bankAccountBalances.bank_accounts.ziraat_katilim.usd}/>
-                <BankAccountsTable title="ZİRAAT KATILIM - EUR" rows={bankAccountBalances.bank_accounts.ziraat_katilim.eur}/>
+                <BankAccountsTable title="ZİRAAT KATILIM - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.ziraat_katilim.try : []}/>
+                <BankAccountsTable title="ZİRAAT KATILIM - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.ziraat_katilim.usd : []}/>
+                <BankAccountsTable title="ZİRAAT KATILIM - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.ziraat_katilim.eur : []}/>
 
-                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts.turkiye_finans.try}/>
-                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts.turkiye_finans.usd}/>
-                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts.turkiye_finans.eur}/>
+                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.turkiye_finans.try : []}/>
+                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.turkiye_finans.usd : []}/>
+                <BankAccountsTable title="TÜRKİYE FİNANS KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.turkiye_finans.eur : []}/>
+                
+                <BankAccountsTable title="TÜRKİYE EKONOMİ BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.teb.try : []}/>
 
-                <BankAccountsTable title="TÜRKİYE EKONOMİ BANKASI - TRY" rows={bankAccountBalances.bank_accounts.teb.try}/>
+                <BankAccountsTable title="KUVEYTTÜRK - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.kuveytturk.try : []}/>
 
-                <BankAccountsTable title="KUVEYTTÜRK - TRY" rows={bankAccountBalances.bank_accounts.kuveytturk.try}/>
-
-                <BankAccountsTable title="EMLAK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts.emlak_katilim.try}/>
-                <BankAccountsTable title="EMLAK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts.emlak_katilim.usd}/>
-                <BankAccountsTable title="EMLAK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts.emlak_katilim.eur}/>
+                <BankAccountsTable title="EMLAK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.emlak_katilim.try : []}/>
+                <BankAccountsTable title="EMLAK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.emlak_katilim.usd : []}/>
+                <BankAccountsTable title="EMLAK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.emlak_katilim.eur : []}/>
 
             </Stack>
         </PanelContent>

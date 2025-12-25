@@ -14,7 +14,14 @@ const initialState = {
     bankAccountsLoading:false,
     //bank account balances
     bankAccountBalances:{
-        active_balances:{},
+        active_balances:{
+            try_balance:0,
+            usd_balance:0,
+            usd_try_balance:0,
+            eur_balance:0,
+            eur_try_balance:0,
+            total_try_balance:0
+        },
         bank_accounts:{
             yapi_kredi:{try:[],usd:[],eur:[]},
             albaraka:{try:[],usd:[],eur:[]},
@@ -34,6 +41,11 @@ const initialState = {
         exchange_rates:{}
     },
     bankAccountBalancesCount:0,
+    bankAccountBalancesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
     bankAccountBalancesLoading:false,
 }
 
@@ -51,19 +63,33 @@ export const fetchBankAccounts = createAsyncThunk('auth/fetchBankAccounts', asyn
     }
 });
 
-export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountBalances', async (params=null,{rejectWithValue}) => {
+export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountBalances', async ({activeCompany,serverModels=null,params=null}) => {
     try {
-        const response = await axios.post('/finance/bank_account_balances/', { 
-          params:params  
-        },{ withCredentials: true, });
-        return response.data.data;
+        const response = await axios.get(`/finance/bank_account_balances/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
     } catch (error) {
-        return rejectWithValue({
-            status:error.status,
-            message:error.response.data.message
-        });
-    };
+        return [];
+    }
 });
+
+// export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountBalances', async (params=null,{rejectWithValue}) => {
+//     try {
+//         const response = await axios.post('/finance/bank_account_balances/', { 
+//           params:params  
+//         },{ withCredentials: true, });
+//         return response.data.data;
+//     } catch (error) {
+//         return rejectWithValue({
+//             status:error.status,
+//             message:error.response.data.message
+//         });
+//     };
+// });
 
 const bankAccountSlice = createSlice({
     name:"bankAccount",
@@ -96,6 +122,13 @@ const bankAccountSlice = createSlice({
             state.bankAccountBalancesParams = {
                 ...state.bankAccountBalancesParams,
                 ...action.payload
+            };
+        },
+        resetBankAccountBalancesParams: (state,action) => {
+            state.bankAccountBalancesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
             };
         },
     },
@@ -137,5 +170,6 @@ export const {
     setBankAccountsOverdues,
     setBankAccountBalancesLoading,
     setBankAccountBalancesParams,
+    resetBankAccountBalancesParams
 } = bankAccountSlice.actions;
 export default bankAccountSlice.reducer;

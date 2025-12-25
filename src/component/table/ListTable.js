@@ -150,6 +150,7 @@ function ListTable(props) {
     sx,
     noColumnHeaders,
     noToolbar,
+    lazyLoading
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -328,6 +329,7 @@ function ListTable(props) {
       sortModel={sortModel}
       density={density}
       columnGroupingModel={columnGroupingModel}
+      lazyLoading={lazyLoading}
       />
     </TableContent>
   )
