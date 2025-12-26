@@ -47,6 +47,8 @@ function BankAccountBalances() {
     })
     const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
     const [showTables, setShowTables] = useState(false);
+    const [tablesMountKey, setTablesMountKey] = useState(0);
+    const mountTimerRef = useRef(null);
 
     // const fetchData = async () => {
     //     const usd_exchange_rate_data = await dispatch(fetchExchangeRates({params:{...exchangeRatesParams,target_currency: 'USD',date}})).unwrap();
@@ -69,7 +71,7 @@ function BankAccountBalances() {
             window.cancelIdleCallback?.(id);
             clearTimeout(id);
         };
-    }, [date]);
+    }, []);
 
     useEffect(() => {
         startTransition(() => {
@@ -83,6 +85,38 @@ function BankAccountBalances() {
             
         });
     }, [activeCompany,date,dispatch]);
+
+    const mountTablesLater = () => {
+  // önce varsa iptal
+  if (mountTimerRef.current) {
+    window.cancelIdleCallback?.(mountTimerRef.current);
+    clearTimeout(mountTimerRef.current);
+  }
+
+  // idle / next tick sonrası tekrar mount
+  mountTimerRef.current = window.requestIdleCallback
+    ? window.requestIdleCallback(() => setShowTables(true), { timeout: 300 })
+    : setTimeout(() => setShowTables(true), 0);
+};
+
+useEffect(() => {
+  // ilk girişte de aynı davranış
+  setShowTables(false);
+  mountTablesLater();
+
+  return () => {
+    if (mountTimerRef.current) {
+      window.cancelIdleCallback?.(mountTimerRef.current);
+      clearTimeout(mountTimerRef.current);
+    }
+  };
+}, []);
+
+// ✅ kritik kısım: date değişince de aynı şeyi yap
+useEffect(() => {
+  setShowTables(false);
+  mountTablesLater();
+}, [date]);
 
     const activeBalancesColumns = [
         { field: 'label', headerName: '', flex: 2 },
@@ -137,6 +171,7 @@ function BankAccountBalances() {
     const handleDateRangeChange = async (newValue) => {
         const date = newValue ? dayjs(newValue).format('YYYY-MM-DD') : null;
         setDate(date);
+        setTablesMountKey((k) => k + 1);
     }
 
     return (
@@ -396,7 +431,7 @@ function BankAccountBalances() {
                         showTables
                         ?
                             (
-                                <>
+                                <React.Fragment key={tablesMountKey}>
                                     <BankAccountsTable title="YAPI KREDİ - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.yapi_kredi.try : []}/>
                                     <BankAccountsTable title="YAPI KREDİ - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.yapi_kredi.usd : []}/>
                                     <BankAccountsTable title="YAPI KREDİ - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.yapi_kredi.eur : []}/>
@@ -446,7 +481,7 @@ function BankAccountBalances() {
                                     <BankAccountsTable title="EMLAK KATILIM BANKASI - TRY" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.emlak_katilim.try : []}/>
                                     <BankAccountsTable title="EMLAK KATILIM BANKASI - USD" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.emlak_katilim.usd : []}/>
                                     <BankAccountsTable title="EMLAK KATILIM BANKASI - EUR" rows={bankAccountBalances.bank_accounts ? bankAccountBalances.bank_accounts.emlak_katilim.eur : []}/>
-                                </>
+                                </React.Fragment>
                             )
                         :
                             (
