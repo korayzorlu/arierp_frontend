@@ -219,7 +219,7 @@ function ToWarnedRiskPartnersPosta() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="İhtar Çekilecek Müşteriler"
+                title="İhtar Çekilecek Müşteriler "
                 rows={postaToWarnedRiskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}

@@ -220,7 +220,7 @@ function ToWarnedRiskPartnersKep() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="İhtar Çekilecek Müşteriler"
+                title="İhtar Çekilecek Müşteriler (Kep)"
                 rows={kepToWarnedRiskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}

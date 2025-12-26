@@ -220,7 +220,7 @@ function ToWarnedRiskPartnersDeposit() {
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="İhtar Çekilecek Müşteriler"
+                title="İhtar Çekilecek Müşteriler (Kapora)"
                 rows={depositeToWarnedRiskPartners}
                 columns={riskPartnerColumns}
                 getRowId={(row) => row.id}

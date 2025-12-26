@@ -7,7 +7,7 @@ import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Button, Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import ListTable from 'component/table/ListTable';
-import { fetchBankAccountBalances, fetchBankAccountDailyRecords, fetchBankAccounts, resetBankAccountBalances, setBankAccountBalancesParams } from 'store/slices/finance/bankAccountSlice';
+import { fetchBankAccountBalances, fetchBankAccountDailyRecords, fetchBankAccounts, resetBankAccountBalances, setBankAccountBalancesLoading, setBankAccountBalancesParams } from 'store/slices/finance/bankAccountSlice';
 import { DatePicker, DateRangePicker } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
 //import BankAccountsTable from '../components/BankAccountsTable';
@@ -17,6 +17,9 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { fetchExchangeRates, fetchObjects } from 'store/slices/common/commonSlice';
 import { date } from 'yup';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import ExportDialog from 'component/feedback/ExportDialog';
+import { setExportDialog } from 'store/slices/notificationSlice';
+import { fetchExportProcess } from 'store/slices/processSlice';
 const BankAccountsTable = lazy(() => import('../components/BankAccountsTable'));
 
 function randomId(length = 8) {
@@ -285,7 +288,7 @@ useEffect(() => {
                                      <Button
                                     variant="contained"
                                     color="mars"
-                                    //onClick={handleSubmit}
+                                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
                                     endIcon={<InsertDriveFileIcon/>}
                                     autoFocus
                                     fullWidth
@@ -495,6 +498,21 @@ useEffect(() => {
                     
                 </Suspense>
             </Stack>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL="/finance/export_finmaks_bank_account_balances/"
+            startEvent={() => dispatch(setBankAccountBalancesLoading(true))}
+            finalEvent={() => {
+                if(date === dayjs().format('YYYY-MM-DD')){
+                    dispatch(fetchBankAccountBalances({activeCompany,params:{date}}));
+                }else{
+                    dispatch(resetBankAccountBalances());
+                    dispatch(fetchBankAccountDailyRecords({activeCompany,params:{date}}));
+                }
+                dispatch(setBankAccountBalancesLoading(false));
+            }}
+            date={date}
+            />
         </PanelContent>
     )
 }
