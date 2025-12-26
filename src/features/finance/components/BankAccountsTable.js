@@ -58,12 +58,14 @@ function BankAccountsTable(props) {
                     rows={props.rows}
                     columns={bankAccountColumns}
                     getRowId={(row) => row.id}
-                    loading={bankAccountBalancesLoading}
+                    loading={false}
                     noDownloadButton
                     noColumnHeaders
                     //noToolbar
                     noToolbarButtons
                     hideFooter
+                    disableRowSelectionOnClick
+                    disableColumnFilter
                     />
                 </Paper>
             </Grid>

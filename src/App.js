@@ -1,7 +1,7 @@
 //deneme
 
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Landing from './features/layout/pages/Landing.js';
 import Panel from './features/layout/pages/Panel.js';
@@ -148,6 +148,7 @@ import ExchangedLeases from 'features/risk/pages/ExchangedLeases';
 import TrialBalanceContractInactivesCount from 'features/accounting/pages/TrialBalanceContractInactivesCount';
 import TufeExchangedLeases from 'features/risk/pages/TufeExchangedLeases';
 import BankAccountBalances from 'features/finance/pages/BankAccountBalances';
+//const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
 
@@ -315,6 +316,7 @@ function App() {
                   <Route path='/finance-summary' element={<FinanceSummary></FinanceSummary>}></Route>
                   <Route path='/status-control' element={<StatusControl></StatusControl>}></Route>
                   <Route path='/purchase-documents' element={<PurchaseDocuments></PurchaseDocuments>}></Route>
+                  {/* <Route path='/bank-account-balances' element={<Suspense fallback={<></>}><BankAccountBalances></BankAccountBalances></Suspense>}></Route> */}
                   <Route path='/bank-account-balances' element={<BankAccountBalances></BankAccountBalances>}></Route>
                   <Route path='/bank-accounts' element={<BankAccounts></BankAccounts>}></Route>
                   <Route path='/bank-account-transactions' element={<BankAccountTransactions></BankAccountTransactions>}></Route>

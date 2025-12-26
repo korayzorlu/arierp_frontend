@@ -150,7 +150,8 @@ function ListTable(props) {
     sx,
     noColumnHeaders,
     noToolbar,
-    lazyLoading
+    lazyLoading,
+    disableColumnFilter
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -330,6 +331,7 @@ function ListTable(props) {
       density={density}
       columnGroupingModel={columnGroupingModel}
       lazyLoading={lazyLoading}
+      disableColumnFilter={disableColumnFilter}
       />
     </TableContent>
   )

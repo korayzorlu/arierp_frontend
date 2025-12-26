@@ -73,33 +73,7 @@ export const fetchBankAccountBalances = createAsyncThunk('auth/fetchBankAccountB
         );
         return response.data;
     } catch (error) {
-        return {
-            active_balances:{
-                try_balance:0,
-                usd_balance:0,
-                usd_try_balance:0,
-                eur_balance:0,
-                eur_try_balance:0,
-                total_try_balance:0
-            },
-            bank_accounts:{
-                yapi_kredi:{try:[],usd:[],eur:[]},
-                albaraka:{try:[],usd:[],eur:[]},
-                vakifbank:{try:[],usd:[],eur:[]},
-                vakif_katilim:{try:[],usd:[],eur:[]},
-                akbank:{try:[],usd:[],eur:[]},
-                is_bank:{try:[],usd:[],eur:[]},
-                garanti:{try:[],usd:[],eur:[]},
-                halkbank:{try:[],usd:[],eur:[]},
-                ziraat:{try:[],usd:[],eur:[]},
-                ziraat_katilim:{try:[],usd:[],eur:[]},
-                turkiye_finans:{try:[],usd:[],eur:[]},
-                teb:{try:[],usd:[],eur:[]},
-                kuveytturk:{try:[],usd:[],eur:[]},
-                emlak_katilim:{try:[],usd:[],eur:[]}
-            },
-            exchange_rates:{}
-        };
+        return {};
     }
 });
 
@@ -113,33 +87,7 @@ export const fetchBankAccountDailyRecords = createAsyncThunk('auth/fetchBankAcco
         );
         return response.data;
     } catch (error) {
-        return {
-            active_balances:{
-                try_balance:0,
-                usd_balance:0,
-                usd_try_balance:0,
-                eur_balance:0,
-                eur_try_balance:0,
-                total_try_balance:0
-            },
-            bank_accounts:{
-                yapi_kredi:{try:[],usd:[],eur:[]},
-                albaraka:{try:[],usd:[],eur:[]},
-                vakifbank:{try:[],usd:[],eur:[]},
-                vakif_katilim:{try:[],usd:[],eur:[]},
-                akbank:{try:[],usd:[],eur:[]},
-                is_bank:{try:[],usd:[],eur:[]},
-                garanti:{try:[],usd:[],eur:[]},
-                halkbank:{try:[],usd:[],eur:[]},
-                ziraat:{try:[],usd:[],eur:[]},
-                ziraat_katilim:{try:[],usd:[],eur:[]},
-                turkiye_finans:{try:[],usd:[],eur:[]},
-                teb:{try:[],usd:[],eur:[]},
-                kuveytturk:{try:[],usd:[],eur:[]},
-                emlak_katilim:{try:[],usd:[],eur:[]}
-            },
-            exchange_rates:{}
-        };
+        return {};
     }
 });
 
@@ -197,6 +145,35 @@ const bankAccountSlice = createSlice({
                 format: 'datatables'
             };
         },
+        resetBankAccountBalances: (state,action) => {
+            state.bankAccountBalances = {
+                active_balances:{
+                    try_balance:0,
+                    usd_balance:0,
+                    usd_try_balance:0,
+                    eur_balance:0,
+                    eur_try_balance:0,
+                    total_try_balance:0
+                },
+                bank_accounts:{
+                    yapi_kredi:{try:[],usd:[],eur:[]},
+                    albaraka:{try:[],usd:[],eur:[]},
+                    vakifbank:{try:[],usd:[],eur:[]},
+                    vakif_katilim:{try:[],usd:[],eur:[]},
+                    akbank:{try:[],usd:[],eur:[]},
+                    is_bank:{try:[],usd:[],eur:[]},
+                    garanti:{try:[],usd:[],eur:[]},
+                    halkbank:{try:[],usd:[],eur:[]},
+                    ziraat:{try:[],usd:[],eur:[]},
+                    ziraat_katilim:{try:[],usd:[],eur:[]},
+                    turkiye_finans:{try:[],usd:[],eur:[]},
+                    teb:{try:[],usd:[],eur:[]},
+                    kuveytturk:{try:[],usd:[],eur:[]},
+                    emlak_katilim:{try:[],usd:[],eur:[]}
+                },
+                exchange_rates:{}
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -248,6 +225,7 @@ export const {
     setBankAccountsOverdues,
     setBankAccountBalancesLoading,
     setBankAccountBalancesParams,
-    resetBankAccountBalancesParams
+    resetBankAccountBalancesParams,
+    resetBankAccountBalances
 } = bankAccountSlice.actions;
 export default bankAccountSlice.reducer;
