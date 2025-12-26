@@ -26,6 +26,7 @@ function BankAccountsTable(props) {
                     </Stack>
             )
         },
+        //{ field: 'iban', headerName: 'IBAN', flex: 2,},
         { field: 'balance', headerName: 'Bakiye', flex: 2, type: 'number',
             renderCell: (params) => (
                 params.row.account_no === "TOPLAM" 

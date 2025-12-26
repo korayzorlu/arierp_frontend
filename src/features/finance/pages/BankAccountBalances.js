@@ -209,9 +209,17 @@ function BankAccountBalances() {
                 <Grid container spacing={1}>
                     <Grid size={{xs:12,sm:12}}>
                         <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
-                            <Typography gutterBottom variant="body2" color="primary" sx={{textAlign: 'left'}}>
+                            <Typography gutterBottom variant="body2" color="primary" sx={{textAlign: 'center', fontWeight: 'bold'}}>
                                 BANKA HESAP BAKİYELERİ
                             </Typography>
+                            
+                        </Paper>
+                    </Grid>
+                </Grid>
+
+                <Grid container spacing={1}>
+                    <Grid size={{xs:12,sm:12}}>
+                        <Paper elevation={0} square={true} sx={{p: 2, height: '100%'}}>
                             <Grid container spacing={1}>
                                 <Grid size={{xs:12,sm:2}} sx={{textAlign: 'left'}}>
                                     <DatePicker
@@ -219,7 +227,7 @@ function BankAccountBalances() {
                                     onAccept={handleDateRangeChange}
                                     format='DD.MM.YYYY'
                                     slotProps={{
-                                        textField: { size: 'small' }
+                                        textField: { size: 'small', fullWidth: true},
                                     }}
                                     />
                                 </Grid>
