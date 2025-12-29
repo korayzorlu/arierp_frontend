@@ -94,7 +94,6 @@ function StatusControl() {
     ]
 
     const handleProfileDialog = async (params,event) => {
-        console.log(params)
         if (event) {
             event.stopPropagation();
         }

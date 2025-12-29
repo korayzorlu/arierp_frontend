@@ -60,7 +60,6 @@ function Companies(props) {
                 dispatch(setAlert({status:"success",text:"Changed successfully!"}));
             }
         } catch (error) {
-            console.log(error)
             dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
         } finally {
             setAnchorEl(null);

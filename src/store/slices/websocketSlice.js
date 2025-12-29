@@ -16,7 +16,7 @@ export const connectWebsocket = (dispatch,getState) => {
     const wsMain = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}/socket/`);
 
     wsMain.onopen = function() {
-        console.log('WebSocket bağlantısı başarıyla kuruldu.');
+        //console.log('WebSocket bağlantısı başarıyla kuruldu.');
     };
 
     wsMain.onerror = function(error) {
@@ -25,7 +25,7 @@ export const connectWebsocket = (dispatch,getState) => {
     };
     
     wsMain.onclose = function (event) {
-        console.log(`Websocket kapatıldı! Kod: ${event.code}`);
+        //console.log(`Websocket kapatıldı! Kod: ${event.code}`);
         setTimeout(function() {
             connectWebsocket(dispatch, getState);
         }, 1000);

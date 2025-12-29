@@ -83,8 +83,6 @@ function ListTableServer(props) {
   };
 
   const handleSortModelChange = (model) => {
-    console.log(model)
-    
     setSortModel(model);
 
     if(model.length > 0){
@@ -136,7 +134,6 @@ function ListTableServer(props) {
     }else if(model.quickFilterValues && model.quickFilterValues.length === 0 && model.items.length > 0){
       model.items.forEach((item) => {
           if (item.value) {
-            console.log("filtre değişti")
             //dispatch(setPartnersParams({[item.columnField]:item.value}));
             //setParams({[item.columnField]:item.value});
             setFilterParams({...filterParams,[item.field]:item.value})
@@ -160,7 +157,6 @@ function ListTableServer(props) {
   };
 
   const handleKeyDown = (event) => {
-    console.log(event)
     if (event.key === 'Enter') {
       
     }

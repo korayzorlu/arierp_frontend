@@ -46,7 +46,7 @@ function FinanceSummary() {
     const xAxisData = bankActivities.map(item =>
         Date(item.created_date) // Grafikte tarih düzgün gözüksün diye
     );
-    console.log(xAxisData)
+    //console.log(xAxisData)
     // amount → data
     const amountData = bankActivities.map(item => Number(item.processed_amount));
 

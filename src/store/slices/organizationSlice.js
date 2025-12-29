@@ -214,39 +214,39 @@ const organizationSlice = createSlice({
                 };
 
                 if (!action.payload.length === 0) {
-                    console.log("1");
+                    //console.log("1");
                     state.activeCompany = null;
                     sessionStorage.removeItem('active_company');
                     localStorage.removeItem('active_company');
                 } else if (!state.activeCompany) {
-                    console.log("2");
+                    //console.log("2");
                     if (sessionStorage.getItem('active_company') || localStorage.getItem('active_company')) {
-                        console.log("2-1");
+                        //console.log("2-1");
                         state.activeCompany = JSON.parse(sessionStorage.getItem('active_company') || localStorage.getItem('active_company'));
                         localStorage.setItem('active_company', JSON.stringify(action.payload.find(({is_active}) => is_active === true)));
                     } else {
-                        console.log("2-2");
+                        //console.log("2-2");
                         if (localStorage.getItem('active_company')) {
-                            console.log("2-2-1");
+                            //console.log("2-2-1");
                             state.activeCompany = JSON.parse(localStorage.getItem('active_company'));
                             sessionStorage.setItem('active_company', localStorage.getItem('active_company'));
                         } else {
-                            console.log("2-2-2");
+                            //console.log("2-2-2");
                             state.activeCompany = action.payload.find(({is_active}) => is_active === true);
                             sessionStorage.setItem('active_company', JSON.stringify(action.payload.find(({is_active}) => is_active === true)));
                             localStorage.setItem('active_company', JSON.stringify(action.payload.find(({is_active}) => is_active === true)));
                         }
                     }
                 } else if (!action.payload.includes(state.activeCompany)) {
-                    console.log("3");
+                    //console.log("3");
                     const activeCompany = action.payload.find(({is_active}) => is_active === true);
                     if (activeCompany) {
-                        console.log("3-1");
+                        //console.log("3-1");
                         state.activeCompany = activeCompany;
                         sessionStorage.setItem('active_company', JSON.stringify(activeCompany));
                         localStorage.setItem('active_company', JSON.stringify(activeCompany));
                     } else {
-                        console.log("3-2");
+                        //console.log("3-2");
                         state.activeCompany = null;
                         sessionStorage.removeItem('active_company');
                         localStorage.removeItem('active_company');

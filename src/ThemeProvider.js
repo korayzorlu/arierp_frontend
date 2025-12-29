@@ -154,7 +154,7 @@ export const ThemeProvider = ({ children }) => {
             },
             metallicgold: {
                 main: '#DAA51D',
-                contrastText: '#fff',
+                contrastText: '#000',
             },
             metallicorange: {
                 main: '#EE9103',
@@ -227,7 +227,7 @@ export const ThemeProvider = ({ children }) => {
             },
             metallicgold: {
                 main: '#D1CE21',
-                contrastText: '#fff',
+                contrastText: '#000',
             },
             metallicorange: {
                 main: '#EA9A00',

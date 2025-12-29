@@ -32,7 +32,7 @@ function SelectHeaderFilter(props) {
             });
             
             if (changeValue){
-                console.log("changeValue", event.target.value)
+                //console.log("changeValue", event.target.value)
                 changeValue(event.target.value);
             }
            

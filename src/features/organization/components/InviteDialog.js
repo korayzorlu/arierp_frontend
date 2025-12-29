@@ -8,7 +8,6 @@ import { setAlert } from '../../../store/slices/notificationSlice';
 
 function InviteDialog(props) {
   const {children,openInviteDialog,handleClose,companyId} = props;
-  console.log(companyId)
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(openInviteDialog);

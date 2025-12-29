@@ -31,7 +31,6 @@ function Installment() {
     const [switchPosition, setSwitchPosition] = useState(false);
 
     useEffect(() => {
-        console.log(installmentsParams)
         startTransition(() => {
             dispatch(fetchInstallments({activeCompany,params:installmentsParams}));
         });

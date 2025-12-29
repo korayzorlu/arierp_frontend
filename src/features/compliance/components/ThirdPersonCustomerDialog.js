@@ -56,7 +56,7 @@ function ThirdPersonCustomerDialog({...props}) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Müşteri olarak bildirmek istiyor musunuz?
+                    Seçili kişiyi müşteri olarak bildirmek istiyor musunuz?
                 </DialogContentText>
             </DialogContent>
             <DialogActions className=''>

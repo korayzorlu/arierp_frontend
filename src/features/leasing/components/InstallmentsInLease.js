@@ -26,7 +26,6 @@ function InstallmentsInLease(props) {
 
     useEffect(() => {
         //dispatch(fetchInstallmentsInLease({activeCompany,lease_id}));
-        console.log(lease_id)
         dispatch(fetchInstallmentInformation({lease_id:lease_id}));
     }, [])
 

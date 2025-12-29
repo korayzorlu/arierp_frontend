@@ -193,7 +193,7 @@ export const fetchManagerSummary = createAsyncThunk('auth/fetchManagerSummary', 
         const response = await axios.post('/leasing/manager_summary/', { 
           params:params  
         },{ withCredentials: true, });
-        console.log(response.data.data)
+        //console.log(response.data.data)
         return response.data.data;
     } catch (error) {
         return rejectWithValue({
