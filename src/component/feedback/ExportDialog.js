@@ -17,7 +17,7 @@ import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 function ExportDialog(props) {
-    const {children,excelURL,exportURL,startEvent,finalEvent,closeEvent,file_name,project,status,date} = props;
+    const {children,excelURL,exportURL,startEvent,finalEvent,closeEvent,file_name,project,status,date,is_special} = props;
 
     const {dark} = useSelector((store) => store.auth);
     const {exportDialog} = useSelector((store) => store.notification);
@@ -41,7 +41,7 @@ function ExportDialog(props) {
         
         try {
             const response = await axios.post(exportURL,
-                {project,status,date},
+                {project,status,date,is_special},
                 { 
                     withCredentials: true
                 },

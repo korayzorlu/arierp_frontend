@@ -149,11 +149,11 @@ function PurchasePayments() {
                         checked={kdvSwitchPosition}
                         onChange={(value) => handleChangeKDV(value)}
                         />
-                        {/* <AndroidSwitch
+                        <AndroidSwitch
                         label="Özel"
                         checked={specialSwitchPosition}
                         onChange={(value) => handleChangeSpecial(value)}
-                        /> */}
+                        />
                     </>
                 }
                 rowCount={purchasePaymentsCount}
@@ -168,6 +168,8 @@ function PurchasePayments() {
             exportURL="/purchasing/export_purchase_payments/"
             startEvent={() => dispatch(setPurchasePaymentsLoading(true))}
             finalEvent={() => {dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams}));dispatch(setPurchasePaymentsLoading(false));}}
+            is_special={specialSwitchPosition}
+            project={specialSwitchPosition}
             />
             <PurchaseDocumentDialog/>
         </PanelContent>
