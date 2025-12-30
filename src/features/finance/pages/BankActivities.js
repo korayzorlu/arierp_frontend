@@ -75,7 +75,6 @@ function BankActivities() {
                         null
                 :
                     null
-                
             )
         },
         { field: 'collection_status', headerName: 'Statü', flex:2 },

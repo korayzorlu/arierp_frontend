@@ -83,7 +83,7 @@ function TufeExchangedLeases() {
                     null
             )
         },
-        { field: 'paid_rate', headerName: 'Oran', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
+        { field: 'paid_rate', headerName: 'Ödeme Oranı', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
         { field: 'overdue_amount', headerName: 'Geciken Tutar', width:120, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
@@ -96,6 +96,9 @@ function TufeExchangedLeases() {
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
         { field: 'tufe_rate', headerName: 'Tüfe Oranı', width:160, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress
+        },
+        { field: 'tufe_endeks', headerName: 'Söz. Birim Endeksi', width:160, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
         //{ field: 'currency', headerName: 'PB', width:90 },
         { field: 'status', headerName: 'Alt Statü', width:120 },
