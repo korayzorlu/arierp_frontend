@@ -36,10 +36,6 @@ const commonTheme = {
             main: '#000',
             contrastText: '#fff',
         },
-        celticglow: {
-            main: '#009562',
-            contrastText: '#000',
-        },
         cream: {
             main: '#F4F2EE',
             contrastText: '#000',
@@ -136,6 +132,10 @@ export const ThemeProvider = ({ children }) => {
         palette: {
             ...commonTheme.palette,
             mode: 'light',
+            celticglow: {
+                main: '#009562',
+                contrastText: '#fff',
+            },
             bluelemonade: {
                 main: '#0045B0',
                 contrastText: '#fff',
@@ -209,6 +209,10 @@ export const ThemeProvider = ({ children }) => {
         palette: {
             ...commonTheme.palette,
             mode: 'dark',
+            celticglow: {
+                main: '#009562',
+                contrastText: '#000',
+            },
             bluelemonade: {
                 main: '#0045AC',
                 contrastText: '#fff',

@@ -13,6 +13,15 @@ const initialState = {
     },
     partnersLoading:false,
     partnerInformation:{},
+    //
+    partnerNotes:[],
+    partnerNotesCount:0,
+    partnerNotesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    partnerNotesLoading:false,
 }
 
 export const fetchPartners = createAsyncThunk('auth/fetchPartners', async ({activeCompany,serverModels=null,params=null}) => {
@@ -182,6 +191,86 @@ export const fetchPartnerInformation = createAsyncThunk('auth/fetchPartnerInform
     }
 });
 
+export const fetchPartnerNotes = createAsyncThunk('auth/fetchPartnerNotes', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/partners/partner_notes/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const addPartnerNote = createAsyncThunk('auth/addPartnerNote', async ({params=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/partners/add_partner_note/`,
+            params,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
+export const updatePartnerNote = createAsyncThunk('auth/updatePartnerNote', async ({params=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/partners/update_partner_note/`,
+            params,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
+export const deletePartnerNote = createAsyncThunk('auth/deletePartnerNote', async ({params=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/partners/delete_partner_note/`,
+            params,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const partnerSlice = createSlice({
     name:"partner",
     initialState,
@@ -204,6 +293,26 @@ const partnerSlice = createSlice({
         },
         deletePartners: (state,action) => {
             state.partners = [];
+        },
+        //
+        setPartnerNotesLoading: (state,action) => {
+            state.partnerNotesLoading = action.payload;
+        },
+        setPartnerNotesParams: (state,action) => {
+            state.partnerNotesParams = {
+                ...state.partnerNotesParams,
+                ...action.payload
+            };
+        },
+        resetPartnerNotesParams: (state,action) => {
+            state.partnerNotesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deletePartnerNotes: (state,action) => {
+            state.smss = [];
         },
     },
     extraReducers: (builder) => {
@@ -231,9 +340,30 @@ const partnerSlice = createSlice({
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
             })
+            // partner notes
+            .addCase(fetchPartnerNotes.pending, (state) => {
+                state.partnerNotesLoading = true
+            })
+            .addCase(fetchPartnerNotes.fulfilled, (state,action) => {
+                state.partnerNotes = action.payload.data || action.payload;
+                state.partnerNotesCount = action.payload.recordsTotal || 0;
+                state.partnerNotesLoading = false
+            })
+            .addCase(fetchPartnerNotes.rejected, (state,action) => {
+                state.partnerNotesLoading = false
+            })
     },
   
 })
 
-export const {setPartnersLoading,setPartnersParams,deletePartners,resetPartnersParams} = partnerSlice.actions;
+export const {
+    setPartnersLoading,
+    setPartnersParams,
+    deletePartners,
+    resetPartnersParams,
+    setPartnerNotesLoading,
+    setPartnerNotesParams,
+    resetPartnerNotesParams,
+    deletePartnerNotes
+} = partnerSlice.actions;
 export default partnerSlice.reducer;

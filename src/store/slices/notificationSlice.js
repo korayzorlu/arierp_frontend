@@ -3,37 +3,38 @@ import axios from "axios";
 import { Alert as MDBAlert} from 'mdb-ui-kit';
 
 const initialState = {
-    alert:{color:"",icon:"",text:""},
-    alertt:{status:"",text:""},
-    openAlert:false,
-    dialog:false,
-    deleteDialog:false,
-    importDialog:false,
-    exportDialog:false,
-    userDialog:false,
-    partnerDialog:false,
-    installmentDialog:false,
-    leaseDialog:false,
-    overdueDialog:false,
-    addBankActivityLeaseDialog:false,
-    addPartnerAdvanceActivityLeaseDialog:false,
-    callDialog:false,
-    messageDialog:false,
-    sendSMSDialog:false,
-    contractPaymentDialog:false,
-    warningNoticeDialog:false,
-    purchaseDocumentDialog:false,
-    tradeTransactionDialog:false,
-    thirdPersonStatusDialog:false,
-    thirdPersonCustomerDialog:false,
-    thirdPersonDocumentDialog:false,
-    thirdPersonPaymentDetailDialog:false,
-    thirdPersonDialog:false,
-    finmaksTransactionNameDialog:false,
-    changePartnerDialog:false,
-    modal:false,
-    notifications:[],
-    unreadNotifications:0
+    addBankActivityLeaseDialog: false,
+    addPartnerAdvanceActivityLeaseDialog: false,
+    alert: { color: "", icon: "", text: "" },
+    alertt: { status: "", text: "" },
+    callDialog: false,
+    changePartnerDialog: false,
+    contractPaymentDialog: false,
+    deleteDialog: false,
+    dialog: false,
+    exportDialog: false,
+    finmaksTransactionNameDialog: false,
+    importDialog: false,
+    installmentDialog: false,
+    leaseDialog: false,
+    messageDialog: false,
+    modal: false,
+    notifications: [],
+    openAlert: false,
+    overdueDialog: false,
+    partnerDialog: false,
+    partnerNoteDialog:false,
+    purchaseDocumentDialog: false,
+    sendSMSDialog: false,
+    thirdPersonCustomerDialog: false,
+    thirdPersonDialog: false,
+    thirdPersonDocumentDialog: false,
+    thirdPersonPaymentDetailDialog: false,
+    thirdPersonStatusDialog: false,
+    tradeTransactionDialog: false,
+    unreadNotifications: 0,
+    userDialog: false,
+    warningNoticeDialog: false
 }
 
 export const fetchNotifications = createAsyncThunk('notifications/fetchNotifications', async () => {
@@ -112,6 +113,9 @@ const notificationSlice = createSlice({
         },
         setSendSMSDialog: (state,action) => {
             state.sendSMSDialog = action.payload;
+        },
+        setPartnerNoteDialog: (state,action) => {
+            state.partnerNoteDialog = action.payload;
         },
         setContractPaymentDialog: (state,action) => {
             state.contractPaymentDialog = action.payload;
@@ -195,6 +199,7 @@ export const {
     setCallDialog,
     setMessageDialog,
     setSendSMSDialog,
+    setPartnerNoteDialog,
     setContractPaymentDialog,
     setTradeTransactionDialog,
     setWarningNoticeDialog,
