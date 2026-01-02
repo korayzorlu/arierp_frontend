@@ -41,6 +41,7 @@ function PartnerNoteDialog(props) {
         await dispatch(addPartnerNote({params: {data, companyId: activeCompany.companyId, partner_id: partnerInformation.uuid}})).unwrap();
         await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id:partnerInformation.uuid}})).unwrap();
         setIsNew(false);
+        setData({title: '', text: ''});
     };
 
     const handleChangeField = (field,value) => {
@@ -89,6 +90,8 @@ function PartnerNoteDialog(props) {
                                     isNew
                                     ?  
                                         <AddPartnerNoteAccordion
+                                        title={data.title}
+                                        text={data.text}
                                         onChangeTitle={(value) => handleChangeField("title",value)}
                                         onChangeText={(value) => handleChangeField("text",value)}
                                         />

@@ -2,10 +2,10 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, fetchRiskPartnersKDV, setRiskPartnersKDVLoading, setRiskPartnersKDVParams, setRiskPartnersLoading, setRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -14,7 +14,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from 'component/table/ListTableServer';
 import RiskPartnerKDVDetailPanel from 'features/risk/components/RiskPartnerKDVDetailPanel';
-import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from 'component/dialog/CallDialog';
@@ -26,10 +26,13 @@ import AndroidSwitch from 'component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from 'component/feedback/ExportDialog';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import TableButton from 'component/button/TableButton';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
 
 function RiskPartnersKDV() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {riskPartnersKDV,riskPartnersKDVCount,riskPartnersKDVParams,riskPartnersKDVLoading} = useSelector((store) => store.riskPartner);
+    const {riskPartnersKDV,riskPartnersKDVCount,riskPartnersKDVParams,riskPartnersKDVLoading,partnerNotesParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
@@ -131,6 +134,17 @@ function RiskPartnersKDV() {
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                <TableButton
+                text="Notlar"
+                color="celticglow"
+                icon={<NoteAltIcon/>}
+                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                />
+            </Stack>
+            )
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -147,6 +161,12 @@ function RiskPartnersKDV() {
             )
         },
     ]
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const handleProfileDialog = async (params,event) => {
         if(params.field==="name"){
@@ -318,6 +338,7 @@ function RiskPartnersKDV() {
             <CallDialog/>
             <MessageDialog/>
             <WarningNoticeDialog/>
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

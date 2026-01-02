@@ -2,10 +2,10 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTodayPartners, setTodayPartnersLoading, setTodayPartnersParams } from 'store/slices/leasing/todayPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, useTheme } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, useTheme } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -14,7 +14,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from 'component/table/ListTableServer';
 import TodayPartnerDetailPanel from 'features/risk/components/TodayPartnerDetailPanel';
-import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from 'component/dialog/CallDialog';
@@ -30,11 +30,15 @@ import { setRiskPartnersLoading } from 'store/slices/leasing/riskPartnerSlice';
 import { checkSMS, fetchSMSs } from 'store/slices/communication/smsSlice';
 import SmsIcon from '@mui/icons-material/Sms';
 import SendSMSDialog from 'component/dialog/SendSMSDialog';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import TableButton from 'component/button/TableButton';
 
 function TodayPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {todayPartners,todayPartnersCount,todayPartnersParams,todayPartnersLoading} = useSelector((store) => store.todayPartner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
+    const {partnerNotesParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -140,6 +144,17 @@ function TodayPartners() {
             />
         )
         },
+        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                <TableButton
+                text="Notlar"
+                color="celticglow"
+                icon={<NoteAltIcon/>}
+                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                />
+            </Stack>
+            )
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -156,6 +171,12 @@ function TodayPartners() {
             )
         },
     ]
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const handleProfileDialog = async (params,event) => {
         if(params.field==="name"){
@@ -340,6 +361,7 @@ function TodayPartners() {
             example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin ödemelerini hatırlatmak isteriz. ${project === 'kizilbuk' || project === 'kasaba' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 4447680/rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
             <WarningNoticeDialog/>
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

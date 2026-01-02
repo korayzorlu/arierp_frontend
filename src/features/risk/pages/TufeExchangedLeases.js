@@ -18,6 +18,7 @@ import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import { cellProgress } from 'component/progress/CellProgress';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 
 function TufeExchangedLeases() {
     const {user} = useSelector((store) => store.auth);

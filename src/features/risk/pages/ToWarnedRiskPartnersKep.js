@@ -2,10 +2,10 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, fetchToWarnedRiskPartners, setRiskPartnersLoading, setKepToWarnedRiskPartnersLoading, setKepToWarnedRiskPartnersParams, fetchKepToWarnedRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -14,7 +14,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from 'component/table/ListTableServer';
 import RiskPartnerDetailPanel from 'features/risk/components/RiskPartnerDetailPanel';
-import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from 'component/dialog/CallDialog';
@@ -30,10 +30,13 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import { checkSMS, fetchSMSs } from 'store/slices/communication/smsSlice';
 import SendSMSDialog from 'component/dialog/SendSMSDialog';
 import { type } from 'jquery';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import TableButton from 'component/button/TableButton';
 
 function ToWarnedRiskPartnersKep() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {kepToWarnedRiskPartners,kepToWarnedRiskPartnersCount,kepToWarnedRiskPartnersParams,kepToWarnedRiskPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {kepToWarnedRiskPartners,kepToWarnedRiskPartnersCount,kepToWarnedRiskPartnersParams,kepToWarnedRiskPartnersLoading,partnerNotesParams} = useSelector((store) => store.riskPartner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
@@ -149,6 +152,17 @@ function ToWarnedRiskPartnersKep() {
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
         },
+        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                <TableButton
+                text="Notlar"
+                color="celticglow"
+                icon={<NoteAltIcon/>}
+                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                />
+            </Stack>
+            )
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -165,6 +179,12 @@ function ToWarnedRiskPartnersKep() {
             )
         },
     ]
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const handleProfileDialog = async (params,event) => {
         if(params.field==="name"){
@@ -322,6 +342,7 @@ function ToWarnedRiskPartnersKep() {
             />
             <WarningNoticeDialog/>
             <MessageDialog/>
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

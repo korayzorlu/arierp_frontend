@@ -45,14 +45,8 @@ function PartnerNoteAccordion(props) {
         setExpanded(isExpanded);
     };
 
-    const handleSubmitEditTitle = async () => {
-        await dispatch(updatePartnerNote({params: {data, type: "title"}})).unwrap();
-        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id:partnerInformation.uuid}})).unwrap();
-        setEdit(!edit)
-    }
-
-    const handleSubmitEditText = async () => {
-        await dispatch(updatePartnerNote({params: {data, type: "text"}})).unwrap();
+    const handleSubmit = async () => {
+        await dispatch(updatePartnerNote({params: {data}})).unwrap();
         await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id:partnerInformation.uuid}})).unwrap();
         setEdit(!edit)
     }
@@ -94,21 +88,20 @@ function PartnerNoteAccordion(props) {
                                         value={data.title}
                                         onChange={(e) => handleChangeField("title",e.target.value)}
                                         fullWidth
-                                        slotProps={{
-                                            input: {
-                                                endAdornment:(
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                        onClick={handleSubmitEditTitle}
-                                                        edge="end"
-                                                        >
-                                                            <CheckIcon/>
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                )
-                                            }
-                                        }}
-                                        
+                                        // slotProps={{
+                                        //     input: {
+                                        //         endAdornment:(
+                                        //             <InputAdornment position="end">
+                                        //                 <IconButton
+                                        //                 onClick={handleSubmitEditTitle}
+                                        //                 edge="end"
+                                        //                 >
+                                        //                     <CheckIcon/>
+                                        //                 </IconButton>
+                                        //             </InputAdornment>
+                                        //         )
+                                        //     }
+                                        // }}
                                         />
                                     </>
                                 :
@@ -141,30 +134,28 @@ function PartnerNoteAccordion(props) {
                                 value={data.text}
                                 onChange={(e) => handleChangeField("text",e.target.value)}
                                 fullWidth
-                                slotProps={{
-                                    input: {
-                                        endAdornment:(
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                onClick={handleSubmitEditText}
-                                                edge="end"
-                                                >
-                                                    <CheckIcon/>
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }
-                                }}
-                                
                                 />
                             </>
                         :
                             props.note.text
                     }
                     <Typography variant='body2' sx={{color:'text.secondary'}} align='right'>
-                        <IconButton aria-label="delete" size='small' color={dark ? 'silvercoin' : 'ari'} onClick={() => {setEdit(!edit)}}>
-                            <EditIcon/>
-                        </IconButton>
+                        {
+                            edit
+                            ?
+                                <>
+                                    <IconButton aria-label="delete" size='small' color={dark ? 'silvercoin' : 'ari'} onClick={handleSubmit}>
+                                        <CheckIcon/>
+                                    </IconButton>
+                                    <IconButton aria-label="delete" size='small' color={dark ? 'silvercoin' : 'ari'} onClick={() => setEdit(!edit)}>
+                                        <ClearIcon/>
+                                    </IconButton>
+                                </>
+                            :
+                                <IconButton aria-label="delete" size='small' color={dark ? 'silvercoin' : 'ari'} onClick={() => {setEdit(!edit)}}>
+                                    <EditIcon/>
+                                </IconButton>
+                        }
                         {
                             deleteCheck
                             ?

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDepositPartners, setDepositPartnersLoading, setDepositPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -12,7 +12,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from 'component/table/ListTableServer';
 import DepositPartnerDetailPanel from 'features/risk/components/DepositPartnerDetailPanel';
-import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from 'component/dialog/CallDialog';
@@ -22,10 +22,13 @@ import AndroidSwitch from 'component/switch/AndroidSwitch';
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from 'component/feedback/ExportDialog';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import TableButton from 'component/button/TableButton';
 
 function DepositPartners() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {depositPartners,depositPartnersCount,depositPartnersParams,depositPartnersLoading} = useSelector((store) => store.riskPartner);
+    const {depositPartners,depositPartnersCount,depositPartnersParams,depositPartnersLoading,partnerNotesParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
@@ -122,6 +125,17 @@ function DepositPartners() {
         { field: 'total_paid', headerName: 'Toplam Ödenen Tutar', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                <TableButton
+                text="Notlar"
+                color="celticglow"
+                icon={<NoteAltIcon/>}
+                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                />
+            </Stack>
+            )
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -138,6 +152,12 @@ function DepositPartners() {
             )
         },
     ]
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const handleProfileDialog = async (params,event) => {
         if(params.field==="name"){
@@ -304,6 +324,7 @@ function DepositPartners() {
             />
             <CallDialog/>
             <MessageDialog/>
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUnderReviews, setUnderReviewsLoading, setUnderReviewsParams } from 'store/slices/risk/underReviewSlice';
-import { setCallDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setCallDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from 'component/table/ListTableServer';
 import UnderReviewDetailPanel from 'features/risk/components/UnderReviewDetailPanel';
-import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from 'component/dialog/CallDialog';
@@ -21,10 +21,14 @@ import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from 'component/feedback/ExportDialog';
 import SmsIcon from '@mui/icons-material/Sms';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import TableButton from 'component/button/TableButton';
 
 function UnderReviews() {
     const {activeCompany} = useSelector((store) => store.organization);
     const {underReviews,underReviewsCount,underReviewsParams,underReviewsLoading} = useSelector((store) => store.underReview);
+    const {partnerNotesParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
 
@@ -135,6 +139,17 @@ function UnderReviews() {
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
         },
+        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                <TableButton
+                text="Notlar"
+                color="celticglow"
+                icon={<NoteAltIcon/>}
+                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                />
+            </Stack>
+            )
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -151,6 +166,12 @@ function UnderReviews() {
             )
         },
     ]
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const handleProfileDialog = async (params,event) => {
         if(params.field==="name"){
@@ -297,6 +318,7 @@ function UnderReviews() {
             />
             <CallDialog/>
             <MessageDialog/>
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

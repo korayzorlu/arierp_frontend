@@ -17,6 +17,7 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 
 function TerminatedLeases() {
     const {user} = useSelector((store) => store.auth);

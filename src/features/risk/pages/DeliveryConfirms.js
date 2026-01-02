@@ -2,10 +2,10 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryConfirms, setDeliveryConfirmsLoading, setDeliveryConfirmsParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setDialog, setExportDialog, setImportDialog, setLeaseDialog, setMessageDialog, setPartnerDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setDialog, setExportDialog, setImportDialog, setLeaseDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Button, Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, TextField } from '@mui/material';
+import { Button, Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, Stack, TextField } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -14,7 +14,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListTableServer from 'component/table/ListTableServer';
 import DeliveryConfirmDetailPanel from 'features/risk/components/DeliveryConfirmDetailPanel';
-import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 import CallIcon from '@mui/icons-material/Call';
 import MessageIcon from '@mui/icons-material/Message';
 import CallDialog from 'component/dialog/CallDialog';
@@ -31,10 +31,13 @@ import { fetchProjects } from 'store/slices/projects/projectSlice';
 import { set } from 'lodash';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import Dialog from 'component/feedback/Dialog';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import TableButton from 'component/button/TableButton';
 
 function DeliveryConfirms() {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {deliveryConfirms,deliveryConfirmsCount,deliveryConfirmsParams,deliveryConfirmsLoading} = useSelector((store) => store.riskPartner);
+    const {deliveryConfirms,deliveryConfirmsCount,deliveryConfirmsParams,deliveryConfirmsLoading,partnerNotesParams} = useSelector((store) => store.riskPartner);
     const {projects,projectsCount,projectsParams,projectsLoading} = useSelector((store) => store.project);
 
     const dispatch = useDispatch();
@@ -146,6 +149,17 @@ function DeliveryConfirms() {
         { field: 'total_temerrut_amount', headerName: 'Toplam Temerrüt Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_temerrut_amount)
         },
+        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                <TableButton
+                text="Notlar"
+                color="celticglow"
+                icon={<NoteAltIcon/>}
+                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                />
+            </Stack>
+            )
+        },
         { field: 'a', headerName: 'İletişim', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
@@ -162,6 +176,12 @@ function DeliveryConfirms() {
             )
         }
     ]
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const handleProfileDialog = async (params,event) => {
         if(params.field==="name"){
@@ -338,7 +358,7 @@ function DeliveryConfirms() {
             <CallDialog/>
             <MessageDialog/>
             <WarningNoticeDialog/>
-            
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }
