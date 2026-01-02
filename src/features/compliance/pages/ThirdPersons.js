@@ -92,7 +92,7 @@ function ThirdPersons() {
                                 {params.value}
                             </Button>
                         :
-                            params.row.is_customer_sent
+                            params.row.is_customer_sent && params.row.status !== "cleared"
                             ?
                                 <Stack spacing={2}>
                                     <Grid container>
