@@ -72,12 +72,12 @@ function BankAccountSelect(props) {
         loading={bankAccountsLoading}
         value={selectedValue}
         isOptionEqualToValue={(option, val) => option.uuid === val.uuid}
-        getOptionLabel={(option) =>  `${option.bank_name} - ${option.currency}` || ""}
+        getOptionLabel={(option) =>  `${option.bank_name} - ${option.account_no} - ${option.currency}` || ""}
         renderOption={(props,option) => {
             const { key, ...optionProps } = props;
             return (
                 <Typography key={key} variant="body1" sx={{ color: 'text.primary' }} {...optionProps}>
-                    {option.bank_name} - {option.currency}
+                    {option.bank_name} - {option.account_no} - {option.currency}
                 </Typography>
             )
         }}
