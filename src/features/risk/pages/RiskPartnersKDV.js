@@ -5,7 +5,7 @@ import { fetchRiskPartners, fetchRiskPartnersKDV, setRiskPartnersKDVLoading, set
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material';
+import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import DeleteDialog from 'component/feedback/DeleteDialog';
@@ -31,6 +31,7 @@ import TableButton from 'component/button/TableButton';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 
 function RiskPartnersKDV() {
+    const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {riskPartnersKDV,riskPartnersKDVCount,riskPartnersKDVParams,riskPartnersKDVLoading,partnerNotesParams} = useSelector((store) => store.riskPartner);
 
@@ -134,14 +135,22 @@ function RiskPartnersKDV() {
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
-            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                <TableButton
-                text="Notlar"
-                color="celticglow"
-                icon={<NoteAltIcon/>}
-                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
-                />
+        { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
+                <Grid container spacing={1} sx={{width:'100%'}}>
+                    <Grid size={{xs:8, sm:8}}>
+                        <TableButton
+                        text="Notlar"
+                        color="celticglow"
+                        icon={<NoteAltIcon/>}
+                        onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                        />
+                    </Grid>
+                    <Grid size={{xs:4, sm:4}}>
+                        <Badge badgeContent={params.row.partner_note_count} color={dark ? 'frostedbirch' : 'silvercoin'}></Badge>
+                    </Grid>
+                </Grid>
+                    
             </Stack>
             )
         },

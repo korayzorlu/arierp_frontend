@@ -4,7 +4,7 @@ import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from
 import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, Stack, TextField } from '@mui/material';
+import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, Stack, TextField } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -62,7 +62,7 @@ function RiskPartners() {
     }, [activeCompany,riskPartnersParams,dispatch]);
 
     const riskPartnerColumns = [
-        { field: 'name', headerName: 'İsim', flex: 4, renderCell: (params) => (
+        { field: 'name', headerName: 'İsim', width: 400, renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     <Grid container spacing={2}>
                         <Grid size={8}>
@@ -96,9 +96,9 @@ function RiskPartners() {
                 
             )
         },
-        { field: 'tc_vkn_no', headerName: 'TC/VKN', flex: 2 },
-        { field: 'crm_code', headerName: 'CRM kodu', flex: 1 },
-        { field: 'is_commercial', headerName: 'Müşteri Türü', flex: 1.5, renderCell: (params) => (
+        { field: 'tc_vkn_no', headerName: 'TC/VKN', width: 140 },
+        { field: 'crm_code', headerName: 'CRM kodu', width: 90 },
+        { field: 'is_commercial', headerName: 'Müşteri Türü', width: 120, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={12} sx={{textAlign: 'center'}}>
                     {
@@ -124,7 +124,7 @@ function RiskPartners() {
                 />
             )
         },
-        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', flex: 2, type: 'number', renderHeaderFilter: () => null,
+        { field: 'max_overdue_days', headerName: 'Maks. Gecikme Günü', width: 160, type: 'number', renderHeaderFilter: () => null,
             // valueOptions: [
             //     { value: '0', label: '30 Günü Geçmeyenler' },
             //     { value: '30', label: '30 Günü Geçenler' },    
@@ -142,21 +142,29 @@ function RiskPartners() {
             },
             renderCell: (params) => params.row.leases.max_overdue_days
         },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', width: 180, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
         },
-        { field: 'partner_notes', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
-            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                <TableButton
-                text="Notlar"
-                color="celticglow"
-                icon={<NoteAltIcon/>}
-                onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
-                />
+        { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
+                <Grid container spacing={1} sx={{width:'100%'}}>
+                    <Grid size={{xs:8, sm:8}}>
+                        <TableButton
+                        text="Notlar"
+                        color="celticglow"
+                        icon={<NoteAltIcon/>}
+                        onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crm_code})}}
+                        />
+                    </Grid>
+                    <Grid size={{xs:4, sm:4}}>
+                        <Badge badgeContent={params.row.partner_note_count} color={dark ? 'frostedbirch' : 'silvercoin'}></Badge>
+                    </Grid>
+                </Grid>
+                    
             </Stack>
             )
         },
-        { field: 'a', headerName: '', flex: 2, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'a', headerName: '', flex: 1, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" color={dark ? 'silvercoin' : 'ari'} onClick={handleCallDialog}>
