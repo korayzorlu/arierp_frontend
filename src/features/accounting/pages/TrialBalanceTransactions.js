@@ -59,14 +59,14 @@ function TrialBalanceTransactions() {
                 />
             )
         },
-        { field: 'transaction_date', headerName: 'İşlem Tarihi', width: 200 },
+        { field: 'transaction_date', headerName: 'İşlem Tarihi', width: 160 },
         { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
-        { field: 'currency', headerName: 'PB' },
-        { field: 'local_amount', headerName: 'Borç Toplamı', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'amount', headerName: 'Tutar', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'amount', headerName: 'Alacak Toplamı', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+        { field: 'currency', headerName: 'PB', width: 80 },
+        { field: 'local_amount', headerName: 'Yerel Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         
