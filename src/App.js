@@ -148,6 +148,7 @@ import ExchangedLeases from 'features/risk/pages/ExchangedLeases';
 import TrialBalanceContractInactivesCount from 'features/accounting/pages/TrialBalanceContractInactivesCount';
 import TufeExchangedLeases from 'features/risk/pages/TufeExchangedLeases';
 import BankAccountBalances from 'features/finance/pages/BankAccountBalances';
+import TrialBalanceTransactions from 'features/accounting/pages/TrialBalanceTransactions';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -354,6 +355,7 @@ function App() {
                   <Route path='/trade-accounts' element={<TradeAccounts></TradeAccounts>}></Route>
                   <Route path='/trade-transactions' element={<TradeTransactions></TradeTransactions>}></Route>
                   <Route path='/trial-balances' element={<TrialBalances></TrialBalances>}></Route>
+                  <Route path='/trial-balance-transactions' element={<TrialBalanceTransactions></TrialBalanceTransactions>}></Route>
                   <Route path='/trial-balance-contracts' element={<TrialBalanceContracts></TrialBalanceContracts>}></Route>
                   <Route path='/trial-balance-contract-under-reviews' element={<TrialBalanceContractUnderReviews></TrialBalanceContractUnderReviews>}></Route>
                   <Route path='/trial-balance-contract-inactives' element={<TrialBalanceContractInactives></TrialBalanceContractInactives>}></Route>

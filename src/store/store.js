@@ -61,6 +61,7 @@ import titleDeedReducer from './slices/projects/titleDeedSlice';
 import toBeTransferredReducer from './slices/risk/toBeTransferredSlice';
 import thirdPersonReducer from './slices/compliance/thirdPersonSlice';
 import accountingUnderReviewReducer from './slices/accounting/underReviewSlice';
+import trialBalanceTransactionReducer from './slices/accounting/trialBalanceTransactionSlice';
 
 let navigate;
 
@@ -132,6 +133,7 @@ export const store = configureStore({
         toBeTransferred: toBeTransferredReducer,
         thirdPerson: thirdPersonReducer,
         accountingUnderReview: accountingUnderReviewReducer,
+        trialBalanceTransaction: trialBalanceTransactionReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
