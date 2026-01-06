@@ -1,12 +1,12 @@
 import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTrialBalanceTransactions, resetTrialBalanceTransactionsParams, setTrialBalanceTransactionsParams } from '../../../store/slices/accounting/trialBalanceTransactionSlice';
+import { fetchTrialBalanceTransactions, fetchTrialBalanceTransactionsInLease, resetTrialBalanceTransactionsParams, setTrialBalanceTransactionsLoading, setTrialBalanceTransactionsParams } from '../../../store/slices/accounting/trialBalanceTransactionSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import { Grid } from '@mui/material';
 import ListTable from '../../../component/table/ListTable';
 import CustomTableButton from '../../../component/table/CustomTableButton';
-import { setExportDialog } from '../../../store/slices/notificationSlice';
+import { setExportDialog, setTrialBalanceTransactionDialog } from '../../../store/slices/notificationSlice';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
 import ListTableServer from '../../../component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -60,7 +60,12 @@ function TrialBalanceTransactions() {
             )
         },
         { field: 'transaction_date', headerName: 'İşlem Tarihi', width: 120 },
-        { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200 },
+        { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200, renderCell: (params) => (
+                <div style={{ cursor: 'pointer' }}>
+                    {params.value}
+                </div>
+            )
+        },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
         { field: 'transaction_text', headerName: 'İşlem Metni', width: 400 },
         { field: 'amount', headerName: 'Tutar', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
@@ -74,11 +79,20 @@ function TrialBalanceTransactions() {
         
     ]
 
+    const handleProfileDialog = async (params,event) => {
+        if(params.field==="trial_balance"){
+            dispatch(setTrialBalanceTransactionsLoading(true));
+            await dispatch(fetchTrialBalanceTransactionsInLease({activeCompany,tb_uuid:params.row.trial_balance_uuid})).unwrap();
+            dispatch(setTrialBalanceTransactionDialog(true));
+            dispatch(setTrialBalanceTransactionsLoading(false));
+        };
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
                 <ListTableServer
-                title="Genel Mizan Listesi"
+                title="Mizan Hareketleri Listesi"
                 rows={trialBalanceTransactions}
                 columns={columns}
                 getRowId={(row) => row.uuid}
@@ -104,6 +118,7 @@ function TrialBalanceTransactions() {
                         py: 1,
                     },
                 }}
+                onCellClick={handleProfileDialog}
                 />
             </Grid>
             

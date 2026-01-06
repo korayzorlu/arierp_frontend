@@ -12,6 +12,8 @@ const initialState = {
         format: 'datatables'
     },
     trialBalanceTransactionsLoading:false,
+    trialBalanceTransactionsInLease:[],
+    trialBalanceTransactionsInLeaseCode:0,
 
 }
 
@@ -76,6 +78,11 @@ export const deleteTrialBalanceTransaction = createAsyncThunk('auth/deleteTrialB
     }
 });
 
+export const fetchTrialBalanceTransactionsInLease = createAsyncThunk('organization/fetchTrialBalanceTransactionsInLease', async ({activeCompany,tb_uuid}) => {
+    const response = await axios.get(`/accounting/trial_balance_transactions/?active_company=${activeCompany.id}&tb_uuid=${tb_uuid}`, {withCredentials: true});
+    return response.data;
+});
+
 const trialBalanceTransactionSlice = createSlice({
     name:"trialBalanceTransaction",
     initialState,
@@ -102,6 +109,9 @@ const trialBalanceTransactionSlice = createSlice({
         setTrialBalanceTransactionOverdues: (state,action) => {
             state.leaseOverdues = action.payload;
         },
+        setTrialBalanceTransactionsInLeaseCode: (state,action) => {
+            state.trialBalanceTransactionsInLeaseCode = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -116,6 +126,17 @@ const trialBalanceTransactionSlice = createSlice({
             .addCase(fetchTrialBalanceTransactions.rejected, (state,action) => {
                 state.trialBalanceTransactionsLoading = false
             })
+            //fetch trial balance transactions in lease
+            .addCase(fetchTrialBalanceTransactionsInLease.pending, (state) => {
+                state.trialBalanceTransactionsLoading = true;
+            })
+            .addCase(fetchTrialBalanceTransactionsInLease.fulfilled, (state,action) => {
+                state.trialBalanceTransactionsInLease = action.payload;
+                state.trialBalanceTransactionsLoading = false;
+            })
+            .addCase(fetchTrialBalanceTransactionsInLease.rejected, (state,action) => {
+                state.trialBalanceTransactionsLoading = false;
+            })
     },
   
 })
@@ -126,5 +147,6 @@ export const {
     resetTrialBalanceTransactionsParams,
     deleteTrialBalanceTransactions,
     setTrialBalanceTransactionOverdues,
+    setTrialBalanceTransactionsInLeaseCode,
 } = trialBalanceTransactionSlice.actions;
 export default trialBalanceTransactionSlice.reducer;

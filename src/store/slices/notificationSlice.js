@@ -32,6 +32,7 @@ const initialState = {
     thirdPersonPaymentDetailDialog: false,
     thirdPersonStatusDialog: false,
     tradeTransactionDialog: false,
+    trialBalanceTransactionDialog: false,
     unreadNotifications: 0,
     userDialog: false,
     warningNoticeDialog: false
@@ -144,6 +145,9 @@ const notificationSlice = createSlice({
         setThirdPersonDialog: (state,action) => {
             state.thirdPersonDialog = action.payload;
         },
+        setTrialBalanceTransactionDialog: (state,action) => {
+            state.trialBalanceTransactionDialog = action.payload;
+        },
         setFinmaksTransactionNameDialog: (state,action) => {
             state.finmaksTransactionNameDialog = action.payload;
         },
@@ -209,6 +213,7 @@ export const {
     setThirdPersonDocumentDialog,
     setThirdPersonPaymentDetailDialog,
     setThirdPersonDialog,
+    setTrialBalanceTransactionDialog,
     setFinmaksTransactionNameDialog,
     setChangePartnerDialog,
 } = notificationSlice.actions;
