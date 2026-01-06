@@ -60,14 +60,17 @@ function TrialBalanceTransactions() {
             )
         },
         { field: 'transaction_date', headerName: 'İşlem Tarihi', width: 120 },
-        { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200, renderCell: (params) => (
-                <div style={{ cursor: 'pointer' }}>
-                    {params.value}
-                </div>
-            )
-        },
+        { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200},
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
         { field: 'transaction_text', headerName: 'İşlem Metni', width: 400 },
+        { field: 'amount_type', headerName: 'İşlem Tipi', width: 200, renderCell: (params) => (
+                params.value === "0"
+                ?
+                    "Alacak"
+                :
+                    "Borç"
+            )
+        },
         { field: 'amount', headerName: 'Tutar', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -78,15 +81,6 @@ function TrialBalanceTransactions() {
         { field: 'user', headerName: 'Kullanıcı', width: 200 },
         
     ]
-
-    const handleProfileDialog = async (params,event) => {
-        if(params.field==="trial_balance"){
-            dispatch(setTrialBalanceTransactionsLoading(true));
-            await dispatch(fetchTrialBalanceTransactionsInLease({activeCompany,tb_uuid:params.row.trial_balance_uuid})).unwrap();
-            dispatch(setTrialBalanceTransactionDialog(true));
-            dispatch(setTrialBalanceTransactionsLoading(false));
-        };
-    };
 
     return (
         <PanelContent>
@@ -118,7 +112,6 @@ function TrialBalanceTransactions() {
                         py: 1,
                     },
                 }}
-                onCellClick={handleProfileDialog}
                 />
             </Grid>
             
