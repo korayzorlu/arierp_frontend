@@ -1,4 +1,4 @@
-import { useGridApiRef } from '@mui/x-data-grid-premium';
+import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTrialBalanceTransactions, resetTrialBalanceTransactionsParams, setTrialBalanceTransactionsParams } from '../../../store/slices/accounting/trialBalanceTransactionSlice';
@@ -59,9 +59,10 @@ function TrialBalanceTransactions() {
                 />
             )
         },
-        { field: 'transaction_date', headerName: 'İşlem Tarihi', width: 160 },
+        { field: 'transaction_date', headerName: 'İşlem Tarihi', width: 120 },
         { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
+        { field: 'transaction_text', headerName: 'İşlem Metni', width: 400 },
         { field: 'amount', headerName: 'Tutar', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -69,6 +70,7 @@ function TrialBalanceTransactions() {
         { field: 'local_amount', headerName: 'Yerel Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'user', headerName: 'Kullanıcı', width: 200 },
         
     ]
 
@@ -96,6 +98,12 @@ function TrialBalanceTransactions() {
                 rowCount={trialBalanceTransactionsCount}
                 setParams={(value) => dispatch(setTrialBalanceTransactionsParams(value))}
                 headerFilters={true}
+                autoRowHeight
+                sx={{
+                    [`& .${gridClasses.cell}`]: {
+                        py: 1,
+                    },
+                }}
                 />
             </Grid>
             
