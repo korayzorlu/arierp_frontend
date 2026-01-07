@@ -19,7 +19,9 @@ function BasicTable(props) {
     apiRef,
     noToolbarButtons,
     getRowId,
-    density
+    density,
+    sx,
+    autoRowHeight
     } = props;
 
     const [paginationModel, setPaginationModel] = useState({
@@ -162,6 +164,7 @@ function BasicTable(props) {
             onRowSelectionModelChange={onRowSelectionModelChange}
             autoHeight
             sx={{
+                ...sx,
                 [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                   outline: 'none',
                 },
@@ -179,6 +182,7 @@ function BasicTable(props) {
             noToolbarButtons={noToolbarButtons}
             getRowId={getRowId || ((row) => row.uuid)}
             density={density}
+            getRowHeight={() => autoRowHeight ? 'auto' : 'false'}
             />
         </TableContent>
     )

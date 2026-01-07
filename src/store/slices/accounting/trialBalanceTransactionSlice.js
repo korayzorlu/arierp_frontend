@@ -79,7 +79,7 @@ export const deleteTrialBalanceTransaction = createAsyncThunk('auth/deleteTrialB
 });
 
 export const fetchTrialBalanceTransactionsInLease = createAsyncThunk('organization/fetchTrialBalanceTransactionsInLease', async ({activeCompany,tb_uuid}) => {
-    const response = await axios.get(`/accounting/trial_balance_transactions/?active_company=${activeCompany.id}&tb_uuid=${tb_uuid}`, {withCredentials: true});
+    const response = await axios.get(`/accounting/trial_balance_transactions/?ac=${activeCompany.id}&tb_uuid=${tb_uuid}`, {withCredentials: true});
     return response.data;
 });
 

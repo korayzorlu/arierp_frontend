@@ -5,6 +5,7 @@ import MUIDialog from '@mui/material/Dialog';
 import { Button, DialogActions, DialogContent, DialogContentText, Stack } from '@mui/material';
 import BasicTable from 'component/table/BasicTable';
 import { fetchTrialBalanceTransactionsInLease } from 'store/slices/accounting/trialBalanceTransactionSlice';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function TrialBalanceTransactionDialog(props) {
     const {user} = props;
@@ -58,9 +59,15 @@ function TrialBalanceTransactionDialog(props) {
                             title={`Hesap - ${trialBalanceTransactionsInLease ? trialBalanceTransactionsInLease.length > 0 ? trialBalanceTransactionsInLease[0]["trial_balance"] : "" : ""}`}
                             rows={trialBalanceTransactionsInLease}
                             columns={columns}
-                            getRowId={(row) => row.id}
+                            getRowId={(row) => row.uuid}
                             disableRowSelectionOnClick={true}
                             loading={trialBalanceTransactionsLoading}
+                            autoRowHeight
+                            sx={{
+                                [`& .${gridClasses.cell}`]: {
+                                    py: 1,
+                                },
+                            }}
                             // initialState={{
                             //     aggregation: {
                             //         model: {

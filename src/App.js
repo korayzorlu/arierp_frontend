@@ -149,6 +149,7 @@ import TrialBalanceContractInactivesCount from 'features/accounting/pages/TrialB
 import TufeExchangedLeases from 'features/risk/pages/TufeExchangedLeases';
 import BankAccountBalances from 'features/finance/pages/BankAccountBalances';
 import TrialBalanceTransactions from 'features/accounting/pages/TrialBalanceTransactions';
+import MaliTablo from 'features/accounting/pages/bddk/MaliTablo';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -354,6 +355,8 @@ function App() {
 
                   <Route path='/trade-accounts' element={<TradeAccounts></TradeAccounts>}></Route>
                   <Route path='/trade-transactions' element={<TradeTransactions></TradeTransactions>}></Route>
+
+                  {/* accounting */}
                   <Route path='/trial-balances' element={<TrialBalances></TrialBalances>}></Route>
                   <Route path='/trial-balance-transactions' element={<TrialBalanceTransactions></TrialBalanceTransactions>}></Route>
                   <Route path='/trial-balance-contracts' element={<TrialBalanceContracts></TrialBalanceContracts>}></Route>
@@ -361,8 +364,9 @@ function App() {
                   <Route path='/trial-balance-contract-inactives' element={<TrialBalanceContractInactives></TrialBalanceContractInactives>}></Route>
                   <Route path='/count-trial-balance-contract-inactives' element={<TrialBalanceContractInactivesCount></TrialBalanceContractInactivesCount>}></Route>
                   <Route path='/accounting-under-reviews' element={<AccountingUnderReviews></AccountingUnderReviews>}></Route>
-
                   <Route path='/ledger-accounts' element={<LedgerAccounts></LedgerAccounts>}></Route>
+
+                  <Route path='/mali-tablo' element={<MaliTablo></MaliTablo>}></Route>
 
                   <Route path='/accounts' element={<Accounts></Accounts>}></Route>
                   <Route path='/accounts/accounts-receivable' element={<Receivable></Receivable>}></Route>

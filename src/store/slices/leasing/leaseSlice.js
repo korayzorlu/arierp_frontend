@@ -22,6 +22,15 @@ const initialState = {
     },
     activeLeasesLoading:false,
     //
+    projects:[],
+    projectsCount:0,
+    projectsParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    projectsLoading:false,
+    //
     leasesSummary:{},
     leasesSummaryCount:0,
     leasesSummaryParams:{
@@ -79,6 +88,21 @@ export const fetchActiveLeases = createAsyncThunk('auth/fetchActiveLeases', asyn
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchProjects = createAsyncThunk('auth/fetchProjects', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/projects/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        console.log(response.data)
         return response.data;
     } catch (error) {
         return [];
@@ -314,6 +338,23 @@ const leaseSlice = createSlice({
             };
         },
         //
+        setProjectsLoading: (state,action) => {
+            state.projectsLoading = action.payload;
+        },
+        setProjectsParams: (state,action) => {
+            state.projectsParams = {
+                ...state.projectsParams,
+                ...action.payload
+            };
+        },
+        resetProjectsParams: (state,action) => {
+            state.projectsParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        //
         setLeasesSummaryLoading: (state,action) => {
             state.leasesSummaryLoading = action.payload;
         },
@@ -382,6 +423,18 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchActiveLeases.rejected, (state,action) => {
                 state.activeLeasesLoading = false
+            })
+            // projects
+            .addCase(fetchProjects.pending, (state) => {
+                state.projectsLoading = true
+            })
+            .addCase(fetchProjects.fulfilled, (state,action) => {
+                state.projects = action.payload.data || action.payload;
+                state.projectsCount = action.payload.recordsTotal || 0;
+                state.projectsLoading = false
+            })
+            .addCase(fetchProjects.rejected, (state,action) => {
+                state.projectsLoading = false
             })
             //leases summary
             .addCase(fetchLeasesSummary.pending, (state) => {
@@ -472,6 +525,9 @@ export const {
     setTerminatedSummaryParams,
     resetLeasesParams,
     deleteLeases,
-    setLeaseOverdues
+    setLeaseOverdues,
+    setProjectsLoading,
+    setProjectsParams,
+    resetProjectsParams,
 } = leaseSlice.actions;
 export default leaseSlice.reducer;
