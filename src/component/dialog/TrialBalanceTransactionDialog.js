@@ -29,6 +29,14 @@ function TrialBalanceTransactionDialog(props) {
         { field: 'trial_balance', headerName: 'Mizan Hesabı', width: 200 },
         { field: 'account_name', headerName: 'Hesap Adı', width: 400 },
         { field: 'transaction_text', headerName: 'İşlem Metni', width: 400 },
+        { field: 'amount_type', headerName: 'İşlem Tipi', width: 200, renderCell: (params) => (
+                params.value === "0"
+                ?
+                    "Alacak"
+                :
+                    "Borç"
+            )
+        },
         { field: 'amount', headerName: 'Tutar', width: 140 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
