@@ -151,7 +151,8 @@ function ListTable(props) {
     noColumnHeaders,
     noToolbar,
     lazyLoading,
-    disableColumnFilter
+    disableColumnFilter,
+    pageSizeOptions,
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -180,7 +181,7 @@ function ListTable(props) {
   
 
   return (
-    <TableContent height={autoHeight ? 'auto' : (height || null)}>
+    <TableContent height={height}>
       <StyledDataGridPremium
       slots={{
         toolbar: noToolbar ? () => null : MUIToolbar,
@@ -224,7 +225,7 @@ function ListTable(props) {
       columnBuffer={columnBuffer}
       rowHeight={rowHeight}
       disableVirtualization={disableVirtualization}
-      pageSizeOptions={[25, 50, 100]}
+      pageSizeOptions={pageSizeOptions || [25, 50, 100]}
       pagination={noPagination ? false : true}
       paginationModel={paginationModel}
       headerFilters={headerFilters}

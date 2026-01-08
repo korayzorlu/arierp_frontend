@@ -14,6 +14,8 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import StorageIcon from '@mui/icons-material/Storage';
 import TabPanel from 'component/tab/TabPanel';
+import Hesaplar from 'features/accounting/components/bddk/Hesaplar';
+import Bl222af from 'features/accounting/components/bddk/Bl222af';
 
 
 function MaliTablo() {
@@ -29,7 +31,7 @@ function MaliTablo() {
     return (
         <PanelContent>
             <Paper>
-                <Stack spacing={1}>
+                <Stack spacing={2}>
                     <Grid container spacing={1}>
                         <Grid size={{xs:12,sm:12}}>
                             <Tabs
@@ -45,7 +47,10 @@ function MaliTablo() {
                         </Grid>
                     </Grid>
                     <TabPanel value={tabValue} index={0}>
-
+                        <Hesaplar/>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1}>
+                        <Bl222af/>
                     </TabPanel>
                 </Stack>
             </Paper>

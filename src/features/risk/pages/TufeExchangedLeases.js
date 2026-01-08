@@ -88,19 +88,24 @@ function TufeExchangedLeases() {
         { field: 'overdue_amount', headerName: 'Geciken Tutar', width:120, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'tufeli_geciken', headerName: 'Tüfeli Geciken Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
-        },
-        { field: 'tufe_amount', headerName: 'Tüfe Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'tufe_fark', headerName: 'Tüfe Farkı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.row.geciken_usd > 0 ? 'bg-red' : '';
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'tufe_rate', headerName: 'Tüfe Oranı', width:160, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress
-        },
-        { field: 'tufe_endeks', headerName: 'Söz. Birim Endeksi', width:160, type: 'number', renderHeaderFilter: () => null,
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
-        },
+        // { field: 'tufeli_geciken', headerName: 'Tüfeli Geciken Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
+        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        // },
+        // { field: 'tufe_amount', headerName: 'Tüfe Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        //         return params.row.geciken_usd > 0 ? 'bg-red' : '';
+        //     },
+        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        // },
+        // { field: 'tufe_rate', headerName: 'Tüfe Oranı', width:160, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress
+        // },
+        // { field: 'tufe_endeks', headerName: 'Söz. Birim Endeksi', width:160, type: 'number', renderHeaderFilter: () => null,
+        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        // },
         //{ field: 'currency', headerName: 'PB', width:90 },
         { field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120 },
