@@ -25,8 +25,17 @@ function Bl222af() {
     }, [activeCompany,bl222afParams,dispatch]);
 
     const columns = [
-        { field: 'sira_no', headerName: 'Sıra No', width: 200 },
-        { field: 'sira_adi', headerName: 'Sıra Adı', width: 200 },
+        { field: 'sira_no', headerName: 'Sıra No', width: 90, type: 'number', renderHeaderFilter: () => null },
+        { field: 'sira_adi', headerName: 'Sıra Adı', width: 600 },
+        { field: 'tp', headerName: 'TP', width: 160, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'yp', headerName: 'YP', width: 160, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'toplam', headerName: 'Toplam', width: 160, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
         { field: 'currency', headerName: 'PB', width: 200, renderHeaderFilter: () => null },
     ]
 
