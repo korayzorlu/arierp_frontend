@@ -26,17 +26,40 @@ function Bl222af() {
 
     const columns = [
         { field: 'sira_no', headerName: 'Sıra No', width: 90, type: 'number', renderHeaderFilter: () => null },
-        { field: 'sira_adi', headerName: 'Sıra Adı', width: 600 },
+        { field: 'sira_adi', headerName: 'Sıra Adı', width: 650,
+            renderCell: (params) =>
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    <Typography variant="body2" sx={{ fontWeight: params.value.font_weight }}>
+                        {params.value.font_weight === 'bold' ? params.value.text : `\u00A0\u00A0\u00A0\u00A0${params.value.text}`}
+                    </Typography>
+                </Stack>
+        },
         { field: 'tp', headerName: 'TP', width: 160, type: 'number', renderHeaderFilter: () => null,
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+            renderCell: (params) =>  
+                params.row.sira_adi.text === 'AKTİF KALEMLER' || params.row.bos
+                ?
+                    null
+                :
+                    new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+            
         },
         { field: 'yp', headerName: 'YP', width: 160, type: 'number', renderHeaderFilter: () => null,
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+            renderCell: (params) =>  
+                params.row.sira_adi.text === 'AKTİF KALEMLER' || params.row.bos
+                ?
+                    null
+                :
+                    new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
         { field: 'toplam', headerName: 'Toplam', width: 160, type: 'number', renderHeaderFilter: () => null,
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+            renderCell: (params) =>  
+                params.row.sira_adi.text === 'AKTİF KALEMLER' || params.row.bos
+                ?
+                    null
+                :
+                    new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'currency', headerName: 'PB', width: 200, renderHeaderFilter: () => null },
+        //{ field: 'currency', headerName: 'PB', width: 200, renderHeaderFilter: () => null },
     ]
 
     return (
@@ -60,7 +83,7 @@ function Bl222af() {
             </Grid>
             <ListTable
             title=""
-            height="calc(100vh - 150px)"
+            height="calc(100vh - 300px)"
             rows={bl222af}
             columns={columns}
             getRowId={(row) => row.id}
