@@ -85,6 +85,12 @@ function TufeExchangedLeases() {
             )
         },
         { field: 'paid_rate', headerName: 'Ödeme Oranı', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
+        { field: 'odenmesi_gereken_yerel', headerName: 'Ödenmesi Gereken Yerel', width:180, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'odenen_yerel', headerName: 'Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
         { field: 'overdue_amount', headerName: 'Geciken Tutar', width:120, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
