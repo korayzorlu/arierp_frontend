@@ -85,16 +85,22 @@ function TufeExchangedLeases() {
             )
         },
         { field: 'paid_rate', headerName: 'Ödeme Oranı', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: cellProgress },
-        { field: 'odenmesi_gereken_yerel', headerName: 'Ödenmesi Gereken Yerel', width:180, type: 'number', renderHeaderFilter: () => null,
+        { field: 'odenmesi_gereken_yerel', headerName: 'Ödenmesi Gereken(A1)', width:180, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'odenen_yerel', headerName: 'Ödenen Yerel', width:120, type: 'number', renderHeaderFilter: () => null,
+        { field: 'tufe_odenmesi_gereken', headerName: 'Tüfeli Ödenmesi Gereken(A2)', width:180, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'odenen_yerel', headerName: 'Ödenen(B1)', width:120, type: 'number', renderHeaderFilter: () => null,
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'tufe_odenen', headerName: 'Tüfeli Ödenen(B2)', width:180, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
         { field: 'overdue_amount', headerName: 'Geciken Tutar', width:120, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'tufe_fark', headerName: 'Tüfe Farkı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'tufe_fark', headerName: 'Tüfeli Bakiye(B1-B2)', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.row.geciken_usd > 0 ? 'bg-red' : '';
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
