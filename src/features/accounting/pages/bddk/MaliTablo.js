@@ -40,17 +40,17 @@ function MaliTablo() {
                             scrollButtons="auto"
                             onChange={handleChangeTabValue}
                             >
-                                <Tab label="Hesaplar" value={0} icon={<AccountBalanceIcon/>} iconPosition="start"/>
-                                <Tab label="BL222AF" value={1} icon={<ViewListIcon/>} iconPosition="start"/>
-                                <Tab label="KZ222AF" value={2} icon={<ViewListIcon/>} iconPosition="start"/>
+                                <Tab label="BL222AF" value={0} icon={<ViewListIcon/>} iconPosition="start"/>
+                                <Tab label="KZ222AF" value={1} icon={<ViewListIcon/>} iconPosition="start"/>
+                                <Tab label="Hesaplar" value={2} icon={<AccountBalanceIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                     </Grid>
                     <TabPanel value={tabValue} index={0}>
-                        <Hesaplar/>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={1}>
                         <Bl222af/>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={2}>
+                        <Hesaplar/>
                     </TabPanel>
                 </Stack>
             </Paper>
