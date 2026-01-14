@@ -57,7 +57,7 @@ function Bl222af() {
                     new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
             
         },
-        { field: 'yp', headerName: 'YP', width: 160, type: 'number', renderHeaderFilter: () => null,
+        { field: 'yp_usd', headerName: 'YP USD', width: 160, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  
                 params.row.bos
                 ?
@@ -65,7 +65,7 @@ function Bl222af() {
                 :
                     new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'toplam', headerName: 'Toplam', width: 160, type: 'number', renderHeaderFilter: () => null,
+        { field: 'yp_eur', headerName: 'YP EUR', width: 160, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  
                 params.row.bos
                 ?
@@ -73,6 +73,14 @@ function Bl222af() {
                 :
                     new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
+        // { field: 'toplam', headerName: 'Toplam', width: 160, type: 'number', renderHeaderFilter: () => null,
+        //     renderCell: (params) =>  
+        //         params.row.bos
+        //         ?
+        //             null
+        //         :
+        //             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        // },
         //{ field: 'currency', headerName: 'PB', width: 200, renderHeaderFilter: () => null },
     ]
 

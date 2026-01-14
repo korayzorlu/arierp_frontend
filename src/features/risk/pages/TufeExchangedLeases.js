@@ -100,8 +100,11 @@ function TufeExchangedLeases() {
         { field: 'overdue_amount', headerName: 'Geciken Tutar', width:120, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'tufe_fark', headerName: 'Tüfeli Bakiye', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.row.geciken_usd > 0 ? 'bg-red' : '';
+        { field: 'tufe_fark', headerName: 'Tüfeli Bakiye', width:120, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'tufe_amount', headerName: 'Tüfe Farkı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+                return params.row.geciken_usd > 0 ? 'bg-red' : 'bg-green';
             },
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
