@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
-import { setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
 import { Box, Button, Grid, IconButton, Stack } from '@mui/material';
 import ListTable from 'component/table/ListTable';
@@ -22,6 +22,7 @@ import Dialog from '../../../component/feedback/Dialog';
 import { fetchWarnedRiskPartners, updateWarningNoticeStatus } from 'store/slices/leasing/riskPartnerSlice';
 import { fetchBankActivities } from 'store/slices/leasing/bankActivitySlice';
 import TableButton from 'component/button/TableButton';
+import axios from 'axios';
 
 function WarnedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases,project} = props;
@@ -158,6 +159,32 @@ function WarnedRiskPartnerDetailPanel(props) {
         dispatch(setWarningNoticeDialog(true));
     };
 
+    const fetchFile = async () => {
+        dispatch(setDialog(false));
+        try {
+            const response = await axios.post('/risk/update_warning_notice_status/',
+                {
+                    uuids:Array.from(rowSelectionModel.ids),
+                },
+                {
+                    responseType: "blob",
+                    withCredentials: true
+                }
+            );
+            console.log(response)
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(response.data);
+            a.download = 'ihtarlar.zip';
+            a.click();
+            URL.revokeObjectURL(a.href);
+            dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}}));
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
+    };
+
     const handleUpdateWarningNoticeStatus = async () => {
         dispatch(setDialog(false));
         const response = await dispatch(updateWarningNoticeStatus({
@@ -235,7 +262,7 @@ function WarnedRiskPartnerDetailPanel(props) {
             <Dialog
             title="Seçili Kayıtları Kapsamlı İhtara Gönder"
             text="Devam Etmek İstiyor musun?"
-            onClick={handleUpdateWarningNoticeStatus}
+            onClick={fetchFile}
             onClickColor='opposite'
             onClickText='Gönder'
             />

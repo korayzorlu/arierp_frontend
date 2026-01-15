@@ -7,6 +7,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { Grid, Stack, Typography } from '@mui/material';
 import { GRID_ROW_GROUPING_SINGLE_GROUPING_FIELD, useGridApiRef, useKeepGroupedColumnsHidden } from '@mui/x-data-grid-premium';
+import { useDemoData } from '@mui/x-data-grid-generator';
+import ListTableServer from 'component/table/ListTableServer';
 
 function Bl222af() {
      const {user} = useSelector((store) => store.auth);
@@ -16,13 +18,19 @@ function Bl222af() {
      const dispatch = useDispatch();
      const apiRef = useGridApiRef();
 
+     const { data, loading } = useDemoData({
+        dataSet: 'Commodity',
+        rowLength: 100,
+        maxColumns: 6,
+    });
+
     useEffect(() => {
         dispatch(resetBl222afParams());
     }, [activeCompany,dispatch]);
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBl222af({activeCompany}));
+            dispatch(fetchBl222af({activeCompany,params:bl222afParams})).unwrap();
         });
     }, [activeCompany,bl222afParams,dispatch]);
 
@@ -113,24 +121,27 @@ function Bl222af() {
                     <Typography variant="body2" sx={{pr: 4}}>DÖNEM : 11 / 2025</Typography>
                 </Grid>
             </Grid>
-            <ListTable
+            <ListTableServer
             title=""
             height="calc(100vh - 300px)"
             rows={bl222af}
             columns={columns}
             getRowId={(row) => row.id}
             loading={bl222afLoading}
+            rowCount={bl222afCount}
             customButtons={
                 <>
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchBl222af({activeCompany})).unwrap()}
+                    onClick={() => dispatch(fetchBl222af({activeCompany,params:bl222afParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
                 </>
             }
             setParams={(value) => dispatch(setBl222afParams(value))}
-            //apiRef={apiRef}
+            apiRef={apiRef}
+            pageSize={100}
+            hideFooter
             //initialState={initialState}
             //headerFilters={true}
             //noDownloadButton

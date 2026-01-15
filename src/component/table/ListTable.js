@@ -153,6 +153,7 @@ function ListTable(props) {
     lazyLoading,
     disableColumnFilter,
     pageSizeOptions,
+    autoPageSize
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -228,6 +229,7 @@ function ListTable(props) {
       pageSizeOptions={pageSizeOptions || [25, 50, 100]}
       pagination={noPagination ? false : true}
       paginationModel={paginationModel}
+      autoPageSize={autoPageSize}
       headerFilters={headerFilters}
       onPaginationModelChange={(model) => setPaginationModel(model)}
       loading={loading}

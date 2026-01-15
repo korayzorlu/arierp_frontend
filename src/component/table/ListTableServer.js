@@ -58,7 +58,10 @@ function ListTableServer(props) {
     processRowUpdate,
     disableMultipleRowSelection,
     noDownloadButton,
-    disableVirtualization
+    disableVirtualization,
+    autoPageSize,
+    pageSizeOptions,
+    pageSize
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -67,7 +70,7 @@ function ListTableServer(props) {
 
   const [isPending, startTransition] = useTransition();
 
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 50 })
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: pageSize || 50 })
 
   const [filterParams, setFilterParams] = useState({});
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
@@ -279,9 +282,10 @@ function ListTableServer(props) {
           columnVisibilityModel: hiddenColumns,
         },
       }}
-      pageSizeOptions={[25, 50, 100]}
+      pageSizeOptions={pageSizeOptions || [25, 50, 100]}
       pagination
       paginationModel={paginationModel}
+      autoPageSize={autoPageSize} 
       //onPaginationModelChange={(model) => setPaginationModel(model)}
       paginationMode="server"
       sortingMode="server"
