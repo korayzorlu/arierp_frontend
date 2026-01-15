@@ -103,9 +103,7 @@ function TufeExchangedLeases() {
         { field: 'tufe_fark', headerName: 'Tüfeli Bakiye', width:120, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'tufe_amount', headerName: 'Tüfe Farkı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.row.geciken_usd > 0 ? 'bg-red' : 'bg-green';
-            },
+        { field: 'tufe_amount', headerName: 'Tüfe Farkı', width:160, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
         // { field: 'tufeli_geciken', headerName: 'Tüfeli Geciken Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
