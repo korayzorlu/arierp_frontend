@@ -63,6 +63,7 @@ import thirdPersonReducer from './slices/compliance/thirdPersonSlice';
 import accountingUnderReviewReducer from './slices/accounting/underReviewSlice';
 import trialBalanceTransactionReducer from './slices/accounting/trialBalanceTransactionSlice';
 import bddkReducer from './slices/accounting/bddkSlice';
+import pepPartnerReducer from './slices/compliance/pepPartnerSlice';
 
 let navigate;
 
@@ -136,6 +137,7 @@ export const store = configureStore({
         accountingUnderReview: accountingUnderReviewReducer,
         trialBalanceTransaction: trialBalanceTransactionReducer,
         bddk: bddkReducer,
+        pepPartner: pepPartnerReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

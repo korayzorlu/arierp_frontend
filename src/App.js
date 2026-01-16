@@ -150,6 +150,7 @@ import TufeExchangedLeases from 'features/risk/pages/TufeExchangedLeases';
 import BankAccountBalances from 'features/finance/pages/BankAccountBalances';
 import TrialBalanceTransactions from 'features/accounting/pages/TrialBalanceTransactions';
 import MaliTablo from 'features/accounting/pages/bddk/MaliTablo';
+import PepPartners from 'features/compliance/pages/PepPartners';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -302,6 +303,7 @@ function App() {
                   <Route path='/black-list-persons' element={<BlackListPersons></BlackListPersons>}></Route>
                   <Route path='/blacklist-persons/add' element={<AddBlacklistPerson></AddBlacklistPerson>}></Route>
                   <Route path='/scan-partners' element={<ScanPartners></ScanPartners>}></Route>
+                  <Route path='/pep-partners' element={<PepPartners></PepPartners>}></Route>
                   <Route path='/third-persons' element={<ThirdPersons></ThirdPersons>}></Route>
                   <Route path='/vpos-third-persons' element={<VposThirdPersons></VposThirdPersons>}></Route>
 
