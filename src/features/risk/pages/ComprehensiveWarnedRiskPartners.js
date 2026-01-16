@@ -29,6 +29,7 @@ import SendSMSDialog from 'component/dialog/SendSMSDialog';
 import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
+import ComprehensiveWarnedRiskPartnerDetailPanel from '../components/ComprehensiveWarnedRiskPartnerDetailPanel';
 
 function ComprehensiveWarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -319,7 +320,7 @@ function ComprehensiveWarnedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:comprehensiveWarnedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<ComprehensiveWarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project}></ComprehensiveWarnedRiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog
