@@ -38,7 +38,7 @@ function Bl222af() {
         //{ field: 'type', headerName: '', width: 90, renderHeaderFilter: () => null, groupable: true, hideable: false, },
         { field: 'sira_no', headerName: 'Sıra No', width: 90, type: 'number', renderHeaderFilter: () => null,
             renderCell: (params) =>  
-                params.row.sira_adi?.text === 'AKTİF KALEMLER' || params.row.sira_adi?.text === 'PASİF KALEMLER'
+                params.row.sira_adi?.text === 'AKTİF KALEMLER' || params.row.sira_adi?.text === 'PASİF KALEMLER' || params.row.sira_adi?.text === 'NAZIM HESAP KALEMLERİ'
                 ?
                     null
                 :

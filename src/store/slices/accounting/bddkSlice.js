@@ -86,8 +86,8 @@ const bddkSlice = createSlice({
         },
         resetBl222afParams: (state,action) => {
             state.bl222afParams = {
-                start: 0 * 100,
-                length: (0 + 1) * 100,
+                start: 0 * 120,
+                length: (0 + 1) * 120,
                 format: 'datatables'
             };
         },
