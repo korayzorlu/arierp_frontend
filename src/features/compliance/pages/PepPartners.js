@@ -53,9 +53,9 @@ function PepPartners() {
         //             <Chip variant='outlined' label="Değil" size='small'/>
         //     )   
         // },
-        { field: 'pep_degree', headerName: 'PEP Derecesi', width: 90 },
-        { field: 'pep_description', headerName: 'PEP Açıklaması', width: 360 },
-        { field: 'email', headerName: 'Email', width: 300 },
+        { field: 'pep_degree', headerName: 'PEP Derecesi', width: 180 },
+        { field: 'pep_description', headerName: 'PEP Açıklaması', width: 400 },
+        //{ field: 'email', headerName: 'Email', width: 300 },
     ]
 
     return (
