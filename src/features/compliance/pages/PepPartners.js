@@ -41,6 +41,7 @@ function PepPartners() {
                 </Link>
             )
         },
+        { field: 'salaried_title', headerName: 'Meslek', width: 120 },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 120 },
         { field: 'crm_code', headerName: 'CRM Kodu', width: 90 },
         { field: 'birthday', headerName: 'Doğum Tarihi', width: 120 },
