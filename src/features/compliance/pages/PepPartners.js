@@ -15,6 +15,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Link } from 'react-router-dom';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function PepPartners() {
     const {mobile} = useSelector((store) => store.sidebar);
@@ -31,7 +32,7 @@ function PepPartners() {
     }, [activeCompany,pepPartnersParams,dispatch]);
 
     const columns = [
-        { field: 'name', headerName: 'İsim', width: 360, renderCell: (params) => (
+        { field: 'name', headerName: 'İsim', width: 300, renderCell: (params) => (
                 <Link
                 to={`/partners/update/${params.row.id}/`}
                 style={{textDecoration:"underline"}}
@@ -40,11 +41,11 @@ function PepPartners() {
                 </Link>
             )
         },
-        { field: 'tc_vkn_no', headerName: 'TC/VKN No', flex:1 },
-        { field: 'crm_code', headerName: 'CRM Kodu', flex:1 },
-        { field: 'birthday', headerName: 'Doğum Tarihi', flex:1 },
-        { field: 'sgk_job_code', headerName: 'SGK Meslek Kodu', flex:1 },
-        // { field: 'is_pep', headerName: 'PEP Durumu', flex:1, renderCell: (params) => (
+        { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 120 },
+        { field: 'crm_code', headerName: 'CRM Kodu', width: 90 },
+        { field: 'birthday', headerName: 'Doğum Tarihi', width: 120 },
+        { field: 'sgk_job_code', headerName: 'SGK Meslek Kodu', width: 90 },
+        // { field: 'is_pep', headerName: 'PEP Durumu', width: 360, renderCell: (params) => (
         //         params.value
         //         ?
         //             <Chip variant='contained' color="error" icon={<WarningIcon />} label="PEP" size='small'/>
@@ -52,14 +53,15 @@ function PepPartners() {
         //             <Chip variant='outlined' label="Değil" size='small'/>
         //     )   
         // },
-        { field: 'pep_degree', headerName: 'PEP Derecesi', flex:1 },
-        { field: 'pep_description', headerName: 'PEP Açıklaması', flex:1 },
+        { field: 'pep_degree', headerName: 'PEP Derecesi', width: 90 },
+        { field: 'pep_description', headerName: 'PEP Açıklaması', width: 360 },
+        { field: 'email', headerName: 'Email', width: 300 },
     ]
 
     return (
         <PanelContent>
             <ListTableServer
-            title="Sorgulanacak Kişiler / Kurumlar"
+            title="Kamusal Nüfuz Sahibi Kişiler (PEP)"
             //autoHeight
             rows={pepPartners}
             columns={columns}
@@ -80,68 +82,14 @@ function PepPartners() {
             setParams={(value) => dispatch(setPepPartnersParams(value))}
             headerFilters={true}
             apiRef={apiRef}
+            autoRowHeight
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                    py: 1,
+                },
+            }}
             />
         </PanelContent>
-        // <Stack
-        // sx={{
-        //     height: 'calc(100vh - 56px)',
-        //     overflow: 'hidden',
-        //     scrollbarWidth: 'none',
-        //     '&::-webkit-scrollbar': { display: 'none' },
-        // }}
-        // justifyContent="center"
-        // alignItems="center">
-        //     <Grid container spacing={1} direction={"column"} alignItems="center" sx={{width: mobile ? '100%' : '40%'}}>
-        //         <Grid size={{xs:12,sm:12}}>
-        //             <Button
-        //             variant="contained"
-        //             color='paper'
-        //             fullWidth
-        //             sx={{
-        //                 height: 180,
-        //                 flexDirection: 'column',
-        //                 display: 'flex',
-        //                 justifyContent: 'center',
-        //                 alignItems: 'center',
-        //             }}
-        //             >   
-        //                 <Typography sx={{color:'text.secondary', width: '100%', textAlign: 'start'}}>
-        //                     <PolicyIcon sx={{fontSize: '2.5rem'}}/>
-        //                 </Typography>
-        //                 <Typography sx={{color:'text.primary'}}>
-        //                     <PersonIcon sx={{fontSize: '4rem'}}/>
-        //                 </Typography>
-        //                 <Typography sx={{color:'text.primary', fontSize: '1.5rem'}}>
-        //                     Tekil kişi Sorgulama
-        //                 </Typography>
-        //             </Button>
-        //         </Grid>
-        //         <Grid size={{xs:12,sm:12}}>
-        //             <Button
-        //             variant="contained"
-        //             color='paper'
-        //             fullWidth
-        //             sx={{
-        //                 height: 180,
-        //                 flexDirection: 'column',
-        //                 display: 'flex',
-        //                 justifyContent: 'center',
-        //                 alignItems: 'center',
-        //             }}
-        //             >   
-        //                 <Typography sx={{color:'text.secondary', width: '100%', textAlign: 'start'}}>
-        //                     <PolicyIcon sx={{fontSize: '2.5rem'}}/>
-        //                 </Typography>
-        //                 <Typography sx={{color:'text.primary'}}>
-        //                     <GroupsIcon sx={{fontSize: '4rem'}}/>
-        //                 </Typography>
-        //                 <Typography sx={{color:'text.primary', fontSize: '1.5rem'}}>
-        //                     Toplu Sorgulama
-        //                 </Typography>
-        //             </Button>
-        //         </Grid>
-        //     </Grid>
-        // </Stack>
     )
 }
 
