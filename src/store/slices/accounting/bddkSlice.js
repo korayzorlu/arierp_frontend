@@ -21,6 +21,15 @@ const initialState = {
         format: 'datatables'
     },
     bl222afLoading:false,
+    //
+    kz222af:[],
+    kz222afCount:0,
+    kz222afParams:{
+        start: 0 * 100,
+        length: (0 + 1) * 100,
+        format: 'datatables'
+    },
+    kz222afLoading:false,
 }
 
 export const fetchBddkHesaplar = createAsyncThunk('auth/fetchBddkHesaplar', async ({activeCompany,serverModels=null,params=null}) => {
@@ -40,6 +49,20 @@ export const fetchBddkHesaplar = createAsyncThunk('auth/fetchBddkHesaplar', asyn
 export const fetchBl222af = createAsyncThunk('auth/fetchBl222af', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/accounting/bl222af/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchKz222af = createAsyncThunk('auth/fetchKz222af', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/accounting/kz222af/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -94,6 +117,26 @@ const bddkSlice = createSlice({
         deleteBl222af: (state,action) => {
             state.bl222af = [];
         },
+        //
+        setKz222afLoading: (state,action) => {
+            state.kz222afLoading = action.payload;
+        },
+        setKz222afParams: (state,action) => {
+            state.kz222afParams = {
+                ...state.kz222afParams,
+                ...action.payload
+            };
+        },
+        resetKz222afParams: (state,action) => {
+            state.kz222afParams = {
+                start: 0 * 120,
+                length: (0 + 1) * 120,
+                format: 'datatables'
+            };
+        },
+        deleteKz222af: (state,action) => {
+            state.kz222af = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -120,6 +163,18 @@ const bddkSlice = createSlice({
             .addCase(fetchBl222af.rejected, (state,action) => {
                 state.bl222afLoading = false
             })
+            //
+            .addCase(fetchKz222af.pending, (state) => {
+                state.kz222afLoading = true
+            })
+            .addCase(fetchKz222af.fulfilled, (state,action) => {
+                state.kz222af = action.payload.data || action.payload;
+                state.kz222afCount = action.payload.recordsTotal || 0;
+                state.kz222afLoading = false
+            })
+            .addCase(fetchKz222af.rejected, (state,action) => {
+                state.kz222afLoading = false
+            })
     },
   
 })
@@ -132,6 +187,10 @@ export const {
     setBl222afLoading,
     setBl222afParams,
     resetBl222afParams,
-    deleteBl222af
+    deleteBl222af,
+    setKz222afLoading,
+    setKz222afParams,
+    resetKz222afParams,
+    deleteKz222af
 } = bddkSlice.actions;
 export default bddkSlice.reducer;

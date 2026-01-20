@@ -1,7 +1,7 @@
 import ListTable from 'component/table/ListTable';
 import React, { startTransition, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBddkHesaplar, fetchBl222af, resetBl222afParams, setBddkHesaplarParams, setBl222afParams } from 'store/slices/accounting/bddkSlice';
+import { fetchBddkHesaplar, fetchKz222af, resetKz222afParams, setBddkHesaplarParams, setKz222afParams } from 'store/slices/accounting/bddkSlice';
 import { fetchMainAccountCodes, fetchTrialBalances, resetTrialBalancesParams } from 'store/slices/accounting/trialBalanceSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -10,10 +10,10 @@ import { GRID_ROW_GROUPING_SINGLE_GROUPING_FIELD, useGridApiRef, useKeepGroupedC
 import { useDemoData } from '@mui/x-data-grid-generator';
 import ListTableServer from 'component/table/ListTableServer';
 
-function Bl222af() {
+function Kz222af() {
      const {user} = useSelector((store) => store.auth);
      const {activeCompany} = useSelector((store) => store.organization);
-     const {bl222af,bl222afCount,bl222afParams,bl222afLoading} = useSelector((store) => store.bddk);
+     const {kz222af,kz222afCount,kz222afParams,kz222afLoading} = useSelector((store) => store.bddk);
 
      const dispatch = useDispatch();
      const apiRef = useGridApiRef();
@@ -25,14 +25,14 @@ function Bl222af() {
     });
 
     useEffect(() => {
-        dispatch(resetBl222afParams());
+        dispatch(resetKz222afParams());
     }, [activeCompany,dispatch]);
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBl222af({activeCompany,params:bl222afParams})).unwrap();
+            dispatch(fetchKz222af({activeCompany,params:kz222afParams})).unwrap();
         });
-    }, [activeCompany,bl222afParams,dispatch]);
+    }, [activeCompany,kz222afParams,dispatch]);
 
     const columns = [
         //{ field: 'type', headerName: '', width: 90, renderHeaderFilter: () => null, groupable: true, hideable: false, },
@@ -113,8 +113,8 @@ function Bl222af() {
                 <Grid size={{xs:12,sm:6}}>
                     <Typography variant="body2" sx={{pl: 4}}>KURUM ADI : ARI FİNANSAL KİRALAMA A.Ş.</Typography>
                     <Typography variant="body2" sx={{pl: 4}}>KURUM KODU : 370</Typography>
-                    <Typography variant="body2" sx={{pl: 4}}>FORM ADI : BİLANÇO (YURTİÇİ-YURTDIŞI ŞUBELER TOPLAMI)</Typography>
-                    <Typography variant="body2" sx={{pl: 4}}>FORM KODU : BL221AF</Typography>
+                    <Typography variant="body2" sx={{pl: 4}}>FORM ADI : KAR / (ZARAR) TABLOSU (YURTİÇİ-YURTDIŞI ŞUBELER TOPLAMI)</Typography>
+                    <Typography variant="body2" sx={{pl: 4}}>FORM KODU : KZ222AF</Typography>
                     <Typography variant="body2" sx={{pl: 4}}>PARA BİRİMİ : BİN TL</Typography>
                 </Grid>
                 <Grid size={{xs:12,sm:6}} textAlign="right">
@@ -124,21 +124,21 @@ function Bl222af() {
             <ListTableServer
             title=""
             height="calc(100vh - 300px)"
-            rows={bl222af}
+            rows={kz222af}
             columns={columns}
             getRowId={(row) => row.id}
-            loading={bl222afLoading}
-            rowCount={bl222afCount}
+            loading={kz222afLoading}
+            rowCount={kz222afCount}
             customButtons={
                 <>
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchBl222af({activeCompany,params:bl222afParams})).unwrap()}
+                    onClick={() => dispatch(fetchKz222af({activeCompany,params:kz222afParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
                 </>
             }
-            setParams={(value) => dispatch(setBl222afParams(value))}
+            setParams={(value) => dispatch(setKz222afParams(value))}
             apiRef={apiRef}
             pageSize={100}
             hideFooter
@@ -151,4 +151,4 @@ function Bl222af() {
     )
 }
 
-export default Bl222af
+export default Kz222af

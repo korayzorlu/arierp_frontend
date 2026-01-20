@@ -16,6 +16,7 @@ import StorageIcon from '@mui/icons-material/Storage';
 import TabPanel from 'component/tab/TabPanel';
 import Hesaplar from 'features/accounting/components/bddk/Hesaplar';
 import Bl222af from 'features/accounting/components/bddk/Bl222af';
+import Kz222af from 'features/accounting/components/bddk/Kz222af';
 
 
 function MaliTablo() {
@@ -48,6 +49,9 @@ function MaliTablo() {
                     </Grid>
                     <TabPanel value={tabValue} index={0}>
                         <Bl222af/>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1}>
+                        <Kz222af/>
                     </TabPanel>
                     <TabPanel value={tabValue} index={2}>
                         <Hesaplar/>
