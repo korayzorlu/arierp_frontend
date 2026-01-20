@@ -19,6 +19,8 @@ import VissuallyHiddenInput from 'component/input/VissuallyHiddenInput';
 import axios from 'axios';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { fetchBankAccountTransaction, fetchBankAccountTransactions } from 'store/slices/finance/bankAccountTransactionSlice';
+import ThirdPersonPaymentAccordion from 'component/surfaces/ThirdPersonPaymentAccordion';
+import SubtitlesOffIcon from '@mui/icons-material/SubtitlesOff';
 
 function ThirdPersonPaymentDetailDialog({...props}) {
     const {dark} = useSelector((store) => store.auth);
@@ -43,7 +45,7 @@ function ThirdPersonPaymentDetailDialog({...props}) {
         aria-describedby="alert-dialog-description"
         elevation={3}
         variant="outlined"
-        maxWidth="xs"
+        maxWidth="md"
         fullWidth
         >
             <DialogTitle id="alert-dialog-title">
@@ -52,7 +54,33 @@ function ThirdPersonPaymentDetailDialog({...props}) {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
-                        {
+                        {   
+                            props.row.finmaks_transactions
+                            ?
+                                props.row.finmaks_transactions.length > 0
+                                ?   
+                                    props.row.finmaks_transactions.map((transaction) => (
+                                        <ThirdPersonPaymentAccordion obj={transaction}/>
+                                    ))
+                                :
+                                    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+                                        <Grid spacing={1} size={{xs:12,sm:12}}>
+                                            <Stack spacing={2}>
+                                                {/* <AddPartnerNoteAccordion/> */}
+                                                <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
+                                                    <SubtitlesOffIcon sx={{fontSize:'64px',color:'text.secondary'}}></SubtitlesOffIcon>
+                                                </Typography>
+                                                <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
+                                                    Ödeme kaydı bulunmamaktadır.
+                                                </Typography>
+                                            </Stack>
+                                        </Grid>
+                                    </Grid>
+                            :
+                                    null
+                                
+                        }
+                        {/* {
                             props.row.finmaks_transaction
                             ?
                                 <>
@@ -100,7 +128,7 @@ function ThirdPersonPaymentDetailDialog({...props}) {
                                 </>
                             :
                                 null
-                        }
+                        } */}
                         
                     </Stack>
                 </DialogContentText>

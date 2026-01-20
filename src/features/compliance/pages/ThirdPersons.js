@@ -117,28 +117,22 @@ function ThirdPersons() {
             ),
         },
         { field: 'tc_vkn_no', headerName: 'TC/VKN No', width: 140 },
-        { field: 'finmaks_transaction', headerName: 'Ödeme Detayı', width: 160, renderHeaderFilter: () => null,
+        { field: 'finmaks_transactions', headerName: 'Ödeme Detayı', width: 160, renderHeaderFilter: () => null,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                    {
-                        params.value
-                        ?
-                            <Button
-                            key={params.value.id}
-                            variant='contained'
-                            color="mars"
-                            endIcon={<VisibilityIcon />}
-                            size='small'
-                            onClick={() => {
-                                dispatch(setThirdPersonPaymentDetailDialog(true));
-                                setSelectedRow(params.row);
-                            }}
-                            >
-                                Ödeme Detayı
-                            </Button>
-                        :
-                            null
-                    }
+                    <Button
+                    key={params.value.id}
+                    variant='contained'
+                    color="mars"
+                    endIcon={<VisibilityIcon />}
+                    size='small'
+                    onClick={() => {
+                        dispatch(setThirdPersonPaymentDetailDialog(true));
+                        setSelectedRow(params.row);
+                    }}
+                    >
+                        Ödeme Detayı
+                    </Button>
                 </Stack>
             ),
         },
