@@ -40,6 +40,38 @@ function ContractPayments() {
         });
     }, [activeCompany,contractPaymentsParams,filterDate,dispatch]);
 
+    /*
+    WHEN 3 THEN 'Banka Otomasyonu'
+        WHEN 31 THEN 'ATS Banka Oto.'
+        WHEN 32 THEN 'BTS Banka Oto.'
+        WHEN 33 THEN 'ZİNCİRLİKUYU Banka Oto.'
+        WHEN 2 THEN 'Aktarım Datası'
+        WHEN 80 THEN 'Otomatik Tahsilat'
+        WHEN 60 THEN 'EFT'
+        WHEN 90 THEN 'Satıcı Avansı Tahsilatı'
+        ELSE CASE TrnIsPlanned
+            WHEN 1 THEN 'Planlanmış'
+            ELSE CASE TrnReturnValueId
+                WHEN 0 THEN 'Elle Girilmiş'
+                ELSE 'Modülden Gelmiş'
+            END
+        END
+    */
+
+    const getSourceType = (code) => {
+        switch(code) {
+            case '3': return 'Banka Otomasyonu';
+            case '31': return 'ATS Banka Oto.';
+            case '32': return 'BTS Banka Oto.';
+            case '33': return 'ZİNCİRLİKUYU Banka Oto.';
+            case '2': return 'Aktarım Datası';
+            case '80': return 'Otomatik Tahsilat';
+            case '60': return 'EFT';
+            case '90': return 'Satıcı Avansı Tahsilatı';
+            default: return 'Diğer';
+        }
+    }
+
     const columns = [
         { field: 'contract', headerName: 'Sözleşme No' },
         { field: 'project', headerName: 'Proje' },
@@ -49,6 +81,11 @@ function ContractPayments() {
         { field: 'group_name', headerName: 'İşlem Grubu' },
         { field: 'account_code', headerName: 'Hesap Kart Kodu' },
         { field: 'account_name', headerName: 'Cari Kart Adı', width: 250 },
+        { field: 'source_type', headerName: 'Tahsilat Tipi', width: 120,
+            renderCell: (params) => (
+                getSourceType(params.value)
+            )
+        },
         { field: 'description', headerName: 'Açıklama', width: 400 },
         { field: 'date', headerName: 'İşlem Tarihi', renderHeaderFilter: () => null },
         { field: 'debit_amount', headerName: 'Borç', type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) => 
@@ -84,7 +121,7 @@ function ContractPayments() {
         <PanelContent>
             <ListTableServer
             title="Tahsilat Listesi"
-            autoHeight
+            //autoHeight
             rows={contractPayments}
             columns={columns}
             getRowId={(row) => row.uuid}
