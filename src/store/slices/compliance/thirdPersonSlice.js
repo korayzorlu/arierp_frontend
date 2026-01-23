@@ -202,6 +202,18 @@ const thirdPersonSlice = createSlice({
             .addCase(fetchThirdPersons.rejected, (state,action) => {
                 state.thirdPersonsLoading = false
             })
+            //
+            .addCase(fetchVPosThirdPersons.pending, (state) => {
+                state.vPosThirdPersonsLoading = true
+            })
+            .addCase(fetchVPosThirdPersons.fulfilled, (state,action) => {
+                state.vPosThirdPersons = action.payload.data || action.payload;
+                state.vPosThirdPersonsCount = action.payload.recordsTotal || 0;
+                state.vPosThirdPersonsLoading = false
+            })
+            .addCase(fetchVPosThirdPersons.rejected, (state,action) => {
+                state.vPosThirdPersonsLoading = false
+            })
             
     },
   

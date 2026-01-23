@@ -18,7 +18,7 @@ import DownloadingIcon from '@mui/icons-material/Downloading';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 function ImportDialog(props) {
-    const {children,templateURL,importURL,startEvent,finalEvent,closeEvent} = props;
+    const {children,templateURL,importURL,startEvent,finalEvent,closeEvent,fileName} = props;
     const {dark} = useSelector((store) => store.auth);
     const {importDialog} = useSelector((store) => store.notification);
     const {importProcessLoading,importProcesses} = useSelector((store) => store.process);
@@ -48,7 +48,7 @@ function ImportDialog(props) {
             );
             const a = document.createElement("a");
             a.href = URL.createObjectURL(response.data);
-            a.download = "partners-template.xlsx";
+            a.download = fileName || "template.xlsx";
             a.click();
             URL.revokeObjectURL(a.href);
         } catch (error) {
