@@ -1,4 +1,4 @@
-import { Button, Checkbox, Chip, Grid, IconButton, ListItemText, Menu, MenuItem, Stack} from '@mui/material'
+import { Button, Checkbox, Chip, Grid, IconButton, ListItemText, Menu, MenuItem, Paper, Stack} from '@mui/material'
 import React, { startTransition, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
@@ -120,19 +120,22 @@ function ThirdPersons() {
         { field: 'finmaks_transactions', headerName: 'Ödeme Detayı', width: 160, renderHeaderFilter: () => null,
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                    <Button
-                    key={params.value.id}
-                    variant='contained'
-                    color="mars"
-                    endIcon={<VisibilityIcon />}
-                    size='small'
-                    onClick={() => {
-                        dispatch(setThirdPersonPaymentDetailDialog(true));
-                        setSelectedRow(params.row);
-                    }}
-                    >
-                        Ödeme Detayı
-                    </Button>
+                    {/* <Paper elevation={3}> */}
+                        <Button
+                        key={params.value.id}
+                        variant='contained'
+                        color={dark ? "mars" : "mars"}
+                        endIcon={<VisibilityIcon />}
+                        size='small'
+                        onClick={() => {
+                            dispatch(setThirdPersonPaymentDetailDialog(true));
+                            setSelectedRow(params.row);
+                        }}
+                        >
+                            Ödeme Detayı
+                        </Button>
+                    {/* </Paper> */}
+                    
                 </Stack>
             ),
         },
@@ -145,7 +148,7 @@ function ThirdPersons() {
                             <Button
                             key={params.row.transaction_id}
                             variant='contained'
-                            color="info"
+                            color={dark ? "bluelemonade" : "neonnavy"}
                             endIcon={<ArrowOutwardIcon />}
                             size='small'
                             onClick={() => {
@@ -296,6 +299,7 @@ function ThirdPersons() {
             }}
             //checkboxSelection
             disableRowSelectionOnClick
+            cellSelection={false}
             setParams={(value) => dispatch(setThirdPersonsParams(value))}
             headerFilters={true}
             apiRef={apiRef}

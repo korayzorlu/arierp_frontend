@@ -61,7 +61,8 @@ function ListTableServer(props) {
     disableVirtualization,
     autoPageSize,
     pageSizeOptions,
-    pageSize
+    pageSize,
+    cellSelection
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -354,7 +355,7 @@ function ListTableServer(props) {
       //aiAssistant
       //onPrompt={processPrompt}
       excelExportOptions={excelExportOptions}
-      cellSelection
+      cellSelection={cellSelection}
       ignoreDiacritics
       localeText={{
         ...trTR.components.MuiDataGrid.defaultProps.localeText,
