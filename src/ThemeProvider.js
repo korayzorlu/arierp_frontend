@@ -32,6 +32,10 @@ const commonTheme = {
             main: '#980748',
             contrastText: '#fff',
         },
+        smoke: {
+            main: '#4e2337',
+            contrastText: '#fff',
+        },
         blackhole: {
             main: '#000',
             contrastText: '#fff',
