@@ -82,7 +82,7 @@ function PurchasePayments() {
                 ?
                     new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
                 :
-                    null
+                    ""
             )
         },
         { field: 'talimat', headerName: 'Talimat', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream-dark', headerClassName: () => 'bg-cream-dark',
