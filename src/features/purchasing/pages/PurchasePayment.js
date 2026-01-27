@@ -77,7 +77,13 @@ function PurchasePayments() {
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'ifs_tahsilat', headerName: 'IFS Tahsilat Tutarı', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream-dark', headerClassName: () => 'bg-cream-dark',
-            renderCell: (params) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.lease.ifs_tahsilat)
+            renderCell: (params) => (
+                params.value
+                ?
+                    new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+                :
+                    null
+            )
         },
         { field: 'talimat', headerName: 'Talimat', type: 'number', renderHeaderFilter: () => null, cellClassName: () => 'bg-cream-dark', headerClassName: () => 'bg-cream-dark',
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
