@@ -1,11 +1,11 @@
 import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLeases, resetLeasesParams, setLeasesLoading, setLeasesParams } from 'store/slices/leasing/leaseSlice';
-import { setAlert, setDeleteDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
-import { fetchImportProcess } from 'store/slices/processSlice';
+import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import ImportDialog from 'component/feedback/ImportDialog';
 import DeleteDialog from 'component/feedback/DeleteDialog';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -17,8 +17,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AndroidSwitch from 'component/switch/AndroidSwitch';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid, TextField } from '@mui/material';
+import { Chip, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import ExportDialog from 'component/feedback/ExportDialog';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function OverdueLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -33,7 +35,9 @@ function OverdueLeases() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
-    const [project, setProject] = useState("all")
+    const [project, setProject] = useState("kizilbuk")
+    const [exportURL, setExportURL] = useState("")
+    
 
     useEffect(() => {
         startTransition(() => {
@@ -139,6 +143,11 @@ function OverdueLeases() {
             loading={leasesLoading}
             customButtons={
                 <>  
+                    <CustomTableButton
+                    title="Sözleşme Bazında Excel'e Aktar"
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_overdue_leases/")}}
+                    icon={<DownloadIcon fontSize="small"/>}
+                    />
 
                     {/* <CustomTableButton
                     title="İçe Aktar"
@@ -176,6 +185,28 @@ function OverdueLeases() {
                     
                 </>
             }
+            customFiltersLeft={
+                <>
+                    <FormControl sx={{mr: 2}}>
+                        <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        size='small'
+                        value={project}
+                        label="Proje"
+                        onChange={(e) => changeProject(e.target.value)}
+                        disabled={leasesLoading}
+                        >
+                            <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                            <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
+                            <MenuItem value='kasaba'>KASABA</MenuItem>
+                            <MenuItem value='servet'>SERVET</MenuItem>
+                            <MenuItem value='diger'>Diğer</MenuItem>
+                        </Select>
+                    </FormControl>
+                </>
+            }
             customFilters={
                 <>
                     <AndroidSwitch
@@ -188,9 +219,17 @@ function OverdueLeases() {
             }
             rowCount={leasesCount}
             checkboxSelection
+            noDownloadButton
             setParams={(value) => dispatch(setLeasesParams(value))}
             headerFilters={true}
             apiRef={apiRef}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL={exportURL}
+            startEvent={() => dispatch(setLeasesLoading(true))}
+            finalEvent={() => {dispatch(fetchLeases({activeCompany,params:{...leasesParams,project}}));dispatch(setLeasesLoading(false));}}
+            project={project}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
