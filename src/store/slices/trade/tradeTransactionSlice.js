@@ -55,7 +55,7 @@ export const fetchTradeTransaction = createAsyncThunk('auth/fetchTradeTransactio
 });
 
 export const fetchTradeTransactionsInLease = createAsyncThunk('organization/fetchTradeTransactionsInLease', async ({activeCompany,lease_uuid}) => {
-    const response = await axios.get(`/trade/trade_transactions/?ac=${activeCompany.id}&lease_uuid=${lease_uuid}`, {withCredentials: true});
+    const response = await axios.get(`/trade/trade_transactions_for_lease/?ac=${activeCompany.id}&lease_uuid=${lease_uuid}`, {withCredentials: true});
     return response.data;
 });
 
