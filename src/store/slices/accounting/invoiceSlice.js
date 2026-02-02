@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { setAlert, setDialog } from "../notificationSlice";
 import { setIsProgress } from "../processSlice";
+import { set } from "lodash";
 
 const initialState = {
     //sale
@@ -23,8 +24,31 @@ const initialState = {
     },
     purchaseInvoicesLoading:false,
     //
-    lastTab:0
+    lastTab:0,
+    //invoice
+    invoices:[],
+    invoicesCount:0,
+    invoicesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    invoicesLoading:false,
 }
+
+export const fetchInvoices = createAsyncThunk('auth/fetchInvoices', async ({activeCompany,params=null}) => {
+    try {
+        const response = await axios.get(`/accounting/invoices/?ac=${activeCompany.id}&type=sale`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
 
 export const fetchSaleInvoices = createAsyncThunk('auth/fetchSaleInvoices', async ({activeCompany,params=null}) => {
     try {
@@ -171,6 +195,23 @@ const invoiceSlice = createSlice({
         setLastTab: (state,action) => {
             state.lastTab = action.payload;
         },
+        setInvoicesLoading: (state,action) => {
+            state.invoicesLoading = action.payload;
+        },
+        setInvoicesParams: (state,action) => {
+            state.invoicesParams = {
+                ...state.invoicesParams,
+                ...action.payload
+            };
+        },
+        resetInvoicesParams: (state,action) => {
+            state.invoicesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+
     },
     extraReducers: (builder) => {
         builder
@@ -198,9 +239,30 @@ const invoiceSlice = createSlice({
             .addCase(fetchPurchaseInvoices.rejected, (state,action) => {
                 state.purchaseInvoicesLoading = false
             })
+            // fetch invoices
+            .addCase(fetchInvoices.pending, (state) => {
+                state.invoicesLoading = true
+            })
+            .addCase(fetchInvoices.fulfilled, (state,action) => {
+                state.invoices = action.payload.data || action.payload;
+                state.invoicesCount = action.payload.recordsTotal || 0;
+                state.invoicesLoading = false
+            })
+            .addCase(fetchInvoices.rejected, (state,action) => {
+                state.invoicesLoading = false
+            })
     },
   
 })
 
-export const {setSaleInvoicesLoading,setSaleInvoicesParams,setPurchaseInvoicesLoading,setPurchaseInvoicesParams,setLastTab} = invoiceSlice.actions;
+export const {
+    setSaleInvoicesLoading,
+    setSaleInvoicesParams,
+    setPurchaseInvoicesLoading,
+    setPurchaseInvoicesParams,
+    setLastTab,
+    setInvoicesLoading,
+    setInvoicesParams,
+    resetInvoicesParams
+} = invoiceSlice.actions;
 export default invoiceSlice.reducer;

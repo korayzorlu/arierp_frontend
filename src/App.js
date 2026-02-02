@@ -48,7 +48,7 @@ import Dashboard from './features/dashboard/pages/Dashboard.js';
 import Accounts from './features/accounting/account/pages/Accounts.js';
 import AddAccount from './features/accounting/account/pages/AddAccount.js';
 import UpdateAccount from './features/accounting/account/pages/UpdateAccount.js';
-import Invoices from './features/accounting/invoice/pages/Invoices.js';
+//import Invoices from './features/accounting/invoice/pages/Invoices.js';
 import AddInvoice from './features/accounting/invoice/pages/AddInvoice.js';
 import UpdateInvoice from './features/accounting/invoice/pages/UpdateInvoice.js';
 import Payments from './features/accounting/payment/pages/Payments.js';
@@ -151,6 +151,7 @@ import BankAccountBalances from 'features/finance/pages/BankAccountBalances';
 import TrialBalanceTransactions from 'features/accounting/pages/TrialBalanceTransactions';
 import MaliTablo from 'features/accounting/pages/bddk/MaliTablo';
 import PepPartners from 'features/compliance/pages/PepPartners';
+import Invoices from 'features/accounting/pages/Invoices';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -381,7 +382,7 @@ function App() {
                   <Route path='/accounts/add-account/:type' element={<AddAccount></AddAccount>}></Route>
                   <Route path='/accounts/update/:type/:uuid' element={<UpdateAccount></UpdateAccount>}></Route>
 
-                  <Route path='/invoices' element={<Invoices></Invoices>}></Route>
+                  <Route path='/sale-invoices' element={<Invoices></Invoices>}></Route>
                   <Route path='/invoices/add-invoice/:type' element={<AddInvoice></AddInvoice>}></Route>
                   <Route path='/invoices/update/:type/:uuid' element={<UpdateInvoice></UpdateInvoice>}></Route>
 
