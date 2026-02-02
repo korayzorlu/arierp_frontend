@@ -34,6 +34,8 @@ const initialState = {
         format: 'datatables'
     },
     invoicesLoading:false,
+    invoicesInLease:[],
+    invoicesInLeaseCode:0,
 }
 
 export const fetchInvoices = createAsyncThunk('auth/fetchInvoices', async ({activeCompany,params=null}) => {
@@ -48,6 +50,11 @@ export const fetchInvoices = createAsyncThunk('auth/fetchInvoices', async ({acti
     } catch (error) {
         return [];
     }
+});
+
+export const fetchInvoicesInLease = createAsyncThunk('organization/fetchInvoicesInLease', async ({activeCompany,lease_uuid}) => {
+    const response = await axios.get(`/accounting/invoices/?ac=${activeCompany.id}&lease_uuid=${lease_uuid}`, {withCredentials: true});
+    return response.data;
 });
 
 export const fetchSaleInvoices = createAsyncThunk('auth/fetchSaleInvoices', async ({activeCompany,params=null}) => {

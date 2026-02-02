@@ -15,6 +15,7 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import TradeTransactionsInLease from 'features/leasing/components/TradeTransactionsInLease';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
+import InvoicesInLease from '../components/InvoicesInLease';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -273,6 +274,7 @@ function UpdateLease() {
                                 <Tab label="Ödeme Tablosu" value={0} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
                                 <Tab label="TAHSİLATLAR" value={1} icon={<PaidIcon/>} iconPosition="start"/>
                                 <Tab label="CARİ HESAP EKSTRESİ" value={2} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                <Tab label="FATURALAR" value={3} icon={<ReceiptLongIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                     </Grid>
@@ -298,7 +300,13 @@ function UpdateLease() {
                             </Grid>
                         </Grid>
                     </TabPanel>
-
+                    <TabPanel value={tabValue} index={3}>
+                        <Grid container spacing={3}>
+                            <Grid size={{xs:12,sm:12}}>
+                                <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
                     
                 </Stack>
             </Stack>
