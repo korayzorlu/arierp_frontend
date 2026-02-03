@@ -126,23 +126,32 @@ function UnderReviewLeases() {
                 options={[
                     { value: 'all', label: 'Tümü' },
                     { value: 'aktiflestirildi', label: 'Aktifleştirildi' },
-                    { value: 'baskasina_transfer_edildi', label: 'Başkasına Transfer Edildi' },
-                    { value: 'devredildi', label: 'Devredildi' },
-                    { value: 'durduruldu', label: 'Durduruldu' },
-                    { value: 'envantere_alindi', label: 'Envantere Alındı' },
-                    { value: 'feshedildi', label: 'Feshedildi' },
-                    { value: 'iptal_edildi', label: 'İptal Edildi' },
-                    { value: 'kanuni_takibe_alindi', label: 'Kanuni Takibe Alındı' },
-                    { value: 'para_birimi_degisti', label: 'Para Birimi Değişti' },
-                    { value: 'pert', label: 'Pert' },
+                    //{ value: 'baskasina_transfer_edildi', label: 'Başkasına Transfer Edildi' },
+                    //{ value: 'devredildi', label: 'Devredildi' },
+                    //{ value: 'durduruldu', label: 'Durduruldu' },
+                    //{ value: 'envantere_alindi', label: 'Envantere Alındı' },
+                    //{ value: 'feshedildi', label: 'Feshedildi' },
+                    //{ value: 'iptal_edildi', label: 'İptal Edildi' },
+                    //{ value: 'kanuni_takibe_alindi', label: 'Kanuni Takibe Alındı' },
+                    //{ value: 'para_birimi_degisti', label: 'Para Birimi Değişti' },
+                    //{ value: 'pert', label: 'Pert' },
                     { value: 'planlandi', label: 'Planlandı' },
-                    { value: 'revize_edildi', label: 'Revize Edildi' },
+                    //{ value: 'revize_edildi', label: 'Revize Edildi' },
                 ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
                 changeValue={(newValue) => setStatus(newValue)}
                 />
             )
         },
         { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
+        // { field: 'durum', headerName: 'Durum', width:180,
+        //     renderCell: (params) => (
+        //         params.row.lease_status === 'aktiflestirildi'
+        //         ?
+        //             "Fatura Oluşturulmadı"
+        //         :
+        //             "Fatura Oluşturuldu"
+        //     )
+        //  },
     ]
 
     return (
