@@ -22,6 +22,15 @@ const initialState = {
     },
     activeLeasesLoading:false,
     //
+    underReviewLeases:[],
+    underReviewLeasesCount:0,
+    underReviewLeasesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    underReviewLeasesLoading:false,
+    //
     projects:[],
     projectsCount:0,
     projectsParams:{
@@ -83,6 +92,20 @@ export const fetchLeases = createAsyncThunk('auth/fetchLeases', async ({activeCo
 export const fetchActiveLeases = createAsyncThunk('auth/fetchActiveLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/active_leases/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchUnderReviewLeases = createAsyncThunk('auth/fetchUnderReviewLeases', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/under_review_leases/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -338,6 +361,16 @@ const leaseSlice = createSlice({
             };
         },
         //
+        setUnderReviewLeasesLoading: (state,action) => {
+            state.underReviewLeasesLoading = action.payload;
+        },
+        setUnderReviewLeasesParams: (state,action) => {
+            state.underReviewLeasesParams = {
+                ...state.underReviewLeasesParams,
+                ...action.payload
+            };
+        },
+        //
         setProjectsLoading: (state,action) => {
             state.projectsLoading = action.payload;
         },
@@ -423,6 +456,18 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchActiveLeases.rejected, (state,action) => {
                 state.activeLeasesLoading = false
+            })
+            //under review leases
+            .addCase(fetchUnderReviewLeases.pending, (state) => {
+                state.underReviewLeasesLoading = true
+            })
+            .addCase(fetchUnderReviewLeases.fulfilled, (state,action) => {
+                state.underReviewLeases = action.payload.data || action.payload;
+                state.underReviewLeasesCount = action.payload.recordsTotal || 0;
+                state.underReviewLeasesLoading = false
+            })
+            .addCase(fetchUnderReviewLeases.rejected, (state,action) => {
+                state.underReviewLeasesLoading = false
             })
             // projects
             .addCase(fetchProjects.pending, (state) => {
@@ -517,6 +562,8 @@ export const {
     setLeasesParams,
     setActiveLeasesLoading,
     setActiveLeasesParams,
+    setUnderReviewLeasesLoading,
+    setUnderReviewLeasesParams,
     setLeasesSummaryLoading,
     setLeasesSummaryParams,
     setPortfoliosSummaryLoading,

@@ -152,6 +152,7 @@ import TrialBalanceTransactions from 'features/accounting/pages/TrialBalanceTran
 import MaliTablo from 'features/accounting/pages/bddk/MaliTablo';
 import PepPartners from 'features/compliance/pages/PepPartners';
 import Invoices from 'features/accounting/pages/Invoices';
+import UnderReviewLeases from 'features/leasing/pages/UnderReviewLeases';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -297,6 +298,7 @@ function App() {
                   <Route path='/leasing/add-lease' element={<AddLease></AddLease>}></Route>
                   <Route path='/leasing/update/:uuid/:contract_id' element={<UpdateLease></UpdateLease>}></Route>
                   <Route path='/active-leases' element={<ActiveLeases></ActiveLeases>}></Route>
+                  <Route path='/under-review-leases' element={<UnderReviewLeases></UnderReviewLeases>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
                   <Route path='/collections' element={<Collections></Collections>}></Route>
                   
