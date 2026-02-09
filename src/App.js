@@ -153,6 +153,7 @@ import MaliTablo from 'features/accounting/pages/bddk/MaliTablo';
 import PepPartners from 'features/compliance/pages/PepPartners';
 import Invoices from 'features/accounting/pages/Invoices';
 import UnderReviewLeases from 'features/leasing/pages/UnderReviewLeases';
+import TitleDeedConfirms from 'features/risk/pages/TitleDeedConfirms';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -342,6 +343,7 @@ function App() {
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
                   <Route path='/under-reviews' element={<UnderReviews></UnderReviews>}></Route>
                   <Route path='/delivery-confirm' element={<DeliveryConfirms></DeliveryConfirms>}></Route>
+                  <Route path='/title-deed-confirm' element={<TitleDeedConfirms></TitleDeedConfirms>}></Route>
                   <Route path='/to-be-transferred' element={<ToBeTransferreds></ToBeTransferreds>}></Route>
                   <Route path='/tomorrow-partners' element={<TomorrowPartners></TomorrowPartners>}></Route>
                   <Route path='/today-partners' element={<TodayPartners></TodayPartners>}></Route>

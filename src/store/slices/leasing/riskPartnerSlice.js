@@ -150,6 +150,18 @@ const initialState = {
         format: 'datatables'
     },
     deliveryConfirmsLoading:false,
+    //title deed confirm
+    titleDeedConfirms:[],
+    titleDeedConfirmsCount:0,
+    titleDeedConfirmsParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    titleDeedConfirmsLoading:false,
     //deposit
     depositPartners:[],
     depositPartnersCount:0,
@@ -407,6 +419,21 @@ export const fetchTufeExchangedLeases = createAsyncThunk('auth/fetchTufeExchange
 export const fetchDeliveryConfirms = createAsyncThunk('auth/fetchDeliveryConfirms', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/leasing/delivery_confirms/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchTitleDeedConfirms = createAsyncThunk('auth/fetchTitleDeedConfirms', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/title_deed_confirms/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -804,6 +831,26 @@ const riskPartnerSlice = createSlice({
         deleteDeliveryConfirms: (state,action) => {
             state.deliveryConfirms = [];
         },
+        //title deed confirm
+        setTitleDeedConfirmsLoading: (state,action) => {
+            state.titleDeedConfirmsLoading = action.payload;
+        },
+        setTitleDeedConfirmsParams: (state,action) => {
+            state.titleDeedConfirmsParams = {
+                ...state.titleDeedConfirmsParams,
+                ...action.payload
+            };
+        },
+        resetTitleDeedConfirmsParams: (state,action) => {
+            state.titleDeedConfirmsParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteTitleDeedConfirms: (state,action) => {
+            state.titleDeedConfirms = [];
+        },
         //deposit
         setDepositPartnersLoading: (state,action) => {
             state.depositPartnersLoading = action.payload;
@@ -1031,6 +1078,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchDeliveryConfirms.rejected, (state,action) => {
                 state.deliveryConfirmsLoading = false
             })
+            //title deed confirm
+            .addCase(fetchTitleDeedConfirms.pending, (state) => {
+                state.titleDeedConfirmsLoading = true
+            })
+            .addCase(fetchTitleDeedConfirms.fulfilled, (state,action) => {
+                state.titleDeedConfirms = action.payload.data || action.payload;
+                state.titleDeedConfirmsCount = action.payload.recordsTotal || 0;
+                state.titleDeedConfirmsLoading = false
+            })
+            .addCase(fetchTitleDeedConfirms.rejected, (state,action) => {
+                state.titleDeedConfirmsLoading = false
+            })
             //deposit
             .addCase(fetchDepositPartners.pending, (state) => {
                 state.depositPartnersLoading = true
@@ -1136,6 +1195,11 @@ export const {
     setDeliveryConfirmsParams,
     resetDeliveryConfirmsParams,
     deleteDeliveryConfirms,
+
+    setTitleDeedConfirmsLoading,
+    setTitleDeedConfirmsParams,
+    resetTitleDeedConfirmsParams,
+    deleteTitleDeedConfirms,
 
     setDepositPartnersLoading,
     setDepositPartnersParams,
