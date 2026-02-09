@@ -137,19 +137,20 @@ function ToWarnedRiskPartners() {
             //     { value: '30', label: '30 Günü Geçenler' },    
             // ],
             cellClassName: (params) => {
-                if (params.value <= 30){
+                if (params.row.leases.max_overdue_days <= 30){
                     return 'bg-yellow'
-                } else if (params.value > 30 && params.value <= 60){
+                } else if (params.row.leases.max_overdue_days > 30 && params.row.leases.max_overdue_days <= 60){
                     return 'bg-orange'
-                } else if (params.value > 60 && params.value <= 90){
+                } else if (params.row.leases.max_overdue_days > 60 && params.row.leases.max_overdue_days <= 90){
                     return 'bg-light-red'
-                } else if (params.value > 90){
+                } else if (params.row.leases.max_overdue_days > 90){
                     return 'bg-dark-red'
                 }
-            }
+            },
+            renderCell: (params) => params.row.leases.max_overdue_days
         },
-        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
         },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
