@@ -72,7 +72,7 @@ function TitleDeedConfirms() {
             )
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
-        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
+        //{ field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
@@ -93,31 +93,30 @@ function TitleDeedConfirms() {
                 />
             )
         },
-        { field: 'block', headerName: 'Blok' },
-        { field: 'unit', headerName: 'Bağımsız Bölüm' },
+        //{ field: 'block', headerName: 'Blok' },
+        //{ field: 'unit', headerName: 'Bağımsız Bölüm' },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
         //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
         //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.value > 0 ? 'bg-red' : '';
-            },
-            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
-        },
-        { field: 'currency', headerName: 'PB' },
-        { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
-                params.row.overdue_amount > 0
-                ?
-                    params.value >= 0
-                    ?
-                        `${params.value} gün`
-                    :
-                        null
-                :
-                    null
+        // { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        //         return params.value > 0 ? 'bg-red' : '';
+        //     },
+        //     valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        // },
+        // { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
+        //         params.row.overdue_amount > 0
+        //         ?
+        //             params.value >= 0
+        //             ?
+        //                 `${params.value} gün`
+        //             :
+        //                 null
+        //         :
+        //             null
                 
-            )
-        },
-        { field: 'status', headerName: 'Alt Statü', width:120 },
+        //     )
+        // },
+        //{ field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120,
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
@@ -144,7 +143,24 @@ function TitleDeedConfirms() {
                 />
             )
         },
-        { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
+        //{ field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
+        { field: 'odenmesi_gereken_yerel', headerName: 'Tahsil Edilmesi Gereken', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'odenen_yerel', headerName: 'Tahsil Edilen', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'invoices_total', headerName: 'Fatura Toplamı', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'tapu_harci', headerName: 'Tapu Harcı(%2)', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'currency', headerName: 'PB', 
+            renderCell: (params) => (
+                'TRY'
+            ),
+        },
     ]
 
     return (
