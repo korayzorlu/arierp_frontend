@@ -247,6 +247,7 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
             <ComprehensiveWarningNoticeDialog
             fileUuid={fileUuid}
             fileContract={fileContract}
+            edit={true}
             />
             <TradeTransactionDialog/>
         </Box>

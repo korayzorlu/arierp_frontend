@@ -4,14 +4,14 @@ import { setAlert, setComprehensiveWarningNoticeDialog, setDialog, setMessageDia
 import MUIDialog from '@mui/material/Dialog';
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, TextField } from '@mui/material';
 import BasicTable from 'component/table/BasicTable';
-import { fetchWarningNoticeInformation, fetchWarningNoticeInLease } from 'store/slices/contracts/contractSlice';
+import { fetchComprehensiveWarningNoticeInformation, fetchWarningNoticeInformation, fetchWarningNoticeInLease, updateComprehensiveWarningNotice } from 'store/slices/contracts/contractSlice';
 import axios from 'axios';
 import TableButton from 'component/button/TableButton';
 import FeedIcon from '@mui/icons-material/Feed';
 import DownloadIcon from '@mui/icons-material/Download';
 
 function ComprehensiveWarningNoticeDialog(props) {
-    const {user,contract,fileUuid,fileContract} = props;
+    const {user,contract,fileUuid,fileContract,edit} = props;
 
     const {activeCompany} = useSelector((store) => store.organization);
     const {comprehensiveWarningNoticeDialog} = useSelector((store) => store.notification);
@@ -28,6 +28,11 @@ function ComprehensiveWarningNoticeDialog(props) {
     const handleClose = () => {
         dispatch(setComprehensiveWarningNoticeDialog(false))
     };
+
+    const handleSubmit = async () => {
+        await dispatch(updateComprehensiveWarningNotice({data})).unwrap();
+        dispatch(fetchComprehensiveWarningNoticeInformation({activeCompany,contract:fileContract}));
+    }
 
     const getFile = async (uuid,contract) => {
         dispatch(setDialog(false));
@@ -57,25 +62,6 @@ function ComprehensiveWarningNoticeDialog(props) {
     const handleChangeField = (field,value) => {
         setData(data => ({...data, [field]:value}));
     };
-
-    const columns = [
-        { field: 'partner_name', headerName: 'Müşteri', flex: 4 },
-        { field: 'contract_code', headerName: 'Sözleşme No', flex: 1 },
-        { field: 'process_start_date', headerName: 'İhtar Tarihi', flex: 2 },
-        { field: 'service_date', headerName: 'Tebliğ Tarihi', flex: 2 },
-        { field: 'official_cancellation_date', headerName: 'Öngörülen Fesih Tarihi', flex: 2 },
-        { field: 'termination_days', headerName: 'Fesihe Kalan Gün Sayısı', flex: 1 },
-        { field: 'debit_amount', headerName: 'İhtar Borcu', flex: 1, type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
-        },
-        { field: 'paid', headerName: 'Ödenen Tutar', flex: 1, type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
-        },
-        { field: 'diff', headerName: 'Kalan Tutar', flex: 1, type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
-        },
-        { field: 'state', headerName: 'Durum', flex: 1 },
-    ]
 
     return (
         <MUIDialog
@@ -113,17 +99,32 @@ function ComprehensiveWarningNoticeDialog(props) {
                         disabled={false}
                         fullWidth
                         />
-                        <TextField
-                        type="text"
-                        size="small"
-                        label={"Tebliğ Tarihi"}
-                        placeholder='GG.AA.YYYY formatında tarih giriniz.'
-                        variant='standard'
-                        value={data.service_date}
-                        onChange={(e) => handleChangeField("service_date",e.target.value)}
-                        disabled={false}
-                        fullWidth
-                        />
+                        {
+                            edit
+                            ?
+                                <TextField
+                                type="text"
+                                size="small"
+                                label={"Tebliğ Tarihi"}
+                                placeholder='GG.AA.YYYY formatında tarih giriniz.'
+                                variant='standard'
+                                value={data.service_date}
+                                onChange={(e) => handleChangeField("service_date",e.target.value)}
+                                disabled={false}
+                                fullWidth
+                                />
+                            :
+                                <TextField
+                                type="text"
+                                size="small"
+                                label={"Tebliğ Tarihi"}
+                                variant='standard'
+                                value={comprehensiveWarningNoticeInformation.service_date}
+                                disabled={false}
+                                fullWidth
+                                />
+                        }
+                        
                         <TextField
                         type="text"
                         size="small"
@@ -183,7 +184,13 @@ function ComprehensiveWarningNoticeDialog(props) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions className=''>
-                <Button variant='contained' color="opposite" onClick={handleClose}>Kaydet</Button>
+                {
+                    edit
+                    ?
+                        <Button variant='contained' color="opposite" onClick={handleSubmit}>Kaydet</Button>
+                    :
+                        null
+                }
                 <Button color="neutral" onClick={handleClose}>Kapat</Button>
             </DialogActions>
         </MUIDialog>
