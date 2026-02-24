@@ -139,7 +139,7 @@ function ComprehensiveWarningNoticeDialog(props) {
                         size="small"
                         label={"Fesihe Kalan Gün Sayısı"}
                         variant='standard'
-                        value={comprehensiveWarningNoticeInformation.termination_days}
+                        value={comprehensiveWarningNoticeInformation.days_remaining}
                         disabled={false}
                         fullWidth
                         />
