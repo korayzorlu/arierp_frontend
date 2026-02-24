@@ -16,6 +16,7 @@ function TableButton(props) {
             endIcon={props.icon}
             size='small'
             onClick={handleClick}
+            fullWidth={props.fullWidth ? props.fullWidth : false}
             >
                 {props.text ? props.text : 'Detay'}
             </Button>

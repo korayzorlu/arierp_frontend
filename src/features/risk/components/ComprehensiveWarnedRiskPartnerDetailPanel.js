@@ -2,17 +2,16 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
-import { setAlert, setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTradeTransactionDialog, setComprehensiveWarningNoticeDialog } from 'store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
 import { Box, Button, Grid, IconButton, Stack } from '@mui/material';
 import ListTable from 'component/table/ListTable';
 import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
-import { fetchContractPaymentsInLease, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
+import { fetchComprehensiveWarningNoticeInformation, fetchContractPaymentsInLease, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import ContractPaymentDialog from 'component/dialog/ContractPaymentDialog';
 import { cellProgress } from 'component/progress/CellProgress';
 import FeedIcon from '@mui/icons-material/Feed';
-import WarningNoticeDialog from 'component/dialog/WarningNoticeDialog';
 import OverdueDetailDetailPanel from 'features/risk/components/OverdueDetailPanel';
 import { fetchTradeTransactionsInLease } from 'store/slices/trade/tradeTransactionSlice';
 import TradeTransactionDialog from 'component/dialog/TradeTransactionDialog';
@@ -22,6 +21,8 @@ import TableButton from 'component/button/TableButton';
 import { fetchComprehensiveWarnedRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
 import axios from 'axios';
 import DownloadIcon from '@mui/icons-material/Download';
+import ComprehensiveWarningNoticeDialog from 'component/dialog/ComprehensiveWarningNoticeDialog ';
+
 
 function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases,project} = props;
@@ -38,6 +39,8 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
 
     const [data, setData] = useState({})
     const [selectedRows, setSelectedRows] = useState([]);
+    const [fileUuid, setFileUuid] = useState({})
+    const [fileContract, setFileContract] = useState({})
     const isFirstSelection = useRef(true);
 
     useEffect(() => {
@@ -119,20 +122,33 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
         },
         { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
         { field: 'status', headerName: 'Durum', flex:2 },
+        // { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+        //         params.row.status === "İhtar Çekildi"
+        //         ?
+        //             <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+        //                 <TableButton
+        //                 text="İndir"
+        //                 icon={<DownloadIcon/>}
+        //                 onClick={() => getFile(params.row.id,params.row.contract)}
+        //                 />
+        //             </Stack>
+        //         :
+        //             null
+        //     )
+        // },
         { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
-                params.row.status === "İhtar Çekildi"
-                ?
-                    <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                        <TableButton
-                        text="İndir"
-                        icon={<DownloadIcon/>}
-                        onClick={() => getFile(params.row.id,params.row.contract)}
-                        />
-                    </Stack>
-                :
-                    null
-            )
-        },
+                        params.row.status === "İhtar Çekildi"
+                        ?
+                            <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                                <TableButton
+                                icon={<FeedIcon/>}
+                                onClick={() => handleComprehensiveWarningNoticeDialog(params.row.id,params.row.contract)}
+                                />
+                            </Stack>
+                        :
+                            null
+                    )
+                },
         // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
         //         params.value
         //         ?
@@ -185,9 +201,11 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
             }
         };
 
-    const handleWarningNoticeDialog = async (contract) => {
-        dispatch(fetchWarningNoticeInformation({activeCompany,contract:contract}));
-        dispatch(setWarningNoticeDialog(true));
+    const handleComprehensiveWarningNoticeDialog = async (uuid,contract) => {
+        setFileUuid(uuid);
+        setFileContract(contract);
+        dispatch(fetchComprehensiveWarningNoticeInformation({activeCompany,contract:contract}));
+        dispatch(setComprehensiveWarningNoticeDialog(true));
     };
 
     return (
@@ -226,7 +244,10 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
             getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
             <ContractPaymentDialog/>
-            <WarningNoticeDialog/>
+            <ComprehensiveWarningNoticeDialog
+            fileUuid={fileUuid}
+            fileContract={fileContract}
+            />
             <TradeTransactionDialog/>
         </Box>
     )

@@ -63,6 +63,7 @@ const initialState = {
     warningNoticesInLease:[],
     warningNoticesInLeaseCode:0,
     warningNoticeInformation:{},
+    comprehensiveWarningNoticeInformation:{},
     //
     projectss:[],
     projectssCount:0,
@@ -279,6 +280,21 @@ export const fetchWarningNoticeInformation = createAsyncThunk('auth/fetchWarning
     };
 });
 
+export const fetchComprehensiveWarningNoticeInformation = createAsyncThunk('auth/fetchComprehensiveWarningNoticeInformation', async ({activeCompany,contract},{rejectWithValue}) => {
+    try {
+        const response = await axios.post(`/contracts/comprehensive_warning_notice_information/`, {
+            active_company:activeCompany.id,
+            contract:contract
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
+
 export const fetchProjectss = createAsyncThunk('auth/fetchProjectss', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/projects/projects/?active_company=${activeCompany.id}`,
@@ -469,6 +485,18 @@ const contractSlice = createSlice({
                 state.warningNoticeInformation = action.payload.warning_notice;
             })
             .addCase(fetchWarningNoticeInformation.rejected, (state,action) => {
+                state.authMessage = action.payload.status === 400
+                    ? {color:"text-red-500",icon:"",text:action.payload.message}
+                    : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
+            })
+            //fetch comprehensive warning notice information
+            .addCase(fetchComprehensiveWarningNoticeInformation.pending, (state) => {
+
+            })
+            .addCase(fetchComprehensiveWarningNoticeInformation.fulfilled, (state,action) => {
+                state.comprehensiveWarningNoticeInformation = action.payload.comprehensive_warning_notice;
+            })
+            .addCase(fetchComprehensiveWarningNoticeInformation.rejected, (state,action) => {
                 state.authMessage = action.payload.status === 400
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
