@@ -37,6 +37,7 @@ const initialState = {
     userDialog: false,
     warningNoticeDialog: false,
     comprehensiveWarningNoticeDialog: false,
+    terminationWarningNoticeDialog: false,
 }
 
 export const fetchNotifications = createAsyncThunk('notifications/fetchNotifications', async () => {
@@ -131,6 +132,9 @@ const notificationSlice = createSlice({
         setComprehensiveWarningNoticeDialog: (state,action) => {
             state.comprehensiveWarningNoticeDialog = action.payload;
         },
+        setTerminationWarningNoticeDialog: (state,action) => {
+            state.terminationWarningNoticeDialog = action.payload;
+        },
         setPurchaseDocumentDialog: (state,action) => {
             state.purchaseDocumentDialog = action.payload;
         },
@@ -212,6 +216,7 @@ export const {
     setTradeTransactionDialog,
     setWarningNoticeDialog,
     setComprehensiveWarningNoticeDialog,
+    setTerminationWarningNoticeDialog,
     setPurchaseDocumentDialog,
     setThirdPersonStatusDialog,
     setThirdPersonCustomerDialog,

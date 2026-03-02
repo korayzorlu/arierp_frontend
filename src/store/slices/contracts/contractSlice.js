@@ -64,6 +64,7 @@ const initialState = {
     warningNoticesInLeaseCode:0,
     warningNoticeInformation:{},
     comprehensiveWarningNoticeInformation:{},
+    terminationWarningNoticeInformation:{},
     //
     projectss:[],
     projectssCount:0,
@@ -317,6 +318,43 @@ export const updateComprehensiveWarningNotice = createAsyncThunk('auth/updateCom
     }
 });
 
+export const fetchTerminationWarningNoticeInformation = createAsyncThunk('auth/fetchTerminationWarningNoticeInformation', async ({activeCompany,contract},{rejectWithValue}) => {
+    try {
+        const response = await axios.post(`/contracts/termination_warning_notice_information/`, {
+            active_company:activeCompany.id,
+            contract:contract
+        },{ withCredentials: true, });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue({
+            status:error.status,
+            message:error.response.data.message
+        });
+    };
+});
+
+export const updateTerminationWarningNotice = createAsyncThunk('auth/updateTerminationWarningNotice', async ({data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/contracts/update_termination_warning_notice/`,
+            data,
+            {
+                withCredentials: true,
+            }
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const fetchProjectss = createAsyncThunk('auth/fetchProjectss', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/projects/projects/?active_company=${activeCompany.id}`,
@@ -519,6 +557,18 @@ const contractSlice = createSlice({
                 state.comprehensiveWarningNoticeInformation = action.payload.comprehensive_warning_notice;
             })
             .addCase(fetchComprehensiveWarningNoticeInformation.rejected, (state,action) => {
+                state.authMessage = action.payload.status === 400
+                    ? {color:"text-red-500",icon:"",text:action.payload.message}
+                    : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
+            })
+            //fetch termination warning notice information
+            .addCase(fetchTerminationWarningNoticeInformation.pending, (state) => {
+
+            })
+            .addCase(fetchTerminationWarningNoticeInformation.fulfilled, (state,action) => {
+                state.terminationWarningNoticeInformation = action.payload.termination_warning_notice;
+            })
+            .addCase(fetchTerminationWarningNoticeInformation.rejected, (state,action) => {
                 state.authMessage = action.payload.status === 400
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}

@@ -32,6 +32,7 @@ import SendSMSDialog from 'component/dialog/SendSMSDialog';
 import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
+import ToTerminatedRiskPartnerDetailPanel from '../components/ToTerminatedRiskPartnerDetailPanel';
 
 function ToTerminatedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -343,7 +344,7 @@ function ToTerminatedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<ToTerminatedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></ToTerminatedRiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog
