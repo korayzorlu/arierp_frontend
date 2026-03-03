@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWarningNotices, setWarningNoticesParams } from 'store/slices/contracts/contractSlice';
+import { fetchWarningNotices, setWarningNoticesLoading, setWarningNoticesParams } from 'store/slices/contracts/contractSlice';
 import PanelContent from 'component/panel/PanelContent';
 import { Grid } from '@mui/material';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import ExportDialog from 'component/feedback/ExportDialog';
+import { setExportDialog } from 'store/slices/notificationSlice';
+import { fetchExportProcess } from 'store/slices/processSlice';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function WarningNotices() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -16,6 +20,8 @@ function WarningNotices() {
     const [isPending, startTransition] = useTransition();
 
     const [project, setProject] = useState("kizilbuk")
+    const [exportURL, setExportURL] = useState("")
+    const [status, setStatus] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
@@ -62,6 +68,11 @@ function WarningNotices() {
                 customButtons={
                     <>
                         <CustomTableButton
+                        title="Excel'e Aktar"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/contracts/export_warning_notices/`)}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchWarningNotices({activeCompany,params:{...warningNoticesParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
@@ -75,7 +86,15 @@ function WarningNotices() {
                 disableRowSelectionOnClick={true}
                 />
             </Grid>
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL={exportURL}
+            startEvent={() => dispatch(setWarningNoticesLoading(true))}
+            finalEvent={() => {dispatch(fetchWarningNotices({activeCompany,params:warningNoticesParams}));dispatch(setWarningNoticesLoading(false));}}
+            status={status}
+            />
         </PanelContent>
+        
     )
 }
 
