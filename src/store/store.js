@@ -64,6 +64,7 @@ import accountingUnderReviewReducer from './slices/accounting/underReviewSlice';
 import trialBalanceTransactionReducer from './slices/accounting/trialBalanceTransactionSlice';
 import bddkReducer from './slices/accounting/bddkSlice';
 import pepPartnerReducer from './slices/compliance/pepPartnerSlice';
+import titleDeedInvoiceControlSlice from './slices/operation/titleDeedInvoiceControlSlice';
 
 let navigate;
 
@@ -138,6 +139,7 @@ export const store = configureStore({
         trialBalanceTransaction: trialBalanceTransactionReducer,
         bddk: bddkReducer,
         pepPartner: pepPartnerReducer,
+        titleDeedInvoiceControl: titleDeedInvoiceControlSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
