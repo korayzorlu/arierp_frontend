@@ -227,7 +227,7 @@ function ThirdPersons() {
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
-                        dayjs(params.row.created_date, "DD.MM.YYYY HH:mm").isBefore(dayjs("22.11.2025 15:40", "DD.MM.YYYY HH:mm"))
+                        dayjs(params.row.created_date, "DD.MM.YYYY HH:mm").isBefore(dayjs("22.11.2025 15:40", "DD.MM.YYYY HH:mm")) && params.row.tc_vkn_no !== "21836517036"
                         ?
                             null
                         :     
