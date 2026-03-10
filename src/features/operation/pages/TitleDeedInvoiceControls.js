@@ -150,7 +150,7 @@ function TitleDeedInvoiceControls() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Kira Planları Listesi"
+            title="Tapu Fatura Kontrol Kira Planı Listesi"
             rows={titleDeedInvoiceControls}
             columns={columns}
             getRowId={(row) => row.uuid}
