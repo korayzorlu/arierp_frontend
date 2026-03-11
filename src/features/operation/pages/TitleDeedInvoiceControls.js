@@ -154,6 +154,7 @@ function TitleDeedInvoiceControls() {
             )
         },
         { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
+        { field: 'invoices', headerName: 'Fatura Durumu' },
     ]
 
     return (
