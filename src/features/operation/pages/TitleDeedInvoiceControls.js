@@ -55,6 +55,7 @@ function TitleDeedInvoiceControls() {
                 
             )
         },
+        { field: 'old_leases', headerName: 'Versiyon Geçmişi' },
         { field: 'contract', headerName: 'Sözleşme Kodu' },
         { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
                 params.row.partner_special
@@ -114,7 +115,6 @@ function TitleDeedInvoiceControls() {
                         null
                 :
                     null
-                
             )
         },
         { field: 'status', headerName: 'Alt Statü', width:120 },
