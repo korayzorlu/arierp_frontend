@@ -11,13 +11,14 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid } from '@mui/material';
+import { Chip, Grid, Stack } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import { fetchProjects } from 'store/slices/leasing/leaseSlice';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function TitleDeedInvoiceControls() {
     const {user} = useSelector((store) => store.auth);
@@ -47,7 +48,7 @@ function TitleDeedInvoiceControls() {
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
                 <Link
-                to={`/operation/update/${params.row.uuid}/${params.row.contract_id}/`}
+                to={`/leasing/update/${params.row.uuid}/${params.row.contract_id}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
@@ -55,7 +56,15 @@ function TitleDeedInvoiceControls() {
                 
             )
         },
-        { field: 'old_leases', headerName: 'Versiyon Geçmişi' },
+        { field: 'old_leases', headerName: 'Versiyon Geçmişi', width:120, renderCell: (params) => (
+                params.value.map((item) => (
+                    <Stack key={item.id} spacing={1}>
+                        {item.code}
+                    </Stack>
+
+                ))
+            )
+        },
         { field: 'contract', headerName: 'Sözleşme Kodu' },
         { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
                 params.row.partner_special
@@ -77,7 +86,7 @@ function TitleDeedInvoiceControls() {
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
-        { field: 'item', headerName: 'Proje', width: 100,
+        { field: 'item', headerName: 'Proje', width: 200,
             renderCell: (params) => (
                 params.row.item.name
             ),
@@ -176,6 +185,12 @@ function TitleDeedInvoiceControls() {
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}
+            autoRowHeight
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                    py: 1,
+                },
+            }}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
