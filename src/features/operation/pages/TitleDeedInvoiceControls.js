@@ -86,7 +86,8 @@ function TitleDeedInvoiceControls() {
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
-        { field: 'item', headerName: 'Proje', width: 200,
+        { field: 'vendor', headerName: 'Satıcı', width:220 },
+        { field: 'item', headerName: 'Proje', width: 220,
             renderCell: (params) => (
                 params.row.item.name
             ),
