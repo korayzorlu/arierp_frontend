@@ -3,7 +3,7 @@ import React, { startTransition, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
-import { fetchThirdPersons, setThirdPersonsParams, updateThirdPerson, updateThirdPersonDowngrade, updateThirdPersonIsEmailSent, updateThirdPersonStatus } from '../../../store/slices/compliance/thirdPersonSlice';
+import { fetchThirdPersons, setThirdPersonsLoading, setThirdPersonsParams, updateThirdPerson, updateThirdPersonDowngrade, updateThirdPersonIsEmailSent, updateThirdPersonStatus } from '../../../store/slices/compliance/thirdPersonSlice';
 import { useGridApiRef } from '@mui/x-data-grid';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -13,7 +13,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { Link } from 'react-router-dom';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ThirdPersonStatusDialog from 'component/dialog/ThirdPersonStatusDialog';
-import { setThirdPersonCustomerDialog, setThirdPersonDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
+import { setExportDialog, setThirdPersonCustomerDialog, setThirdPersonDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import ThirdPersonDetailPanel from '../components/ThirdPersonDetailPanel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -28,6 +28,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { gridClasses } from '@mui/x-data-grid-premium';
 import ThirdPersonCustomerDialog from '../components/ThirdPersonCustomerDialog';
 import InfoIcon from '@mui/icons-material/Info';
+import ExportDialog from 'component/feedback/ExportDialog';
+import { fetchExportProcess } from 'store/slices/processSlice';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function ThirdPersons() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -47,6 +50,7 @@ function ThirdPersons() {
     };
     const [selectedRow, setSelectedRow] = useState({})
     const [checkboxChecked, setCheckboxChecked] = useState(true);
+    const [exportURL, setExportURL] = useState("")
     
 
     useEffect(() => {
@@ -284,12 +288,18 @@ function ThirdPersons() {
             customButtons={
                 <>  
                     <CustomTableButton
+                    title="Excel'e Aktar"
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/compliance/export_third_persons/`)}}
+                    icon={<DownloadIcon fontSize="small"/>}
+                    />
+                    <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
                 </>
             }
+            noDownloadButton
             rowCount={thirdPersonsCount}
             autoRowHeight
             sx={{
@@ -305,6 +315,12 @@ function ThirdPersons() {
             apiRef={apiRef}
             getDetailPanelHeight={() => "auto"}
             getDetailPanelContent={(params) => {return(<ThirdPersonDetailPanel uuid={params.row.uuid} thirdPersonResults={params.row.results}></ThirdPersonDetailPanel>)}}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL={exportURL}
+            startEvent={() => dispatch(setThirdPersonsLoading(true))}
+            finalEvent={() => {dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams}));dispatch(setThirdPersonsLoading(false));}}
             />
             <ThirdPersonStatusDialog
             row={selectedRow}
