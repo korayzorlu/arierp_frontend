@@ -155,6 +155,7 @@ import Invoices from 'features/accounting/pages/Invoices';
 import UnderReviewLeases from 'features/leasing/pages/UnderReviewLeases';
 import TitleDeedConfirms from 'features/risk/pages/TitleDeedConfirms';
 import TitleDeedInvoiceControls from 'features/operation/pages/TitleDeedInvoiceControls';
+import UntitleDeedLeases from 'features/operation/pages/UntitleDeedLeases';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -318,6 +319,7 @@ function App() {
                   <Route path='/contract-in-archives' element={<ContractInArchives></ContractInArchives>}></Route>
                   <Route path='/partner-advance-activities' element={<PartnerAdvanceActivites></PartnerAdvanceActivites>}></Route>
                   <Route path='/title-deed-invoice-control' element={<TitleDeedInvoiceControls></TitleDeedInvoiceControls>}></Route>
+                  <Route path='/untitle-deed-leases' element={<UntitleDeedLeases></UntitleDeedLeases>}></Route>
 
                   {/* finance */}
                   <Route path='/bank-activities' element={<BankActivities></BankActivities>}></Route>
