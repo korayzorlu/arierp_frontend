@@ -155,8 +155,38 @@ function TitleDeedInvoiceControls() {
             )
         },
         { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
-        { field: 'invoices', headerName: 'Fatura Durumu' },
-        { field: 'purchase_documents', headerName: 'Satıcı Fatura Durumu' },
+        { field: 'invoices', headerName: 'Fatura Durumu',
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'kesildi', label: 'Kesildi' },
+                    { value: 'fatura_yok', label: 'Fatura Yok' },
+                ]}
+                changeValue={(newValue) => setStatus(newValue)}
+                />
+            )
+        },
+        { field: 'purchase_documents', headerName: 'Satıcı Fatura Durumu',
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'kesildi', label: 'Kesildi' },
+                    { value: 'fatura_yok', label: 'Fatura Yok' },
+                ]}
+                changeValue={(newValue) => setStatus(newValue)}
+                />
+            )
+        },
     ]
 
     return (
