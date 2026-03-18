@@ -184,7 +184,7 @@ function UntitleDeedLeases() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Tapu Fatura Kontrol Kira Planı Listesi"
+            title="Tapu Almayanlar Listesi"
             rows={untitleDeedLeases}
             columns={columns}
             getRowId={(row) => row.uuid}
