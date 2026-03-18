@@ -109,6 +109,9 @@ function UntitleDeedLeases() {
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
         //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
         //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
+        { field: 'paid_amount', headerName: 'Ödenen Tutar', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             },
