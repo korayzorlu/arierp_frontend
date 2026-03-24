@@ -156,6 +156,7 @@ import UnderReviewLeases from 'features/leasing/pages/UnderReviewLeases';
 import TitleDeedConfirms from 'features/risk/pages/TitleDeedConfirms';
 import TitleDeedInvoiceControls from 'features/operation/pages/TitleDeedInvoiceControls';
 import UntitleDeedLeases from 'features/operation/pages/UntitleDeedLeases';
+import VPosTransactions from 'features/finance/pages/VPosTransactions';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -333,6 +334,7 @@ function App() {
                   <Route path='/bank-accounts' element={<BankAccounts></BankAccounts>}></Route>
                   <Route path='/bank-account-transactions' element={<BankAccountTransactions></BankAccountTransactions>}></Route>
                   <Route path='/bank-account-transactions/add' element={<AddBankAccounTransaction></AddBankAccounTransaction>}></Route>
+                  <Route path='/vpos-transactions' element={<VPosTransactions></VPosTransactions>}></Route>
 
                   {/* risk */}
                   <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
