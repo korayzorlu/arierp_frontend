@@ -196,6 +196,7 @@ function ThirdPersons() {
                 />
             )
         },
+        { field: 'updated_date', headerName: 'Son Güncelleme', width: 120 },
         { field: 'is_email_sent', headerName: 'Email Gönderildi mi?', width: 200, 
             renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
