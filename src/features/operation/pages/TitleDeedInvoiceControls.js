@@ -156,7 +156,7 @@ function TitleDeedInvoiceControls() {
             )
         },
         // { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },
-        { field: 'is_delivery', headerName: 'Teslim Durumu',
+        { field: 'is_delivery', headerName: 'Teslim Durumu', width:140,
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
                 {...params}
@@ -172,7 +172,7 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
-        { field: 'is_title_deed_delivered', headerName: 'Tapu Durumu',
+        { field: 'is_title_deed_delivered', headerName: 'Tapu Durumu', width:140,
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
                 {...params}
