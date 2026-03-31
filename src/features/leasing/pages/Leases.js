@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLeases, setLeasesLoading, setLeasesParams } from 'store/slices/leasing/leaseSlice';
+import { fetchLeases, fetchProjects, setLeasesLoading, setLeasesParams } from 'store/slices/leasing/leaseSlice';
 import { setAlert, setDeleteDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
@@ -15,11 +15,12 @@ import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Chip, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
 function Leases() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
+    const {leases,leasesCount,leasesParams,leasesLoading,projectsParams,projects} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -34,6 +35,7 @@ function Leases() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchLeases({activeCompany,params:{...leasesParams,project}}));
+            dispatch(fetchProjects({activeCompany,params:projectsParams}));
         });
     }, [activeCompany,leasesParams,dispatch]);
 
@@ -68,7 +70,23 @@ function Leases() {
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
-        { field: 'item', headerName: 'Proje', width:280 },
+        { field: 'item', headerName: 'Proje', width: 100,
+            renderCell: (params) => (
+                params.row.item.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    ...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                ]}
+                />
+            )
+        },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
