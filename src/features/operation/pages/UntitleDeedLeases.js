@@ -157,6 +157,22 @@ function UntitleDeedLeases() {
             )
         },
         // { field: 'lease_status_update_date', headerName: 'Statü Güncelleme Tarihi', width:180 },,
+        { field: 'is_delivery', headerName: 'Teslim Durumu',
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'teslim_edildi', label: 'Teslim Edildi' },
+                    { value: 'teslim_edilmedi', label: 'Teslim Edilmedi' },
+                ]}
+                changeValue={(newValue) => setStatus(newValue)}
+                />
+            )
+        },
         { field: 'is_title_deed_delivered', headerName: 'Tapu Durumu',
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
