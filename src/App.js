@@ -157,6 +157,7 @@ import TitleDeedConfirms from 'features/risk/pages/TitleDeedConfirms';
 import TitleDeedInvoiceControls from 'features/operation/pages/TitleDeedInvoiceControls';
 import UntitleDeedLeases from 'features/operation/pages/UntitleDeedLeases';
 import VPosTransactions from 'features/finance/pages/VPosTransactions';
+import NeedsToTerminatedRiskPartners from 'features/risk/pages/NeedsToTerminatedRiskPartners';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -347,6 +348,7 @@ function App() {
                   <Route path='/warned-risk-partners' element={<WarnedRiskPartners></WarnedRiskPartners>}></Route>
                   <Route path='/comprehensive-warned-risk-partners' element={<ComprehensiveWarnedRiskPartners></ComprehensiveWarnedRiskPartners>}></Route>
                   <Route path='/to-terminated-risk-partners' element={<ToTerminatedRiskPartners></ToTerminatedRiskPartners>}></Route>
+                  <Route path='/needs-to-terminated-risk-partners' element={<NeedsToTerminatedRiskPartners></NeedsToTerminatedRiskPartners>}></Route>
                   <Route path='/under-reviews' element={<UnderReviews></UnderReviews>}></Route>
                   <Route path='/delivery-confirm' element={<DeliveryConfirms></DeliveryConfirms>}></Route>
                   <Route path='/title-deed-confirm' element={<TitleDeedConfirms></TitleDeedConfirms>}></Route>

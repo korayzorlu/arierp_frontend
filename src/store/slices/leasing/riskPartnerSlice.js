@@ -111,6 +111,18 @@ const initialState = {
         format: 'datatables'
     },
     toTerminatedRiskPartnersLoading:false,
+    //needs to terminated
+    needsToTerminatedRiskPartners:[],
+    needsToTerminatedRiskPartnersCount:0,
+    needsToTerminatedRiskPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    needsToTerminatedRiskPartnersLoading:false,
     //terminated leases
     terminatedLeases:[],
     terminatedLeasesCount:0,
@@ -359,6 +371,21 @@ export const fetchComprehensiveWarnedRiskPartners = createAsyncThunk('auth/fetch
 export const fetchToTerminatedRiskPartners = createAsyncThunk('auth/fetchToTerminatedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/to_terminated_risk_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchNeedsToTerminatedRiskPartners = createAsyncThunk('auth/fetchNeedsToTerminatedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/needs_to_terminated_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -751,6 +778,26 @@ const riskPartnerSlice = createSlice({
         deleteToTerminatedRiskPartners: (state,action) => {
             state.toTerminatedRiskPartners = [];
         },
+        //needs to terminated
+        setNeedsToTerminatedRiskPartnersLoading: (state,action) => {
+            state.needsToTerminatedRiskPartnersLoading = action.payload;
+        },
+        setNeedsToTerminatedRiskPartnersParams: (state,action) => {
+            state.needsToTerminatedRiskPartnersParams = {
+                ...state.needsToTerminatedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetNeedsToTerminatedRiskPartnersParams: (state,action) => {
+            state.needsToTerminatedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteNeedsToTerminatedRiskPartners: (state,action) => {
+            state.needsToTerminatedRiskPartners = [];
+        },
         //terminated leases
         setTerminatedLeasesLoading: (state,action) => {
             state.terminatedLeasesLoading = action.payload; 
@@ -1030,6 +1077,18 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchToTerminatedRiskPartners.rejected, (state,action) => {
                 state.toTerminatedRiskPartnersLoading = false
             })
+            //needs to terminated
+            .addCase(fetchNeedsToTerminatedRiskPartners.pending, (state) => {
+                state.needsToTerminatedRiskPartnersLoading = true
+            })
+            .addCase(fetchNeedsToTerminatedRiskPartners.fulfilled, (state,action) => {
+                state.needsToTerminatedRiskPartners = action.payload.data || action.payload;
+                state.needsToTerminatedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.needsToTerminatedRiskPartnersLoading = false
+            })
+            .addCase(fetchNeedsToTerminatedRiskPartners.rejected, (state,action) => {
+                state.needsToTerminatedRiskPartnersLoading = false
+            })
             //terminated leases
             .addCase(fetchTerminatedLeases.pending, (state) => {
                 state.terminatedLeasesLoading = true
@@ -1175,6 +1234,11 @@ export const {
     setToTerminatedRiskPartnersParams,
     resetToTerminatedRiskPartnersParams,
     deleteToTerminatedRiskPartners,
+
+    setNeedsToTerminatedRiskPartnersLoading,
+    setNeedsToTerminatedRiskPartnersParams,
+    resetNeedsToTerminatedRiskPartnersParams,
+    deleteNeedsToTerminatedRiskPartners,
 
     setTerminatedLeasesLoading,
     setTerminatedLeasesParams,
