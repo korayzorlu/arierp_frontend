@@ -116,6 +116,7 @@ function UntitleDeedLeases() {
         { field: 'transfer_amount', headerName: 'Devir Bedeli', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'transfer_date', headerName: 'Devir B. Tarihi', width:140, renderHeaderFilter: () => null },
         { field: 'paid_amount', headerName: 'Ödenen Tutar', width:160, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
