@@ -24,6 +24,7 @@ const initialState = {
     overdueDialog: false,
     partnerDialog: false,
     partnerNoteDialog:false,
+    leaseNoteDialog:false,
     purchaseDocumentDialog: false,
     sendSMSDialog: false,
     thirdPersonCustomerDialog: false,
@@ -119,6 +120,9 @@ const notificationSlice = createSlice({
         },
         setPartnerNoteDialog: (state,action) => {
             state.partnerNoteDialog = action.payload;
+        },
+        setLeaseNoteDialog: (state,action) => {
+            state.leaseNoteDialog = action.payload;
         },
         setContractPaymentDialog: (state,action) => {
             state.contractPaymentDialog = action.payload;
@@ -226,5 +230,6 @@ export const {
     setTrialBalanceTransactionDialog,
     setFinmaksTransactionNameDialog,
     setChangePartnerDialog,
+    setLeaseNoteDialog,
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

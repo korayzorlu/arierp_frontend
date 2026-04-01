@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTitleDeedInvoiceControls, setTitleDeedInvoiceControlsLoading, setTitleDeedInvoiceControlsParams } from 'store/slices/operation/titleDeedInvoiceControlSlice';
-import { setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { setDeleteDialog, setExportDialog, setImportDialog, setLeaseNoteDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -11,20 +11,23 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid, Stack } from '@mui/material';
+import { Badge, Chip, Grid, Stack } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
-import { fetchProjects } from 'store/slices/leasing/leaseSlice';
+import { fetchLeaseInformation, fetchLeaseNotes, fetchProjects } from 'store/slices/leasing/leaseSlice';
 import { gridClasses } from '@mui/x-data-grid-premium';
+import LeaseNoteDialog from 'component/dialog/LeaseNoteDialog';
+import TableButton from 'component/button/TableButton';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
 
 function TitleDeedInvoiceControls() {
-    const {user} = useSelector((store) => store.auth);
+    const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading} = useSelector((store) => store.titleDeedInvoiceControl);
-    const {projectsParams,projects } = useSelector((store) => store.lease);
+    const {projectsParams,projects,leaseNotesParams } = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -220,7 +223,32 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
+        { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
+                <Grid container spacing={1} sx={{width:'100%'}}>
+                    <Grid size={{xs:8, sm:8}}>
+                        <TableButton
+                        text="Notlar"
+                        color="celticglow"
+                        icon={<NoteAltIcon/>}
+                        onClick={()=>{handleLeaseNoteDialog({lease_id:params.row.uuid})}}
+                        />
+                    </Grid>
+                    <Grid size={{xs:4, sm:4}}>
+                        <Badge badgeContent={params.row.lease_note_count} color={dark ? 'frostedbirch' : 'silvercoin'}></Badge>
+                    </Grid>
+                </Grid>
+                    
+            </Stack>
+            )
+        },
     ]
+
+    const handleLeaseNoteDialog = async ({lease_id}) => {
+        await dispatch(fetchLeaseNotes({activeCompany,params:{...leaseNotesParams,lease_id}})).unwrap();
+        await dispatch(fetchLeaseInformation({lease_id})).unwrap();
+        dispatch(setLeaseNoteDialog(true));
+    };
 
     return (
         <PanelContent>
@@ -281,6 +309,7 @@ function TitleDeedInvoiceControls() {
             startEvent={() => dispatch(setTitleDeedInvoiceControlsLoading(true))}
             finalEvent={() => {dispatch(fetchTitleDeedInvoiceControls({activeCompany}));dispatch(setTitleDeedInvoiceControlsLoading(false));}}
             />
+            <LeaseNoteDialog/>
         </PanelContent>
     )
 }

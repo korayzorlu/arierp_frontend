@@ -312,7 +312,7 @@ const partnerSlice = createSlice({
             };
         },
         deletePartnerNotes: (state,action) => {
-            state.smss = [];
+            state.partnerNotes = [];
         },
     },
     extraReducers: (builder) => {

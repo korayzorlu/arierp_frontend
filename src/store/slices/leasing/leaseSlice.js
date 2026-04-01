@@ -22,6 +22,15 @@ const initialState = {
     },
     activeLeasesLoading:false,
     //
+    leaseNotes:[],
+    leaseNotesCount:0,
+    leaseNotesParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    leaseNotesLoading:false,
+    //
     underReviewLeases:[],
     underReviewLeasesCount:0,
     underReviewLeasesParams:{
@@ -323,10 +332,11 @@ export const fetchOverdueInformation = createAsyncThunk('auth/fetchOverdueInform
     };
 });
 
-export const fetchLeaseInformation = createAsyncThunk('leasing/fetchLeaseInformation', async ({partner_uuid},{rejectWithValue}) => {
+export const fetchLeaseInformation = createAsyncThunk('leasing/fetchLeaseInformation', async ({partner_uuid=null,lease_id=null},{rejectWithValue}) => {
     try {
         const response = await axios.post('/leasing/lease_information/', { 
             partner_uuid:partner_uuid,
+            lease_id:lease_id
         },{ withCredentials: true, });
         return response.data;
     } catch (error) {
@@ -335,6 +345,87 @@ export const fetchLeaseInformation = createAsyncThunk('leasing/fetchLeaseInforma
             message:error.response.data.message
         });
     };
+});
+
+//note
+export const fetchLeaseNotes = createAsyncThunk('auth/fetchLeaseNotes', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/leasing/lease_notes/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const addLeaseNote = createAsyncThunk('auth/addLeaseNote', async ({params=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/leasing/add_lease_note/`,
+            params,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
+export const updateLeaseNote = createAsyncThunk('auth/updateLeaseNote', async ({params=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/leasing/update_lease_note/`,
+            params,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
+export const deleteLeaseNote = createAsyncThunk('auth/deleteLeaseNote', async ({params=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/leasing/delete_lease_note/`,
+            params,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
 });
 
 const leaseSlice = createSlice({
@@ -430,6 +521,26 @@ const leaseSlice = createSlice({
         },
         setLeaseOverdues: (state,action) => {
             state.leaseOverdues = action.payload;
+        },
+        //
+        setLeaseNotesLoading: (state,action) => {
+            state.leaseNotesLoading = action.payload;
+        },
+        setLeaseNotesParams: (state,action) => {
+            state.leaseNotesParams = {
+                ...state.leaseNotesParams,
+                ...action.payload
+            };
+        },
+        resetLeaseNotesParams: (state,action) => {
+            state.leaseNotesParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteLeaseNotes: (state,action) => {
+            state.leaseNotes = [];
         },
     },
     extraReducers: (builder) => {
@@ -536,7 +647,7 @@ const leaseSlice = createSlice({
                 state.overdueInformation = action.payload.overdue;
             })
             .addCase(fetchOverdueInformation.rejected, (state,action) => {
-                state.authMessage = action.payload.status === 400
+                state.authMessage = action.payload?.status === 400
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
             })
@@ -545,12 +656,24 @@ const leaseSlice = createSlice({
 
             })
             .addCase(fetchLeaseInformation.fulfilled, (state,action) => {
-                state.leaseInformation = action.payload.lease;
+                state.leaseInformation = action.payload.leases;
             })
             .addCase(fetchLeaseInformation.rejected, (state,action) => {
                 state.authMessage = action.payload.status === 400
                     ? {color:"text-red-500",icon:"",text:action.payload.message}
                     : {color:"text-red-500",icon:"fas fa-triangle-exclamation",text:"Sorry, something went wrong!"}
+            })
+            // lease notes
+            .addCase(fetchLeaseNotes.pending, (state) => {
+                state.leaseNotesLoading = true
+            })
+            .addCase(fetchLeaseNotes.fulfilled, (state,action) => {
+                state.leaseNotes = action.payload.data || action.payload;
+                state.leaseNotesCount = action.payload.recordsTotal || 0;
+                state.leaseNotesLoading = false
+            })
+            .addCase(fetchLeaseNotes.rejected, (state,action) => {
+                state.leaseNotesLoading = false
             })
             
     },
@@ -576,5 +699,9 @@ export const {
     setProjectsLoading,
     setProjectsParams,
     resetProjectsParams,
+    setLeaseNotesLoading,
+    setLeaseNotesParams,
+    resetLeaseNotesParams,
+    deleteLeaseNotes
 } = leaseSlice.actions;
 export default leaseSlice.reducer;
