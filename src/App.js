@@ -98,7 +98,7 @@ import WarningNotices from './features/risk/pages/WarningNotices.js';
 import TomorrowPartners from './features/risk/pages/TomorrowPartners.js';
 import TodayPartners from './features/risk/pages/TodayPartners.js';
 import RiskPartnersKDV from './features/risk/pages/RiskPartnersKDV.js';
-import ToWarnedRiskPartners from './features/risk/pages/ToWarnedRiskPartners.js';
+import ToWarnedRiskPartners from './features/risk/pages/ToWarnedRiskPartnersPage.js';
 import ToTerminatedRiskPartners from './features/risk/pages/ToTerminatedRiskPartners.js';
 import DeliveryConfirms from './features/risk/pages/DeliveryConfirms.js';
 import ToBeTransferreds from './features/risk/pages/ToBeTransferreds.js';
@@ -158,6 +158,7 @@ import TitleDeedInvoiceControls from 'features/operation/pages/TitleDeedInvoiceC
 import UntitleDeedLeases from 'features/operation/pages/UntitleDeedLeases';
 import VPosTransactions from 'features/finance/pages/VPosTransactions';
 import NeedsToTerminatedRiskPartners from 'features/risk/pages/NeedsToTerminatedRiskPartners';
+import ToWarnedRiskPartnersPage from './features/risk/pages/ToWarnedRiskPartnersPage.js';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -341,7 +342,7 @@ function App() {
                   <Route path='/overdue-leases' element={<OverdueLeases></OverdueLeases>}></Route>
                   <Route path='/risk-partners' element={<RiskPartners></RiskPartners>}></Route>
                   <Route path='/kdv-risk-partners' element={<RiskPartnersKDV></RiskPartnersKDV>}></Route>
-                  <Route path='/to-warned-risk-partners' element={<ToWarnedRiskPartners></ToWarnedRiskPartners>}></Route>
+                  <Route path='/to-warned-risk-partners' element={<ToWarnedRiskPartnersPage></ToWarnedRiskPartnersPage>}></Route>
                   <Route path='/deposit-to-warned-risk-partners' element={<ToWarnedRiskPartnersDeposit></ToWarnedRiskPartnersDeposit>}></Route>
                   <Route path='/kep-to-warned-risk-partners' element={<ToWarnedRiskPartnersKep></ToWarnedRiskPartnersKep>}></Route>
                   <Route path='/posta-to-warned-risk-partners' element={<ToWarnedRiskPartnersPosta></ToWarnedRiskPartnersPosta>}></Route>

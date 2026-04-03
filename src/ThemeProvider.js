@@ -206,6 +206,24 @@ export const ThemeProvider = ({ children }) => {
                     },
                 },
             },
+            MuiTab: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-selected": {
+                            color: "#000",
+                            //fontWeight: "bold",
+                        },
+                    },
+                },
+            },
+            MuiTabs: {
+                styleOverrides: {
+                    indicator: {
+                        backgroundColor: "#000",
+                        //display: "none",
+                    },
+                },
+            },
         },
     },trTR)
     const muiDarkTheme = () => createTheme({
@@ -284,6 +302,24 @@ export const ThemeProvider = ({ children }) => {
                 styleOverrides: {
                     root: {
                         borderColor: "rgba(255, 255, 255, 0.24)",
+                    },
+                },
+            },
+            MuiTab: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-selected": {
+                            color: "#fff",
+                            //fontWeight: "bold",
+                        },
+                    },
+                },
+            },
+            MuiTabs: {
+                styleOverrides: {
+                    indicator: {
+                        backgroundColor: "#fff",
+                        //display: "none",
                     },
                 },
             },

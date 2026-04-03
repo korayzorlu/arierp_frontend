@@ -75,6 +75,30 @@ const initialState = {
         format: 'datatables'
     },
     postaToWarnedRiskPartnersLoading:false,
+    //monthly warned
+    monthlyWarnedRiskPartners:[],
+    monthlyWarnedRiskPartnersCount:0,
+    monthlyWarnedRiskPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    monthlyWarnedRiskPartnersLoading:false,
+    //annual warned
+    annualWarnedRiskPartners:[],
+    annualWarnedRiskPartnersCount:0,
+    annualWarnedRiskPartnersParams:{
+        special: false,
+        barter: false,
+        virman: false,
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    annualWarnedRiskPartnersLoading:false,
     //warned
     warnedRiskPartners:[],
     warnedRiskPartnersCount:0,
@@ -260,6 +284,36 @@ export const fetchRiskPartnersKDV = createAsyncThunk('auth/fetchRiskPartnersKDV'
 export const fetchToWarnedRiskPartners = createAsyncThunk('auth/fetchToWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/to_warned_risk_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchMonthlyWarnedRiskPartners = createAsyncThunk('auth/fetchMonthlyWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/monthly_warned_risk_partners/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchAnnualWarnedRiskPartners = createAsyncThunk('auth/fetchAnnualWarnedRiskPartners', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/annual_warned_risk_partners/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -658,6 +712,46 @@ const riskPartnerSlice = createSlice({
         deleteToWarnedRiskPartners: (state,action) => {
             state.toWarnedRiskPartners = [];
         },
+        //monthly warned
+        setMonthlyWarnedRiskPartnersLoading: (state,action) => {
+            state.monthlyWarnedRiskPartnersLoading = action.payload;
+        },
+        setMonthlyWarnedRiskPartnersParams: (state,action) => {
+            state.monthlyWarnedRiskPartnersParams = {
+                ...state.monthlyWarnedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetMonthlyWarnedRiskPartnersParams: (state,action) => {
+            state.monthlyWarnedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteMonthlyWarnedRiskPartners: (state,action) => {
+            state.monthlyWarnedRiskPartners = [];
+        },
+        //annual warned
+        setAnnualWarnedRiskPartnersLoading: (state,action) => {
+            state.annualWarnedRiskPartnersLoading = action.payload;
+        },
+        setAnnualWarnedRiskPartnersParams: (state,action) => {
+            state.annualWarnedRiskPartnersParams = {
+                ...state.annualWarnedRiskPartnersParams,
+                ...action.payload
+            };
+        },
+        resetAnnualWarnedRiskPartnersParams: (state,action) => {
+            state.annualWarnedRiskPartnersParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteAnnualWarnedRiskPartners: (state,action) => {
+            state.annualWarnedRiskPartners = [];
+        },
         //deposite to warned
         setDepositeToWarnedRiskPartnersLoading: (state,action) => {
             state.depositeToWarnedRiskPartnersLoading = action.payload;
@@ -996,6 +1090,36 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchToWarnedRiskPartners.rejected, (state,action) => {
                 state.toWarnedRiskPartnersLoading = false
             })
+            //monthly warned
+            .addCase(fetchMonthlyWarnedRiskPartners.pending, (state) => {
+                state.monthlyWarnedRiskPartnersLoading = true
+            })
+            .addCase(fetchMonthlyWarnedRiskPartners.fulfilled, (state,action) => {
+                state.monthlyWarnedRiskPartners = (action.payload.data || action.payload).filter(
+                    (item, index, self) =>
+                        index === self.findIndex((t) => t.id === item.id)
+                );
+                state.monthlyWarnedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.monthlyWarnedRiskPartnersLoading = false
+            })
+            .addCase(fetchMonthlyWarnedRiskPartners.rejected, (state,action) => {
+                state.monthlyWarnedRiskPartnersLoading = false
+            })
+            //annual warned
+            .addCase(fetchAnnualWarnedRiskPartners.pending, (state) => {
+                state.annualWarnedRiskPartnersLoading = true
+            })
+            .addCase(fetchAnnualWarnedRiskPartners.fulfilled, (state,action) => {
+                state.annualWarnedRiskPartners = (action.payload.data || action.payload).filter(
+                    (item, index, self) =>
+                        index === self.findIndex((t) => t.id === item.id)
+                );
+                state.annualWarnedRiskPartnersCount = action.payload.recordsTotal || 0;
+                state.annualWarnedRiskPartnersLoading = false
+            })
+            .addCase(fetchAnnualWarnedRiskPartners.rejected, (state,action) => {
+                state.annualWarnedRiskPartnersLoading = false
+            })
             //deposite to warned
             .addCase(fetchDepositeToWarnedRiskPartners.pending, (state) => {
                 state.depositeToWarnedRiskPartnersLoading = true
@@ -1219,6 +1343,16 @@ export const {
     setPostaToWarnedRiskPartnersParams,
     resetPostaToWarnedRiskPartnersParams,
     deletePostaToWarnedRiskPartners,
+
+    setMonthlyWarnedRiskPartnersLoading,
+    setMonthlyWarnedRiskPartnersParams,
+    resetMonthlyWarnedRiskPartnersParams,
+    deleteMonthlyWarnedRiskPartners,
+
+    setAnnualWarnedRiskPartnersLoading,
+    setAnnualWarnedRiskPartnersParams,
+    resetAnnualWarnedRiskPartnersParams,
+    deleteAnnualWarnedRiskPartners,
 
     setWarnedRiskPartnersLoading,
     setWarnedRiskPartnersParams,
