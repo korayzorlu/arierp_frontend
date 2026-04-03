@@ -103,7 +103,7 @@ const commonTheme = {
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    //borderRadius: 0,
+                    borderRadius: 0,
                     //backgroundImage: "none",
                 },
             },
