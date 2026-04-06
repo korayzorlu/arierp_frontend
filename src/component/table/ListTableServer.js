@@ -141,7 +141,8 @@ function ListTableServer(props) {
       const items = model?.items ?? [];
       items.forEach((item) => {
         //console.log("2-1");
-        const isCodeLike = ['code','contract','lease'].includes(item.field);
+        //const isCodeLike = ['code','contract','lease'].includes(item.field);
+        const isCodeLike = [].includes(item.field);
         if (item.value) {
           //console.log("2-1-1");
           setFilterParams({
