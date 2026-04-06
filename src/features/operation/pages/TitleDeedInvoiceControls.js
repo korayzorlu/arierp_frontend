@@ -285,6 +285,9 @@ function TitleDeedInvoiceControls() {
                     py: 1,
                 },
             }}
+            initialState={{
+                pinnedColumns: {left: ['code']}
+            }}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
