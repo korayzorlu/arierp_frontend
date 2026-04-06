@@ -94,7 +94,7 @@ function PurchasePayments() {
         { field: 'purchasing', headerName: 'Satın Alma', type: 'number', renderHeaderFilter: () => null },
         { field: 'bbsn', headerName: 'BBSN', renderHeaderFilter: () => null,
             renderCell: (params) => params.row.lease.bbsn
-         },
+        },
         { field: 'total_purchase_document_amount', headerName: 'Toplam Fatura Tutarı', width: 140, type: 'number', renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)}
@@ -128,7 +128,6 @@ function PurchasePayments() {
             <Grid container spacing={1}>
                 <ListTableServer
                 title="Satıcı Ödemeleri"
-                autoHeight
                 rows={purchasePayments}
                 columns={columns}
                 getRowId={(row) => row.uuid}
