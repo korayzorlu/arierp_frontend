@@ -191,7 +191,7 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
-        { field: 'invoices', headerName: 'Fatura Durumu',
+        { field: 'invoices', headerName: 'Fatura Durumu', width:160,
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
                 {...params}
@@ -207,7 +207,7 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
-        { field: 'purchase_documents', headerName: 'Satıcı Fatura Durumu',
+        { field: 'purchase_documents', headerName: 'Satıcı Fatura Durumu', width:160,
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
                 {...params}
@@ -223,6 +223,10 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
+        { field: 'purchase_documents_amount', headerName: 'Satıcı Fatura Tutarı', width:160, type: 'number', renderHeaderFilter: () => null,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'purchase_documents_currency', headerName: 'PB', width:160, renderHeaderFilter: () => null },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
                 <Grid container spacing={1} sx={{width:'100%'}}>
