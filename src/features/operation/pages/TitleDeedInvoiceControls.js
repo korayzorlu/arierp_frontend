@@ -223,7 +223,7 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
-        { field: 'purchase_documents_amount', headerName: 'Satıcı Fatura Tutarı', width:160, type: 'number', renderHeaderFilter: () => null,
+        { field: 'purchase_document_amount', headerName: 'Satıcı Fatura Tutarı', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'purchase_documents_currency', headerName: 'PB', width:160, renderHeaderFilter: () => null },
