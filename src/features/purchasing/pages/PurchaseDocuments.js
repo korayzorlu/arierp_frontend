@@ -38,7 +38,7 @@ function PurchaseDocuments() {
         { field: 'lease_code', headerName: 'Kira Planı', renderCell: (params) => params.row.lease.code },
         { field: 'partner', headerName: 'Müşteri', width: 240 },
         { field: 'vendor', headerName: 'Satıcı', width: 240 },
-        { field: 'lease_bbsn', headerName: 'BBSN', renderCell: (params) => params.row.lease.bbsn },
+        { field: 'lease_bbsn', headerName: 'BBSN', width: 160, renderCell: (params) => params.row.lease.bbsn },
         { field: 'document_number', headerName: 'Döküman Numarası', width: 140 },
         { field: 'document_date', headerName: 'Döküman Tarihi', width: 140, renderHeaderFilter: () => null },
         { field: 'amount', headerName: 'Toplam Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
@@ -79,6 +79,9 @@ function PurchaseDocuments() {
                 setParams={(value) => dispatch(setPurchaseDocumentsParams(value))}
                 headerFilters={true}
                 noDownloadButton
+                initialState={{
+                    pinnedColumns: {left: ['contract','lease_code']}
+                }}
                 />
             </Grid>
             <ExportDialog
