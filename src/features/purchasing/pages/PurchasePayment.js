@@ -165,6 +165,9 @@ function PurchasePayments() {
                 headerFilters={true}
                 noDownloadButton
                 onCellClick={handleProfileDialog}
+                initialState={{
+                    pinnedColumns: {left: ['contract','lease_code']}
+                }}
                 />
             </Grid>
             <ExportDialog
