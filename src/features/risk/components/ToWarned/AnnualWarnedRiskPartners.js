@@ -35,6 +35,7 @@ import TableButton from 'component/button/TableButton';
 import WarningIcon from '@mui/icons-material/Warning';
 import EmailIcon from '@mui/icons-material/Email';
 import TabPanel from 'component/tab/TabPanel';
+import AnnualWarnedRiskPartnerDetailPanel from './AnnualWarnedRiskPartnerDetailPanel';
 
 function AnnualWarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -339,7 +340,7 @@ function AnnualWarnedRiskPartners() {
             //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
             //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:annualWarnedRiskPartnersParams}));}}
             getDetailPanelHeight={() => "auto"}
-            getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
+            getDetailPanelContent={(params) => {return(<AnnualWarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></AnnualWarnedRiskPartnerDetailPanel>)}}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
