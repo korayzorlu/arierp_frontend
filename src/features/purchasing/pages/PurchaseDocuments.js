@@ -69,6 +69,11 @@ function PurchaseDocuments() {
                 customButtons={
                     <>  
                         <CustomTableButton
+                        title="Excel Hazırla ve İndir"
+                        onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());}}
+                        icon={<DownloadIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchPurchaseDocuments({activeCompany,params:purchaseDocumentsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Card, CardHeader, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,15 @@ import { ReactComponent as DarkModeIcon } from '../../images/icons/navbar/dark-m
 import { ReactComponent as LightModeIcon } from '../../images/icons/navbar/light-mode.svg';
 import { changeTheme, logoutAuth } from '../../store/slices/authSlice';
 import LogoutIcon from '@mui/icons-material/Logout';
+
+const avatarColors = ['#e53935','#d81b60','#8e24aa','#5e35b1','#1e88e5','#00897b','#43a047','#fb8c00','#f4511e','#6d4c41'];
+
+function stringToColor(str) {
+    if (!str) return avatarColors[0];
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    return avatarColors[Math.abs(hash) % avatarColors.length];
+}
 
 function User(props) {
     const {children} = props;
@@ -79,12 +88,32 @@ function User(props) {
             >   
                 <MenuItem>
                     <ListItemText>
-                        <Typography variant="body2" sx={{ color: 'text.secondary',textAlign:"center" }}>
+                        <Card sx={{ maxWidth: 345 }}>
+                            <CardHeader
+                                avatar={
+                                <Avatar sx={{ bgcolor: stringToColor(user?.name || user?.email) }} aria-label="recipe">
+                                    {user.image
+                                    ?
+                                        <img
+                                        src={user.image}
+                                        className="rounded-circle" alt="" loading="lazy"
+                                        style={{objectFit:"cover",height:"100%",width:"100%"}}
+                                        />
+                                    :
+                                        user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()
+                                    }
+                                </Avatar>
+                                }
+                                title={user.name}
+                                subheader={user.position ? user.position : user.authorization}
+                            />
+                            </Card>
+                        {/* <Typography variant="body2" sx={{ color: 'text.secondary',textAlign:"center" }}>
                             {user.name}
                         </Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary',textAlign:"center" }}>
                             {user.authorization}
-                        </Typography>
+                        </Typography> */}
                     </ListItemText>
                 </MenuItem>
                 <Divider/>
