@@ -1,4 +1,4 @@
-import { Alert, Box, Card, Chip, Divider, IconButton, Stack, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Card, Chip, Divider, IconButton, SpeedDial, SpeedDialAction, Stack, Typography, useTheme } from '@mui/material'
 import React, { startTransition, useEffect } from 'react'
 import { Grid } from '@mui/material';
 import { ReactComponent as EagleIcon2 } from "../../../images/icons/global/eagle.svg";
@@ -24,6 +24,14 @@ import Installment from '../../leasing/pages/Installment';
 import InstallmentPaymentWarningGraph from '../components/InstallmentPaymentWarningGraph';
 import PortfoysPie from '../components/PortfoysPie';
 import PortfolioGraph from '../components/PortfolioGraph';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 function Dashboard() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -38,6 +46,10 @@ function Dashboard() {
             dispatch(fetchTerminatedSummary({activeCompany,params:{...terminatedSummaryParams,paginate:false}}));
         });
     }, [activeCompany,terminatedSummaryParams,dispatch]);
+
+    const actions = [
+        { icon: <CalendarTodayIcon />, name: 'Tarih Aralığı' },
+    ];
     
     const endDate = new Date('2025-08-14');
     const dates = [];
@@ -140,6 +152,32 @@ function Dashboard() {
                     <RisksBar/>
                 </Grid>
             </Grid>
+
+            {/* <SpeedDial
+            ariaLabel="SpeedDial basic example"
+            sx={{ position: 'absolute', bottom: 'calc(50vh - 56px)', right: 16, opacity: 0.8 }}
+            icon={<FilterListIcon/>}
+            FabProps={{
+                sx: {
+                bgcolor: dark ? 'silvercoin.main' : '#000',
+                '&:hover': {
+                    bgcolor: dark ? 'snowfall.main' : '#222',
+                }
+                }
+            }}
+            >
+                {actions.map((action) => (
+                    <SpeedDialAction
+                    key={action.name}
+                    icon={action.icon}
+                    slotProps={{
+                        tooltip: {
+                            title: action.name,
+                        },
+                    }}
+                    />
+                ))}
+            </SpeedDial> */}
 
         </Stack>
         

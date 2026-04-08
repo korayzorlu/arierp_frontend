@@ -88,7 +88,7 @@ function User(props) {
             >   
                 <MenuItem>
                     <ListItemText>
-                        <Card sx={{ maxWidth: 345 }}>
+                        <Card sx={{ maxWidth: 345 }} elevation={dark ? 1 : 0 }>
                             <CardHeader
                                 avatar={
                                 <Avatar sx={{ bgcolor: stringToColor(user?.name || user?.email) }} aria-label="recipe">
