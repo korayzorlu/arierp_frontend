@@ -70,7 +70,7 @@ function Leases() {
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
-        { field: 'item', headerName: 'Proje', width: 100,
+        { field: 'item', headerName: 'Proje', width: 200,
             renderCell: (params) => (
                 params.row.item.name
             ),
@@ -191,6 +191,9 @@ function Leases() {
             getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             apiRef={apiRef}
+            initialState={{
+                pinnedColumns: {left: ['code']}
+            }}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}

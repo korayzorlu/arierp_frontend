@@ -74,7 +74,7 @@ function ActiveActiveLeases() {
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
-        { field: 'item', headerName: 'Proje', width: 100,
+        { field: 'item', headerName: 'Proje', width: 200,
             renderCell: (params) => (
                 params.row.item.name
             ),
@@ -174,6 +174,9 @@ function ActiveActiveLeases() {
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}
+            initialState={{
+                pinnedColumns: {left: ['code']}
+            }}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}

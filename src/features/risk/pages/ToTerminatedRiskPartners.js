@@ -366,7 +366,7 @@ function ToTerminatedRiskPartners() {
             risk_status="to_terminated"
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden fesih uyarısı için kısa mesaj gönderilecektir."
-            example={`Değerli müşterimiz, {{proje}} projesi’ne ait {{tarih}} son ödeme tarihli {{tutar}} TL ihtar bakiyeniz bulunmaktadır. Fesih sürecindeki ödemenizi gerçekleştirmenizi rica ederiz. Ödeme yapıldıysa mesajı dikkate almayınız. Arı Finansal Kiralama Tel:02123102721 Mernis No:0147005285500018`}
+            example={`Değerli müşterimiz, {{sozlesme_no}} No.lu {{"sözleşmenize"/"sözleşmelerinize"}} ilişkin {{tutar}} TL borcunuz bulunmaktadır. {{tarih}} tarihi itibarıyla sonlandırılacağını üzülerek bilgilerinize sunarız. Herhangi bir sorunuz olması halinde bizimle 4447680 no.lu telefondan ulaşabilirsiniz. Arı Finansal Kiralama Mersis No: 0147005285500018 `}
             />
             <WarningNoticeDialog/>
             <MessageDialog/>
