@@ -256,7 +256,7 @@ function AnnualWarnedRiskPartners() {
     return (
         <Stack spacing={2}>
             <ListTableServer
-            title="Son 1 Yılda En Az 3 Aylık Mükerrer Ödememe Durumuna Düşenler"
+            title="Son 1 Yılda En Az 3 Aylık Mükerrer Ödememe Durumunda Olanlar"
             height="calc(100vh - 150px)"
             rows={annualWarnedRiskPartners}
             columns={riskPartnerColumns}

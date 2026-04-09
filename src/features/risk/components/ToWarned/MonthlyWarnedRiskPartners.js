@@ -256,7 +256,7 @@ function MonthlyWarnedRiskPartners() {
     return (
         <Stack spacing={2}>
             <ListTableServer
-            title="Üst Üste 2 Aylık Mükerrer Ödememe Duruma Düşenler"
+            title="Üst Üste 2 Aylık Mükerrer Ödememe Durumda Olanlar"
             height="calc(100vh - 150px)"
             rows={monthlyWarnedRiskPartners}
             columns={riskPartnerColumns}
