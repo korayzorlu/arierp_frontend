@@ -76,7 +76,7 @@ function ActiveActiveLeases() {
         //{ field: 'item', headerName: 'Proje', width:280 },
         { field: 'item', headerName: 'Proje', width: 200,
             renderCell: (params) => (
-                params.row.item.name
+                params.row.item?.name
             ),
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
@@ -93,10 +93,12 @@ function ActiveActiveLeases() {
         },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
+        { field: 'bbsn', headerName: 'BBSN', width:140 },
+        { field: 'crm_bbsn', headerName: 'CRM BBSN', width:140 },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
         //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
         //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
+        { field: 'overdue_amount', headerName: 'Bakiye', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
                 return params.value > 0 ? 'bg-red' : '';
             },
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
@@ -115,7 +117,7 @@ function ActiveActiveLeases() {
                 
             )
         },
-        { field: 'status', headerName: 'Alt Statü', width:120 },
+        //{ field: 'status', headerName: 'Alt Statü', width:120 },
         { field: 'lease_status', headerName: 'Statü', width:120,
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
@@ -148,7 +150,7 @@ function ActiveActiveLeases() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Kira Planları Listesi"
+            title="Yürürlükteki Kira Planları Listesi"
             rows={activeLeases}
             columns={columns}
             getRowId={(row) => row.uuid}
@@ -170,7 +172,7 @@ function ActiveActiveLeases() {
             rowCount={activeLeasesCount}
             // checkboxSelection
             setParams={(value) => dispatch(setActiveLeasesParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            // getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}

@@ -164,7 +164,8 @@ function ListTableServer(props) {
           } else {
             //console.log("2-1-2-2");
             setParams({ [item.field]: "" });
-            setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
+            //setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
+            setFilterParams(prev => Object.keys(prev).reduce((acc, key) => { acc[key] = ""; return acc; }, {}));
             const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
               acc[key] = "";
               return acc;
@@ -175,7 +176,8 @@ function ListTableServer(props) {
       });
     } else if(model.items && model.items.length === 0 && model.quickFilterValues.length === 0){
       //console.log("3");
-      setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
+      //setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
+      setFilterParams(prev => Object.keys(prev).reduce((acc, key) => { acc[key] = ""; return acc; }, {}));
       const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
         acc[key] = "";
         return acc;

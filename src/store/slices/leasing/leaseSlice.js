@@ -134,7 +134,6 @@ export const fetchProjects = createAsyncThunk('auth/fetchProjects', async ({acti
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
-        console.log(response.data)
         return response.data;
     } catch (error) {
         return [];
@@ -191,7 +190,6 @@ export const fetchLeaseUnpages = createAsyncThunk('auth/fetchLeaseUnpages', asyn
                 headers: {"X-Requested-With": "XMLHttpRequest"}
             }
         );
-        console.log(response.data)
         return response.data;
     } catch (error) {
         return [];
