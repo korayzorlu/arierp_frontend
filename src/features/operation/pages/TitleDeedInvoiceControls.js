@@ -10,8 +10,8 @@ import DeleteDialog from 'component/feedback/DeleteDialog';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
-import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Badge, Chip, Grid, Stack } from '@mui/material';
+import { ToolbarButton, useGridApiRef } from '@mui/x-data-grid-premium';
+import { Badge, badgeClasses, Chip, Divider, Grid, IconButton, Stack, styled } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
@@ -22,11 +22,14 @@ import { gridClasses } from '@mui/x-data-grid-premium';
 import LeaseNoteDialog from 'component/dialog/LeaseNoteDialog';
 import TableButton from 'component/button/TableButton';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import WarningIcon from '@mui/icons-material/Warning';
+import ColumnHeaderWarningButton from 'component/table/header/ColumnHeaderWarningButton';
+import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 
 function TitleDeedInvoiceControls() {
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading} = useSelector((store) => store.titleDeedInvoiceControl);
+    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings} = useSelector((store) => store.titleDeedInvoiceControl);
     const {projectsParams,projects,leaseNotesParams } = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
@@ -40,13 +43,28 @@ function TitleDeedInvoiceControls() {
     const [project, setProject] = useState("all")
     const [exportURL, setExportURL] = useState("")
     const [status, setStatus] = useState("all")
+    const [columnHeaderCustomButtons, setColumnHeaderCustomButtons] = useState([]);
+
+    const fetchData = async () => {
+        await dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,project}})).unwrap();
+        await dispatch(fetchProjects({activeCompany,params:projectsParams})).unwrap();
+        setColumnHeaderCustomButtons([
+            { field: 'ari_bbsn', nullCount: titleDeedInvoiceControls.filter((item) => !item.ari_bbsn).length }
+        ])
+    }
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,project}}));
-            dispatch(fetchProjects({activeCompany,params:projectsParams}));
+            fetchData();
         });
     }, [activeCompany,titleDeedInvoiceControlsParams,dispatch]);
+
+    const CartBadge = styled(Badge)`
+    & .${badgeClasses.badge} {
+        top: -12px;
+        right: 0;
+    }
+    `;
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
@@ -109,7 +127,7 @@ function TitleDeedInvoiceControls() {
         },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
-        { field: 'ari_bbsn', headerName: 'BBSN', width:140 },
+        { field: 'ari_bbsn', headerName: 'BBSN', width:140, renderHeader: () => (<CustomColumnHeader label="BBSN" warnings={titleDeedInvoiceControlsWarnings.filter(w => w.field === 'ari_bbsn')} />),},
         { field: 'crm_bbsn', headerName: 'CRM BBSN', width:140 },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
         //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },

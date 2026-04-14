@@ -39,6 +39,7 @@ const initialState = {
     warningNoticeDialog: false,
     comprehensiveWarningNoticeDialog: false,
     terminationWarningNoticeDialog: false,
+    columnHeaderDialog: false,
 }
 
 export const fetchNotifications = createAsyncThunk('notifications/fetchNotifications', async () => {
@@ -166,6 +167,9 @@ const notificationSlice = createSlice({
         setChangePartnerDialog: (state,action) => {
             state.changePartnerDialog = action.payload;
         },
+        setColumnHeaderDialog: (state,action) => {
+            state.columnHeaderDialog = action.payload;
+        },
         setModal: (state,action) => {
             state.modal = action.payload;
         },
@@ -231,5 +235,6 @@ export const {
     setFinmaksTransactionNameDialog,
     setChangePartnerDialog,
     setLeaseNoteDialog,
+    setColumnHeaderDialog
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

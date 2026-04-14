@@ -14,10 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import CustomTableButton from './CustomTableButton';
 import AssistantIcon from '@mui/icons-material/Assistant';
 import AndroidSwitch from '../switch/AndroidSwitch';
+import WarningIcon from '@mui/icons-material/Warning';
 
 function MUIToolbar(props) {
-  const {children,title,backButton,excelOptions,customFilters,customFiltersLeft,noToolbarButtons,noDownloadButton,specialButtons} = props;
-
   const {dark} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
 
@@ -56,7 +55,7 @@ function MUIToolbar(props) {
   return (
     // <div style={{ display: "flex", justifyContent: "space-between", padding: "0.5rem" }}>
     //     <Toolbar/>
-    //     {children}
+    //     {propschildren}
     //     <ToolbarQuickFilter></ToolbarQuickFilter>
     // </div>
     
@@ -65,7 +64,7 @@ function MUIToolbar(props) {
     //   <ToolbarFilterButton slotProps={buttonSlotProps}/>
     //   <ToolbarDensitySelector slotProps={buttonSlotProps}/>
     //   <ToolbarExport slotProps={buttonSlotProps}/>
-    //   {children}
+    //   {props.children}
     //   <Box sx={{ flexGrow: 1 }} />
       
     //   <ToolbarQuickFilter></ToolbarQuickFilter>
@@ -91,7 +90,7 @@ function MUIToolbar(props) {
           <Grid container spacing={0} sx={{alignItems:'center',justifyContent:'space-between',width:mobile ? '100%' : 'unset'}}>
       
             {
-              backButton
+              props.backButton
               ?
                 <CustomTableButton
                 title="Back"
@@ -104,11 +103,28 @@ function MUIToolbar(props) {
             }
 
             <Typography fontWeight="medium" sx={{ flex: 1, mx: 0.5, textAlign:mobile ? 'end' : 'unset' }}>
-              {title}
+              {props.title}
             </Typography>
           </Grid>
 
-          <Grid display={noToolbarButtons ? 'none' : 'flex'} container spacing={0}>
+          <Grid display={props.noToolbarButtons ? 'none' : 'flex'} container spacing={0}>
+            {
+              props.warnings
+              ?
+              <>
+                <ToolbarButton color="warning">
+                  <Badge badgeContent={1} color="primary" variant="dot">
+                    <WarningIcon fontSize="small" />
+                  </Badge>
+                </ToolbarButton>
+                <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
+              </>
+              :
+                null
+            }
+
+            
+
             <Tooltip title="Sütunlar">
               <ColumnsPanelTrigger render={<ToolbarButton />} sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}}>
                 <ViewColumnIcon fontSize="small" />
@@ -141,12 +157,12 @@ function MUIToolbar(props) {
             </Tooltip> */}
 
             {
-              noDownloadButton
+              props.noDownloadButton
               ?
                 null
               :
                 <Tooltip title="Exel İndir">
-                  <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={excelOptions}>
+                  <ExportExcel render={<ToolbarButton />}  sx={{color: dark ? 'whitehole.main' : 'blackhole.main'}} options={props.excelOptions}>
                     <FileDownloadIcon fontSize="small" />
                   </ExportExcel>
                 </Tooltip>
@@ -159,7 +175,7 @@ function MUIToolbar(props) {
               </ExportPrint>
             </Tooltip>
 
-            {children}
+            {props.children}
 
             <Divider orientation="vertical" variant="middle" flexItem sx={{ mx: 0.5 }} />
             {/* <GridToolbarQuickFilter></GridToolbarQuickFilter> */}
@@ -224,10 +240,10 @@ function MUIToolbar(props) {
           </Grid>
 
           {
-            specialButtons
+            props.specialButtons
             ?
               <Grid container spacing={0}>
-                {specialButtons}
+                {props.specialButtons}
               </Grid>
             :
             null
@@ -242,10 +258,10 @@ function MUIToolbar(props) {
         }}
         > 
           <Grid>
-            {customFiltersLeft}
+            {props.customFiltersLeft}
           </Grid>
           <Grid>
-            {customFilters}
+            {props.customFilters}
           </Grid>
         </Grid>
       </Grid>

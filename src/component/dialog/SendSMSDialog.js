@@ -13,7 +13,7 @@ function SendSMSDialog({...props}) {
     const {activeCompany} = useSelector((store) => store.organization);
     const {sendSMSDialog} = useSelector((store) => store.notification);
     const {partnerInformation} = useSelector((store) => store.partner);
-   const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
+    const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
 
     const dispatch = useDispatch();
 

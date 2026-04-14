@@ -62,7 +62,8 @@ function ListTableServer(props) {
     autoPageSize,
     pageSizeOptions,
     pageSize,
-    cellSelection
+    cellSelection,
+    warnings
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
@@ -267,6 +268,7 @@ function ListTableServer(props) {
                 debounceMs: 200,
               },
               noDownloadButton: noDownloadButton,
+              warnings: warnings,
           },
           // loadingOverlay: {
           //   variant: 'linear-progress',
