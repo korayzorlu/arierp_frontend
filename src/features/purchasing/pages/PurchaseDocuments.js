@@ -12,6 +12,7 @@ import { Grid } from '@mui/material';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
+import PurchaseDocumentDetailPanel from '../components/PurchaseDocumentDetailPanel';
 
 function PurchaseDocuments() {
     const {user} = useSelector((store) => store.auth);
@@ -87,6 +88,8 @@ function PurchaseDocuments() {
                 initialState={{
                     pinnedColumns: {left: ['contract','lease_code']}
                 }}
+                getDetailPanelHeight={() => "auto"}
+                getDetailPanelContent={(params) => {return(<PurchaseDocumentDetailPanel uuid={params.row.uuid} rows={params.row.purchase_document_items.purchase_document_items}></PurchaseDocumentDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog

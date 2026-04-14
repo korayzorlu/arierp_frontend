@@ -67,6 +67,7 @@ import pepPartnerReducer from './slices/compliance/pepPartnerSlice';
 import titleDeedInvoiceControlSlice from './slices/operation/titleDeedInvoiceControlSlice';
 import UntitleDeedLeaseSlice from './slices/operation/untitleDeedLeaseSlice';
 import vposTransactionSlice from './slices/finance/vposTransactionSlice';
+import purchaseDocumentItemSlice from './slices/purchasing/purchaseDocumentItemSlice';
 
 let navigate;
 
@@ -143,7 +144,8 @@ export const store = configureStore({
         pepPartner: pepPartnerReducer,
         titleDeedInvoiceControl: titleDeedInvoiceControlSlice,
         untitleDeedLease: UntitleDeedLeaseSlice,
-        vposTransaction: vposTransactionSlice
+        vposTransaction: vposTransactionSlice,
+        purchaseDocumentItem: purchaseDocumentItemSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
