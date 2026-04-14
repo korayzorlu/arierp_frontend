@@ -43,6 +43,7 @@ function ColumnHeaderDialog(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
+                    
                     <Stack spacing={2}>
                         {
                             props.warnings.map((warning,index) => (
@@ -62,7 +63,6 @@ function ColumnHeaderDialog(props) {
                                 </Typography>
                             ))
                         }
-                        
                     </Stack>
                     
                 </DialogContentText>
