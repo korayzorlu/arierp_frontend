@@ -51,6 +51,9 @@ function PurchaseDocuments() {
         { field: 'total_amount', headerName: 'Genel Toplam', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'crm_amount', headerName: "IFS'ten Gelen Tutar", width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.crm_invoice_total_amount, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'currency', headerName: 'PB' },
         { field: 'exchange_rate', headerName: 'Kur', type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
