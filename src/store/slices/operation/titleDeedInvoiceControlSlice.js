@@ -12,7 +12,8 @@ const initialState = {
         format: 'datatables'
     },
     titleDeedInvoiceControlsLoading:false,
-    titleDeedInvoiceControlsWarnings: []
+    titleDeedInvoiceControlsWarnings: [],
+    titleDeedInvoiceControlsInfo: [],
 }
 
 export const fetchTitleDeedInvoiceControls = createAsyncThunk('auth/fetchTitleDeedInvoiceControls', async ({activeCompany,serverModels=null,params=null}) => {
@@ -52,6 +53,7 @@ const titleDeedInvoiceControlSlice = createSlice({
                 state.titleDeedInvoiceControls = action.payload.data || action.payload;
                 state.titleDeedInvoiceControlsCount = action.payload.recordsTotal || 0;
                 state.titleDeedInvoiceControlsWarnings = action.payload.warnings || [];
+                state.titleDeedInvoiceControlsInfo = action.payload.info || [];
                 state.titleDeedInvoiceControlsLoading = false
             })
             .addCase(fetchTitleDeedInvoiceControls.rejected, (state,action) => {

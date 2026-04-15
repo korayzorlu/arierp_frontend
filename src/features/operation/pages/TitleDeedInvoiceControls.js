@@ -29,7 +29,7 @@ import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 function TitleDeedInvoiceControls() {
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings} = useSelector((store) => store.titleDeedInvoiceControl);
+    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings,titleDeedInvoiceControlsInfo} = useSelector((store) => store.titleDeedInvoiceControl);
     const {projectsParams,projects,leaseNotesParams } = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
@@ -128,7 +128,9 @@ function TitleDeedInvoiceControls() {
         },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
-        { field: 'ari_bbsn', headerName: 'BBSN', width:140, renderHeader: () => (<CustomColumnHeader label="BBSN" warnings={titleDeedInvoiceControlsWarnings.filter(w => w.field === 'ari_bbsn')} />),},
+        { field: 'ari_bbsn', headerName: 'BBSN', width:140,
+            renderHeader: () => (<CustomColumnHeader label="BBSN" warnings={titleDeedInvoiceControlsWarnings.filter(w => w.field === 'ari_bbsn')} />)
+        },
         { field: 'crm_bbsn', headerName: 'CRM BBSN', width:140 },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
         //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
@@ -250,6 +252,10 @@ function TitleDeedInvoiceControls() {
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'purchase_documents_currency', headerName: 'PB', width:160, renderHeaderFilter: () => null },
+        { field: 'agreement', headerName: 'Mutabakat (TRY)', width:220, type: 'number', renderHeaderFilter: () => null,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+            renderHeader: () => (<CustomColumnHeader label="Mutabakat (TRY)" info={titleDeedInvoiceControlsInfo.filter(i => i.field === 'agreement')} />)
+        },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
                 <Grid container spacing={1} sx={{width:'100%'}}>

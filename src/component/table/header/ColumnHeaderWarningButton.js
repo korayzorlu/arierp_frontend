@@ -1,8 +1,8 @@
 import { Badge, badgeClasses, IconButton, styled } from '@mui/material'
 import React from 'react'
 import WarningIcon from '@mui/icons-material/Warning';
-import ColumnHeaderDialog from './ColumnHeaderDialog';
-import { setColumnHeaderDialog } from 'store/slices/notificationSlice';
+import ColumnHeaderWarningDialog from './ColumnHeaderWarningDialog';
+import { setColumnHeaderWarningDialog } from 'store/slices/notificationSlice';
 import { useDispatch } from 'react-redux';
 
 function ColumnHeaderWarningButton(props) {
@@ -17,7 +17,7 @@ function ColumnHeaderWarningButton(props) {
 
     const handleClick = (e) => {
         e.stopPropagation();
-        dispatch(setColumnHeaderDialog(true));
+        dispatch(setColumnHeaderWarningDialog(true));
     }
 
     return (
@@ -26,7 +26,7 @@ function ColumnHeaderWarningButton(props) {
                 <WarningIcon fontSize="small"/>
                 <CartBadge badgeContent={props.warnings.length} color="primary" variant="dot"/>
             </IconButton>
-            <ColumnHeaderDialog
+            <ColumnHeaderWarningDialog
             warnings={props.warnings || []}
             />
         </>

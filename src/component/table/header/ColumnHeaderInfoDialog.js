@@ -4,14 +4,15 @@ import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, L
 import SmsIcon from '@mui/icons-material/Sms';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useDispatch, useSelector } from 'react-redux';
-import { setColumnHeaderDialog } from 'store/slices/notificationSlice';
+import { setColumnHeaderInfoDialog } from 'store/slices/notificationSlice';
 import WarningIcon from '@mui/icons-material/Warning';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { fetchTitleDeedInvoiceControls } from 'store/slices/operation/titleDeedInvoiceControlSlice';
+import HelpIcon from '@mui/icons-material/Help';
 
 function ColumnHeaderDialog(props) {
     const {activeCompany} = useSelector((store) => store.organization);
-    const {columnHeaderDialog} = useSelector((store) => store.notification)
+    const {columnHeaderInfoDialog} = useSelector((store) => store.notification)
     const {titleDeedInvoiceControlsParams} = useSelector((store) => store.titleDeedInvoiceControl);
     
     const dispatch = useDispatch();
@@ -19,18 +20,18 @@ function ColumnHeaderDialog(props) {
     const [filterSwitch, setFilterSwitch] = useState(false);
 
     const handleClose = () => {
-        dispatch(setColumnHeaderDialog(false));
+        dispatch(setColumnHeaderInfoDialog(false));
     };
 
     const handleSubmit = (filter) => {
-        dispatch(setColumnHeaderDialog(false));
+        dispatch(setColumnHeaderInfoDialog(false));
         dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,[filter]:!filterSwitch}}));
         setFilterSwitch(!filterSwitch);
     };
 
     return (
         <MUIDialog
-        open={columnHeaderDialog}
+        open={columnHeaderInfoDialog}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -39,29 +40,31 @@ function ColumnHeaderDialog(props) {
         fullWidth
         >
             <DialogTitle id="alert-dialog-title">
-                <WarningIcon/> Uyarılar
+                {
+                    props.info?.length > 0
+                    ?
+                        <>
+                            <HelpIcon/> Bilgi
+                        </>
+                    :
+                        null
+                }
+                
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     
                     <Stack spacing={2}>
                         {
-                            props.warnings.map((warning,index) => (
-                                <Typography key={index}>
-                                    {warning.message}
-                                    {
-                                        <Link
-                                        component="button"
-                                        variant="body2"
-                                        onClick={() => handleSubmit(warning.filter)}
-                                        sx={{mx:0.5}}
-                                        >
-                                            {filterSwitch ? 'Filtreyi Kapat' : 'Göster'}
-                                            <ArrowOutwardIcon fontSize="small"/>
-                                        </Link>
-                                    }
-                                </Typography>
-                            ))
+                            props.info?.length > 0
+                            ?
+                                props.info.map((info,index) => (
+                                    <Typography key={index}>
+                                        {info.message}
+                                    </Typography>
+                                ))
+                            :
+                                null
                         }
                     </Stack>
                     
