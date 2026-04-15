@@ -108,6 +108,7 @@ function TitleDeedInvoiceControls() {
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
         { field: 'vendor', headerName: 'Satıcı', width:220 },
+        { field: 'crm_satici', headerName: 'CRM Satıcı', width: 220 },
         { field: 'item', headerName: 'Proje', width: 220,
             renderCell: (params) => (
                 params.row.item.name
@@ -125,7 +126,6 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
-        { field: 'crm_satici', headerName: 'CRM Satıcı', width: 220 },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
         { field: 'ari_bbsn', headerName: 'BBSN', width:140, renderHeader: () => (<CustomColumnHeader label="BBSN" warnings={titleDeedInvoiceControlsWarnings.filter(w => w.field === 'ari_bbsn')} />),},
