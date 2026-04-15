@@ -125,6 +125,7 @@ function TitleDeedInvoiceControls() {
                 />
             )
         },
+        { field: 'crm_satici', headerName: 'CRM Satıcı', width: 220 },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
         { field: 'ari_bbsn', headerName: 'BBSN', width:140, renderHeader: () => (<CustomColumnHeader label="BBSN" warnings={titleDeedInvoiceControlsWarnings.filter(w => w.field === 'ari_bbsn')} />),},
