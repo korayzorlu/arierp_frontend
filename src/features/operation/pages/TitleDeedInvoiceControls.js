@@ -245,6 +245,9 @@ function TitleDeedInvoiceControls() {
         { field: 'purchase_document_amount', headerName: 'Satıcı Fatura Tutarı', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'crm_invoice_total_amount', headerName: 'CRM Fatura Tutarı', width:160, type: 'number', renderHeaderFilter: () => null,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'purchase_documents_currency', headerName: 'PB', width:160, renderHeaderFilter: () => null },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
