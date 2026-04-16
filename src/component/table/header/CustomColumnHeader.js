@@ -3,6 +3,7 @@ import React from 'react'
 import WarningIcon from '@mui/icons-material/Warning';
 import ColumnHeaderWarningButton from './ColumnHeaderWarningButton';
 import ColumnHeaderInfoButton from './ColumnHeaderInfoButton';
+import ColumnHeaderdateButton from './ColumnHeaderDateButton';
 
 function CustomColumnHeader(props) {
     return (
@@ -22,6 +23,14 @@ function CustomColumnHeader(props) {
                 props.warnings?.length > 0
                 ?
                     <ColumnHeaderWarningButton warnings={props.warnings || []}/>
+                :
+                    null
+            }
+
+            {
+                props.dateFilter
+                ?
+                    <ColumnHeaderdateButton dates={props.dates || []}/>
                 :
                     null
             }

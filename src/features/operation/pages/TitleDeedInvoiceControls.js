@@ -26,6 +26,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import ColumnHeaderWarningButton from 'component/table/header/ColumnHeaderWarningButton';
 import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 
+
 function TitleDeedInvoiceControls() {
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
@@ -103,7 +104,13 @@ function TitleDeedInvoiceControls() {
             )
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
-        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
+        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', width:220, type: 'date',
+            //renderHeader: () => (<CustomColumnHeader label="Aktifleştirme Tarihi" dateFilter />),
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            } },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
