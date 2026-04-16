@@ -13,11 +13,12 @@ import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import PurchaseDocumentDetailPanel from '../components/PurchaseDocumentDetailPanel';
+import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 
 function PurchaseDocuments() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {purchaseDocuments,purchaseDocumentsCount,purchaseDocumentsParams,purchaseDocumentsLoading} = useSelector((store) => store.purchaseDocument);
+    const {purchaseDocuments,purchaseDocumentsCount,purchaseDocumentsParams,purchaseDocumentsLoading,purchaseDocumentsInfo} = useSelector((store) => store.purchaseDocument);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -39,6 +40,7 @@ function PurchaseDocuments() {
         { field: 'lease_code', headerName: 'Kira Planı', renderCell: (params) => params.row.lease.code },
         { field: 'partner', headerName: 'Müşteri', width: 240 },
         { field: 'vendor', headerName: 'Satıcı', width: 240 },
+        { field: 'crm_satici', headerName: 'CRM Satıcı', width: 240 },
         { field: 'lease_bbsn', headerName: 'BBSN', width: 160, renderCell: (params) => params.row.lease.bbsn },
         { field: 'document_number', headerName: 'Döküman Numarası', width: 140 },
         { field: 'document_date', headerName: 'Döküman Tarihi', width: 140, renderHeaderFilter: () => null },
@@ -55,6 +57,13 @@ function PurchaseDocuments() {
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB' },
+        { field: 'agreement', headerName: 'Mutabakat (TRY)', width:220, type: 'number', renderHeaderFilter: () => null,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+            renderHeader: () => (<CustomColumnHeader label="Mutabakat (TRY)" info={purchaseDocumentsInfo.filter(i => i.field === 'agreement')} />)
+        },
+        { field: 'is_agreement', headerName: 'Mutabakat Durumu', width: 180,
+            cellClassName: (params) => {return params.value === "Mutabakat Yok" ? 'bg-red' : '';},
+        },
         { field: 'exchange_rate', headerName: 'Kur', type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },

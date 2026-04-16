@@ -256,6 +256,9 @@ function TitleDeedInvoiceControls() {
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
             renderHeader: () => (<CustomColumnHeader label="Mutabakat (TRY)" info={titleDeedInvoiceControlsInfo.filter(i => i.field === 'agreement')} />)
         },
+        { field: 'is_agreement', headerName: 'Mutabakat Durumu', width: 180,
+            cellClassName: (params) => {return params.value === "Mutabakat Yok" ? 'bg-red' : '';},
+        },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
                 <Grid container spacing={1} sx={{width:'100%'}}>

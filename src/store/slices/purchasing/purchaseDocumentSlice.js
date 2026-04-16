@@ -12,6 +12,8 @@ const initialState = {
         format: 'datatables'
     },
     purchaseDocumentsLoading:false,
+    purchaseDocumentsWarnings: [],
+    purchaseDocumentsInfo: [],
     purchaseDocumentsInPurchasePayment:[],
     purchaseDocumentsInPurchasePaymentCode:0,
 }
@@ -89,6 +91,8 @@ const purchaseDocumentSlice = createSlice({
             })
             .addCase(fetchPurchaseDocuments.fulfilled, (state,action) => {
                 state.purchaseDocuments = action.payload.data || action.payload;
+                state.purchaseDocumentsWarnings = action.payload.warnings || [];
+                state.purchaseDocumentsInfo = action.payload.info || [];
                 state.purchaseDocumentsCount = action.payload.recordsTotal || 0;
                 state.purchaseDocumentsLoading = false
             })
