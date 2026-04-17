@@ -6,26 +6,44 @@ import { trTR } from '@mui/x-data-grid/locales';
 const commonTheme = {
     typography: {
         fontFamily: [
-            '-apple-system',
-            'system-ui',
-            'BlinkMacSystemFont',
-            'Segoe UI',
+            // '-apple-system',
+            // 'system-ui',
+            // 'BlinkMacSystemFont',
+            // 'Segoe UI',
+            // 'Roboto',
+            // 'Helvetica Neue',
+            // 'Fira Sans',
+            // 'Ubuntu',
+            // 'Oxygen',
+            // 'Oxygen Sans',
+            // 'Cantarell',
+            // 'Droid Sans',
+            // 'Apple Color Emoji',
+            // 'Segoe UI Emoji',
+            // 'Segoe UI Symbol',
+            // 'Lucida Grande',
+            // 'Helvetica',
+            // 'Arial',
+            // 'sans-serif',
+
+            'Inter',
             'Roboto',
-            'Helvetica Neue',
-            'Fira Sans',
-            'Ubuntu',
-            'Oxygen',
-            'Oxygen Sans',
-            'Cantarell',
-            'Droid Sans',
-            'Apple Color Emoji',
-            'Segoe UI Emoji',
-            'Segoe UI Symbol',
-            'Lucida Grande',
-            'Helvetica',
-            'Arial',
+            '-apple-system',
             'sans-serif',
         ].join(','),
+        htmlFontSize: 16,
+        fontSize: 13,
+        h1: { fontSize: '1.75rem', fontWeight: 600, lineHeight: 1.3 },
+        h2: { fontSize: '1.5rem',  fontWeight: 600, lineHeight: 1.3 },
+        h3: { fontSize: '1.25rem', fontWeight: 600, lineHeight: 1.4 },
+        h4: { fontSize: '1.1rem',  fontWeight: 600, lineHeight: 1.4 },
+        h5: { fontSize: '1rem',    fontWeight: 600, lineHeight: 1.4 },
+        h6: { fontSize: '0.875rem',fontWeight: 600, lineHeight: 1.4 },
+        subtitle1: { fontSize: '0.8125rem', fontWeight: 500, lineHeight: 1.4 },
+        subtitle2: { fontSize: '0.75rem',   fontWeight: 500, lineHeight: 1.4 },
+        caption: { fontSize: '0.6875rem', lineHeight: 1.4 }, // 11px
+        overline: { fontSize: '0.6875rem', lineHeight: 1.4, letterSpacing: '0.08em' },
+        button: { fontSize: '0.8125rem', fontWeight: 500, textTransform: 'none' },
     },
     palette: {
         ari: {
@@ -97,9 +115,27 @@ const commonTheme = {
                 root: {
                     border: 0,
                     borderRadius: 0,
+                    "& .MuiDataGrid-cell--textRight":{
+                        fontFamily: "'Roboto Mono',monospace",
+                        fontVariantNumeric: 'tabular-nums',
+                        //fontSize: '0.75rem',
+                        //textAlign: 'right',
+                    }
                 },
             },
         },
+        // MuiInputBase: {
+        //     styleOverrides: {
+        //         root: { fontSize: '0.8125rem' }, // 13px
+        //         sizeSmall: { fontSize: '0.75rem' },
+        //     },
+        // },
+        // MuiInputLabel: {
+        //     styleOverrides: {
+        //         root: { fontSize: '0.8125rem' },
+        //         sizeSmall: { fontSize: '0.75rem' },
+        //     },
+        // },
         MuiPaper: {
             styleOverrides: {
                 root: {
@@ -123,6 +159,15 @@ const commonTheme = {
                 },
             },
         },
+        // MuiButton: {
+        //     styleOverrides: {
+        //         root: { textTransform: 'none', fontSize: '0.8125rem' },
+        //         sizeSmall: { fontSize: '0.75rem' },
+        //     },
+        //     defaultProps: {
+        //         size: 'small', // ERP'de genellikle small default olur
+        //     },
+        // },
     },
 };
 
