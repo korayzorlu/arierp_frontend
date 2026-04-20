@@ -285,7 +285,7 @@ function ListTableServer(props) {
       getRowId={getRowId || ((row) => row.uuid)}
       initialState={{
         ...initialState,
-        pinnedColumns: mobile ? { left: [] } : initialState.pinnedColumns,
+        pinnedColumns: mobile ? { left: [] } : initialState?.pinnedColumns,
         columns: {
           columnVisibilityModel: hiddenColumns,
         },
