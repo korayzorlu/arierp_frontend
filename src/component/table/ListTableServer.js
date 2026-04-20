@@ -67,6 +67,7 @@ function ListTableServer(props) {
   } = props;
 
   const {dark,lang} = useSelector((store) => store.auth);
+  const {mobile} = useSelector((store) => store.sidebar);
 
   const dispatch = useDispatch();
 
@@ -284,6 +285,7 @@ function ListTableServer(props) {
       getRowId={getRowId || ((row) => row.uuid)}
       initialState={{
         ...initialState,
+        pinnedColumns: mobile ? { left: [] } : initialState.pinnedColumns,
         columns: {
           columnVisibilityModel: hiddenColumns,
         },

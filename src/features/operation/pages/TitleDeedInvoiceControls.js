@@ -68,7 +68,7 @@ function TitleDeedInvoiceControls() {
     `;
 
     const columns = [
-        { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
+        { field: 'code', headerName: 'Kira Planı', width:120, editable: true, renderCell: (params) => (
                 <Link
                 to={`/leasing/update/${params.row.uuid}/${params.row.contract_id}/`}
                 style={{textDecoration:"underline"}}
@@ -78,7 +78,7 @@ function TitleDeedInvoiceControls() {
                 
             )
         },
-        { field: 'old_leases', headerName: 'Versiyon Geçmişi', width:120, renderCell: (params) => (
+        { field: 'old_leases', headerName: 'Versiyonlar', width:120, renderCell: (params) => (
                 params.value.map((item) => (
                     <Stack key={item.id} spacing={1}>
                         {item.code}
@@ -87,7 +87,7 @@ function TitleDeedInvoiceControls() {
                 ))
             )
         },
-        { field: 'contract', headerName: 'Sözleşme Kodu' },
+        { field: 'contract', headerName: 'Sözleşme',width:100, },
         { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
                 params.row.partner_special
                 ?
@@ -104,7 +104,7 @@ function TitleDeedInvoiceControls() {
             )
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
-        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', width:220, type: 'date',
+        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', width:200, type: 'date',
             //renderHeader: () => (<CustomColumnHeader label="Aktifleştirme Tarihi" dateFilter />),
             valueGetter: (value) => {
                 if (!value) return null;
