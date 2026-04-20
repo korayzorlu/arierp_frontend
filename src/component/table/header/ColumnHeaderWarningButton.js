@@ -10,7 +10,7 @@ function ColumnHeaderWarningButton(props) {
 
     const CartBadge = styled(Badge)`
     & .${badgeClasses.badge} {
-        top: -12px;
+        top: -10px;
         right: 0;
     }
     `;
