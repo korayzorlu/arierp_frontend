@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useTransition, useMemo } from 'react'
+import React, { useCallback, useState, useTransition, useMemo, useEffect } from 'react'
 import TableContent from './TableContent'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
 import { DataGridPremium,  unstable_gridDefaultPromptResolver as promptResolver } from '@mui/x-data-grid-premium';
@@ -74,6 +74,12 @@ function ListTableServer(props) {
   const [isPending, startTransition] = useTransition();
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: pageSize || 50 })
+
+  useEffect(() => {
+    if (pageSize !== undefined) {
+      setPaginationModel(prev => ({ ...prev, pageSize }));
+    }
+  }, [pageSize]);
 
   const [filterParams, setFilterParams] = useState({});
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });

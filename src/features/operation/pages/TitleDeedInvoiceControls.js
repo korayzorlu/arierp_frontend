@@ -61,6 +61,11 @@ function TitleDeedInvoiceControls() {
         });
     }, [activeCompany,titleDeedInvoiceControlsParams,dispatch]);
 
+    useEffect(() => {
+      console.log(isTitleDeedInvoiceControlsWarnings)
+    }, [isTitleDeedInvoiceControlsWarnings])
+    
+
     const CartBadge = styled(Badge)`
     & .${badgeClasses.badge} {
         top: -12px;
