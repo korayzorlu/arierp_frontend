@@ -30,7 +30,7 @@ import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 function TitleDeedInvoiceControls() {
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings,titleDeedInvoiceControlsInfo} = useSelector((store) => store.titleDeedInvoiceControl);
+    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings,titleDeedInvoiceControlsInfo,isTitleDeedInvoiceControlsWarnings} = useSelector((store) => store.titleDeedInvoiceControl);
     const {projectsParams,projects,leaseNotesParams } = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
@@ -47,8 +47,9 @@ function TitleDeedInvoiceControls() {
     const [columnHeaderCustomButtons, setColumnHeaderCustomButtons] = useState([]);
 
     const fetchData = async () => {
-        await dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,project}})).unwrap();
+        const response = await dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,project}})).unwrap();
         await dispatch(fetchProjects({activeCompany,params:projectsParams})).unwrap();
+        console.log(response)
         setColumnHeaderCustomButtons([
             { field: 'ari_bbsn', nullCount: titleDeedInvoiceControls.filter((item) => !item.ari_bbsn).length }
         ])
@@ -301,6 +302,7 @@ function TitleDeedInvoiceControls() {
             columns={columns}
             getRowId={(row) => row.uuid}
             loading={titleDeedInvoiceControlsLoading}
+            pageSize={isTitleDeedInvoiceControlsWarnings ? 1000 : 50}
             customButtons={
                 <>  
                     <CustomTableButton

@@ -13,6 +13,7 @@ const initialState = {
     },
     titleDeedInvoiceControlsLoading:false,
     titleDeedInvoiceControlsWarnings: [],
+    isTitleDeedInvoiceControlsWarnings: false,
     titleDeedInvoiceControlsInfo: [],
 }
 
@@ -43,6 +44,9 @@ const titleDeedInvoiceControlSlice = createSlice({
                 ...action.payload
             };
         },
+        setIsTitleDeedInvoiceControlsWarnings: (state,action) => {
+            state.isTitleDeedInvoiceControlsWarnings = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -66,5 +70,6 @@ const titleDeedInvoiceControlSlice = createSlice({
 export const {
     setTitleDeedInvoiceControlsLoading,
     setTitleDeedInvoiceControlsParams,
+    setIsTitleDeedInvoiceControlsWarnings,
 } = titleDeedInvoiceControlSlice.actions;
 export default titleDeedInvoiceControlSlice.reducer;

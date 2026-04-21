@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MUIDialog from '@mui/material/Dialog';
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, Stack, TextField, Typography } from '@mui/material';
 import SmsIcon from '@mui/icons-material/Sms';
@@ -7,17 +7,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setColumnHeaderWarningDialog } from 'store/slices/notificationSlice';
 import WarningIcon from '@mui/icons-material/Warning';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import { fetchTitleDeedInvoiceControls } from 'store/slices/operation/titleDeedInvoiceControlSlice';
+import { fetchTitleDeedInvoiceControls, setIsTitleDeedInvoiceControlsWarnings, setTitleDeedInvoiceControlsParams } from 'store/slices/operation/titleDeedInvoiceControlSlice';
 import HelpIcon from '@mui/icons-material/Help';
 
 function ColumnHeaderDialog(props) {
     const {activeCompany} = useSelector((store) => store.organization);
     const {columnHeaderWarningDialog} = useSelector((store) => store.notification)
-    const {titleDeedInvoiceControlsParams} = useSelector((store) => store.titleDeedInvoiceControl);
+    const {titleDeedInvoiceControlsParams,titleDeedInvoiceControlsWarnings} = useSelector((store) => store.titleDeedInvoiceControl);
     
     const dispatch = useDispatch();
 
     const [filterSwitch, setFilterSwitch] = useState(false);
+
+    useEffect(() => {
+      dispatch(setTitleDeedInvoiceControlsParams({
+            ...titleDeedInvoiceControlsParams,
+            start: filterSwitch ? 0 * 1000 : 0 * 50,
+            end: filterSwitch ? (0 + 1) * 1000 : (0 + 1) * 50,
+            format: 'datatables'
+        }))
+    }, [filterSwitch])
+    
 
     const handleClose = () => {
         dispatch(setColumnHeaderWarningDialog(false));
@@ -26,6 +36,7 @@ function ColumnHeaderDialog(props) {
     const handleSubmit = (filter) => {
         dispatch(setColumnHeaderWarningDialog(false));
         dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,[filter]:!filterSwitch}}));
+        dispatch(setIsTitleDeedInvoiceControlsWarnings(!filterSwitch));
         setFilterSwitch(!filterSwitch);
     };
 
