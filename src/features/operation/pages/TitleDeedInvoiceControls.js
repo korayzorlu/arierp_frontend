@@ -307,7 +307,7 @@ function TitleDeedInvoiceControls() {
             columns={columns}
             getRowId={(row) => row.uuid}
             loading={titleDeedInvoiceControlsLoading}
-            pageSize={isTitleDeedInvoiceControlsWarnings ? 1000 : 50}
+            pageSize={isTitleDeedInvoiceControlsWarnings ? titleDeedInvoiceControlsWarnings[0].count : 50}
             customButtons={
                 <>  
                     <CustomTableButton
