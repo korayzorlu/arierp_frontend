@@ -22,6 +22,7 @@ import TableButton from 'component/button/TableButton';
 import ComprehensiveWarningNoticeDialog from 'component/dialog/ComprehensiveWarningNoticeDialog ';
 import TerminationWarningNoticeDialog from 'component/dialog/TerminationWarningNoticeDialog ';
 import axios from 'axios';
+import SearchIcon from '@mui/icons-material/Search';
 
 function ToTerminatedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases} = props;
@@ -138,7 +139,20 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         //             null
         //     )
         // },
-        { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+        { field: 'iw', headerName: 'İhtar', flex: 2, renderCell: (params) => (
+                params.row.status === "İhtar Çekildi"
+                ?
+                    <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                        <TableButton
+                        icon={<FeedIcon/>}
+                        onClick={() => handleWarningNoticeDialog(params.row.contract)}
+                        />
+                    </Stack>
+                :
+                    null
+            )
+        },
+        { field: 'i', headerName: 'Fesih İhtarı', flex: 2, renderCell: (params) => (
                 params.row.status === "İhtar Çekildi"
                 ?
                     <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
@@ -246,6 +260,7 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
             getDetailPanelContent={(params) => {return(<OverdueDetailDetailPanel leaseOverdues={params.row.overdues}></OverdueDetailDetailPanel>)}}
             />
             <ContractPaymentDialog/>
+            <WarningNoticeDialog/>
             <TerminationWarningNoticeDialog
             fileUuid={fileUuid}
             fileContract={fileContract}

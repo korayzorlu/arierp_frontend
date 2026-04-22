@@ -85,7 +85,7 @@ function TerminationWarningNoticeDialog(props) {
         >
             
             <DialogTitle id="alert-dialog-title">
-                İhtar Detayı
+                Fesih İhtarı Detayı
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
