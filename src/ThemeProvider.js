@@ -116,7 +116,7 @@ const commonTheme = {
                     border: 0,
                     borderRadius: 0,
                     "& .MuiDataGrid-cell--textRight":{
-                        fontFamily: "'Roboto Mono',monospace",
+                        //fontFamily: "'Roboto Mono',monospace",
                         fontVariantNumeric: 'tabular-nums',
                         //fontSize: '0.75rem',
                         //textAlign: 'right',
