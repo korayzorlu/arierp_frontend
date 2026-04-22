@@ -71,7 +71,7 @@ function TitleDeeds() {
             rowCount={titleDeedsCount}
             // checkboxSelection
             setParams={(value) => dispatch(setTitleDeedsParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             apiRef={apiRef}
             />

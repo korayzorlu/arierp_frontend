@@ -188,7 +188,7 @@ function Leases() {
             rowCount={leasesCount}
             // checkboxSelection
             setParams={(value) => dispatch(setLeasesParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             apiRef={apiRef}
             initialState={{

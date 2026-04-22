@@ -68,7 +68,7 @@ function OverdueDialog(props) {
                             columns={userColumns}
                             getRowId={(row) => row.id}
                             disableRowSelectionOnClick={true}
-                            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+                            ////getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
                             />
                         </>
                     </Stack>

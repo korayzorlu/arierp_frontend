@@ -63,7 +63,7 @@ function RealEstates() {
             rowCount={realEstatesCount}
             // checkboxSelection
             setParams={(value) => dispatch(setRealEstatesParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             apiRef={apiRef}
             />

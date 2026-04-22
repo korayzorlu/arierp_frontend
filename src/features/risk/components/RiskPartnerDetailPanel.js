@@ -117,7 +117,7 @@ function RiskPartnerDetailPanel(props) {
             )
         },
         { field: 'paid_rate', headerName: 'Oran', flex:2, type: 'number', renderCell: cellProgress },
-        { field: 'status', headerName: 'Durum', flex:2 },
+        //{ field: 'status', headerName: 'Durum', flex:2 },
         // { field: 'i', headerName: 'İhtar', flex: 2, renderCell: (params) => (
         //         params.row.status === "İhtar Çekildi"
         //         ?
@@ -201,7 +201,7 @@ function RiskPartnerDetailPanel(props) {
             showColumnVerticalBorder
             outline
             noToolbarButtons
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            ////getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             //noAllSelect
             //rowSelectionModel={selectedRows}
             //keepNonExistentRowsSelected

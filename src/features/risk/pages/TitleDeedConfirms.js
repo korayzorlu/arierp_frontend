@@ -188,7 +188,7 @@ function TitleDeedConfirms() {
             rowCount={titleDeedConfirmsCount}
             // checkboxSelection
             setParams={(value) => dispatch(setTitleDeedConfirmsParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}

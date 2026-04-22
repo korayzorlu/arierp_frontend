@@ -179,7 +179,7 @@ function AgreedTerminatedPartnerDetailPanel(props) {
             showColumnVerticalBorder
             outline
             noToolbarButtons
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             //noAllSelect
             //rowSelectionModel={selectedRows}
             //keepNonExistentRowsSelected

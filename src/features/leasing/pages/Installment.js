@@ -144,7 +144,7 @@ function Installment() {
             rowCount={installmentsCount}
             checkboxSelection
             setParams={(value) => dispatch(setInstallmentsParams(value))}
-            getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
+            //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}

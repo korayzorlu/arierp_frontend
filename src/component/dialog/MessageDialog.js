@@ -71,7 +71,7 @@ function MessageDialog(props) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions className=''>
-                <Button color="neutral" onClick={handleClose}>Cancel</Button>
+                <Button color="neutral" onClick={handleClose}>Kapat</Button>
             </DialogActions>
         </MUIDialog>
     )
