@@ -120,7 +120,14 @@ const commonTheme = {
                         fontVariantNumeric: 'tabular-nums',
                         //fontSize: '0.75rem',
                         //textAlign: 'right',
-                    }
+                    },
+                    "& .MuiDataGrid-columnHeaderFilterInput .MuiInputBase-input": {
+                        fontSize: '0.8125rem',
+                        padding: '6px 4px',
+                    },
+                    "& label, legend": {
+                        
+                    },
                 },
             },
         },

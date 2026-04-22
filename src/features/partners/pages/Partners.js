@@ -1,31 +1,26 @@
 import axios from 'axios';
 import React, { useEffect, useState, useTransition } from 'react'
-import PanelContent from '../../../component/panel/PanelContent';
-import ListTable from '../../../component/table/ListTable';
-import CustomTableButton from '../../../component/table/CustomTableButton';
+import PanelContent from 'component/panel/PanelContent';
+import CustomTableButton from 'component/table/CustomTableButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartners, setPartnersLoading, setPartnersParams } from '../../../store/slices/partners/partnerSlice';
 import { Link } from 'react-router-dom';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import { setAlert, setDeleteDialog, setDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
-import ImportDialog from '../../../component/feedback/ImportDialog';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DeleteDialog from '../../../component/feedback/DeleteDialog';
+import ImportDialog from 'component/feedback/ImportDialog';
+import DeleteDialog from 'component/feedback/DeleteDialog';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
-import { Avatar, Button, Chip, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { Chip, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import ListTableServer from '../../../component/table/ListTableServer';
-import KeyIcon from '@mui/icons-material/Key';
+import ListTableServer from 'component/table/ListTableServer';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import StarIcon from '@mui/icons-material/Star';
-import { DataGrid } from '@mui/x-data-grid';
-import SelectHeaderFilter from '../../../component/table/SelectHeaderFilter';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function Partners() {
     const {user} = useSelector((store) => store.auth);
@@ -45,8 +40,8 @@ function Partners() {
     }, [activeCompany,partnersParams,dispatch]);
       
     const columns = [
-        { field: 'types', headerName: 'Tip', flex: 2, renderCell: (params) => (
-                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+        { field: 'types', headerName: 'Tip', width: 120, renderCell: (params) => (
+                <Stack spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {
                         params.value.map((value,index) => {
                                 return (
@@ -73,7 +68,7 @@ function Partners() {
                 </Stack>
             ) 
         },
-        { field: 'name', headerName: 'İsim', flex: 6, editable: true, renderCell: (params) => (
+        { field: 'name', headerName: 'İsim', width: 400, editable: true, renderCell: (params) => (
                 <Link
                 to={`/partners/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
@@ -83,11 +78,13 @@ function Partners() {
                 
             )
         },
-        { field: 'customerCode', headerName: 'Müşteri Kodu', flex: 1},
-        { field: 'crmCode', headerName: 'CRM Kodu', flex: 1},
-        { field: 'tcVknNo', headerName: 'TC/VKN No', flex: 2 },
-        { field: 'kep', headerName: 'Kep Adresi', flex: 2 },
-        { field: 'is_turkkep', headerName: 'Kep Var mı?', flex: 1,
+        { field: 'customerCode', headerName: 'Müşteri Kodu', width: 100, align: 'right', headerAlign: 'right' },
+        { field: 'crmCode', headerName: 'CRM Kodu', width: 90, align: 'right', headerAlign: 'right' },
+        { field: 'tcVknNo', headerName: 'TC/VKN No', width: 120, align: 'right', headerAlign: 'right' },
+        { field: 'sgk_job', headerName: 'Meslek', width: 220 },
+        { field: 'sgk_job_code', headerName: 'Meslek Kodu', width: 90 },
+        { field: 'kep', headerName: 'Kep Adresi', width: 220 },
+        { field: 'is_turkkep', headerName: 'Kep Var mı?', width: 100,
             renderCell: (params) => (
                 <>
                     {params.value ? "Var" : ""}
@@ -208,6 +205,12 @@ function Partners() {
             //checkboxSelection
             setParams={(value) => dispatch(setPartnersParams(value))}
             headerFilters={true}
+            autoRowHeight
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                    py: 1,
+                },
+            }}
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
