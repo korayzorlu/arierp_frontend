@@ -4,6 +4,7 @@ import { fetchInstallmentsInLease } from 'store/slices/leasing/leaseSlice';
 import BasicTable from 'component/table/BasicTable';
 import { Typography } from '@mui/material';
 import { fetchInstallmentInformation } from 'store/slices/leasing/installmentSlice';
+import { useGridApiRef } from '@mui/x-data-grid-premium';
 
 function InstallmentsInLease(props) {
     const {lease_id,lease_code,companyName} = props;
@@ -14,6 +15,7 @@ function InstallmentsInLease(props) {
     const {installmentInformation} = useSelector((store) => store.installment);
 
     const dispatch = useDispatch();
+    const apiRef = useGridApiRef();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -41,10 +43,23 @@ function InstallmentsInLease(props) {
     const userColumns = [
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
         { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
-        { field: 'payment', headerName: 'Ödeme', flex: 1, type: 'number' },
-        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number' },
-        { field: 'vat_amount', headerName: 'KDV Tutarı', flex: 1, type: 'number' },
-        { field: 'amount', headerName: 'Toplam Ödeme', flex: 1, type: 'number' },
+        { field: 'payment', headerName: 'Ödeme', flex: 1, type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+        },
+        { field: 'vat', headerName: 'KDV(%)', flex: 1, type: 'number',
+            aggregable: false,
+            valueGetter: (value) => (value !== null && value !== undefined && value !== '') ? parseFloat(value) : null,
+            valueFormatter: (value) => value !== null && value !== undefined ? new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value) : '',
+        },
+        { field: 'vat_amount', headerName: 'KDV Tutarı', flex: 1, type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+        },
+        { field: 'amount', headerName: 'Toplam Ödeme', flex: 1, type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+        },
         { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'type_display', headerName: 'Ödeme Tipi', flex: 1 },
     ]
@@ -52,7 +67,6 @@ function InstallmentsInLease(props) {
     return (
          <>
             <BasicTable
-            title="Kira Planı"
             rows={installmentInformation}
             columns={userColumns}
             getRowId={(row) => row.id}
@@ -60,6 +74,16 @@ function InstallmentsInLease(props) {
             disableRowSelectionOnClick={true}
             loading={installmentsLoading}
             getRowClassName={(params) => params.row.type !== '1' ? `table-row-${dark ? "cream" : "celticglow"}` : ''}
+            apiRef={apiRef}
+            initialState={{
+                aggregation: {
+                    model: {
+                        amount: 'sum',
+                        payment: 'sum',
+                        vat_amount: 'sum',
+                    },
+                },
+            }}
             />
         </>
     )

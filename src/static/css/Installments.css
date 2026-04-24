@@ -1,3 +1,19 @@
+/*Root*/
+:root {
+    --negative-text-color: #d32f2f;
+    --negative-bg-color: rgba(255, 0, 0, 0.2);
+    --positive-text-color: #2e7d32;
+    --positive-bg-color: rgba(0, 255, 0, 0.2);
+}
+  
+[data-mdb-theme="dark"] {
+    --negative-text-color: #ef5350;
+    --negative-bg-color: rgba(255, 0, 0, 0.2);
+    --positive-text-color: #81c784;
+    --positive-bg-color: rgba(0, 255, 0, 0.2);
+}
+
+/*Background*/
 .bg-red {
   background-color: rgba(255, 0, 0, 0.2);
 }
@@ -36,4 +52,14 @@
 .columnGroupingModel {
   text-align: center;
   font-weight: bold!important;
+}
+
+/*Text*/
+.negative-cell {
+  color: var(--negative-text-color);
+  /* background-color: var(--negative-bg-color); */
+}
+.positive-cell {
+  color: var(--positive-text-color);
+  /* background-color: var(--positive-bg-color); */
 }

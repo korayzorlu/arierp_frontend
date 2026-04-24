@@ -45,7 +45,6 @@ function InvoicesInLease(props) {
     return (
         <>
             <BasicTable
-            title="Faturalar"
             rows={invoices}
             columns={userColumns}
             getRowId={(row) => row.uuid}

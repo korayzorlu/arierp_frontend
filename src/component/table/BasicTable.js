@@ -8,21 +8,6 @@ import { darken, lighten } from '@mui/material';
 import { styled } from '@mui/system';
 
 function BasicTable(props) {
-    const {rows,columns,loading,customButtons,hiddenColumns,checkboxSelection,disableRowSelectionOnClick,title,getRowClassName,
-      getDetailPanelContent,
-    getDetailPanelHeight,
-    detailPanelExpandedRowIds,
-    onDetailPanelExpandedRowIdsChange,
-    rowSelectionModel,
-    onRowSelectionModelChange,
-    initialState,
-    apiRef,
-    noToolbarButtons,
-    getRowId,
-    density,
-    sx,
-    autoRowHeight
-    } = props;
 
     const [paginationModel, setPaginationModel] = useState({
         pageSize: 50,
@@ -135,36 +120,36 @@ function BasicTable(props) {
             slotProps={{
                 toolbar: {
                     showQuickFilter: true,
-                    children: customButtons,
-                    title:title,
-                    noToolbarButtons: noToolbarButtons,
-                    apiRef: apiRef,
+                    children: props.customButtons,
+                    title:props.title,
+                    noToolbarButtons: props.noToolbarButtons,
+                    apiRef: props.apiRef,
                 },
                 loadingOverlay: {
                   variant: 'linear-progress',
                   noRowsVariant: 'linear-progress',
                 },
               }}
-            columns={columns}
-            rows={rows}
+            columns={props.columns}
+            rows={props.rows}
             initialState={{
-              ...initialState,
+              ...props.initialState,
               columns: {
-                columnVisibilityModel: hiddenColumns,
+                columnVisibilityModel: props.hiddenColumns,
               },
             }}
             pageSizeOptions={[25, 50, 100]}
             pagination
             paginationModel={paginationModel}
             onPaginationModelChange={(model) => setPaginationModel(model)}
-            loading={loading}
-            checkboxSelection={checkboxSelection}
-            disableRowSelectionOnClick={disableRowSelectionOnClick}
-            rowSelectionModel={rowSelectionModel}
-            onRowSelectionModelChange={onRowSelectionModelChange}
+            loading={props.loading}
+            checkboxSelection={props.checkboxSelection}
+            disableRowSelectionOnClick={props.disableRowSelectionOnClick}
+            rowSelectionModel={props.rowSelectionModel}
+            onRowSelectionModelChange={props.onRowSelectionModelChange}
             autoHeight
             sx={{
-                ...sx,
+                ...props.sx,
                 [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                   outline: 'none',
                 },
@@ -173,16 +158,16 @@ function BasicTable(props) {
                     outline: 'none',
                   },
             }}
-            getRowClassName = {getRowClassName}
-            getDetailPanelContent={getDetailPanelContent}
-            getDetailPanelHeight={getDetailPanelHeight}
-            detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-            onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
-            apiRef={apiRef}
-            noToolbarButtons={noToolbarButtons}
-            getRowId={getRowId || ((row) => row.uuid)}
-            density={density}
-            getRowHeight={() => autoRowHeight ? 'auto' : 'false'}
+            getRowClassName = {props.getRowClassName}
+            getDetailPanelContent={props.getDetailPanelContent}
+            getDetailPanelHeight={props.getDetailPanelHeight}
+            detailPanelExpandedRowIds={props.detailPanelExpandedRowIds}
+            onDetailPanelExpandedRowIdsChange={props.onDetailPanelExpandedRowIdsChange}
+            apiRef={props.apiRef}
+            noToolbarButtons={props.noToolbarButtons}
+            getRowId={props.getRowId || ((row) => row.uuid)}
+            density={props.density}
+            getRowHeight={() => props.autoRowHeight ? 'auto' : 'false'}
             />
         </TableContent>
     )

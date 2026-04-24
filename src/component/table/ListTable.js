@@ -89,77 +89,7 @@ const StyledDataGridPremium = styled(DataGridPremium)(({ theme }) => ({
 }));
 
 function ListTable(props) {
-  const {
-    rows,
-    columns,
-    getRowId,
-    loading,
-    customButtons,
-    hiddenColumns,
-    checkboxSelection,
-    disableRowSelectionOnClick,
-    pageModel,
-    onRowSelectionModelChange,
-    title,
-    headerFilters,
-    rowCount,
-    onCellClick,
-    initialState,
-    groupingColDef,
-    autoHeight,
-    rowSpanning,
-    showCellVerticalBorder,
-    showColumnVerticalBorder,
-    getDetailPanelContent,
-    getDetailPanelHeight,
-    detailPanelExpandedRowIds,
-    onDetailPanelExpandedRowIdsChange,
-    height,
-    outline,
-    noToolbarButtons,
-    getRowClassName,
-    hideFooter,
-    apiRef,
-    rowSelectionModel,
-    disableMultipleRowSelection,
-    noAllSelect,
-    isRowSelected,
-    isRowSelectable,
-    keepNonExistentRowsSelected,
-    componentsProps,
-    noPagination,
-    noDownloadButton,
-    processRowUpdate,
-    onProcessRowUpdateError,
-    specialButtons,
-    noOverlay,
-    sortModel,
-    cellFontSize,
-    pinnedRows,
-    isCellEditable,
-    disableLoadingOverlay,
-    rowBuffer,
-    columnBuffer,
-    rowHeight,
-    disableVirtualization,
-    customFiltersLeft,
-    density,
-    columnGroupingModel,
-    slotProps,
-    getRowHeight,
-    sx,
-    noColumnHeaders,
-    noToolbar,
-    lazyLoading,
-    disableColumnFilter,
-    pageSizeOptions,
-    autoPageSize
-  } = props;
-
   const {dark,lang} = useSelector((store) => store.auth);
-
-
-
 
   const [paginationModel, setPaginationModel] = useState(
     {
@@ -182,27 +112,27 @@ function ListTable(props) {
   
 
   return (
-    <TableContent height={height}>
+    <TableContent height={props.height}>
       <StyledDataGridPremium
       slots={{
-        toolbar: noToolbar ? () => null : MUIToolbar,
-        noRowsOverlay: noOverlay ? EmptyOverlay : NoRowsOverlay,
-        ...(disableLoadingOverlay ? { loadingOverlay: EmptyOverlay } : {}),
-        columnHeaders: noColumnHeaders ? () => null : undefined,
+        toolbar: props.noToolbar ? () => null : MUIToolbar,
+        noRowsOverlay: props.noOverlay ? EmptyOverlay : NoRowsOverlay,
+        ...(props.disableLoadingOverlay ? { loadingOverlay: EmptyOverlay } : {}),
+        columnHeaders: props.noColumnHeaders ? () => null : undefined,
       }}
       showToolbar
       slotProps={{
-          ...slotProps,
+          ...props.slotProps,
           toolbar: {
               showQuickFilter: true,
-              children: customButtons,
-              title: title,
-              noToolbarButtons: noToolbarButtons,
-              noDownloadButton: noDownloadButton,
-              specialButtons: specialButtons,
-              customFiltersLeft: customFiltersLeft,
+              children: props.customButtons,
+              title: props.title,
+              noToolbarButtons: props.noToolbarButtons,
+              noDownloadButton: props.noDownloadButton,
+              specialButtons: props.specialButtons,
+              customFiltersLeft: props.customFiltersLeft,
           },
-          ...(disableLoadingOverlay
+          ...(props.disableLoadingOverlay
             ? {}
             : {
                 loadingOverlay: {
@@ -212,41 +142,41 @@ function ListTable(props) {
               }
           ),
       }}
-      columns={columns}
-      rows={rows}
-      getRowId={getRowId || ((row) => row.uuid)}
+      columns={props.columns}
+      rows={props.rows}
+      getRowId={props.getRowId || ((row) => row.uuid)}
       initialState={{
-          ...initialState,
+          ...props.initialState,
           columns: {
-            columnVisibilityModel: hiddenColumns,
+            columnVisibilityModel: props.hiddenColumns,
           },
         }}
-      pinnedRows={pinnedRows}
-      rowBuffer={rowBuffer}
-      columnBuffer={columnBuffer}
-      rowHeight={rowHeight}
-      disableVirtualization={disableVirtualization}
-      pageSizeOptions={pageSizeOptions || [25, 50, 100]}
-      pagination={noPagination ? false : true}
+      pinnedRows={props.pinnedRows}
+      rowBuffer={props.rowBuffer}
+      columnBuffer={props.columnBuffer}
+      rowHeight={props.rowHeight}
+      disableVirtualization={props.disableVirtualization}
+      pageSizeOptions={props.pageSizeOptions || [25, 50, 100]}
+      pagination={props.noPagination ? false : true}
       paginationModel={paginationModel}
-      autoPageSize={autoPageSize}
-      headerFilters={headerFilters}
+      autoPageSize={props.autoPageSize}
+      headerFilters={props.headerFilters}
       onPaginationModelChange={(model) => setPaginationModel(model)}
-      loading={loading}
-      disableMultipleRowSelection={disableMultipleRowSelection}
-      checkboxSelection={checkboxSelection}
-      disableRowSelectionOnClick={disableRowSelectionOnClick}
-      rowSelectionModel={rowSelectionModel}
-      onRowSelectionModelChange={onRowSelectionModelChange}
-      isRowSelected={isRowSelected}
-      isRowSelectable={isRowSelectable}
-      isCellEditable={isCellEditable}
-      keepNonExistentRowsSelected={keepNonExistentRowsSelected}
-      rowCount={rowCount}
-      autoHeight={autoHeight}
-      getRowHeight={getRowHeight}
+      loading={props.loading}
+      disableMultipleRowSelection={props.disableMultipleRowSelection}
+      checkboxSelection={props.checkboxSelection}
+      disableRowSelectionOnClick={props.disableRowSelectionOnClick}
+      rowSelectionModel={props.rowSelectionModel}
+      onRowSelectionModelChange={props.onRowSelectionModelChange}
+      isRowSelected={props.isRowSelected}
+      isRowSelectable={props.isRowSelectable}
+      isCellEditable={props.isCellEditable}
+      keepNonExistentRowsSelected={props.keepNonExistentRowsSelected}
+      rowCount={props.rowCount}
+      autoHeight={props.autoHeight}
+      getRowHeight={props.getRowHeight}
       //getRowHeight={() => 'auto'}
-      sx={{...sx,
+      sx={{...props.sx,
           [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
             outline: 'none',
           },
@@ -270,7 +200,7 @@ function ListTable(props) {
               paddingTop: 0,
               marginTop: 0,
             },
-            '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
+            '--DataGrid-overlayHeight': `${props.noOverlay ? "unset" : "50vh"}`,
             '& .MuiDataGrid-columnHeader': {
               '& .MuiDataGrid-columnHeaderTitleContainer': {
                 overflow: 'visible',
@@ -295,7 +225,7 @@ function ListTable(props) {
               }
             : {}
           ),
-          ...(noAllSelect
+          ...(props.noAllSelect
             ? {
                 '& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer': {
                   display: 'none'
@@ -303,11 +233,11 @@ function ListTable(props) {
             }
             : {}
           ),
-          ...(cellFontSize
+          ...(props.cellFontSize
             ?
               {
                 '& .MuiDataGrid-cell': {
-                  fontSize: cellFontSize,
+                  fontSize: props.cellFontSize,
                 }
               }
             :
@@ -316,25 +246,25 @@ function ListTable(props) {
           )
           
       }}
-      onCellClick={onCellClick}
-      groupingColDef={groupingColDef}
-      rowSpanning={rowSpanning}
-      showCellVerticalBorder={showCellVerticalBorder}
-      showColumnVerticalBorder={showColumnVerticalBorder}
-      getDetailPanelContent={getDetailPanelContent}
-      getDetailPanelHeight={getDetailPanelHeight}
-      detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-      onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
-      getRowClassName={getRowClassName}
-      hideFooter={hideFooter}
-      apiRef={apiRef}
-      processRowUpdate={processRowUpdate}
-      onProcessRowUpdateError={onProcessRowUpdateError}
-      sortModel={sortModel}
-      density={density}
-      columnGroupingModel={columnGroupingModel}
-      lazyLoading={lazyLoading}
-      disableColumnFilter={disableColumnFilter}
+      onCellClick={props.onCellClick}
+      groupingColDef={props.groupingColDef}
+      rowSpanning={props.rowSpanning}
+      showCellVerticalBorder={props.showCellVerticalBorder}
+      showColumnVerticalBorder={props.showColumnVerticalBorder}
+      getDetailPanelContent={props.getDetailPanelContent}
+      getDetailPanelHeight={props.getDetailPanelHeight}
+      detailPanelExpandedRowIds={props.detailPanelExpandedRowIds}
+      onDetailPanelExpandedRowIdsChange={props.onDetailPanelExpandedRowIdsChange}
+      getRowClassName={props.getRowClassName}
+      hideFooter={props.hideFooter}
+      apiRef={props.apiRef}
+      processRowUpdate={props.processRowUpdate}
+      onProcessRowUpdateError={props.onProcessRowUpdateError}
+      sortModel={props.sortModel}
+      density={props.density}
+      columnGroupingModel={props.columnGroupingModel}
+      lazyLoading={props.lazyLoading}
+      disableColumnFilter={props.disableColumnFilter}
       />
     </TableContent>
   )

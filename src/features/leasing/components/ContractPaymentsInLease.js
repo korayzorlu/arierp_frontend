@@ -45,21 +45,27 @@ function ContractPaymentsInLease(props) {
         { field: 'account_code', headerName: 'Hesap Kart Kodu' },
         { field: 'account_name', headerName: 'Cari Kart Adı', width: 250 },
         { field: 'date', headerName: 'İşlem Tarihi' },
-        { field: 'debit_amount', headerName: 'Borç', type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'debit_amount', headerName: 'Borç', type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'credit_amount', headerName: 'Alacak', type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'credit_amount', headerName: 'Alacak', type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB' },
-        { field: 'local_debit_amount', headerName: 'Yerel Borç', type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'local_debit_amount', headerName: 'Yerel Borç', type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'local_credit_amount', headerName: 'Yerel Alacak', type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'local_credit_amount', headerName: 'Yerel Alacak', type: 'number',
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        { field: 'exchange_rate', headerName: 'Kur(Yerel)', type: 'number', valueFormatter: (value) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'exchange_rate', headerName: 'Kur(Yerel)', type: 'number',
+            aggregable: false,
+            valueGetter: (value) => (value !== null && value !== undefined && value !== '') ? parseFloat(value) : null,
+            valueFormatter: (value) => value !== null && value !== undefined ? new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value) : '',
         },
         { field: 'description', headerName: 'Açıklama', width: 400 },
         { field: 'user_name', headerName: 'Oluşturan' },
@@ -68,7 +74,6 @@ function ContractPaymentsInLease(props) {
     return (
         <>
             <BasicTable
-            title="Tahsilatlar"
             rows={contractPaymentsInLease}
             columns={userColumns}
             getRowId={(row) => row.id}
@@ -76,16 +81,16 @@ function ContractPaymentsInLease(props) {
             disableRowSelectionOnClick={true}
             loading={contractPaymentsLoading}
             apiRef={apiRef}
-            // initialState={{
-            //     aggregation: {
-            //         model: {
-            //             debit_amount: 'sum',
-            //             credit_amount: 'sum',
-            //             local_debit_amount: 'sum',
-            //             local_credit_amount: 'sum',
-            //         },
-            //     },
-            // }}
+            initialState={{
+                aggregation: {
+                    model: {
+                        debit_amount: 'sum',
+                        credit_amount: 'sum',
+                        local_debit_amount: 'sum',
+                        local_credit_amount: 'sum',
+                    },
+                },
+            }}
             />
         </>
     )

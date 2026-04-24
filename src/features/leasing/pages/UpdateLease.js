@@ -278,29 +278,29 @@ function UpdateLease() {
                             </Tabs>
                         </Grid>
                     </Grid>
-                    <Divider></Divider>
-                    <TabPanel value={tabValue} index={0}>
+                    {/* <Divider></Divider> */}
+                    <TabPanel value={tabValue} index={0} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <InstallmentsInLease lease_id={uuid}></InstallmentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={1}>
+                    <TabPanel value={tabValue} index={1} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={2}>
+                    <TabPanel value={tabValue} index={2} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={3}>
+                    <TabPanel value={tabValue} index={3} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={3}>
                             <Grid size={{xs:12,sm:12}}>
                                 <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>

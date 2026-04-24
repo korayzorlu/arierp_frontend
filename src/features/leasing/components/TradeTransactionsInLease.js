@@ -126,31 +126,22 @@ function TradeTransactionsInLease(props) {
             :
                 null
         },
-        { field: 'amount', headerName: 'Tutar', flex: 1, type: 'number', sortable: false, renderHeaderFilter: () => null, renderCell: (params) =>
-            !params.row.is_total
-            ?
-                params.row.amount_type === '1'
+        { field: 'amount', headerName: 'Tutar', flex: 1, type: 'number', sortable: false, renderHeaderFilter: () => null,
+            cellClassName: (params) => {return params.row.amount_type === '1' ? 'negative-cell' : 'positive-cell';},
+            renderCell: (params) =>
+                !params.row.is_total
                 ?
-                    <Typography variant='body' sx={{color: 'error.main'}}>
-                        {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.amount)}
-                    </Typography>
+                    params.row.amount_type === '1'
+                    ?
+                        new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.amount)
+                    :
+                        `-${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.amount)}`
                 :
-                    <Typography variant='body' sx={{color: 'success.main'}}>
-                        -{new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.amount)}
-                    </Typography>
-            :
-                null
+                    null
         },
-        { field: 'balances', headerName: 'Bakiye', flex: 1, type: 'number', sortable: false, renderHeaderFilter: () => null, renderCell: (params) =>
-            params.row.balances.balance <= 0
-            ?
-                <Typography variant='body' sx={{color: 'success.main'}}>
-                    {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.balances.balance)}
-                </Typography>
-            :
-                <Typography variant='body' sx={{color: 'error.main'}}>
-                    {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.balances.balance)}
-                </Typography>
+        { field: 'balances', headerName: 'Bakiye', flex: 1, type: 'number', sortable: false, renderHeaderFilter: () => null,
+            cellClassName: (params) => {return params.row.balances.balance <= 0 ? 'positive-cell' : 'negative-cell';},
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.balances.balance)
         },
         { field: 'currency', headerName: 'PB', flex: 1, sortable: false },
         // { field: 'exchange_rate', headerName: 'Kur', flex: 1, type: 'number', sortable: false, renderHeaderFilter: () => null, valueFormatter: (value) =>
@@ -179,7 +170,6 @@ function TradeTransactionsInLease(props) {
     return (
         <>
             <BasicTable
-            title="Cari Hesap Ekstresi"
             rows={rowsWithBalance}
             columns={userColumns}
             getRowId={(row) => row.uuid}
