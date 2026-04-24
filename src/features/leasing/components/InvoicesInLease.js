@@ -36,8 +36,9 @@ function InvoicesInLease(props) {
     const userColumns = [
         { field: 'date', headerName: 'Tarih', width: 150 },
         { field: 'invoice_no', headerName: 'Fatura No',width: 400 },
-        { field: 'amount', headerName: 'Tutar', width: 240 , type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'amount', headerName: 'Tutar', width: 240 , type: 'number', renderHeaderFilter: () => null,
+            valueGetter: (value) => value ? parseFloat(value) : 0,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB', width: 140 },
     ]
@@ -52,16 +53,13 @@ function InvoicesInLease(props) {
             disableRowSelectionOnClick={true}
             loading={invoicesLoading}
             getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
-            // initialState={{
-            //     aggregation: {
-            //         model: {
-            //             debit_amount: 'sum',
-            //             credit_amount: 'sum',
-            //             local_debit_amount: 'sum',
-            //             local_credit_amount: 'sum',
-            //         },
-            //     },
-            // }}
+            initialState={{
+                aggregation: {
+                    model: {
+                        amount: 'sum',
+                    },
+                },
+            }}
             />
         </>
     )
