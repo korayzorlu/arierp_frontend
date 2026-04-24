@@ -137,7 +137,7 @@ function UpdateLease() {
                             size="small"
                             label={"Proje"}
                             variant='outlined'
-                            value={data.item}
+                            value={data.item ? data.item.name : ""}
                             disabled={false}
                             fullWidth
                             />
