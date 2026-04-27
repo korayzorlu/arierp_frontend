@@ -8,7 +8,7 @@ import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import ListTable from '../../../component/table/ListTable';
-import { Grid } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -31,6 +31,7 @@ function PurchasePayments() {
     const [switchPosition, setSwitchPosition] = useState(false);
     const [kdvSwitchPosition, setKdvSwitchPosition] = useState(false);
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
+    const [project, setProject] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
@@ -44,7 +45,7 @@ function PurchasePayments() {
         { field: 'partner', headerName: 'Müşteri', width: 280, renderCell: (params) => params.row.lease.partner },
         { field: 'currency', headerName: 'PB', renderCell: (params) => params.row.lease.currency },
         { field: 'vendor', headerName: 'Satıcı', width: 280, renderCell: (params) => params.row.lease.vendor },
-        { field: 'project', headerName: 'Proje', width: 140, renderCell: (params) => params.row.lease.project },
+        { field: 'project_name', headerName: 'Proje', width: 140, renderCell: (params) => params.row.lease.project },
         { field: 'activation_date', headerName: 'Aktivasyon Tarihi', renderCell: (params) => params.row.lease.activation_date },
         { field: 'contract_date', headerName: 'Söz. Tarihi', renderCell: (params) => params.row.lease.contract_date },
         { field: 'lease_status', headerName: 'Ana Statü', renderCell: (params) => params.row.lease.lease_status },
@@ -123,6 +124,11 @@ function PurchasePayments() {
         setSpecialSwitchPosition(value);
     };
 
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setPurchasePaymentsParams({project:newValue}));
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
@@ -144,6 +150,29 @@ function PurchasePayments() {
                         onClick={() => dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
+                    </>
+                }
+                customFiltersLeft={
+                    <>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            size='small'
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
+                            disabled={purchasePaymentsLoading}
+                            >
+                                <MenuItem value='all'>TÜMÜ</MenuItem>
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='kasaba'>KASABA</MenuItem>
+                                <MenuItem value='servet'>SERVET</MenuItem>
+                                <MenuItem value='diger'>DİĞER</MenuItem>
+                            </Select>
+                        </FormControl>
                     </>
                 }
                 customFilters={

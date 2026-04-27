@@ -8,7 +8,7 @@ import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 import ListTable from '../../../component/table/ListTable';
-import { Grid } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import ExportDialog from '../../../component/feedback/ExportDialog';
 import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -28,6 +28,7 @@ function PurchaseDocuments() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
+    const [project, setProject] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
@@ -70,6 +71,11 @@ function PurchaseDocuments() {
         { field: 'document_status', headerName: 'Statü', width: 240 },
     ]
 
+    const changeProject = (newValue) => {
+        setProject(newValue);
+        dispatch(setPurchaseDocumentsParams({project:newValue}));
+    };
+
     return (
         <PanelContent>
             <Grid container spacing={1}>
@@ -91,6 +97,29 @@ function PurchaseDocuments() {
                         onClick={() => dispatch(fetchPurchaseDocuments({activeCompany,params:purchaseDocumentsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
+                    </>
+                }
+                customFiltersLeft={
+                    <>
+                        <FormControl sx={{mr: 2}}>
+                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            size='small'
+                            value={project}
+                            label="Proje"
+                            onChange={(e) => changeProject(e.target.value)}
+                            disabled={purchaseDocumentsLoading}
+                            >
+                                <MenuItem value='all'>TÜMÜ</MenuItem>
+                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
+                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
+                                <MenuItem value='kasaba'>KASABA</MenuItem>
+                                <MenuItem value='servet'>SERVET</MenuItem>
+                                <MenuItem value='diger'>DİĞER</MenuItem>
+                            </Select>
+                        </FormControl>
                     </>
                 }
                 rowCount={purchaseDocumentsCount}
