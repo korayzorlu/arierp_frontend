@@ -159,7 +159,7 @@ function TitleDeedInvoiceControls() {
                 isServer
                 options={[
                     { value: 'all', label: 'Tümü' },
-                    { value: 'gecikme', label: 'Gecikmede' },
+                    { value: 'gecikme_var', label: 'Gecikmede' },
                     { value: 'gecikme_yok', label: 'Gecikme Yok' },
                 ]}
                 changeValue={(newValue) => setStatus(newValue)}
