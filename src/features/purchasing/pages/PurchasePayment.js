@@ -15,6 +15,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { fetchPurchaseDocumentsInPurchasePayment } from '../../../store/slices/purchasing/purchaseDocumentSlice';
 import PurchaseDocumentDialog from '../components/PurchaseDocumentDialog';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
+import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 
 function PurchasePayments() {
     const {user} = useSelector((store) => store.auth);
@@ -43,7 +44,6 @@ function PurchasePayments() {
         { field: 'contract', headerName: 'Sözleşme No', renderCell: (params) => params.row.lease.contract },
         { field: 'lease_code', headerName: 'Kira Planı', renderCell: (params) => params.row.lease.code },
         { field: 'partner', headerName: 'Müşteri', width: 280, renderCell: (params) => params.row.lease.partner },
-        { field: 'currency', headerName: 'PB', renderCell: (params) => params.row.lease.currency },
         { field: 'vendor', headerName: 'Satıcı', width: 280, renderCell: (params) => params.row.lease.vendor },
         { field: 'project_name', headerName: 'Proje', width: 140, renderCell: (params) => params.row.lease.project },
         { field: 'activation_date', headerName: 'Aktivasyon Tarihi', renderCell: (params) => params.row.lease.activation_date },
@@ -101,6 +101,16 @@ function PurchasePayments() {
                     {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)}
                 </div>
             ), renderHeaderFilter: () => null 
+        },
+        { field: 'crm_amount', headerName: "IFS'ten Gelen Tutar", width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.crm_invoice_total_amount, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
+        { field: 'currency', headerName: 'PB', renderCell: (params) => params.row.lease.currency },
+        { field: 'agreement', headerName: 'Mutabakat (TRY)', width:220, type: 'number', renderHeaderFilter: () => null,
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+        },
+        { field: 'is_agreement', headerName: 'Mutabakat Durumu', width: 180,
+            cellClassName: (params) => {return params.value === "Mutabakat Yok" ? 'bg-red' : '';},
         },
         { field: 'is_tufe', headerName: 'Tüfeli mi?', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.is_tufe },
     ]
