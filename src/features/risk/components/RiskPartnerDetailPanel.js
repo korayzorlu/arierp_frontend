@@ -201,6 +201,7 @@ function RiskPartnerDetailPanel(props) {
                 {   
                     ac: activeCompany.id,
                     project: project,
+                    risk_status:props.risk_status,
                     subject: "Ödeme Hatırlatma Bilgilendirmesi",
                     uuids: rowSelectionModel.type === 'exclude'
                         ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))

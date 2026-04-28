@@ -350,7 +350,7 @@ function RiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:riskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project}></RiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project} risk_status="risk_partners"></RiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog
