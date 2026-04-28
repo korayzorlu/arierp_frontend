@@ -138,10 +138,15 @@ function Sidenav() {
                                                             return(
                                                                 <MenuItem
                                                                 key={index}
-                                                                className={location.pathname.startsWith(subItem.route) ? "active" : ""}
+                                                                className={location.pathname.startsWith(subItem.route) ? "active deep" : "deep"}
                                                                 name={subItem.label}
                                                                 component={<Link to={subItem.route}></Link>}
                                                                 //icon={getIconComponent(item.icon)}
+                                                                sx={{
+                                                                        paddingLeft: "40px",
+                                                                        borderLeft: "1px solid #4d4d4d",
+                                                                        marginLeft: "40px",
+                                                                }}
                                                                 >
                                                                     {subItem.label}
                                                                 </MenuItem>

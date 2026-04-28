@@ -44,6 +44,12 @@
     background-color: var(--sidebar-submenu-background-color);
 }
 
+.sidebarContent .ps-submenu-content .deep .ps-menu-button{
+    padding-left: 20px;
+    border-left: 1px solid var(--sidebar-menu-button-active-background-color);
+    margin-left: 40px;
+}
+
 .sidebarContent .ps-menuitem-root .ps-menu-button:hover{
     background-color: var(--sidebar-menu-button-background-color);
 }
