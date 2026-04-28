@@ -8,6 +8,7 @@ import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from 'lodash';
 import { trTR } from '@mui/x-data-grid/locales';
+import AriCheckBox from 'component/checkbox/AriCheckBox';
 
 function ListTableServer(props) {
   const {
@@ -253,6 +254,7 @@ function ListTableServer(props) {
       <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,
+        baseCheckbox: AriCheckBox,
         ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
         //aiAssistantPanel: GridAiAssistantPanel,
         headerFilterMenu: null,

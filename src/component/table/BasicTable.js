@@ -6,6 +6,7 @@ import MUIToolbar from './MUIToolbar';
 import { DataGridPremium } from '@mui/x-data-grid-premium';
 import { darken, lighten } from '@mui/material';
 import { styled } from '@mui/system';
+import AriCheckBox from 'component/checkbox/AriCheckBox';
 
 function BasicTable(props) {
 
@@ -115,7 +116,10 @@ function BasicTable(props) {
     return (
         <TableContent height="auto">
             <StyledDataGridPremium
-            slots={{ toolbar: MUIToolbar}}
+            slots={{
+              toolbar: MUIToolbar,
+              baseCheckbox: AriCheckBox,
+            }}
             showToolbar
             slotProps={{
                 toolbar: {

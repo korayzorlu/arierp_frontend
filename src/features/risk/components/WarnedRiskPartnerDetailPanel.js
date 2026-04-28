@@ -23,6 +23,7 @@ import { fetchComprehensiveWarnedRiskPartners, fetchWarnedRiskPartners, updateWa
 import { fetchBankActivities } from 'store/slices/leasing/bankActivitySlice';
 import TableButton from 'component/button/TableButton';
 import axios from 'axios';
+import PublishIcon from '@mui/icons-material/Publish';
 
 function WarnedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases,project} = props;
@@ -218,6 +219,8 @@ function WarnedRiskPartnerDetailPanel(props) {
                             color='primary'
                             size='small'
                             onClick={() => {dispatch(setDialog(true));}}
+                            sx={{mt:1,mb:1}}
+                            endIcon={<PublishIcon/>}
                             >
                                 Kapsamlı İhtara Gönder
                             </Button>

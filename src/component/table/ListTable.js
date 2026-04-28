@@ -12,6 +12,7 @@ import { Box, Checkbox, darken, lighten, styled, Typography } from '@mui/materia
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { DataGridPremium } from '@mui/x-data-grid-premium';
+import AriCheckBox from 'component/checkbox/AriCheckBox';
 
 // Hoisted helpers to avoid recreating styled component each render (prevents jank flicker)
 const getBackgroundColor = (color, theme, coefficient) => ({
@@ -117,6 +118,7 @@ function ListTable(props) {
       slots={{
         toolbar: props.noToolbar ? () => null : MUIToolbar,
         noRowsOverlay: props.noOverlay ? EmptyOverlay : NoRowsOverlay,
+        baseCheckbox: AriCheckBox,
         ...(props.disableLoadingOverlay ? { loadingOverlay: EmptyOverlay } : {}),
         columnHeaders: props.noColumnHeaders ? () => null : undefined,
       }}
