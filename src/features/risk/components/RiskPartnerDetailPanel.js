@@ -196,27 +196,30 @@ function RiskPartnerDetailPanel(props) {
 
     const sendEmail = async () => {
         dispatch(setDialog(false));
-        try {
-            const response = await axios.post('/communication/send_risk_email_selected/',
-                {   
-                    ac: activeCompany.id,
-                    project: project,
-                    risk_status:props.risk_status,
-                    subject: "Ödeme Hatırlatma Bilgilendirmesi",
-                    uuids: rowSelectionModel.type === 'exclude'
-                        ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
-                        : Array.from(rowSelectionModel.ids),
-                },
-                {
-                    withCredentials: true
-                }
-            );
-            dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}}));
-        } catch (error) {
-            dispatch(setAlert({status:'error',text:error.message}));
-        } finally {
+        if(props.risk_status && props.risk_status === "risk_partners"){
+            try {
+                const response = await axios.post('/communication/send_risk_email_selected/',
+                    {   
+                        ac: activeCompany.id,
+                        project: project,
+                        risk_status:props.risk_status,
+                        subject: "Ödeme Hatırlatma Bilgilendirmesi",
+                        uuids: rowSelectionModel.type === 'exclude'
+                            ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
+                            : Array.from(rowSelectionModel.ids),
+                    },
+                    {
+                        withCredentials: true
+                    }
+                );
+                dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}}));
+            } catch (error) {
+                dispatch(setAlert({status:'error',text:error.message}));
+            } finally {
 
-        }
+            }
+        };
+        
     };
 
     return (
