@@ -68,6 +68,7 @@ import titleDeedInvoiceControlSlice from './slices/operation/titleDeedInvoiceCon
 import UntitleDeedLeaseSlice from './slices/operation/untitleDeedLeaseSlice';
 import vposTransactionSlice from './slices/finance/vposTransactionSlice';
 import purchaseDocumentItemSlice from './slices/purchasing/purchaseDocumentItemSlice';
+import emailReducer from './slices/communication/emailSlice';
 
 let navigate;
 
@@ -146,6 +147,7 @@ export const store = configureStore({
         untitleDeedLease: UntitleDeedLeaseSlice,
         vposTransaction: vposTransactionSlice,
         purchaseDocumentItem: purchaseDocumentItemSlice,
+        email: emailReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

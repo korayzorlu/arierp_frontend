@@ -9,6 +9,10 @@ const initialState = {
     alertt: { status: "", text: "" },
     callDialog: false,
     changePartnerDialog: false,
+    columnHeaderDateDialog: false,
+    columnHeaderInfoDialog: false,
+    columnHeaderWarningDialog: false,
+    comprehensiveWarningNoticeDialog: false,
     contractPaymentDialog: false,
     deleteDialog: false,
     dialog: false,
@@ -17,16 +21,18 @@ const initialState = {
     importDialog: false,
     installmentDialog: false,
     leaseDialog: false,
+    leaseNoteDialog: false,
     messageDialog: false,
     modal: false,
     notifications: [],
     openAlert: false,
     overdueDialog: false,
     partnerDialog: false,
-    partnerNoteDialog:false,
-    leaseNoteDialog:false,
+    partnerNoteDialog: false,
     purchaseDocumentDialog: false,
+    sendEmailDialog: false,
     sendSMSDialog: false,
+    terminationWarningNoticeDialog: false,
     thirdPersonCustomerDialog: false,
     thirdPersonDialog: false,
     thirdPersonDocumentDialog: false,
@@ -37,11 +43,6 @@ const initialState = {
     unreadNotifications: 0,
     userDialog: false,
     warningNoticeDialog: false,
-    comprehensiveWarningNoticeDialog: false,
-    terminationWarningNoticeDialog: false,
-    columnHeaderWarningDialog: false,
-    columnHeaderInfoDialog: false,
-    columnHeaderDateDialog: false,
 }
 
 export const fetchNotifications = createAsyncThunk('notifications/fetchNotifications', async () => {
@@ -120,6 +121,9 @@ const notificationSlice = createSlice({
         },
         setSendSMSDialog: (state,action) => {
             state.sendSMSDialog = action.payload;
+        },
+        setSendEmailDialog: (state,action) => {
+            state.sendEmailDialog = action.payload;
         },
         setPartnerNoteDialog: (state,action) => {
             state.partnerNoteDialog = action.payload;
@@ -229,6 +233,7 @@ export const {
     setSendSMSDialog,
     setPartnerNoteDialog,
     setContractPaymentDialog,
+    setSendEmailDialog,
     setTradeTransactionDialog,
     setWarningNoticeDialog,
     setComprehensiveWarningNoticeDialog,

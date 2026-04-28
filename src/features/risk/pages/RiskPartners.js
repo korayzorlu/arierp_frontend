@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, setRiskPartnersLoading, setRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendEmailDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
 import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, NativeSelect, Select, Stack, TextField } from '@mui/material';
@@ -28,6 +28,8 @@ import SendSMSDialog from 'component/dialog/SendSMSDialog';
 import TableButton from 'component/button/TableButton';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import SendEmailDialog from 'component/dialog/SendEmailDialog';
+import EmailIcon from '@mui/icons-material/Email';
 
 function RiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -277,6 +279,11 @@ function RiskPartners() {
                         icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
+                        title="Toplu Email Gönder"
+                        onClick={() => {dispatch(setSendEmailDialog(true));}}
+                        icon={<EmailIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
@@ -358,6 +365,13 @@ function RiskPartners() {
             risk_status="risk_partners"
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
+            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün ödenmesi hususunda gereğini rica ederiz. ${project === 'kizilbuk' || project === 'kasaba' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            />
+            <SendEmailDialog
+            risk_status="risk_partners"
+            project={project}
+            subject="Ödeme Hatırlatma Bilgilendirmesi"
+            text="Tabloda yer alan kişilere, sistemde kayıtlı e-posta adresleri üzerinden gecikme hatırlatması için e-posta gönderilecektir."
             example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün ödenmesi hususunda gereğini rica ederiz. ${project === 'kizilbuk' || project === 'kasaba' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
             <MessageDialog/>

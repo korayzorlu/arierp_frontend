@@ -31,6 +31,7 @@ function Leases() {
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
     const [project, setProject] = useState("all")
+    const [overdueStatus, setOverdueStatus] = useState("all")
 
     useEffect(() => {
         startTransition(() => {
@@ -92,10 +93,23 @@ function Leases() {
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
         //{ field: 'vat', headerName: 'KDV(%)', type: 'number' },
         //{ field: 'musteri_baz_maliyet', headerName: 'Müşteri Baz Maliyet', type: 'number'},
-        { field: 'overdue_amount', headerName: 'Gecikme Tutarı', width:160, type: 'number', renderHeaderFilter: () => null, cellClassName: (params) => {
-                return params.value > 0 ? 'bg-red' : '';
-            },
-            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        { field: 'overdue_amount', headerName: 'Bakiye', width:160, type: 'number',
+            cellClassName: (params) => {return params.value > 0 ? 'negative-cell' : '';},
+            valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'gecikme_var', label: 'Gecikmede' },
+                    { value: 'gecikme_yok', label: 'Gecikme Yok' },
+                ]}
+                changeValue={(newValue) => setOverdueStatus(newValue)}
+                />
+            )
         },
         { field: 'currency', headerName: 'PB' },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
