@@ -35,7 +35,7 @@ function Auth({children}) {
         // </div>
 
         <div className="row d-flex justify-content-center align-items-center vh-100">
-            <div className="col-md-2 ms-auto me-auto" style={{marginBottom:'5%'}}>
+            <div className="col-md-3 ms-auto me-auto" style={{marginBottom:'5%'}}>
 
                 <div className="card">
                     <div className="row g-0">
@@ -47,7 +47,7 @@ function Auth({children}) {
                             <div className="card-header">
                                 <div className="row justify-content-center">
                                     <div className="col-md-8 text-center">
-                                        <img src={require(`../../../images/logo/${theme}/ari-logo-full.png`)} className="" alt="Marswide" style={{maxHeight:60,width:'100%'}}/>
+                                        <img src={require(`../../../images/logo/${theme}/ari-logo-full-2.png`)} className="" alt="Marswide" style={{maxHeight:60,width:'100%'}}/>
                                     </div>
                                 </div>
                             </div>

@@ -7,6 +7,8 @@ import { fetchCompanies, fetchCompaniesForStart } from "../../../store/slices/or
 import { fetchMenuItems } from "../../../store/slices/subscriptionsSlice";
 import { fetchNotifications } from "../../../store/slices/notificationSlice";
 import { fetchExportProcess, fetchImportProcess } from "../../../store/slices/processSlice";
+import { Button, Divider, Grid, List, Paper, Stack } from "@mui/material";
+import FormHeader from "component/header/FormHeader";
 
 function Login() {
     const {status,theme,authMessage} = useSelector((store) => store.auth);
@@ -61,7 +63,7 @@ function Login() {
 
     return ( 
         <>
-            <form className="card-body text-center"onSubmit={handleLoginAuth}>
+            <form className="card-body text-center">
                 <h5 className="card-title mb-3">Oturum Aç</h5>
                 <div data-mdb-input-init className="form-outline mb-3">
                     <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} id="formOutline-user-login-email" className="form-control" required />
@@ -71,12 +73,31 @@ function Login() {
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="formOutline-user-login-password" className="form-control" required />
                     <label className="form-label" htmlFor="formOutline-user-login-password-">Parola</label>
                 </div>
-                <button data-mdb-ripple-init type="submit" className="btn btn-primary btn-block">Giriş</button>
+                {/* <button data-mdb-ripple-init type="submit" className="btn btn-primary btn-block">Giriş</button> */}
+                <Button variant="contained" color="opposite" fullWidth onClick={handleLoginAuth}>GİRİŞ</Button>
                 <span className={`text-start btn-block ${authMessage.color}`}><i className={authMessage.icon}></i> {authMessage.text}</span>
             </form>
             <div className="card-footer d-none">
-                Don't have an account? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Kayıt Ol</Link>
+                Hesabın yok mu? <Link to="/auth/register" onClick={() => dispatch(clearAuthMessage())} className="text-blue-500 fw-bold">Kayıt Ol</Link>
             </div>
+
+            {/* <Stack spacing={2}>
+                <Grid container spacing={2} sx={{justifyContent:'center',alignItems:'center'}}>
+                    <Grid size={{xs:12,sm:6}}>
+                        <Paper elevation={0} sx={{p:2}} square>
+                            <Stack spacing={2}>
+                                <FormHeader
+                                title="BİLDİRİMLER"
+                                />
+                            </Stack>
+                            <Divider></Divider>
+                            <Stack spacing={2}>
+                                test
+                            </Stack>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Stack> */}
         </>
     );
 }
