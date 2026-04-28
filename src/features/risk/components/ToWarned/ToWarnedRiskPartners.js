@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, fetchToWarnedRiskPartners, setRiskPartnersLoading, setToWarnedRiskPartnersLoading, setToWarnedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendEmailDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
 import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, Tab, Tabs, TextField } from '@mui/material';
@@ -35,6 +35,7 @@ import TableButton from 'component/button/TableButton';
 import WarningIcon from '@mui/icons-material/Warning';
 import EmailIcon from '@mui/icons-material/Email';
 import TabPanel from 'component/tab/TabPanel';
+import SendEmailDialog from 'component/dialog/SendEmailDialog';
 
 function ToWarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -279,6 +280,11 @@ function ToWarnedRiskPartners() {
                     icon={<SmsIcon fontSize="small"/>}
                     />
                     <CustomTableButton
+                    title="Toplu Email Gönder"
+                    onClick={() => {dispatch(setSendEmailDialog(true));}}
+                    icon={<EmailIcon fontSize="small"/>}
+                    />
+                    <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
@@ -339,7 +345,7 @@ function ToWarnedRiskPartners() {
             //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
             //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toWarnedRiskPartnersParams}));}}
             getDetailPanelHeight={() => "auto"}
-            getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></RiskPartnerDetailPanel>)}}
+            getDetailPanelContent={(params) => {return(<RiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project} risk_status="to_warned"></RiskPartnerDetailPanel>)}}
             />
             <ExportDialog
             handleClose={() => dispatch(setExportDialog(false))}
@@ -354,6 +360,13 @@ function ToWarnedRiskPartners() {
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması ve ihtar uyarısı için kısa mesaj gönderilecektir."
             example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün itibari ile ihtarname süreci başlatılmıştır. ${project === 'sinpas' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            />
+            <SendEmailDialog
+            risk_status="risk_partners"
+            project={project}
+            subject="Ödeme Hatırlatma Bilgilendirmesi"
+            text="Tabloda yer alan kişilere, sistemde kayıtlı e-posta adresleri üzerinden gecikme hatırlatması için e-posta gönderilecektir."
+            example={`Değerli müşterimiz, {{proje}} projesinde bulunan sözleşmelerinizin {{tutar}} TL ödenmemiş taksiti bulunmaktadır. Bugün ödenmesi hususunda gereğini rica ederiz. ${project === 'kizilbuk' || project === 'kasaba' ? "Ödemelerinizi online sistemden kontrol edip ödeme yapabilirsiniz. " : ""}ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
             <WarningNoticeDialog/>
             <MessageDialog/>

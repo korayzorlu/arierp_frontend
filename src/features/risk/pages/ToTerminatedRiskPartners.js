@@ -33,6 +33,7 @@ import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
 import ToTerminatedRiskPartnerDetailPanel from '../components/ToTerminatedRiskPartnerDetailPanel';
+import EmailIcon from '@mui/icons-material/Email';
 
 function ToTerminatedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -344,7 +345,7 @@ function ToTerminatedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<ToTerminatedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}></ToTerminatedRiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<ToTerminatedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}  project={project} risk_status="to_terminated"></ToTerminatedRiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog

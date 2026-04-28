@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWarnedRiskPartners, setWarnedRiskPartnersLoading, setWarnedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setCallDialog, setExportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setCallDialog, setExportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendEmailDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
 import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
@@ -30,6 +30,7 @@ import WarnedRiskPartnerDetailPanel from '../components/WarnedRiskPartnerDetailP
 import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
+import EmailIcon from '@mui/icons-material/Email';
 
 function WarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -268,6 +269,11 @@ function WarnedRiskPartners() {
                         onClick={() => {dispatch(setSendSMSDialog(true));}}
                         icon={<SmsIcon fontSize="small"/>}
                         />
+                        {/* <CustomTableButton
+                        title="Toplu Email Gönder"
+                        onClick={() => {dispatch(setSendEmailDialog(true));}}
+                        icon={<EmailIcon fontSize="small"/>}
+                        /> */}
                         <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchWarnedRiskPartners({activeCompany,params:{...warnedRiskPartnersParams,project}})).unwrap()}
@@ -329,7 +335,7 @@ function WarnedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:warnedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<WarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project}></WarnedRiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<WarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project} risk_status="warned"></WarnedRiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog
