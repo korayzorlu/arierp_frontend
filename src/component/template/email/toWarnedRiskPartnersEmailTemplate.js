@@ -121,7 +121,7 @@ const toWarnedRiskPartnersEmailTemplate = ({ subject = '', project = '', tutar =
 						&nbsp;</td>
 					</tr>
 					<tr>
-						<td align="center" class="ortala" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; text-align:left; padding:5px;">%%proje%% projesinde bulunan %%sozlesme%% numaralı s&ouml;zleşmenizin %%tutar%% TL &ouml;denmemiş taksiti bulunmaktadır. Bug&uuml;n &ouml;denmesi hususunda gereğini rica ederiz. &Ouml;demelerinizi online sistemden kontrol edip &ouml;deme yapabilirsiniz.<br />
+						<td align="center" class="ortala" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; text-align:left; padding:5px;">%%proje%% projesinde bulunan %%sozlesme%% numaralı s&ouml;zleşmenizin %%tutar%% TL &ouml;denmemiş taksiti bulunmaktadır. Bug&uuml;n itibari ile ihtarname s&uuml;reci başlatılmıştır.<br />
 						<br />
 						&Ouml;DEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ.<br />
 						<br />
