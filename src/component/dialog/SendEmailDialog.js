@@ -11,6 +11,7 @@ import { sendRiskEmail, setEmailsLoading } from 'store/slices/communication/emai
 import riskPartnersEmailTemplate from 'component/template/email/riskPartnersEmailTemplate';
 import toWarnedRiskPartnersEmailTemplate from 'component/template/email/toWarnedRiskPartnersEmailTemplate';
 import warnedRiskPartnersEmailTemplate from 'component/template/email/warnedRiskPartnersEmailTemplate';
+import toTerminatedRiskPartnersEmailTemplate from 'component/template/email/toTerminatedRiskPartnersEmailTemplate';
 
 function SendEmailDialog({...props}) {
 
@@ -47,6 +48,9 @@ function SendEmailDialog({...props}) {
             break;
         case 'warned':
             emailTemplate = warnedRiskPartnersEmailTemplate;
+            break;
+        case 'to_terminated':
+            emailTemplate = toTerminatedRiskPartnersEmailTemplate;
             break;
         default:
             emailTemplate = riskPartnersEmailTemplate;

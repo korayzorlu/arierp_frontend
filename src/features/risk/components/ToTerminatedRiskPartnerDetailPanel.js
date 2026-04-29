@@ -23,14 +23,18 @@ import ComprehensiveWarningNoticeDialog from 'component/dialog/ComprehensiveWarn
 import TerminationWarningNoticeDialog from 'component/dialog/TerminationWarningNoticeDialog ';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
+import Dialog from 'component/feedback/Dialog';
+import { EmailIcon } from 'icons';
+import { fetchToTerminatedRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
 
 function ToTerminatedRiskPartnerDetailPanel(props) {
-    const {uuid, riskPartnerLeases} = props;
+    const {uuid, riskPartnerLeases,project} = props;
 
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
     const {contractPaymentsParams} = useSelector((store) => store.contract);
+    const {toTerminatedRiskPartnersParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -224,6 +228,32 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         dispatch(setTerminationWarningNoticeDialog(true));
     };
 
+    const sendEmail = async () => {
+        dispatch(setDialog(false));
+        try {
+            const response = await axios.post('/communication/send_risk_email_selected/',
+                {   
+                    ac: activeCompany.id,
+                    project: project,
+                    risk_status:props.risk_status,
+                    subject: "Ödeme Hatırlatma Bilgilendirmesi",
+                    uuids: rowSelectionModel.type === 'exclude'
+                        ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
+                        : Array.from(rowSelectionModel.ids),
+                },
+                {
+                    withCredentials: true
+                }
+            );
+            dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}}));
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
+        
+    };
+
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
             <ListTable
@@ -235,12 +265,37 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
             loading={leasesLoading}
+            customFiltersLeft={
+                <>
+                    {
+                        rowSelectionModel.ids.size > 0 || rowSelectionModel.type === 'exclude'
+                        ?
+                            <Button
+                            variant='contained'
+                            color='primary'
+                            size='small'
+                            onClick={() => {dispatch(setDialog(true));}}
+                            sx={{mt:1,mb:1}}
+                            endIcon={<EmailIcon/>}
+                            >
+                                Email Gönder
+                            </Button>
+                        :
+                        null
+                    } 
+                </>
+            }
             setParams={(value) => dispatch(setLeasesParams(value))}
             onCellClick={handleProfileDialog}
             showCellVerticalBorder
             showColumnVerticalBorder
             outline
             noToolbarButtons
+            checkboxSelection
+            onRowSelectionModelChange={(newRowSelectionModel) => {
+                setRowSelectionModel(newRowSelectionModel);
+            }}
+            rowSelectionModel={rowSelectionModel}
             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             //noAllSelect
             //rowSelectionModel={selectedRows}
@@ -267,6 +322,13 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
             edit={true}
             />
             <TradeTransactionDialog/>
+            <Dialog
+            title="Devam Etmek İstiyor musun?"
+            text="Seçili kayıtları için ilgili müşterinin sistemde kayıtlı e-mail adresine e-mail gönderilecek."
+            onClick={sendEmail}
+            onClickColor='opposite'
+            onClickText='Gönder'
+            />
         </Box>
     )
 }

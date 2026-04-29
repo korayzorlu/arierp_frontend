@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRiskPartners, fetchToTerminatedRiskPartners, setRiskPartnersLoading, setToTerminatedRiskPartnersLoading, setToTerminatedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCallDialog, setDeleteDialog, setExportDialog, setImportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendEmailDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
 import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
@@ -34,6 +34,7 @@ import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
 import ToTerminatedRiskPartnerDetailPanel from '../components/ToTerminatedRiskPartnerDetailPanel';
 import EmailIcon from '@mui/icons-material/Email';
+import SendEmailDialog from 'component/dialog/SendEmailDialog';
 
 function ToTerminatedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -280,6 +281,11 @@ function ToTerminatedRiskPartners() {
                         icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
+                        title="Toplu Email Gönder"
+                        onClick={() => {dispatch(setSendEmailDialog(true));}}
+                        icon={<EmailIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchToTerminatedRiskPartners({activeCompany,params:{...toTerminatedRiskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
@@ -368,6 +374,12 @@ function ToTerminatedRiskPartners() {
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden fesih uyarısı için kısa mesaj gönderilecektir."
             example={`Değerli müşterimiz, {{sozlesme_no}} No.lu {{"sözleşmenize"/"sözleşmelerinize"}} ilişkin {{tutar}} TL borcunuz bulunmaktadır. {{tarih}} tarihi itibarıyla sonlandırılacağını üzülerek bilgilerinize sunarız. Herhangi bir sorunuz olması halinde bizimle 4447680 no.lu telefondan ulaşabilirsiniz. Arı Finansal Kiralama Mersis No: 0147005285500018 `}
+            />
+            <SendEmailDialog
+            risk_status="to_terminated"
+            project={project}
+            subject="Ödeme Hatırlatma Bilgilendirmesi"
+            text="Tabloda yer alan kişilere, sistemde kayıtlı e-posta adresleri üzerinden gecikme hatırlatması için e-posta gönderilecektir."
             />
             <WarningNoticeDialog/>
             <MessageDialog/>
