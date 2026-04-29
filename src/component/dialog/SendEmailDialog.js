@@ -8,6 +8,8 @@ import SmsIcon from '@mui/icons-material/Sms';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SendIcon from '@mui/icons-material/Send';
 import { sendRiskEmail, setEmailsLoading } from 'store/slices/communication/emailSlice';
+import riskPartnersEmailTemplate from 'component/template/email/riskPartnersEmailTemplate';
+import toWarnedRiskPartnersEmailTemplate from 'component/template/email/toWarnedRiskPartnersEmailTemplate';
 
 function SendEmailDialog({...props}) {
 
@@ -33,6 +35,18 @@ function SendEmailDialog({...props}) {
         dispatch(setEmailsLoading(false));
         
     };
+
+    let emailTemplate;
+    switch (props.risk_status) {
+        case 'risk_partners':
+            emailTemplate = riskPartnersEmailTemplate;
+            break;
+        case 'to_warned':
+            emailTemplate = toWarnedRiskPartnersEmailTemplate;
+            break;
+        default:
+            emailTemplate = riskPartnersEmailTemplate;
+    }
 
     return (
         <MUIDialog
