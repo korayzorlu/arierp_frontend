@@ -16,6 +16,15 @@ const initialState = {
     purchaseDocumentsInfo: [],
     purchaseDocumentsInPurchasePayment:[],
     purchaseDocumentsInPurchasePaymentCode:0,
+    //
+    purchaseDocumentVendors:[],
+    purchaseDocumentVendorsCount:0,
+    purchaseDocumentVendorsParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    purchaseDocumentVendorsLoading:false,
 }
 
 export const fetchPurchaseDocuments = createAsyncThunk('auth/fetchPurchaseDocuments', async ({activeCompany,serverModels=null,params=null}) => {
@@ -60,6 +69,20 @@ export const fetchPurchaseDocumentsInPurchasePayment = createAsyncThunk('organiz
     return response.data;
 });
 
+export const fetchPurchaseDocumentVendors = createAsyncThunk('auth/fetchPurchaseDocumentVendors', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/purchasing/purchase_document_vendors/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
 const purchaseDocumentSlice = createSlice({
     name:"purchaseDocument",
     initialState,
@@ -82,6 +105,23 @@ const purchaseDocumentSlice = createSlice({
         },
         setPurchaseDocumentsInPurchasePaymentCode: (state,action) => {
             state.purchaseDocumentsInPurchasePaymentCode = action.payload;
+        },
+        //
+        setPurchaseDocumentVendorsLoading: (state,action) => {
+            state.purchaseDocumentVendorsLoading = action.payload;
+        },
+        setPurchaseDocumentVendorsParams: (state,action) => {
+            state.purchaseDocumentVendorsParams = {
+                ...state.purchaseDocumentVendorsParams,
+                ...action.payload
+            };
+        },
+        resetPurchaseDocumentVendorsParams: (state,action) => {
+            state.purchaseDocumentVendorsParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
         },
     },
     extraReducers: (builder) => {
@@ -110,9 +150,29 @@ const purchaseDocumentSlice = createSlice({
             .addCase(fetchPurchaseDocumentsInPurchasePayment.rejected, (state,action) => {
                 state.purchaseDocumentsLoading = false;
             })
+            // vendors
+            .addCase(fetchPurchaseDocumentVendors.pending, (state) => {
+                state.purchaseDocumentVendorsLoading = true
+            })
+            .addCase(fetchPurchaseDocumentVendors.fulfilled, (state,action) => {
+                state.purchaseDocumentVendors = action.payload.data || action.payload;
+                state.purchaseDocumentVendorsCount = action.payload.recordsTotal || 0;
+                state.purchaseDocumentVendorsLoading = false
+            })
+            .addCase(fetchPurchaseDocumentVendors.rejected, (state,action) => {
+                state.purchaseDocumentVendorsLoading = false
+            })
     },
   
 })
 
-export const {setPurchaseDocumentsLoading,setPurchaseDocumentsParams,resetPurchaseDocumentsParams,setPurchaseDocumentsInPurchasePaymentCode} = purchaseDocumentSlice.actions;
+export const {
+    setPurchaseDocumentsLoading,
+    setPurchaseDocumentsParams,
+    resetPurchaseDocumentsParams,
+    setPurchaseDocumentsInPurchasePaymentCode,
+    setPurchaseDocumentVendorsLoading,
+    setPurchaseDocumentVendorsParams,
+    resetPurchaseDocumentVendorsParams
+} = purchaseDocumentSlice.actions;
 export default purchaseDocumentSlice.reducer;

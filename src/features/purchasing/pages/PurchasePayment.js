@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPurchasePayments, resetPurchasePaymentsParams, setPurchasePaymentsLoading, setPurchasePaymentsParams } from '../../../store/slices/purchasing/purchasePaymentSlice';
+import { fetchPurchasePayments, fetchVendors, resetPurchasePaymentsParams, setPurchasePaymentsLoading, setPurchasePaymentsParams } from '../../../store/slices/purchasing/purchasePaymentSlice';
 import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setPurchaseDocumentDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
@@ -16,11 +16,14 @@ import { fetchPurchaseDocumentsInPurchasePayment } from '../../../store/slices/p
 import PurchaseDocumentDialog from '../components/PurchaseDocumentDialog';
 import AndroidSwitch from '../../../component/switch/AndroidSwitch';
 import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import { fetchProjects } from 'store/slices/leasing/leaseSlice';
 
 function PurchasePayments() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {purchasePayments,purchasePaymentsCount,purchasePaymentsParams,purchasePaymentsLoading} = useSelector((store) => store.purchasePayment);
+    const {purchasePayments,purchasePaymentsCount,purchasePaymentsParams,purchasePaymentsLoading,vendors,vendorParams} = useSelector((store) => store.purchasePayment);
+    const {projects,projectsParams} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -37,6 +40,8 @@ function PurchasePayments() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams}));
+            dispatch(fetchVendors({activeCompany,params:vendorParams}));
+            dispatch(fetchProjects({activeCompany,params:projectsParams}));
         });
     }, [activeCompany,purchasePaymentsParams,dispatch]);
 
@@ -44,8 +49,43 @@ function PurchasePayments() {
         { field: 'contract', headerName: 'Sözleşme No', renderCell: (params) => params.row.lease.contract },
         { field: 'lease_code', headerName: 'Kira Planı', renderCell: (params) => params.row.lease.code },
         { field: 'partner', headerName: 'Müşteri', width: 280, renderCell: (params) => params.row.lease.partner },
-        { field: 'vendor', headerName: 'Satıcı', width: 280, renderCell: (params) => params.row.lease.vendor },
-        { field: 'project_name', headerName: 'Proje', width: 140, renderCell: (params) => params.row.lease.project },
+        //{ field: 'vendor', headerName: 'Satıcı', width: 280, renderCell: (params) => params.row.lease.vendor },
+        { field: 'vendor', headerName: 'Satıcı', width: 280,
+            renderCell: (params) => (
+                params.row.vendor?.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    ...[...new Set(vendors.map((item) => item.lease__contract__vendor__name))].map((name) => ({ label: name, value: name }))
+                ]}
+                />
+            )
+        },
+        //{ field: 'project_name', headerName: 'Proje', width: 140, renderCell: (params) => params.row.lease.project },
+        { field: 'item', headerName: 'Proje', width: 200,
+            renderCell: (params) => (
+                params.row.item?.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__stock_name }))
+                    ...[...new Set(projects.map((item) => item.item__stock_name))].map((name) => ({ label: name, value: name }))
+                ]}
+                />
+            )
+        },
         { field: 'activation_date', headerName: 'Aktivasyon Tarihi', renderCell: (params) => params.row.lease.activation_date },
         { field: 'contract_date', headerName: 'Söz. Tarihi', renderCell: (params) => params.row.lease.contract_date },
         { field: 'lease_status', headerName: 'Ana Statü', renderCell: (params) => params.row.lease.lease_status },
@@ -160,29 +200,6 @@ function PurchasePayments() {
                         onClick={() => dispatch(fetchPurchasePayments({activeCompany,params:purchasePaymentsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
-                    </>
-                }
-                customFiltersLeft={
-                    <>
-                        <FormControl sx={{mr: 2}}>
-                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            size='small'
-                            value={project}
-                            label="Proje"
-                            onChange={(e) => changeProject(e.target.value)}
-                            disabled={purchasePaymentsLoading}
-                            >
-                                <MenuItem value='all'>TÜMÜ</MenuItem>
-                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
-                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
-                                <MenuItem value='kasaba'>KASABA</MenuItem>
-                                <MenuItem value='servet'>SERVET</MenuItem>
-                                <MenuItem value='diger'>DİĞER</MenuItem>
-                            </Select>
-                        </FormControl>
                     </>
                 }
                 customFilters={

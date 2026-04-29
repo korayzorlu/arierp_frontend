@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPurchaseDocuments, resetPurchaseDocumentsParams, setPurchaseDocumentsLoading, setPurchaseDocumentsParams } from '../../../store/slices/purchasing/purchaseDocumentSlice';
+import { fetchPurchaseDocuments, fetchPurchaseDocumentVendors, resetPurchaseDocumentsParams, setPurchaseDocumentsLoading, setPurchaseDocumentsParams } from '../../../store/slices/purchasing/purchaseDocumentSlice';
 import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
@@ -14,11 +14,14 @@ import { fetchExportProcess } from '../../../store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import PurchaseDocumentDetailPanel from '../components/PurchaseDocumentDetailPanel';
 import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
+import { fetchProjects } from 'store/slices/leasing/leaseSlice';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
 function PurchaseDocuments() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {purchaseDocuments,purchaseDocumentsCount,purchaseDocumentsParams,purchaseDocumentsLoading,purchaseDocumentsInfo} = useSelector((store) => store.purchaseDocument);
+    const {purchaseDocuments,purchaseDocumentsCount,purchaseDocumentsParams,purchaseDocumentsLoading,purchaseDocumentsInfo,purchaseDocumentVendors,purchaseDocumentVendorsParams} = useSelector((store) => store.purchaseDocument);
+    const {projects,projectsParams} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -33,6 +36,8 @@ function PurchaseDocuments() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchPurchaseDocuments({activeCompany,params:purchaseDocumentsParams}));
+            dispatch(fetchPurchaseDocumentVendors({activeCompany,params:purchaseDocumentVendorsParams}));
+            dispatch(fetchProjects({activeCompany,params:projectsParams}));
         });
     }, [activeCompany,purchaseDocumentsParams,dispatch]);
 
@@ -40,8 +45,43 @@ function PurchaseDocuments() {
         { field: 'contract', headerName: 'Sözleşme No', renderCell: (params) => params.row.lease.contract },
         { field: 'lease_code', headerName: 'Kira Planı', renderCell: (params) => params.row.lease.code },
         { field: 'partner', headerName: 'Müşteri', width: 240 },
-        { field: 'vendor', headerName: 'Satıcı', width: 240 },
+        //{ field: 'vendor', headerName: 'Satıcı', width: 240 },
+        { field: 'vendor', headerName: 'Satıcı', width: 280,
+            renderCell: (params) => (
+                params.row.vendor?.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    ...[...new Set(purchaseDocumentVendors.map((item) => item.lease__contract__vendor__name))].map((name) => ({ label: name, value: name }))
+                ]}
+                />
+            )
+        },
         { field: 'crm_satici', headerName: 'CRM Satıcı', width: 240 },
+        { field: 'item', headerName: 'Proje', width: 200,
+            renderCell: (params) => (
+                params.row.item?.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__stock_name }))
+                    ...[...new Set(projects.map((item) => item.item__stock_name))].map((name) => ({ label: name, value: name }))
+                ]}
+                />
+            )
+        },
         { field: 'lease_bbsn', headerName: 'BBSN', width: 160, renderCell: (params) => params.row.lease.bbsn },
         { field: 'document_number', headerName: 'Döküman Numarası', width: 140 },
         { field: 'document_date', headerName: 'Döküman Tarihi', width: 140, renderHeaderFilter: () => null },
@@ -97,29 +137,6 @@ function PurchaseDocuments() {
                         onClick={() => dispatch(fetchPurchaseDocuments({activeCompany,params:purchaseDocumentsParams})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
                         />
-                    </>
-                }
-                customFiltersLeft={
-                    <>
-                        <FormControl sx={{mr: 2}}>
-                            <InputLabel id="demo-simple-select-label">Proje</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            size='small'
-                            value={project}
-                            label="Proje"
-                            onChange={(e) => changeProject(e.target.value)}
-                            disabled={purchaseDocumentsLoading}
-                            >
-                                <MenuItem value='all'>TÜMÜ</MenuItem>
-                                <MenuItem value='kizilbuk'>KIZILBÜK</MenuItem>
-                                <MenuItem value='sinpas'>SİNPAŞ GYO</MenuItem>
-                                <MenuItem value='kasaba'>KASABA</MenuItem>
-                                <MenuItem value='servet'>SERVET</MenuItem>
-                                <MenuItem value='diger'>DİĞER</MenuItem>
-                            </Select>
-                        </FormControl>
                     </>
                 }
                 rowCount={purchaseDocumentsCount}
