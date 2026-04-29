@@ -42,7 +42,15 @@ function BankAccountTransactions() {
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
     const columns = [
-        { field: 'transaction_date', headerName: 'Tarih', width: 120, sortComparator: (a, b) => parseDate(a) - parseDate(b) },
+        { field: 'transaction_date', headerName: 'Tarih', width: 200, type: 'date',
+            sortComparator: (a, b) => parseDate(a) - parseDate(b),
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
+        { field: 'transaction_time', headerName: 'İşlem Saati', width: 90, renderHeaderFilter: () => null},
         { field: 'transaction_id', headerName: 'İşlem ID', width: 90 },
         { field: 'explanation_field', headerName: 'Açıklama', width: 520 },
         { field: 'amount', headerName: 'Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, valueFormatter: (value) =>

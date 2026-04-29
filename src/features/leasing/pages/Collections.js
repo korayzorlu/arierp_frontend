@@ -147,7 +147,13 @@ function Collections() {
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.processed_amount)
         },
         { field: 'currency', headerName: 'PB', width: 90 },
-        { field: 'process_date_date', headerName: 'İşlem Tarihi', width: 120 },
+        { field: 'process_date_date', headerName: 'İşlem Tarihi', width: 200, type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
         { field: 'bank_account_no', headerName: 'Banka Hesap No', width: 160,
             // filterOperators: [
             //     {

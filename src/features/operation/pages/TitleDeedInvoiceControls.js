@@ -116,7 +116,8 @@ function TitleDeedInvoiceControls() {
                 if (!value) return null;
                 const [day, month, year] = value.split('.');
                 return new Date(year, month - 1, day);
-            } },
+            }
+        },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
