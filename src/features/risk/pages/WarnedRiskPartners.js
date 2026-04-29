@@ -31,6 +31,7 @@ import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
 import EmailIcon from '@mui/icons-material/Email';
+import SendEmailDialog from 'component/dialog/SendEmailDialog';
 
 function WarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -351,6 +352,12 @@ function WarnedRiskPartners() {
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden ihtar hatırlatması için kısa mesaj gönderilecektir."
             example={`Değerli müşterimiz, {{proje}} projesi’ne ait {{tarih}} son ödeme tarihli {{tutar}} TL ödenmemiş taksitiniz bulunmaktadır. Takip sürecindeki ödemenizi gerçekleştirmenizi rica ederiz. Ödeme yapıldıysa mesajı dikkate almayınız. Arı Finansal Kiralama Tel:02123102721 Mernis No:0147005285500018`}
+            />
+            <SendEmailDialog
+            risk_status="warned"
+            project={project}
+            subject="Ödeme Hatırlatma Bilgilendirmesi"
+            text="Tabloda yer alan kişilere, sistemde kayıtlı e-posta adresleri üzerinden gecikme hatırlatması için e-posta gönderilecektir."
             />
             <WarningNoticeDialog/>
             <MessageDialog/>

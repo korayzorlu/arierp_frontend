@@ -23,7 +23,7 @@ import ComprehensiveWarningNoticeDialog from 'component/dialog/ComprehensiveWarn
 import PublishIcon from '@mui/icons-material/Publish';
 import EmailIcon from '@mui/icons-material/Email';
 import axios from 'axios';
-import { fetchRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
+import { fetchRiskPartners, fetchToWarnedRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
 import Dialog from 'component/feedback/Dialog';
 
 function RiskPartnerDetailPanel(props) {
@@ -33,7 +33,7 @@ function RiskPartnerDetailPanel(props) {
     const {activeCompany} = useSelector((store) => store.organization);
     const {leases,leasesCount,leasesParams,leasesLoading} = useSelector((store) => store.lease);
     const {contractPaymentsParams} = useSelector((store) => store.contract);
-    const {riskPartnersParams,comprehensiveWarnedRiskPartnersParams} = useSelector((store) => store.riskPartner);
+    const {riskPartnersParams,comprehensiveWarnedRiskPartnersParams,toWarnedRiskPartnersParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -196,29 +196,32 @@ function RiskPartnerDetailPanel(props) {
 
     const sendEmail = async () => {
         dispatch(setDialog(false));
-        if(props.risk_status && props.risk_status === "risk_partners"){
-            try {
-                const response = await axios.post('/communication/send_risk_email_selected/',
-                    {   
-                        ac: activeCompany.id,
-                        project: project,
-                        risk_status:props.risk_status,
-                        subject: "Ödeme Hatırlatma Bilgilendirmesi",
-                        uuids: rowSelectionModel.type === 'exclude'
-                            ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
-                            : Array.from(rowSelectionModel.ids),
-                    },
-                    {
-                        withCredentials: true
-                    }
-                );
+        try {
+            const response = await axios.post('/communication/send_risk_email_selected/',
+                {   
+                    ac: activeCompany.id,
+                    project: project,
+                    risk_status:props.risk_status,
+                    subject: "Ödeme Hatırlatma Bilgilendirmesi",
+                    uuids: rowSelectionModel.type === 'exclude'
+                        ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
+                        : Array.from(rowSelectionModel.ids),
+                },
+                {
+                    withCredentials: true
+                }
+            );
+            if(props.risk_status && props.risk_status === "risk_partners"){
                 dispatch(fetchRiskPartners({activeCompany,params:{...riskPartnersParams,project}}));
-            } catch (error) {
-                dispatch(setAlert({status:'error',text:error.message}));
-            } finally {
-
+            }else if (props.risk_status && props.risk_status === "to_warned"){
+                dispatch(fetchToWarnedRiskPartners({activeCompany,params:{...toWarnedRiskPartnersParams,project}}));
             }
-        };
+            
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
         
     };
 

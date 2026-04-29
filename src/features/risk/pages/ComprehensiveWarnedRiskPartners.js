@@ -2,7 +2,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchComprehensiveWarnedRiskPartners, setComprehensiveWarnedRiskPartnersLoading, setComprehensiveWarnedRiskPartnersParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setCallDialog, setDialog, setExportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setCallDialog, setDialog, setExportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendEmailDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
 import { Badge, Button, Chip, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
@@ -30,6 +30,8 @@ import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
 import ComprehensiveWarnedRiskPartnerDetailPanel from '../components/ComprehensiveWarnedRiskPartnerDetailPanel';
+import SendEmailDialog from 'component/dialog/SendEmailDialog';
+import EmailIcon from '@mui/icons-material/Email';
 
 function ComprehensiveWarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -266,6 +268,11 @@ function ComprehensiveWarnedRiskPartners() {
                         icon={<SmsIcon fontSize="small"/>}
                         />
                         <CustomTableButton
+                        title="Toplu Email Gönder"
+                        onClick={() => {dispatch(setSendEmailDialog(true));}}
+                        icon={<EmailIcon fontSize="small"/>}
+                        />
+                        <CustomTableButton
                         title="Yenile"
                         onClick={() => dispatch(fetchComprehensiveWarnedRiskPartners({activeCompany,params:{...comprehensiveWarnedRiskPartnersParams,project}})).unwrap()}
                         icon={<RefreshIcon fontSize="small"/>}
@@ -320,7 +327,7 @@ function ComprehensiveWarnedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:comprehensiveWarnedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<ComprehensiveWarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project}></ComprehensiveWarnedRiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<ComprehensiveWarnedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases} project={project} risk_status="warned"></ComprehensiveWarnedRiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <ExportDialog
@@ -336,6 +343,12 @@ function ComprehensiveWarnedRiskPartners() {
             project={project}
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden ihtar hatırlatması için kısa mesaj gönderilecektir."
             example={`Değerli müşterimiz, {{proje}} projesi’ne ait {{tarih}} son ödeme tarihli {{tutar}} TL ödenmemiş taksitiniz bulunmaktadır. Takip sürecindeki ödemenizi gerçekleştirmenizi rica ederiz. Ödeme yapıldıysa mesajı dikkate almayınız. Arı Finansal Kiralama Tel:02123102721 Mernis No:0147005285500018`}
+            />
+            <SendEmailDialog
+            risk_status="warned"
+            project={project}
+            subject="Ödeme Hatırlatma Bilgilendirmesi"
+            text="Tabloda yer alan kişilere, sistemde kayıtlı e-posta adresleri üzerinden gecikme hatırlatması için e-posta gönderilecektir."
             />
             <WarningNoticeDialog/>
             <MessageDialog/>

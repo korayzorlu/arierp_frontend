@@ -10,6 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { sendRiskEmail, setEmailsLoading } from 'store/slices/communication/emailSlice';
 import riskPartnersEmailTemplate from 'component/template/email/riskPartnersEmailTemplate';
 import toWarnedRiskPartnersEmailTemplate from 'component/template/email/toWarnedRiskPartnersEmailTemplate';
+import warnedRiskPartnersEmailTemplate from 'component/template/email/warnedRiskPartnersEmailTemplate';
 
 function SendEmailDialog({...props}) {
 
@@ -43,6 +44,9 @@ function SendEmailDialog({...props}) {
             break;
         case 'to_warned':
             emailTemplate = toWarnedRiskPartnersEmailTemplate;
+            break;
+        case 'warned':
+            emailTemplate = warnedRiskPartnersEmailTemplate;
             break;
         default:
             emailTemplate = riskPartnersEmailTemplate;

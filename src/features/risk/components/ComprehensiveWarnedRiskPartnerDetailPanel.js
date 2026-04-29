@@ -22,6 +22,8 @@ import { fetchComprehensiveWarnedRiskPartners } from 'store/slices/leasing/riskP
 import axios from 'axios';
 import DownloadIcon from '@mui/icons-material/Download';
 import ComprehensiveWarningNoticeDialog from 'component/dialog/ComprehensiveWarningNoticeDialog ';
+import { EmailIcon } from 'icons';
+import Dialog from 'component/feedback/Dialog';
 
 
 function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
@@ -42,6 +44,10 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
     const [fileUuid, setFileUuid] = useState({})
     const [fileContract, setFileContract] = useState({})
     const isFirstSelection = useRef(true);
+    const [rowSelectionModel, setRowSelectionModel] = useState({
+        type: 'include',
+        ids: new Set(),
+    });
 
     useEffect(() => {
         let allSelectedRows = [];
@@ -208,6 +214,32 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
         dispatch(setComprehensiveWarningNoticeDialog(true));
     };
 
+    const sendEmail = async () => {
+        dispatch(setDialog(false));
+        try {
+            const response = await axios.post('/communication/send_risk_email_selected/',
+                {   
+                    ac: activeCompany.id,
+                    project: project,
+                    risk_status:props.risk_status,
+                    subject: "Ödeme Hatırlatma Bilgilendirmesi",
+                    uuids: rowSelectionModel.type === 'exclude'
+                        ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
+                        : Array.from(rowSelectionModel.ids),
+                },
+                {
+                    withCredentials: true
+                }
+            );
+            dispatch(fetchComprehensiveWarnedRiskPartners({activeCompany,params:{...comprehensiveWarnedRiskPartnersParams,project}}));
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
+        
+    };
+
     return (
         <Box sx={{ pt: 2, pb: 2, pl: 8, pr: 8 }}>
             <ListTable
@@ -219,12 +251,37 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
             columns={columns}
             getRowId={(row) => row ? row.id : 0}
             loading={leasesLoading}
+            customFiltersLeft={
+                <>
+                    {
+                        rowSelectionModel.ids.size > 0 || rowSelectionModel.type === 'exclude'
+                        ?
+                            <Button
+                            variant='contained'
+                            color='primary'
+                            size='small'
+                            onClick={() => {dispatch(setDialog(true));}}
+                            sx={{mt:1,mb:1}}
+                            endIcon={<EmailIcon/>}
+                            >
+                                Email Gönder
+                            </Button>
+                        :
+                        null
+                    } 
+                </>
+            }
             setParams={(value) => dispatch(setLeasesParams(value))}
             onCellClick={handleProfileDialog}
             showCellVerticalBorder
             showColumnVerticalBorder
             outline
             noToolbarButtons
+            checkboxSelection
+            onRowSelectionModelChange={(newRowSelectionModel) => {
+                setRowSelectionModel(newRowSelectionModel);
+            }}
+            rowSelectionModel={rowSelectionModel}
             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             //noAllSelect
             //rowSelectionModel={selectedRows}
@@ -250,6 +307,13 @@ function ComprehensiveWarnedRiskPartnerDetailPanel(props) {
             edit={true}
             />
             <TradeTransactionDialog/>
+            <Dialog
+            title="Devam Etmek İstiyor musun?"
+            text="Seçili kayıtları için ilgili müşterinin sistemde kayıtlı e-mail adresine e-mail gönderilecek."
+            onClick={sendEmail}
+            onClickColor='opposite'
+            onClickText='Gönder'
+            />
         </Box>
     )
 }
