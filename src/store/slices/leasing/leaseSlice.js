@@ -49,6 +49,9 @@ const initialState = {
     },
     projectsLoading:false,
     //
+    leaseProjects:[],
+    leaseVendors:[],
+    //
     leasesSummary:{},
     leasesSummaryCount:0,
     leasesSummaryParams:{
@@ -560,6 +563,8 @@ const leaseSlice = createSlice({
             })
             .addCase(fetchActiveLeases.fulfilled, (state,action) => {
                 state.activeLeases = action.payload.data || action.payload;
+                state.leaseProjects = action.payload.projects || [];
+                state.leaseVendors = action.payload.vendors || [];
                 state.activeLeasesCount = action.payload.recordsTotal || 0;
                 state.activeLeasesLoading = false
             })

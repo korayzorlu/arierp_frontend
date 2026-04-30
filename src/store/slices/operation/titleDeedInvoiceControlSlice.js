@@ -15,6 +15,8 @@ const initialState = {
     titleDeedInvoiceControlsWarnings: [],
     isTitleDeedInvoiceControlsWarnings: false,
     titleDeedInvoiceControlsInfo: [],
+    titleDeedInvoiceControlsProjects: [],
+    titleDeedInvoiceControlsVendors: [],
 }
 
 export const fetchTitleDeedInvoiceControls = createAsyncThunk('auth/fetchTitleDeedInvoiceControls', async ({activeCompany,serverModels=null,params=null}) => {
@@ -58,6 +60,8 @@ const titleDeedInvoiceControlSlice = createSlice({
                 state.titleDeedInvoiceControlsCount = action.payload.recordsTotal || 0;
                 state.titleDeedInvoiceControlsWarnings = action.payload.warnings || [];
                 state.titleDeedInvoiceControlsInfo = action.payload.info || [];
+                state.titleDeedInvoiceControlsProjects = action.payload.projects || [];
+                state.titleDeedInvoiceControlsVendors = action.payload.vendors || [];
                 state.titleDeedInvoiceControlsLoading = false
             })
             .addCase(fetchTitleDeedInvoiceControls.rejected, (state,action) => {

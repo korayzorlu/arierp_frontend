@@ -21,7 +21,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 function ActiveActiveLeases() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {activeLeases,activeLeasesCount,activeLeasesParams,activeLeasesLoading,projectsParams,projects} = useSelector((store) => store.lease);
+    const {activeLeases,activeLeasesCount,activeLeasesParams,activeLeasesLoading,projectsParams,projects,leaseProjects,leaseVendors} = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -39,7 +39,7 @@ function ActiveActiveLeases() {
     useEffect(() => {
         startTransition(() => {
             dispatch(fetchActiveLeases({activeCompany,params:{...activeLeasesParams,project}}));
-            dispatch(fetchProjects({activeCompany,params:projectsParams}));
+            //dispatch(fetchProjects({activeCompany,params:projectsParams}));
         });
     }, [activeCompany,activeLeasesParams,dispatch]);
 
@@ -75,6 +75,24 @@ function ActiveActiveLeases() {
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
+        { field: 'vendor', headerName: 'Satıcı', width: 280,
+            renderCell: (params) => (
+                params.row.vendor?.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    ...[...new Set(leaseVendors.map((item) => item.contract__vendor__name))].map((name) => ({ label: name, value: name }))
+                ]}
+                />
+            )
+        },
         { field: 'item', headerName: 'Proje', width: 200,
             renderCell: (params) => (
                 params.row.item?.name
@@ -87,7 +105,8 @@ function ActiveActiveLeases() {
                 isServer
                 options={[
                     { label: "Tümü", value: "all" },
-                    ...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    ...[...new Set(leaseProjects.map((item) => item.item__stock_name))].map((name) => ({ label: name, value: name }))
                 ]}
                 />
             )

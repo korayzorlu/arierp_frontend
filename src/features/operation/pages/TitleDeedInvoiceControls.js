@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useTransition } from 'react'
+import React, { useEffect, useRef, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTitleDeedInvoiceControls, setTitleDeedInvoiceControlsLoading, setTitleDeedInvoiceControlsParams } from 'store/slices/operation/titleDeedInvoiceControlSlice';
 import { setDeleteDialog, setExportDialog, setImportDialog, setLeaseNoteDialog } from 'store/slices/notificationSlice';
@@ -30,7 +30,7 @@ import CustomColumnHeader from 'component/table/header/CustomColumnHeader';
 function TitleDeedInvoiceControls() {
     const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings,titleDeedInvoiceControlsInfo,isTitleDeedInvoiceControlsWarnings} = useSelector((store) => store.titleDeedInvoiceControl);
+    const {titleDeedInvoiceControls,titleDeedInvoiceControlsCount,titleDeedInvoiceControlsParams,titleDeedInvoiceControlsLoading,titleDeedInvoiceControlsWarnings,titleDeedInvoiceControlsInfo,isTitleDeedInvoiceControlsWarnings,titleDeedInvoiceControlsProjects,titleDeedInvoiceControlsVendors} = useSelector((store) => store.titleDeedInvoiceControl);
     const {projectsParams,projects,leaseNotesParams } = useSelector((store) => store.lease);
 
     const dispatch = useDispatch();
@@ -45,11 +45,16 @@ function TitleDeedInvoiceControls() {
     const [exportURL, setExportURL] = useState("")
     const [status, setStatus] = useState("all")
     const [columnHeaderCustomButtons, setColumnHeaderCustomButtons] = useState([]);
+    const [dataProjects, setDataProjects] = useState(titleDeedInvoiceControlsProjects)
+    const projectsInitialized = useRef(false)
 
     const fetchData = async () => {
         const response = await dispatch(fetchTitleDeedInvoiceControls({activeCompany,params:{...titleDeedInvoiceControlsParams,project}})).unwrap();
-        await dispatch(fetchProjects({activeCompany,params:projectsParams})).unwrap();
-        console.log(response)
+        if (!projectsInitialized.current) {
+            const projects = response.projects || [];
+            setDataProjects(projects);
+            if (projects.length > 0) projectsInitialized.current = true;
+        }
         setColumnHeaderCustomButtons([
             { field: 'ari_bbsn', nullCount: titleDeedInvoiceControls.filter((item) => !item.ari_bbsn).length }
         ])
@@ -121,11 +126,9 @@ function TitleDeedInvoiceControls() {
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
-        { field: 'vendor', headerName: 'Satıcı', width:220 },
-        { field: 'crm_satici', headerName: 'CRM Satıcı', width: 220 },
-        { field: 'item', headerName: 'Proje', width: 220,
+        { field: 'vendor', headerName: 'Satıcı', width: 280,
             renderCell: (params) => (
-                params.row.item.name
+                params.row.vendor?.name
             ),
             renderHeaderFilter: (params) => (
                 <SelectHeaderFilter
@@ -135,7 +138,27 @@ function TitleDeedInvoiceControls() {
                 isServer
                 options={[
                     { label: "Tümü", value: "all" },
-                    ...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    ...[...new Set(titleDeedInvoiceControlsVendors.map((item) => item.contract__vendor__name))].map((name) => ({ label: name, value: name }))
+                ]}
+                />
+            )
+        },
+        { field: 'crm_satici', headerName: 'CRM Satıcı', width: 220 },
+        { field: 'item', headerName: 'Proje', width: 220,
+            renderCell: (params) => (
+                params.row.item?.name
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    ...[...new Set(dataProjects.map((item) => item.item__stock_name))].map((name) => ({ label: name, value: name }))
                 ]}
                 />
             )
