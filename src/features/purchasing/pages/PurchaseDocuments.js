@@ -84,6 +84,7 @@ function PurchaseDocuments() {
             )
         },
         { field: 'lease_bbsn', headerName: 'BBSN', width: 160, renderCell: (params) => params.row.lease.bbsn },
+        { field: 'lease_crm_bbsn', headerName: 'CRM BBSN', width: 160, renderCell: (params) => params.row.lease.crm_bbsn },
         { field: 'document_number', headerName: 'Döküman Numarası', width: 140 },
         { field: 'document_date', headerName: 'Döküman Tarihi', width: 140, renderHeaderFilter: () => null },
         { field: 'amount', headerName: 'Toplam Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
