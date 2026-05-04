@@ -33,6 +33,7 @@ function PurchasePayments() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
+    const [status, setStatus] = useState("all")
     const [kdvSwitchPosition, setKdvSwitchPosition] = useState(false);
     const [specialSwitchPosition, setSpecialSwitchPosition] = useState(false);
     const [project, setProject] = useState("all")
@@ -151,6 +152,20 @@ function PurchasePayments() {
         },
         { field: 'is_agreement', headerName: 'Mutabakat Durumu', width: 180,
             cellClassName: (params) => {return params.value === "Mutabakat Yok" ? 'bg-red' : '';},
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'var', label: 'Mutabakat Var' },
+                    { value: 'yok', label: 'Mutabakat Yok' },
+                ]}
+                changeValue={(newValue) => setStatus(newValue)}
+                />
+            )
         },
         { field: 'is_tufe', headerName: 'Tüfeli mi?', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.is_tufe },
     ]

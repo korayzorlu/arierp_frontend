@@ -23,6 +23,7 @@ function Sidenav() {
         article: require("../../images/icons/sidebar/light/article_shortcut-filled.svg").ReactComponent,
         badge: require("../../images/icons/sidebar/light/badge-filled.svg").ReactComponent,
         box: require("../../images/icons/sidebar/light/box-filled.svg").ReactComponent,
+        chat: require("../../images/icons/sidebar/light/chat-filled.svg").ReactComponent,
         checkbook: require("../../images/icons/sidebar/light/checkbook-filled.svg").ReactComponent,
         contract: require("../../images/icons/sidebar/light/contract-filled.svg").ReactComponent,
         cottage: require("../../images/icons/sidebar/light/cottage-filled.svg").ReactComponent,

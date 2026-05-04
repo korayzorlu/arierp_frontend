@@ -31,6 +31,7 @@ function PurchaseDocuments() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [switchDisabled, setSwitchDisabled] = useState(false);
     const [switchPosition, setSwitchPosition] = useState(false);
+    const [status, setStatus] = useState("all")
     const [project, setProject] = useState("all")
 
     useEffect(() => {
@@ -94,6 +95,9 @@ function PurchaseDocuments() {
         { field: 'total_amount', headerName: 'Genel Toplam', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'local_amount', headerName: 'Yerel Toplam', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
+        },
         { field: 'crm_amount', headerName: "IFS'ten Gelen Tutar", width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.crm_invoice_total_amount, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -104,6 +108,20 @@ function PurchaseDocuments() {
         },
         { field: 'is_agreement', headerName: 'Mutabakat Durumu', width: 180,
             cellClassName: (params) => {return params.value === "Mutabakat Yok" ? 'bg-red' : '';},
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'var', label: 'Mutabakat Var' },
+                    { value: 'yok', label: 'Mutabakat Yok' },
+                ]}
+                changeValue={(newValue) => setStatus(newValue)}
+                />
+            )
         },
         { field: 'exchange_rate', headerName: 'Kur', type: 'number', renderHeaderFilter: () => null, renderCell: (params) => params.row.lease.vat, valueFormatter: (value) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)

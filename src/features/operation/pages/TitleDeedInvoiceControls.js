@@ -308,6 +308,20 @@ function TitleDeedInvoiceControls() {
         },
         { field: 'is_agreement', headerName: 'Mutabakat Durumu', width: 180,
             cellClassName: (params) => {return params.value === "Mutabakat Yok" ? 'bg-red' : '';},
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'var', label: 'Mutabakat Var' },
+                    { value: 'yok', label: 'Mutabakat Yok' },
+                ]}
+                changeValue={(newValue) => setStatus(newValue)}
+                />
+            )
         },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
