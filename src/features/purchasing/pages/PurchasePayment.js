@@ -137,6 +137,9 @@ function PurchasePayments() {
         { field: 'bbsn', headerName: 'BBSN', renderHeaderFilter: () => null,
             renderCell: (params) => params.row.lease.bbsn
         },
+        { field: 'crm_bbsn', headerName: 'CRM BBSN', renderHeaderFilter: () => null,
+            renderCell: (params) => params.row.lease.crm_bbsn
+        },
         { field: 'total_purchase_document_amount', headerName: 'Toplam Fatura Tutarı', width: 140, type: 'number', renderCell: (params) => (
                 <div style={{ cursor: 'pointer' }}>
                     {new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)}
