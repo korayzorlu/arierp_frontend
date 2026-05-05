@@ -16,6 +16,7 @@ import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Chip, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
+import CurrencyFilter from 'component/table/filter/CurrencyFilter';
 
 function Leases() {
     const {user} = useSelector((store) => store.auth);
@@ -111,7 +112,7 @@ function Leases() {
                 />
             )
         },
-        { field: 'currency', headerName: 'PB' },
+        { field: 'currency', headerName: 'PB', renderHeaderFilter: (params) => (<CurrencyFilter {...params}/>) },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
                 ?

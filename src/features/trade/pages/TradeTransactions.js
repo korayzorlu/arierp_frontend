@@ -11,6 +11,7 @@ import { fetchExportProcess } from '../../../store/slices/processSlice';
 import ListTableServer from '../../../component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import CurrencyFilter from 'component/table/filter/CurrencyFilter';
 
 function TradeTransactions() {
     const {user} = useSelector((store) => store.auth);
@@ -40,7 +41,7 @@ function TradeTransactions() {
         { field: 'posting_group_name', headerName: 'İşlem Grubu', flex: 2 },
         { field: 'document_no', headerName: 'Belge No', flex: 2 },
         { field: 'description', headerName: 'Açıklama', width: 400 },
-        { field: 'currency', headerName: 'PB', flex: 1 },
+        { field: 'currency', headerName: 'PB', flex: 1, renderHeaderFilter: (params) => (<CurrencyFilter {...params}/>) },
         { field: 'debit', headerName: 'Borç', flex: 2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) =>
             params.row.amount_type === '1'
             ?

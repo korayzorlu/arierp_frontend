@@ -17,6 +17,8 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
+import CurrencyFilter from 'component/table/filter/CurrencyFilter';
+import RiskFilter from 'component/table/filter/RiskFilter';
 
 function ActiveActiveLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -136,7 +138,8 @@ function ActiveActiveLeases() {
                 />
             )
         },
-        { field: 'currency', headerName: 'PB' },
+        { field: 'risk_status', headerName: 'Risk Durumu', width:200,renderHeaderFilter: (params) => (<RiskFilter {...params}/>)},
+        { field: 'currency', headerName: 'PB', renderHeaderFilter: (params) => (<CurrencyFilter {...params}/>)},
         { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
                 ?
