@@ -159,6 +159,7 @@ import UntitleDeedLeases from 'features/operation/pages/UntitleDeedLeases';
 import VPosTransactions from 'features/finance/pages/VPosTransactions';
 import NeedsToTerminatedRiskPartners from 'features/risk/pages/NeedsToTerminatedRiskPartners';
 import ToWarnedRiskPartnersPage from './features/risk/pages/ToWarnedRiskPartnersPage.js';
+import KepMonitorings from 'features/operation/pages/KepMonitorings';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -323,6 +324,7 @@ function App() {
                   <Route path='/partner-advance-activities' element={<PartnerAdvanceActivites></PartnerAdvanceActivites>}></Route>
                   <Route path='/title-deed-invoice-control' element={<TitleDeedInvoiceControls></TitleDeedInvoiceControls>}></Route>
                   <Route path='/untitle-deed-leases' element={<UntitleDeedLeases></UntitleDeedLeases>}></Route>
+                  <Route path='/kep-monitoring' element={<KepMonitorings></KepMonitorings>}></Route>
 
                   {/* finance */}
                   <Route path='/bank-activities' element={<BankActivities></BankActivities>}></Route>

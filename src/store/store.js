@@ -69,6 +69,7 @@ import UntitleDeedLeaseSlice from './slices/operation/untitleDeedLeaseSlice';
 import vposTransactionSlice from './slices/finance/vposTransactionSlice';
 import purchaseDocumentItemSlice from './slices/purchasing/purchaseDocumentItemSlice';
 import emailReducer from './slices/communication/emailSlice';
+import kepMonitoringReducer from './slices/operation/kepMonitoringSlice';
 
 let navigate;
 
@@ -148,6 +149,7 @@ export const store = configureStore({
         vposTransaction: vposTransactionSlice,
         purchaseDocumentItem: purchaseDocumentItemSlice,
         email: emailReducer,
+        kepMonitoring: kepMonitoringReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
