@@ -42,7 +42,7 @@ function KepMonitorings() {
     const columns = [
         { field: 'name', headerName: 'İsim', width: 400, editable: true, renderCell: (params) => (
                 <Link
-                to={`/kepMonitorings/update/${params.row.uuid}/`}
+                to={`/partners/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
@@ -73,7 +73,31 @@ function KepMonitorings() {
                 ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
                 />
             )
-         },
+        },
+        { field: 'last_contract_code', headerName: 'Son Sözleşme', width: 120, align: 'right', renderCell: (params) => (params.row.last_contract.contract_code)},
+        { field: 'last_contract_date', headerName: 'Son Sözleşme Tarihi', width: 160, type: 'date', renderCell: (params) => (params.row.last_contract.activation_date),
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
+        { field: 'last_lease_status', headerName: 'Son Sözleşme Statüsü', width: 160, renderCell: (params) => (params.row.last_contract.lease_status),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'aktiflestirildi', label: 'Aktifleştirildi' },
+                    { value: 'durduruldu', label: 'Durduruldu' },
+                    { value: 'planlandi', label: 'Planlandı' },
+                ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
+                />
+            )
+        },
         // { field: 'address', headerName: 'Adres', flex: 4, renderCell: (params) => (
         //     <>
         //         {params.value} {params.row.address2}
