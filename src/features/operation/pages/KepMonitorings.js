@@ -53,7 +53,7 @@ function KepMonitorings() {
         { field: 'customerCode', headerName: 'Müşteri Kodu', width: 100, align: 'right', headerAlign: 'right' },
         { field: 'crmCode', headerName: 'CRM Kodu', width: 90, align: 'right', headerAlign: 'right' },
         { field: 'tcVknNo', headerName: 'TC/VKN No', width: 140, align: 'right', headerAlign: 'right' },
-        { field: 'is_turkkep', headerName: 'Kep Var mı?', width: 100,
+        { field: 'has_kep', headerName: 'Kep Var mı?', width: 100,
             renderCell: (params) => (
                 <>
                     {params.value ? "Var" : ""}
