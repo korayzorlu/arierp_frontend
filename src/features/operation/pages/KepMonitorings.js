@@ -53,7 +53,6 @@ function KepMonitorings() {
         { field: 'customerCode', headerName: 'Müşteri Kodu', width: 100, align: 'right', headerAlign: 'right' },
         { field: 'crmCode', headerName: 'CRM Kodu', width: 90, align: 'right', headerAlign: 'right' },
         { field: 'tcVknNo', headerName: 'TC/VKN No', width: 140, align: 'right', headerAlign: 'right' },
-        { field: 'kep', headerName: 'Kep Adresi', width: 240 },
         { field: 'is_turkkep', headerName: 'Kep Var mı?', width: 100,
             renderCell: (params) => (
                 <>
@@ -74,6 +73,8 @@ function KepMonitorings() {
                 />
             )
         },
+        { field: 'kep', headerName: 'Kep Adresi', width: 240 },
+        { field: 'kep_expiry_date', headerName: 'Kep Bitiş Tarihi', width: 140},
         { field: 'last_contract_code', headerName: 'Son Sözleşme', width: 120, align: 'right', renderCell: (params) => (params.row.last_contract.contract_code)},
         { field: 'last_contract_date', headerName: 'Son Sözleşme Tarihi', width: 160, type: 'date', renderCell: (params) => (params.row.last_contract.activation_date),
             valueGetter: (value) => {
