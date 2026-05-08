@@ -74,7 +74,13 @@ function KepMonitorings() {
             )
         },
         { field: 'kep', headerName: 'Kep Adresi', width: 240 },
-        { field: 'kep_expiry_date', headerName: 'Kep Bitiş Tarihi', width: 140},
+        { field: 'kep_expiry_date', headerName: 'Kep Bitiş Tarihi', width: 140, type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
         { field: 'last_contract_code', headerName: 'Son Sözleşme', width: 120, align: 'right', renderCell: (params) => (params.row.last_contract.contract_code)},
         { field: 'last_contract_date', headerName: 'Son Sözleşme Tarihi', width: 160, type: 'date', renderCell: (params) => (params.row.last_contract.activation_date),
             valueGetter: (value) => {
