@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setWarningNoticeDialog, setMessageDialog } from 'store/slices/notificationSlice';
+import { setWarningNoticeDialog, setMessageDialog, setDialog, setAlert } from 'store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
-import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField } from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, TextField } from '@mui/material';
 import BasicTable from 'component/table/BasicTable';
 import { fetchWarningNoticeInformation, fetchWarningNoticeInLease } from 'store/slices/contracts/contractSlice';
+import axios from 'axios';
+import TableButton from 'component/button/TableButton';
+import { DownloadIcon } from 'icons';
 
 function WarningNoticeDialog(props) {
-    const {user,contract} = props;
-
+    const {fileUuid,fileContract} = props;
     const {activeCompany} = useSelector((store) => store.organization);
     const {warningNoticeDialog} = useSelector((store) => store.notification);
     const {warningNoticesLoading,warningNoticesInLease,warningNoticesInLeaseCode,warningNoticeInformation} = useSelector((store) => store.contract);
-
+    const {warningNoticeUuid, warningNoticeContract} = useSelector((store) => store.riskPartner);
+    
     const dispatch = useDispatch();
 
     const handleClose = () => {
@@ -37,6 +40,31 @@ function WarningNoticeDialog(props) {
         },
         { field: 'state', headerName: 'Durum', flex: 1 },
     ]
+
+    const getFile = async () => {
+        dispatch(setDialog(false));
+        try {
+            const response = await axios.post('/risk/get_warning_notice/',
+                {
+                    uuid: warningNoticeUuid,
+                },
+                {
+                    responseType: "blob",
+                    withCredentials: true
+                }
+            );
+            console.log(response.headers)
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(response.data);
+            a.download = `${warningNoticeContract}.docx`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
+    };
 
     return (
         <MUIDialog
@@ -137,6 +165,18 @@ function WarningNoticeDialog(props) {
                         disabled={false}
                         fullWidth
                         />
+                    </Stack>
+                    <Stack spacing={2} sx={{mt:2}} justifyContent="center">
+                        <Grid container spacing={2} justifyContent="center">
+                            <Grid size={{xs:12,sm:4}}>
+                                <TableButton
+                                text="İndir"
+                                icon={<DownloadIcon/>}
+                                onClick={getFile}
+                                fullWidth
+                                />
+                            </Grid>
+                        </Grid>
                     </Stack>
                 </DialogContentText>
             </DialogContent>

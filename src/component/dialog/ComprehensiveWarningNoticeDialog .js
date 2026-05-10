@@ -35,6 +35,7 @@ function ComprehensiveWarningNoticeDialog(props) {
     }
 
     const getFile = async (uuid,contract) => {
+        console.log(uuid,contract)
         dispatch(setDialog(false));
         try {
             const response = await axios.post('/risk/get_warning_notice/',

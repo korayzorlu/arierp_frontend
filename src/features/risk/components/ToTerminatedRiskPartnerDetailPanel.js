@@ -25,7 +25,7 @@ import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import Dialog from 'component/feedback/Dialog';
 import { EmailIcon } from 'icons';
-import { fetchToTerminatedRiskPartners } from 'store/slices/leasing/riskPartnerSlice';
+import { fetchToTerminatedRiskPartners, setWarningNoticeContract, setWarningNoticeUuid } from 'store/slices/leasing/riskPartnerSlice';
 
 function ToTerminatedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases,project} = props;
@@ -149,7 +149,7 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
                     <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                         <TableButton
                         icon={<FeedIcon/>}
-                        onClick={() => handleWarningNoticeDialog(params.row.contract)}
+                        onClick={() => handleWarningNoticeDialog(params.row.id,params.row.contract)}
                         />
                     </Stack>
                 :
@@ -216,7 +216,9 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         }
     };
 
-    const handleWarningNoticeDialog = async (contract) => {
+    const handleWarningNoticeDialog = async (uuid,contract) => {
+        dispatch(setWarningNoticeUuid(uuid));
+        dispatch(setWarningNoticeContract(contract));
         dispatch(fetchWarningNoticeInformation({activeCompany,contract:contract}));
         dispatch(setWarningNoticeDialog(true));
     };

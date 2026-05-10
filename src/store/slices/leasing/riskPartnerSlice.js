@@ -111,6 +111,8 @@ const initialState = {
         format: 'datatables'
     },
     warnedRiskPartnersLoading:false,
+    warningNoticeUuid: null,
+    warningNoticeContract: null,
     //comprehensive warned
     comprehensiveWarnedRiskPartners:[],
     comprehensiveWarnedRiskPartnersCount:0,
@@ -832,6 +834,12 @@ const riskPartnerSlice = createSlice({
         deleteWarnedRiskPartners: (state,action) => {
             state.warnedRiskPartners = [];
         },
+        setWarningNoticeUuid: (state,action) => {
+            state.warningNoticeUuid = action.payload;
+        },
+        setWarningNoticeContract: (state,action) => {
+            state.warningNoticeContract = action.payload;
+        },
         //comprehensive warned
         setComprehensiveWarnedRiskPartnersLoading: (state,action) => {
             state.comprehensiveWarnedRiskPartnersLoading = action.payload;
@@ -1412,6 +1420,9 @@ export const {
     setManagerSummaryLoading,
     setManagerSummaryParams,
     resetManagerSummaryParams,
+
+    setWarningNoticeUuid,
+    setWarningNoticeContract
 
 } = riskPartnerSlice.actions;
 export default riskPartnerSlice.reducer;
