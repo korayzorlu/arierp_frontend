@@ -1,6 +1,7 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Link, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { ReactComponent as ErrorIcon } from "images/icons/global/error-404-2.svg";
+import { Link as RouterLink } from "react-router-dom";
 
 function WrongPath() {
     const {theme,dark} = useSelector((store) => store.auth);
@@ -11,7 +12,24 @@ function WrongPath() {
                 {/* <Typography className="archivo-black-regular" variant="h3" sx={{color: dark ? "#fff" : "#000",textAlign: "center",}}>
                     ARINET
                 </Typography> */}
-                <Typography
+                <Link
+                component={RouterLink}
+                to="/"
+                className="archivo-black-regular"
+                variant="h4"
+                underline="none"
+                sx={{
+                    color: dark ? "#fff" : "#000",
+                    position: "absolute",
+                    top: 24,
+                    left: 24,
+                    textAlign: "left",
+                    zIndex: 1,
+                }}
+                >
+                    ARINET
+                </Link>
+                {/* <Typography
                 className="archivo-black-regular"
                 variant="h4"
                 sx={{
@@ -24,7 +42,7 @@ function WrongPath() {
                 }}
                 >
                     ARINET
-                </Typography>
+                </Typography> */}
                 <Typography sx={{fontSize: "8rem", color: dark ? "metallicgold.main" : "ari.main",textAlign: "center",fontWeight: "bold",}}>
                     404
                 </Typography>
