@@ -273,6 +273,7 @@ function RiskPartnerDetailPanel(props) {
             //keepNonExistentRowsSelected
             //isRowSelected={(row) => row.overdue_amount > 0}
             //hideFooter
+            disableRowSelectionOnClick
             noPagination
             apiRef={apiRef}
             initialState={{
