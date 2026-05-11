@@ -15,11 +15,12 @@ import ListTableServer from 'component/table/ListTableServer';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { gridClasses } from '@mui/x-data-grid-premium';
 import FinmaksTransactionNameDialog from 'component/dialog/FinmaksTransactionNameDialog';
+import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 
 function BankAccountTransactions() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {bankAccountTransactions,bankAccountTransactionsCount,bankAccountTransactionsParams,bankAccountTransactionsLoading} = useSelector((store) => store.bankAccountTransaction);
+    const {bankAccountTransactions,bankAccountTransactionsCount,bankAccountTransactionsParams,bankAccountTransactionsLoading,bankAccountTransactionBankAccounts} = useSelector((store) => store.bankAccountTransaction);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -30,6 +31,17 @@ function BankAccountTransactions() {
     const [data, setData] = useState({})
     const [selectedItems, setSelectedItems] = useState({type: 'include',ids: new Set()});
     const [selectedRow, setSelectedRow] = useState({})
+    const [dataBankAccounts, setDataBankAccounts] = useState(bankAccountTransactionBankAccounts)
+    const bankAccountsInitialized = useRef(false)
+
+    const fetchData = async () => {
+        const response = await dispatch(fetchBankAccountTransactions({activeCompany,params:bankAccountTransactionsParams})).unwrap();
+        if (!bankAccountsInitialized.current) {
+            const bank_accounts = response.bank_accounts || [];
+            setDataBankAccounts(bank_accounts);
+            if (bank_accounts.length > 0) bankAccountsInitialized.current = true;
+        }
+    }
 
     useEffect(() => {
             dispatch(resetBankAccountTransactionsParams());
@@ -37,7 +49,7 @@ function BankAccountTransactions() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchBankAccountTransactions({activeCompany,params:bankAccountTransactionsParams})).unwrap();
+            fetchData();
         });
     }, [activeCompany,bankAccountTransactionsParams,dispatch]);
 
@@ -57,8 +69,27 @@ function BankAccountTransactions() {
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
         { field: 'currency', headerName: 'PB', width: 60 },
-        { field: 'bank_name', headerName: 'Banka', width: 120 },
-        { field: 'bank_account_no', headerName: 'Banka Hesabı', width: 220 },
+        //{ field: 'bank_name', headerName: 'Banka', width: 120 },
+        //{ field: 'bank_account_no', headerName: 'Banka Hesabı', width: 220 },
+        { field: 'bank_account_no', headerName: 'Banka Hesabı', width: 360,
+            renderCell: (params) => (
+                params.row.bank_account?.account_no
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { label: "Tümü", value: "all" },
+                    //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
+                    ...[...new Set(dataBankAccounts.map((item) => item))].map((item) => ({ label: `${item.bank_account__bank_name} - ${item.bank_account__account_no}`, value: item.bank_account__uuid }))
+                
+                ]}
+                />
+            )
+        },
         { field: 'tahsilat', headerName: 'Tahsilat İşleme', width: 240, renderHeaderFilter: () => null, renderCell: (params) => (
                 <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
                     {

@@ -12,6 +12,7 @@ const initialState = {
         format: 'datatables'
     },
     bankAccountTransactionsLoading:false,
+    bankAccountTransactionBankAccounts:[],
 }
 
 export const fetchBankAccountTransactions = createAsyncThunk('auth/fetchBankAccountTransactions', async ({activeCompany,serverModels=null,params=null}) => {
@@ -161,6 +162,7 @@ const bankAccountTransactionSlice = createSlice({
             })
             .addCase(fetchBankAccountTransactions.fulfilled, (state,action) => {
                 state.bankAccountTransactions = action.payload.data || action.payload;
+                state.bankAccountTransactionBankAccounts = action.payload.bank_accounts || [];
                 state.bankAccountTransactionsCount = action.payload.recordsTotal || 0;
                 state.bankAccountTransactionsLoading = false
             })
