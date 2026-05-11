@@ -27,6 +27,7 @@ function Sidenav() {
         checkbook: require("../../images/icons/sidebar/light/checkbook-filled.svg").ReactComponent,
         contract: require("../../images/icons/sidebar/light/contract-filled.svg").ReactComponent,
         cottage: require("../../images/icons/sidebar/light/cottage-filled.svg").ReactComponent,
+        data_loss_prevention: require("../../images/icons/sidebar/light/data_loss_prevention-filled.svg").ReactComponent,
         dashboard: require("../../images/icons/sidebar/light/dashboard-filled.svg").ReactComponent,
         database: require("../../images/icons/sidebar/light/database-filled.svg").ReactComponent,
         description: require("../../images/icons/sidebar/light/description-filled.svg").ReactComponent,

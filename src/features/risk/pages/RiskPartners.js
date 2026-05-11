@@ -147,7 +147,7 @@ function RiskPartners() {
         { field: 'total_overdue_amount', headerName: 'Toplam Gecikme Tutarı', width: 180, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.leases.total_overdue_amount)
         },
-        { field: 'advance_amount', headerName: 'Sözleşmesiz Avans', width: 180, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+        { field: 'advance_amount', headerName: 'Sözleşmesiz Avans', width: 160, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.advance_amount)
         },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
