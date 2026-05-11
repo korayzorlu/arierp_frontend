@@ -113,9 +113,6 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
                 return params.value > 0 ? 'bg-red' : '';
             }
         },
-        { field: 'advance_amount', headerName: 'Sözleşmesiz Avans', width: 180, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
-            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.advance_amount)
-        },
         { field: 'currency', headerName: 'PB', flex:1 },
         { field: 'overdue_days', headerName: 'Gecikme Süresi', flex:2, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
