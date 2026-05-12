@@ -160,6 +160,8 @@ import VPosTransactions from 'features/finance/pages/VPosTransactions';
 import NeedsToTerminatedRiskPartners from 'features/risk/pages/NeedsToTerminatedRiskPartners';
 import ToWarnedRiskPartnersPage from './features/risk/pages/ToWarnedRiskPartnersPage.js';
 import KepMonitorings from 'features/operation/pages/KepMonitorings';
+import PartnerFinancialProfiles from 'features/credit/pages/PartnerFinancialProfiles';
+import UpdatePartnerFinancialProfile from 'features/credit/pages/UpdatePartnerFinancialProfile';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -316,6 +318,10 @@ function App() {
                   <Route path='/pep-partners' element={<PepPartners></PepPartners>}></Route>
                   <Route path='/third-persons' element={<ThirdPersons></ThirdPersons>}></Route>
                   <Route path='/vpos-third-persons' element={<VposThirdPersons></VposThirdPersons>}></Route>
+
+                  {/* credit */}
+                  <Route path='/partner-financial-profiles' element={<PartnerFinancialProfiles></PartnerFinancialProfiles>}></Route>
+                  <Route path='/partner-financial-profiles/update/:uuid' element={<UpdatePartnerFinancialProfile></UpdatePartnerFinancialProfile>}></Route>
 
                   {/* operation */}
                   <Route path='/contract-in-suppliers' element={<ContractInSuppliers></ContractInSuppliers>}></Route>
