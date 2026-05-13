@@ -1,4 +1,4 @@
-import { Autocomplete, Button, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Button, Chip, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Stack, TextField, Typography } from '@mui/material'
 import AriCheckBox from 'component/checkbox/AriCheckBox'
 import { ArrowOutwardIcon } from 'icons'
 import React, { useState } from 'react'
@@ -34,7 +34,14 @@ function Info(props) {
                             İsim
                         </Typography>
                         <Typography>
-                            {props.partner.name}
+                            {props.partner.name} 
+                            {
+                                props.partner.customer_type === "individual" ? (
+                                    <Chip key={props.partner.id} variant='contained' color="primary" label="Bireysel" size='small' sx={{ml:1}} />
+                                ) : (
+                                    <Chip key={props.partner.id} variant='contained' color="ari" label="Tüzel" size='small' sx={{ml:1}} />
+                                )
+                            }
                         </Typography>
                     </Stack>
                 </Grid>

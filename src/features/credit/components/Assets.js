@@ -27,11 +27,11 @@ function Assets(props) {
                         size='small'
                         >
                             <MenuItem value="0">0,00 TRY</MenuItem>
-                            <MenuItem value="1">1,00 - 500.000,00 TRY</MenuItem>
-                            <MenuItem value="2">500.001,00 - 1.000.000,00 TRY</MenuItem>
-                            <MenuItem value="3">1.000.001,00 - 5.000.000,00 TRY</MenuItem>
-                            <MenuItem value="4">5.000.001,00 - 15.000.000,00 TRY</MenuItem>
-                            <MenuItem value="5">15.000.001,00+ TRY</MenuItem>
+                            <MenuItem value="1">1,00 - 100.000,00 TRY</MenuItem>
+                            <MenuItem value="2">100.001,00 - 500.000,00 TRY</MenuItem>
+                            <MenuItem value="3">500.001,00 - 2.000.000,00 TRY</MenuItem>
+                            <MenuItem value="4">2.000.001,00 - 10.000.000,00 TRY</MenuItem>
+                            <MenuItem value="5">10.000.001,00+ TRY</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -52,11 +52,11 @@ function Assets(props) {
                         size='small'
                         >
                             <MenuItem value="0">0,00 TRY</MenuItem>
-                            <MenuItem value="1">1,00 - 500.000,00 TRY</MenuItem>
-                            <MenuItem value="2">500.001,00 - 1.000.000,00 TRY</MenuItem>
-                            <MenuItem value="3">1.000.001,00 - 5.000.000,00 TRY</MenuItem>
-                            <MenuItem value="4">5.000.001,00 - 15.000.000,00 TRY</MenuItem>
-                            <MenuItem value="5">15.000.001,00+ TRY</MenuItem>
+                            <MenuItem value="1">1,00 - 100.000,00 TRY</MenuItem>
+                            <MenuItem value="2">100.001,00 - 500.000,00 TRY</MenuItem>
+                            <MenuItem value="3">500.001,00 - 2.000.000,00 TRY</MenuItem>
+                            <MenuItem value="4">2.000.001,00 - 10.000.000,00 TRY</MenuItem>
+                            <MenuItem value="5">10.000.001,00+ TRY</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -77,11 +77,11 @@ function Assets(props) {
                         size='small'
                         >
                             <MenuItem value="0">0,00 TRY</MenuItem>
-                            <MenuItem value="1">1,00 - 500.000,00 TRY</MenuItem>
-                            <MenuItem value="2">500.001,00 - 1.000.000,00 TRY</MenuItem>
-                            <MenuItem value="3">1.000.001,00 - 5.000.000,00 TRY</MenuItem>
-                            <MenuItem value="4">5.000.001,00 - 15.000.000,00 TRY</MenuItem>
-                            <MenuItem value="5">15.000.001,00+ TRY</MenuItem>
+                            <MenuItem value="1">1,00 - 100.000,00 TRY</MenuItem>
+                            <MenuItem value="2">100.001,00 - 500.000,00 TRY</MenuItem>
+                            <MenuItem value="3">500.001,00 - 2.000.000,00 TRY</MenuItem>
+                            <MenuItem value="4">2.000.001,00 - 10.000.000,00 TRY</MenuItem>
+                            <MenuItem value="5">10.000.001,00+ TRY</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

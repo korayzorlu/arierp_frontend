@@ -13,6 +13,7 @@ import Jobs from '../components/Jobs';
 import Info from '../components/Info';
 import { fetchSgkJobs } from 'store/slices/partners/sgkJobSlice';
 import Assets from '../components/Assets';
+import Transactions from '../components/Transactions';
 
 function UpdatePartnerFinancialProfile() {
     const {user} = useSelector((store) => store.auth);
@@ -136,6 +137,25 @@ function UpdatePartnerFinancialProfile() {
                             other_fund_source={data.other_fund_source || ""}
                             onChangeFundSources={(value) => handleChangeField("fund_sources",value)}
                             onChangeOtherFundSource={(value) => handleChangeField("other_fund_source",value)}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <Transactions
+                            transaction_amount={data.transaction_amount || ""}
+                            transaction_frequency={data.transaction_frequency || ""}
+                            transaction_risk={data.transaction_risk || ""}
+                            job_compliance={data.job_compliance || ""}
+                            onChangeTransactionAmount={(value) => handleChangeField("transaction_amount",value)}
+                            onChangeTransactionFrequency={(value) => handleChangeField("transaction_frequency",value)}
+                            onChangeTransactionRisk={(value) => handleChangeField("transaction_risk",value)}
+                            onChangeJobCompliance={(value) => handleChangeField("job_compliance",value)}
                             />
                         </Stack>
                     </Paper>
