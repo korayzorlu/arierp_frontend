@@ -19,6 +19,7 @@ import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import CurrencyFilter from 'component/table/filter/CurrencyFilter';
 import RiskFilter from 'component/table/filter/RiskFilter';
+import { cellProgress } from 'component/progress/CellProgress';
 
 function PartnerFinancialProfiles() {
     const {user} = useSelector((store) => store.auth);
@@ -46,9 +47,9 @@ function PartnerFinancialProfiles() {
     }, [activeCompany,partnerFinancialProfilesParams,dispatch]);
 
     const columns = [
-        { field: 'partner_name', headerName: 'Müşteri', width: 400, editable: true, renderCell: (params) => (
+        { field: 'partner_name', headerName: 'Müşteri', width: 600, editable: true, renderCell: (params) => (
                 <Link
-                to={`/partner-financial-profiles/update/${params.row.partner.id}/`}
+                to={`/partner-financial-profiles/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.row.partner.name}
@@ -65,6 +66,7 @@ function PartnerFinancialProfiles() {
         { field: 'partner_crm_code', headerName: 'CRM Kodu', width: 90, align: 'right', headerAlign: 'right',
             renderCell: (params) => params.row.partner.crm_code
         },
+        { field: 'completion_rate', headerName: 'Profil Tamamlama Oranı', width: 180, type: 'number', renderCell: cellProgress, renderHeaderFilter: () => null },
     ]
 
     return (

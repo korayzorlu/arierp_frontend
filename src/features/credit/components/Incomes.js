@@ -1,33 +1,108 @@
-import { Grid, Stack, TextField } from '@mui/material'
-import React from 'react'
+import { Autocomplete, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Stack, TextField, Typography } from '@mui/material'
+import AriCheckBox from 'component/checkbox/AriCheckBox'
+import React, { useState } from 'react'
 
 function Incomes(props) {
+    const [diger, setDiger] = useState(false)
+    const [state, setState] = useState({
+        maas: false,
+        ticari: false,
+        kira: false,
+        yatirim: false,
+        diger: false,
+        digerGelirBilgileri: "",
+    });
+
+    const income_types = [
+        {label:"Maaş", value:"maas"},
+        {label:"Ticari Kazanç", value:"ticari"},
+        {label:"Kira Geliri", value:"kira"},
+        {label:"Yatırım Geliri", value:"yatirim"},
+        {label:"Diğer", value:"diger"},
+    ]
+
+    const handleChange = (event) => {
+        setState({
+            ...state,
+            [event.target.name]: event.target.checked,
+        });
+
+        if (event.target.name === "diger") {
+            props.onChangeOtherIncome("");
+        };
+
+        const updatedIncomeTypes = [...props.income_types];
+        if (event.target.checked) {
+            updatedIncomeTypes.push(event.target.name);
+        } else {
+            const index = updatedIncomeTypes.indexOf(event.target.name);
+            if (index > -1) {
+                updatedIncomeTypes.splice(index, 1);
+            }
+        }
+
+        props.onChangeIncomes(updatedIncomeTypes);
+    };
+
     return (
         <Stack spacing={2}> 
             <Grid container spacing={2}>
+                <Typography>
+                    Gelir
+                </Typography>
+            </Grid>
+            <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:6}}>
-                    <TextField
-                    type="text"
-                    size="small"
-                    label={"İsim * "}
-                    variant='outlined'
-                    value={props.valueName}
-                    onChange={(e) => props.onChangeName(e.target.value)}
-                    disabled={props.disabled}
+                    {/* <Autocomplete
+                    options={income_types}
+                    renderInput={(params) => <TextField {...params} label="Gelir Türü" />}
                     fullWidth
-                    />
+                    size='small'
+                    /> */}
+                    <FormControl component="fieldset" variant="standard">
+                        <FormLabel component="legend">Gelir Türü</FormLabel>
+                        <FormGroup>
+                            <FormControlLabel
+                            control={<AriCheckBox name="maas" checked={props.income_types.includes("maas")} onChange={handleChange} />}
+                            label="Maaş"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="ticari" checked={props.income_types.includes("ticari")} onChange={handleChange} />}
+                            label="Ticari Kazanç"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="kira" checked={props.income_types.includes("kira")} onChange={handleChange} />}
+                            label="Kira Geliri"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="yatirim" checked={props.income_types.includes("yatirim")} onChange={handleChange} />}
+                            label="Yatırım Geliri"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="diger" checked={props.income_types.includes("diger")} onChange={handleChange} />}
+                            label="Diğer"
+                            />
+                        </FormGroup>
+                    </FormControl>
                 </Grid>
                 <Grid size={{xs:12,sm:6}}>
-                    <TextField
-                    type="text"
-                    size="small"
-                    label={"Ünvan * "}
-                    variant='outlined'
-                    value={props.valueFormalName}
-                    onChange={(e) => props.onChangeFormalName(e.target.value)}
-                    disabled={props.disabled}
-                    fullWidth
-                    />
+                    <FormControl component="fieldset" variant="standard" fullWidth>
+                        <FormLabel component="legend">Diğer Gelir Bilgileri</FormLabel>
+                        <FormGroup>
+                            <TextField
+                            type="text"
+                            size="small"
+                            variant='outlined'
+                            value={props.other_income}
+                            onChange={(e) => props.onChangeOtherIncome(e.target.value)}
+                            disabled={props.income_types.includes("diger") ? false : true}
+                            multiline
+                            rows={6}
+                            fullWidth
+                            />
+                        </FormGroup>
+                    </FormControl>
+                    
                 </Grid>
             </Grid>
         </Stack>

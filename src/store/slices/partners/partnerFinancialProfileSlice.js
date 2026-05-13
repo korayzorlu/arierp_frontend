@@ -39,6 +39,29 @@ export const fetchPartnerFinancialProfiles = createAsyncThunk('auth/fetchPartner
     }
 });
 
+export const fetchPartnerFinancialProfile = createAsyncThunk('auth/fetchPartnerFinancialProfile', async ({activeCompany,params=null},{dispatch,rejectWithValue,extra: { navigate }}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.get(`/partners/partner_financial_profiles/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+        if(response.data.length > 0){
+            return response.data[0];
+        }else{
+            navigate("/partner-financial-profiles/");
+            return {}
+        }
+    } catch (error) {
+        //dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        return {}
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const updatePartnerFinancialProfile = createAsyncThunk('auth/updatePartnerFinancialProfile', async ({data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     try {
