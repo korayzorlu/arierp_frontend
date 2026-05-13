@@ -52,7 +52,7 @@ function Incomes(props) {
                 </Typography>
             </Grid>
             <Grid container spacing={2}>
-                <Grid size={{xs:12,sm:6}}>
+                <Grid size={{xs:12,sm:4}}>
                     {/* <Autocomplete
                     options={income_types}
                     renderInput={(params) => <TextField {...params} label="Gelir Türü" />}
@@ -85,7 +85,7 @@ function Incomes(props) {
                         </FormGroup>
                     </FormControl>
                 </Grid>
-                <Grid size={{xs:12,sm:6}}>
+                <Grid size={{xs:12,sm:8}}>
                     <FormControl component="fieldset" variant="standard" fullWidth>
                         <FormLabel component="legend">Diğer Gelir Bilgileri</FormLabel>
                         <FormGroup>
@@ -97,7 +97,7 @@ function Incomes(props) {
                             onChange={(e) => props.onChangeOtherIncome(e.target.value)}
                             disabled={props.income_types.includes("diger") ? false : true}
                             multiline
-                            rows={6}
+                            rows={7}
                             fullWidth
                             />
                         </FormGroup>

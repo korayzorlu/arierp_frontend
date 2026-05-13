@@ -30,7 +30,7 @@ function FundSources(props) {
                 </Typography>
             </Grid>
             <Grid container spacing={2}>
-                <Grid size={{xs:12,sm:6}}>
+                <Grid size={{xs:12,sm:4}}>
                     <FormControl component="fieldset" variant="standard">
                         <FormLabel component="legend">Fon Kaynağı Türü</FormLabel>
                         <FormGroup>
@@ -65,7 +65,7 @@ function FundSources(props) {
                         </FormGroup>
                     </FormControl>
                 </Grid>
-                <Grid size={{xs:12,sm:6}}>
+                <Grid size={{xs:12,sm:8}}>
                     <FormControl component="fieldset" variant="standard" fullWidth>
                         <FormLabel component="legend">Diğer Fon Kaynağı Bilgileri</FormLabel>
                         <FormGroup>
@@ -77,7 +77,7 @@ function FundSources(props) {
                             onChange={(e) => props.onChangeOtherFundSource(e.target.value)}
                             disabled={props.fund_sources.includes("diger") ? false : true}
                             multiline
-                            rows={6}
+                            rows={8}
                             fullWidth
                             />
                         </FormGroup>
