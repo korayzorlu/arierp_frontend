@@ -2,15 +2,12 @@ import { Autocomplete, FormControl, FormControlLabel, FormGroup, FormLabel, Grid
 import AriCheckBox from 'component/checkbox/AriCheckBox'
 import SgkJobSelect from 'component/select/SgkJobSelect';
 import React, { useState } from 'react'
+import Block from './Block';
+import FindInPageIcon from '@mui/icons-material/FindInPage';
 
 function Transactions(props) {
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    İşlem Davranışı
-                </Typography>
-            </Grid>
+        <Block text="İşlem Davranışı" icon={<FindInPageIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <FormControl variant="outlined" size="small" fullWidth>
@@ -105,7 +102,7 @@ function Transactions(props) {
                     </FormControl>
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 

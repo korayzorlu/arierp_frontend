@@ -3,15 +3,12 @@ import AriCheckBox from 'component/checkbox/AriCheckBox'
 import SgkJobSelect from 'component/select/SgkJobSelect';
 import AndroidSwitch from 'component/switch/AndroidSwitch';
 import React, { useState } from 'react'
+import Block from './Block';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 function PaymentPerformance(props) {
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Ödeme Performansı
-                </Typography>
-            </Grid>
+        <Block text="Ödeme Performansı" icon={<PaymentsIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
@@ -64,7 +61,7 @@ function PaymentPerformance(props) {
                     null
             }
             
-        </Stack>
+        </Block>
     )
 }
 

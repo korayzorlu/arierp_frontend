@@ -3,15 +3,12 @@ import AriCheckBox from 'component/checkbox/AriCheckBox'
 import SgkJobSelect from 'component/select/SgkJobSelect';
 import AndroidSwitch from 'component/switch/AndroidSwitch';
 import React, { useState } from 'react'
+import Block from './Block';
+import { InfoIcon } from 'icons';
 
 function CustomerInfo(props) {
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Müşteri Bilgileri
-                </Typography>
-            </Grid>
+        <Block text="Müşteri Bilgileri" icon={<InfoIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <FormControl variant="outlined" size="small" fullWidth>
@@ -111,7 +108,7 @@ function CustomerInfo(props) {
                     />
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 

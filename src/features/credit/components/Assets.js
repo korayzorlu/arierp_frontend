@@ -1,16 +1,14 @@
-import { Autocomplete, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import AriCheckBox from 'component/checkbox/AriCheckBox'
 import SgkJobSelect from 'component/select/SgkJobSelect';
 import React, { useState } from 'react'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Title from './Title';
+import Block from './Block';
 
 function Assets(props) {
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Varlıklar
-                </Typography>
-            </Grid>
+        <Block text="Varlıklar" icon={<AccountBalanceIcon />}> 
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <FormControl variant="outlined" size="small" fullWidth>
@@ -136,7 +134,7 @@ function Assets(props) {
                     </FormControl>
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 

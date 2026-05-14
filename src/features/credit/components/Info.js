@@ -3,6 +3,9 @@ import AriCheckBox from 'component/checkbox/AriCheckBox'
 import { ArrowOutwardIcon } from 'icons'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import InfoIcon from '@mui/icons-material/Info';
+import Title from './Title'
+import Block from './Block'
 
 function Info(props) {
     const navigate = useNavigate();
@@ -12,21 +15,24 @@ function Info(props) {
     }
 
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Partner Bilgileri 
-                    <Button
-                    onClick={handleNavigate}
-                    size='small'
-                    variant='text'
-                    color='primary'
-                    endIcon={<ArrowOutwardIcon />}
-                    >
-                        Profile Git
-                    </Button>
-                </Typography>
-            </Grid>
+        <Block
+        noDivider
+        // icon={<InfoIcon />}
+        // text={(
+        //     <>
+        //         Partner Bilgileri 
+        //         <Button
+        //         onClick={handleNavigate}
+        //         size='small'
+        //         variant='text'
+        //         color='primary'
+        //         endIcon={<ArrowOutwardIcon />}
+        //         >
+        //             Profile Git
+        //         </Button>
+        //     </>
+        // )}
+        > 
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:6}}>
                     <Stack>
@@ -42,6 +48,15 @@ function Info(props) {
                                     <Chip key={props.partner.id} variant='contained' color="ari" label="Tüzel" size='small' sx={{ml:1}} />
                                 )
                             }
+                            <Button
+                            onClick={handleNavigate}
+                            size='small'
+                            variant='text'
+                            color='primary'
+                            endIcon={<ArrowOutwardIcon />}
+                            >
+                                Profile Git
+                            </Button>
                         </Typography>
                     </Stack>
                 </Grid>
@@ -78,7 +93,7 @@ function Info(props) {
                     </Stack>
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 

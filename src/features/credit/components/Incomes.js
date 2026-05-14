@@ -1,6 +1,9 @@
 import { Autocomplete, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Stack, TextField, Typography } from '@mui/material'
 import AriCheckBox from 'component/checkbox/AriCheckBox'
 import React, { useState } from 'react'
+import Title from './Title';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import Block from './Block';
 
 function Incomes(props) {
     const [diger, setDiger] = useState(false)
@@ -45,12 +48,7 @@ function Incomes(props) {
     };
 
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Gelir
-                </Typography>
-            </Grid>
+        <Block text="Gelir" icon={<MonetizationOnIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:4}}>
                     {/* <Autocomplete
@@ -105,7 +103,7 @@ function Incomes(props) {
                     
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 

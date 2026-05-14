@@ -1,6 +1,8 @@
 import { Autocomplete, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Stack, TextField, Typography } from '@mui/material'
 import AriCheckBox from 'component/checkbox/AriCheckBox'
 import React, { useState } from 'react'
+import Block from './Block';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 
 function FundSources(props) {
     const handleChange = (event) => {
@@ -23,12 +25,7 @@ function FundSources(props) {
     };
 
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Fon Kaynağı
-                </Typography>
-            </Grid>
+        <Block text="Fon Kaynakları" icon={<RequestQuoteIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:4}}>
                     <FormControl component="fieldset" variant="standard">
@@ -85,7 +82,7 @@ function FundSources(props) {
                     
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 

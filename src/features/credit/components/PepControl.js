@@ -3,15 +3,12 @@ import AriCheckBox from 'component/checkbox/AriCheckBox'
 import SgkJobSelect from 'component/select/SgkJobSelect';
 import AndroidSwitch from 'component/switch/AndroidSwitch';
 import React, { useState } from 'react'
+import Block from './Block';
+import PolicyIcon from '@mui/icons-material/Policy';
 
 function PepControl(props) {
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Pep ve İtibar Kontrolü
-                </Typography>
-            </Grid>
+        <Block text="PEP ve İtibar Kontrolü" icon={<PolicyIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
@@ -30,7 +27,7 @@ function PepControl(props) {
                     />
                 </Grid>
             </Grid>
-</Stack>
+    </Block>
     )
 }
 

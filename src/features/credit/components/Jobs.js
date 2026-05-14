@@ -2,15 +2,13 @@ import { Autocomplete, FormControl, FormControlLabel, FormGroup, FormLabel, Grid
 import AriCheckBox from 'component/checkbox/AriCheckBox'
 import SgkJobSelect from 'component/select/SgkJobSelect';
 import React, { useState } from 'react'
+import WorkIcon from '@mui/icons-material/Work';
+import Title from './Title';
+import Block from './Block';
 
 function Jobs(props) {
     return (
-        <Stack spacing={2}> 
-            <Grid container spacing={2}>
-                <Typography>
-                    Meslek
-                </Typography>
-            </Grid>
+        <Block text="Meslek" icon={<WorkIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <SgkJobSelect
@@ -70,7 +68,7 @@ function Jobs(props) {
                     </FormControl>
                 </Grid>
             </Grid>
-        </Stack>
+        </Block>
     )
 }
 
