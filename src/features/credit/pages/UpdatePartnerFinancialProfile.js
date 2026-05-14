@@ -14,6 +14,8 @@ import Info from '../components/Info';
 import { fetchSgkJobs } from 'store/slices/partners/sgkJobSlice';
 import Assets from '../components/Assets';
 import Transactions from '../components/Transactions';
+import CustomerInfo from '../components/CustomerInfo';
+import PepControl from '../components/PepControl';
 
 function UpdatePartnerFinancialProfile() {
     const {user} = useSelector((store) => store.auth);
@@ -156,6 +158,43 @@ function UpdatePartnerFinancialProfile() {
                             onChangeTransactionFrequency={(value) => handleChangeField("transaction_frequency",value)}
                             onChangeTransactionRisk={(value) => handleChangeField("transaction_risk",value)}
                             onChangeJobCompliance={(value) => handleChangeField("job_compliance",value)}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <CustomerInfo
+                            customer_type={data.customer_type || ""}
+                            is_foreign_nationality={data.is_foreign_nationality || false}
+                            is_end_beneficiary={data.is_end_beneficiary || false}
+                            is_transparency={data.is_transparency || false}
+                            is_foreign_partner={data.is_foreign_partner || false}
+                            is_complex_partner={data.is_complex_partner || false}
+                            company_type={data.company_type || ""}
+                            onChangeCompanyType={(value) => handleChangeField("company_type",value)}
+                            onChangeIsForeignNationality={(value) => handleChangeField("is_foreign_nationality",value)}
+                            onChangeIsEndBeneficiary={(value) => handleChangeField("is_end_beneficiary",value)}
+                            onChangeCustomerType={(value) => handleChangeField("customer_type",value)}
+                            onChangeIsTransparency={(value) => handleChangeField("is_transparency",value)}
+                            onChangeIsForeignPartner={(value) => handleChangeField("is_foreign_partner",value)}
+                            onChangeIsComplexPartner={(value) => handleChangeField("is_complex_partner",value)}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <PepControl
+                            is_pep={data.is_pep || false}
+                            is_negative_news={data.is_negative_news || false}
+                            onChangeIsPep={(value) => handleChangeField("is_pep",value)}
+                            onChangeIsNegativeNews={(value) => handleChangeField("is_negative_news",value)}
                             />
                         </Stack>
                     </Paper>
