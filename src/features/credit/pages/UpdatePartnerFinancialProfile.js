@@ -16,6 +16,9 @@ import Assets from '../components/Assets';
 import Transactions from '../components/Transactions';
 import CustomerInfo from '../components/CustomerInfo';
 import PepControl from '../components/PepControl';
+import PaymentInfo from '../components/PaymentInfo';
+import CriticalControl from '../components/CriticalControl';
+import PaymentPerformance from '../components/PaymentPerformance';
 
 function UpdatePartnerFinancialProfile() {
     const {user} = useSelector((store) => store.auth);
@@ -195,6 +198,54 @@ function UpdatePartnerFinancialProfile() {
                             is_negative_news={data.is_negative_news || false}
                             onChangeIsPep={(value) => handleChangeField("is_pep",value)}
                             onChangeIsNegativeNews={(value) => handleChangeField("is_negative_news",value)}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <PaymentInfo
+                            is_cash_payment={data.is_cash_payment || false}
+                            is_balloon_payment={data.is_balloon_payment || false}
+                            remitter_type={data.remitter_type || ""}
+                            onChangeIsCashPayment={(value) => handleChangeField("is_cash_payment",value)}
+                            onChangeIsBalloonPayment={(value) => handleChangeField("is_balloon_payment",value)}
+                            onChangeRemitterType={(value) => handleChangeField("remitter_type",value)}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <CriticalControl
+                            is_suspicious={data.is_suspicious || false}
+                            is_blacklisted={data.is_blacklisted || false}
+                            onChangeIsSuspicious={(value) => handleChangeField("is_suspicious",value)}
+                            onChangeIsBlacklisted={(value) => handleChangeField("is_blacklisted",value)}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <PaymentPerformance
+                            is_warning_notice={data.is_warning_notice || false}
+                            is_delayed={data.is_delayed || false}
+                            is_kkb_score_low={data.is_kkb_score_low || false}
+                            is_administrative_follow_up={data.is_administrative_follow_up || false}
+                            is_cheque_risk={data.is_cheque_risk || false}
+                            partner={data.partner || {}}
+                            onChangeIsWarningNotice={(value) => handleChangeField("is_warning_notice",value)}
+                            onChangeIsDelayed={(value) => handleChangeField("is_delayed",value)}
+                            onChangeIsKkbScoreLow={(value) => handleChangeField("is_kkb_score_low",value)}
+                            onChangeIsAdministrativeFollowUp={(value) => handleChangeField("is_administrative_follow_up",value)}
+                            onChangeIsChequeRisk={(value) => handleChangeField("is_cheque_risk",value)}
                             />
                         </Stack>
                     </Paper>
