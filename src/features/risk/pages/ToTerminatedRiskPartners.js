@@ -160,6 +160,9 @@ function ToTerminatedRiskPartners() {
         { field: 'advance_amount', headerName: 'Sözleşmesiz Avans', width: 160, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.advance_amount)
         },
+        { field: 'lease_advance_amount', headerName: 'Sözleşme Avansı', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.lease_advance_amount)
+        },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
                 <Grid container spacing={1} sx={{width:'100%'}}>
@@ -179,7 +182,7 @@ function ToTerminatedRiskPartners() {
             </Stack>
             )
         },
-        { field: 'a', headerName: 'İletişim', flex: 2, renderCell: (params) => (
+        { field: 'a', headerName: 'İletişim', width: 120, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" onClick={handleCallDialog}>

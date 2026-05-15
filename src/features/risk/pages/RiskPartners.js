@@ -150,6 +150,9 @@ function RiskPartners() {
         { field: 'advance_amount', headerName: 'Sözleşmesiz Avans', width: 160, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
             new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.advance_amount)
         },
+        { field: 'lease_advance_amount', headerName: 'Sözleşme Avansı', width: 140, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => 
+            new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.row.lease_advance_amount)
+        },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
                 <Grid container spacing={1} sx={{width:'100%'}}>
@@ -169,7 +172,7 @@ function RiskPartners() {
             </Stack>
             )
         },
-        { field: 'a', headerName: '', flex: 1, renderHeaderFilter: () => null, renderCell: (params) => (
+        { field: 'a', headerName: '', width: 120, renderHeaderFilter: () => null, renderCell: (params) => (
             <Grid container spacing={1}>
                 <Grid size={6} sx={{textAlign: 'center'}}>
                     <IconButton aria-label="delete" color={dark ? 'silvercoin' : 'ari'} onClick={handleCallDialog}>
