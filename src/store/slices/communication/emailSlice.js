@@ -52,6 +52,28 @@ export const fetchEmail = createAsyncThunk('auth/fetchEmail', async ({activeComp
     }
 });
 
+export const sendEmailGlobal = createAsyncThunk('auth/sendEmailGlobal', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/communication/send_email/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const sendRiskEmail = createAsyncThunk('auth/sendRiskEmail', async ({activeCompany,data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     try {

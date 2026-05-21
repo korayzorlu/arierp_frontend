@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUntitleDeedLeases, setUntitleDeedLeasesLoading, setUntitleDeedLeasesParams } from 'store/slices/operation/untitleDeedLeaseSlice';
-import { setDeleteDialog, setExportDialog, setImportDialog, setSendSMSDialog } from 'store/slices/notificationSlice';
+import { setDeleteDialog, setExportDialog, setImportDialog, setSendEmailDialog, setSendSMSDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -21,8 +21,9 @@ import { fetchProjects } from 'store/slices/leasing/leaseSlice';
 import { gridClasses } from '@mui/x-data-grid-premium';
 import SendEmailDialog from 'component/dialog/SendEmailDialog';
 import SendSMSDialog from 'component/dialog/SendSMSDialog';
-import { SmsIcon } from 'icons';
+import { EmailIcon, SmsIcon } from 'icons';
 import SendSMSGlobalDialog from 'component/dialog/SendSMSGlobalDialog';
+import SendEmailGlobalDialog from 'component/dialog/SendEmailGlobalDialog';
 
 function UntitleDeedLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -254,6 +255,11 @@ function UntitleDeedLeases() {
                     onClick={() => {dispatch(setSendSMSDialog(true));}}
                     icon={<SmsIcon fontSize="small"/>}
                     />
+                    {/* <CustomTableButton
+                    title="Toplu Email Gönder"
+                    onClick={() => {dispatch(setSendEmailDialog(true));}}
+                    icon={<EmailIcon fontSize="small"/>}
+                    /> */}
                     <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchUntitleDeedLeases({activeCompany,params:untitleDeedLeasesParams})).unwrap()}
@@ -310,9 +316,13 @@ function UntitleDeedLeases() {
             />
             <SendSMSGlobalDialog
             query="untitle_deed_leases"
-            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
             uuids={rowSelectionModel.ids ? Array.from(rowSelectionModel.ids) : []}
             example={`Merhabaaaaa, Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            />
+            <SendEmailGlobalDialog
+            query="untitle_deed_leases"
+            uuids={rowSelectionModel.ids ? Array.from(rowSelectionModel.ids) : []}
+            subject="Ödeme Hatırlatma Bilgilendirmesi"
             />
         </PanelContent>
     )
