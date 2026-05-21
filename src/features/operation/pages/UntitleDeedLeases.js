@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUntitleDeedLeases, setUntitleDeedLeasesLoading, setUntitleDeedLeasesParams } from 'store/slices/operation/untitleDeedLeaseSlice';
-import { setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { setDeleteDialog, setExportDialog, setImportDialog, setSendSMSDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -19,6 +19,10 @@ import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import { fetchProjects } from 'store/slices/leasing/leaseSlice';
 import { gridClasses } from '@mui/x-data-grid-premium';
+import SendEmailDialog from 'component/dialog/SendEmailDialog';
+import SendSMSDialog from 'component/dialog/SendSMSDialog';
+import { SmsIcon } from 'icons';
+import SendSMSGlobalDialog from 'component/dialog/SendSMSGlobalDialog';
 
 function UntitleDeedLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -240,6 +244,11 @@ function UntitleDeedLeases() {
                     icon={<DownloadIcon fontSize="small"/>}
                     />
                     <CustomTableButton
+                    title="Toplu SMS Gönder"
+                    onClick={() => {dispatch(setSendSMSDialog(true));}}
+                    icon={<SmsIcon fontSize="small"/>}
+                    />
+                    <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchUntitleDeedLeases({activeCompany,params:untitleDeedLeasesParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
@@ -282,6 +291,11 @@ function UntitleDeedLeases() {
             selectedItems={apiRef.current ? apiRef.current.getSelectedRows().values() : []}
             startEvent={() => dispatch(setUntitleDeedLeasesLoading(true))}
             finalEvent={() => {dispatch(fetchUntitleDeedLeases({activeCompany}));dispatch(setUntitleDeedLeasesLoading(false));}}
+            />
+            <SendSMSGlobalDialog
+            query="untitle_deed_leases"
+            text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
+            example={`Merhabaaaaa, Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
         </PanelContent>
     )

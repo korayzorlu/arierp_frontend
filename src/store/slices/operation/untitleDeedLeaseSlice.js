@@ -54,7 +54,7 @@ const untitleDeedLeaseSlice = createSlice({
             })
             .addCase(fetchUntitleDeedLeases.rejected, (state,action) => {
                 state.untitleDeedLeasesLoading = false
-            })   
+            })
     },
   
 })

@@ -74,6 +74,28 @@ export const sendSMS = createAsyncThunk('auth/sendSMS', async ({activeCompany,da
     }
 });
 
+export const sendSMSGlobal = createAsyncThunk('auth/sendSMSGlobal', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/communication/send_sms_global/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const checkSMS = createAsyncThunk('auth/checkSMS', async ({activeCompany,data=null},{dispatch}) => {
     dispatch(setIsProgress(true));
     try {
