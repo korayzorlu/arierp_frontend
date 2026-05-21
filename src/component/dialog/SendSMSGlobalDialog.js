@@ -50,9 +50,22 @@ function SendSMSGlobalDialog({...props}) {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
-                        <Typography>
-                            {props.text}
-                        </Typography>
+                        {
+                            props.uuids.length > 0
+                            ?
+                                <>
+                                    <Typography>
+                                        Listede seçili olan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir.
+                                    </Typography>
+                                    <Typography>
+                                        Seçili satır sayısı: {props.uuids.length}
+                                    </Typography>
+                                </>
+                            :
+                                <Typography>
+                                    Listede yer alan tüm kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir.
+                                </Typography>
+                        }
                         <TextField
                         label="Mesaj İçeriği"
                         multiline

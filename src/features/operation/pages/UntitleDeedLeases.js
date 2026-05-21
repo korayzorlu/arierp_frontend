@@ -35,12 +35,13 @@ function UntitleDeedLeases() {
 
     const [isPending, startTransition] = useTransition();
 
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [switchDisabled, setSwitchDisabled] = useState(false);
-    const [switchPosition, setSwitchPosition] = useState(false);
     const [project, setProject] = useState("all")
     const [exportURL, setExportURL] = useState("")
     const [status, setStatus] = useState("all")
+    const [rowSelectionModel, setRowSelectionModel] = useState({
+        type: 'include',
+        ids: new Set(),
+    });
 
     useEffect(() => {
         startTransition(() => {
@@ -48,6 +49,11 @@ function UntitleDeedLeases() {
             dispatch(fetchProjects({activeCompany,params:projectsParams}));
         });
     }, [activeCompany,untitleDeedLeasesParams,dispatch]);
+
+    useEffect(() => {
+      console.log(rowSelectionModel)
+    }, [rowSelectionModel])
+    
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
@@ -256,7 +262,17 @@ function UntitleDeedLeases() {
                 </>
             }
             rowCount={untitleDeedLeasesCount}
-            // checkboxSelection
+            checkboxSelection
+            onRowSelectionModelChange={(newRowSelectionModel) => {
+                if (newRowSelectionModel.type === 'exclude') {
+                    const allRowIds = [...apiRef.current.getRowModels().keys()];
+                    const selectedIds = allRowIds.filter(id => !newRowSelectionModel.ids.has(id));
+                    setRowSelectionModel({ type: 'include', ids: new Set(selectedIds) });
+                } else {
+                    setRowSelectionModel(newRowSelectionModel);
+                }
+            }}
+            rowSelectionModel={rowSelectionModel}
             setParams={(value) => dispatch(setUntitleDeedLeasesParams(value))}
             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
@@ -295,6 +311,7 @@ function UntitleDeedLeases() {
             <SendSMSGlobalDialog
             query="untitle_deed_leases"
             text="Tabloda yer alan kişilere, sistemde kayıtlı telefon numaraları üzerinden gecikme hatırlatması için kısa mesaj gönderilecektir."
+            uuids={rowSelectionModel.ids ? Array.from(rowSelectionModel.ids) : []}
             example={`Merhabaaaaa, Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
             />
         </PanelContent>
