@@ -255,11 +255,11 @@ function UntitleDeedLeases() {
                     onClick={() => {dispatch(setSendSMSDialog(true));}}
                     icon={<SmsIcon fontSize="small"/>}
                     />
-                    {/* <CustomTableButton
+                    <CustomTableButton
                     title="Toplu Email Gönder"
                     onClick={() => {dispatch(setSendEmailDialog(true));}}
                     icon={<EmailIcon fontSize="small"/>}
-                    /> */}
+                    />
                     <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchUntitleDeedLeases({activeCompany,params:untitleDeedLeasesParams})).unwrap()}
@@ -315,14 +315,17 @@ function UntitleDeedLeases() {
             finalEvent={() => {dispatch(fetchUntitleDeedLeases({activeCompany}));dispatch(setUntitleDeedLeasesLoading(false));}}
             />
             <SendSMSGlobalDialog
+            app="operation"
             query="untitle_deed_leases"
+            variables={["contract__partner__phone_number","remaining_amount","currency__code"]}
             uuids={rowSelectionModel.ids ? Array.from(rowSelectionModel.ids) : []}
-            example={`Merhabaaaaa, Arı Finansal Kiralama(İletişim: 02123102721 / rig@arileasing.com.tr)Mernis No: 0147005285500018`}
+            example={`Değerli müşterimiz, Sinpaş projesine ait sözleşmenizin devir bedeli toplam {{tutar}} TL gecikmede olup, Arı Finansal Kiralamanın ilgili BANKA hesaplarına DEVİR BEDELİ açıklaması ile ödeme yapılmasını rica ederiz. ÖDEME YAPILDIYSA MESAJI DİKKATE ALMAYINIZ. Arı Finansal Kiralama Mersis No.0147005285500018`}
             />
             <SendEmailGlobalDialog
+            app="operation"
             query="untitle_deed_leases"
             uuids={rowSelectionModel.ids ? Array.from(rowSelectionModel.ids) : []}
-            subject="Ödeme Hatırlatma Bilgilendirmesi"
+            variables={["contract__partner__email","remaining_amount","currency__code"]}
             />
         </PanelContent>
     )

@@ -28,7 +28,7 @@ function SendSMSGlobalDialog({...props}) {
         };
         dispatch(setSendSMSDialog(false));
 
-        await dispatch(sendSMSGlobal({data:{activeCompany:activeCompany.id,query:props.query,uuids:props.uuids}})).unwrap();
+        await dispatch(sendSMSGlobal({data:{activeCompany:activeCompany.id,app:props.app,query:props.query,uuids:props.uuids,variables:props.variables}})).unwrap();
         //await dispatch(sendSMSGlobal({data:{activeCompany:activeCompany.id,query:props.query}})).unwrap();
         dispatch(setSMSsLoading(false));
         

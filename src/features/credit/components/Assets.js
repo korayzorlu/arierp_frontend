@@ -5,58 +5,33 @@ import React, { useState } from 'react'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Title from './Title';
 import Block from './Block';
+import NumberField from 'component/input/NumberField';
 
 function Assets(props) {
     return (
         <Block text="Varlıklar" icon={<AccountBalanceIcon />}> 
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
-                    <FormControl variant="outlined" size="small" fullWidth>
-                        <InputLabel id="select-is-admin-label" shrink>
-                            Taşınmazlar
-                        </InputLabel>
-                        <Select
-                        value={props.real_estate_assets}
-                        onChange={(event) => props.onChangeRealEstateAssets(event.target.value)}
-                        label="Taşınmazlar"
-                        inputProps={{ sx: { fontSize: 14 } }}
-                        notched
-                        fullWidth
-                        size='small'
-                        >
-                            <MenuItem value="0">0,00 TRY</MenuItem>
-                            <MenuItem value="1">1,00 - 100.000,00 TRY</MenuItem>
-                            <MenuItem value="2">100.001,00 - 500.000,00 TRY</MenuItem>
-                            <MenuItem value="3">500.001,00 - 2.000.000,00 TRY</MenuItem>
-                            <MenuItem value="4">2.000.001,00 - 10.000.000,00 TRY</MenuItem>
-                            <MenuItem value="5">10.000.001,00+ TRY</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <NumberField
+                    label="Taşınmazlar (Adet)"
+                    size="small"
+                    min={0}
+                    max={9999}
+                    value={props.real_estate_assets_count}
+                    onChange={(e) => props.onChangeRealEstateAssetsCount(e.target.value ? e.target.value : 0)}
+                    />
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
-                    <FormControl variant="outlined" size="small" fullWidth>
-                        <InputLabel id="select-is-admin-label" shrink>
-                            Araçlar
-                        </InputLabel>
-                        <Select
-                        value={props.vehicle_assets}
-                        onChange={(event) => props.onChangeVehicleAssets(event.target.value)}
-                        label="Araçlar"
-                        inputProps={{ sx: { fontSize: 14 } }}
-                        notched
-                        fullWidth
-                        size='small'
-                        >
-                            <MenuItem value="0">0,00 TRY</MenuItem>
-                            <MenuItem value="1">1,00 - 100.000,00 TRY</MenuItem>
-                            <MenuItem value="2">100.001,00 - 500.000,00 TRY</MenuItem>
-                            <MenuItem value="3">500.001,00 - 2.000.000,00 TRY</MenuItem>
-                            <MenuItem value="4">2.000.001,00 - 10.000.000,00 TRY</MenuItem>
-                            <MenuItem value="5">10.000.001,00+ TRY</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <NumberField
+                    label="Araçlar (Adet)"
+                    size="small"
+                    min={0}
+                    max={9999}
+                    value={props.vehicle_assets_count}
+                    onChange={(e) => props.onChangeVehicleAssetsCount(e.target.value ? e.target.value : 0)}
+                    />
                 </Grid>
             </Grid>
             <Grid container spacing={2}>

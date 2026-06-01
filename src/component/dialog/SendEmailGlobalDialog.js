@@ -33,7 +33,7 @@ function SendEmailGlobalDialog({...props}) {
         };
         dispatch(setSendEmailDialog(false));
 
-        await dispatch(sendEmailGlobal({data:{activeCompany:activeCompany.id,query:props.query,uuids:props.uuids}})).unwrap();
+        await dispatch(sendEmailGlobal({data:{activeCompany:activeCompany.id,app:props.app,query:props.query,uuids:props.uuids,variables:props.variables}})).unwrap();
         dispatch(setEmailsLoading(false));
         
     };
