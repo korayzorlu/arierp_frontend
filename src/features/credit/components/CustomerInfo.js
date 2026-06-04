@@ -24,6 +24,7 @@ function CustomerInfo(props) {
                         fullWidth
                         size='small'
                         displayEmpty
+                        disabled
                         >
                             <MenuItem value="bireysel">Bireysel</MenuItem>
                             <MenuItem value="tuzel">Tüzel</MenuItem>

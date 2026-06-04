@@ -36,11 +36,10 @@ function Jobs(props) {
                         >
                             <MenuItem value="ozel">Özel Sektör</MenuItem>
                             <MenuItem value="kamu">Kamu Kurumu</MenuItem>
-                            <MenuItem value="serbest">Serbest Meslek</MenuItem>
                             <MenuItem value="emekli">Emekli</MenuItem>
                             <MenuItem value="ogrenci">Öğrenci</MenuItem>
                             <MenuItem value="ev">Ev Hanımı</MenuItem>
-                            <MenuItem value="yok">Yok</MenuItem>
+                            <MenuItem value="issiz">İşsiz</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -63,7 +62,8 @@ function Jobs(props) {
                             <MenuItem value="calisan">Çalışan</MenuItem>
                             <MenuItem value="yonetici">Yönetici</MenuItem>
                             <MenuItem value="ortak">Ortak</MenuItem>
-                            <MenuItem value="yok">Yok</MenuItem>
+                            <MenuItem value="firma_sahibi">Firma Sahibi</MenuItem>
+                            <MenuItem value="issiz">İşsiz</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

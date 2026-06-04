@@ -37,6 +37,10 @@ function FundSources(props) {
                             />
                             <FormControlLabel
                             control={<AriCheckBox name="maas" checked={props.fund_sources.includes("maas")} onChange={handleChange} />}
+                            label="Maaş"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="maas_birikimi" checked={props.fund_sources.includes("maas_birikimi")} onChange={handleChange} />}
                             label="Maaş Birikimi"
                             />
                             <FormControlLabel
@@ -54,6 +58,14 @@ function FundSources(props) {
                             <FormControlLabel
                             control={<AriCheckBox name="yurtdisi" checked={props.fund_sources.includes("yurtdisi")} onChange={handleChange} />}
                             label="Yurtdışı Geliri"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="belirsiz" checked={props.fund_sources.includes("belirsiz")} onChange={handleChange} />}
+                            label="Belirsiz Kaynak"
+                            />
+                            <FormControlLabel
+                            control={<AriCheckBox name="kripto" checked={props.fund_sources.includes("kripto")} onChange={handleChange} />}
+                            label="Kripto Kazancı"
                             />
                             <FormControlLabel
                             control={<AriCheckBox name="diger" checked={props.fund_sources.includes("diger")} onChange={handleChange} />}

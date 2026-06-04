@@ -120,16 +120,18 @@ function UpdatePartnerFinancialProfile() {
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
                             <Assets
-                            real_estate_assets_count={data.real_estate_assets_count || 0}
-                            vehicle_assets_count={data.vehicle_assets_count || 0}
+                            real_estate_assets={data.real_estate_assets || 0}
+                            vehicle_assets={data.vehicle_assets || 0}
                             bank_deposit_assets={data.bank_deposit_assets || ""}
                             investment_assets={data.investment_assets || ""}
-                            other_assets={data.other_assets || ""}
-                            onChangeRealEstateAssetsCount={(value) => handleChangeField("real_estate_assets_count",value)}
-                            onChangeVehicleAssetsCount={(value) => handleChangeField("vehicle_assets_count",value)}
+                            other_assets_amount={data.other_assets_amount || ""}
+                            other_assets_description={data.other_assets_description || ""}
+                            onChangeRealEstateAssets={(value) => handleChangeField("real_estate_assets",value)}
+                            onChangeVehicleAssets={(value) => handleChangeField("vehicle_assets",value)}
                             onChangeBankDepositAssets={(value) => handleChangeField("bank_deposit_assets",value)}
                             onChangeInvestmentAssets={(value) => handleChangeField("investment_assets",value)}
-                            onChangeOtherAssets={(value) => handleChangeField("other_assets",value)}
+                            onChangeOtherAssetsAmount={(value) => handleChangeField("other_assets_amount",value)}
+                            onChangeOtherAssetsDescription={(value) => handleChangeField("other_assets_description",value)}
                             />
                         </Stack>
                     </Paper>

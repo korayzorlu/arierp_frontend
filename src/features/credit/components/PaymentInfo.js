@@ -13,12 +13,12 @@ function PaymentInfo(props) {
                 <Grid size={{xs:12,sm:12}}>
                     <FormControl variant="outlined" size="small" fullWidth>
                         <InputLabel id="select-is-admin-label" shrink>
-                            3. Kişi Kullanımı
+                            Ödeme Yöntemi
                         </InputLabel>
                         <Select
                         value={props.remitter_type}
                         onChange={(event) => props.onChangeRemitterType(event.target.value)}
-                        label="3. Kişi Kullanımı"
+                        label="Ödeme Yöntemi"
                         inputProps={{ sx: { fontSize: 14 } }}
                         notched
                         fullWidth
