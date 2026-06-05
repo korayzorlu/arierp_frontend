@@ -67,6 +67,10 @@ function FundSources(props) {
                             control={<AriCheckBox name="kripto" checked={props.fund_sources.includes("kripto")} onChange={handleChange} />}
                             label="Kripto Kazancı"
                             />
+                            {/* <FormControlLabel
+                            control={<AriCheckBox name="yok" checked={props.fund_sources.includes("yok")} onChange={handleChange} />}
+                            label="Kaynak Yok"
+                            /> */}
                             <FormControlLabel
                             control={<AriCheckBox name="diger" checked={props.fund_sources.includes("diger")} onChange={handleChange} />}
                             label="Diğer"

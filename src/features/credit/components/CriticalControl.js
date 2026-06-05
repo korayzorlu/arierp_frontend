@@ -12,7 +12,7 @@ function CriticalControl(props) {
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
-                    label="Şüpheli İşlem Bildirimi Var mı?"
+                    label="ŞİB"
                     checked={props.is_suspicious}
                     onChange={(value) => props.onChangeIsSuspicious(value)}
                     />
@@ -21,9 +21,18 @@ function CriticalControl(props) {
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
-                    label="Yasaklı Listesinde mi?"
+                    label="Yasaklı listesinde"
                     checked={props.is_blacklisted}
                     onChange={(value) => props.onChangeIsBlacklisted(value)}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:12}}>
+                    <AndroidSwitch
+                    label="Offshore bağlantılı yerler"
+                    checked={props.is_offshore}
+                    onChange={(value) => props.onChangeIsOffshore(value)}
                     />
                 </Grid>
             </Grid>

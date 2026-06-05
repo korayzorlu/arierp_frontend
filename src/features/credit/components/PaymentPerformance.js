@@ -12,7 +12,7 @@ function PaymentPerformance(props) {
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
-                    label="İhtar var mı?"
+                    label="İhtar var"
                     checked={props.is_warning_notice}
                     onChange={(value) => props.onChangeIsWarningNotice(value)}
                     />
@@ -21,7 +21,7 @@ function PaymentPerformance(props) {
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
-                    label="Gecikme var mı?"
+                    label="Gecikme var"
                     checked={props.is_delayed}
                     onChange={(value) => props.onChangeIsDelayed(value)}
                     />
@@ -30,7 +30,7 @@ function PaymentPerformance(props) {
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
-                    label="KKB skoru düşük mü?"
+                    label="KKB skoru düşük"
                     checked={props.is_kkb_score_low}
                     onChange={(value) => props.onChangeIsKkbScoreLow(value)}
                     />
@@ -39,7 +39,7 @@ function PaymentPerformance(props) {
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
-                    label={props.partner.customer_type === 'individual' ? "İdari,kanuni takip ve varlık yönetim şirketine devir var mı?" : "İdari,kanuni takip ve konkordata var mı?"}
+                    label={props.partner.customer_type === 'individual' ? "İdari,kanuni takip ve varlık yönetim şirketine devir var" : "İdari,kanuni takip ve konkordata var"}
                     checked={props.is_administrative_follow_up}
                     onChange={(value) => props.onChangeIsAdministrativeFollowUp(value)}
                     />
@@ -51,7 +51,7 @@ function PaymentPerformance(props) {
                     <Grid container spacing={2}>
                         <Grid size={{xs:12,sm:12}}>
                             <AndroidSwitch
-                            label="Çek riski var mı?"
+                            label="Çek riski var"
                             checked={props.is_cheque_risk}
                             onChange={(value) => props.onChangeIsChequeRisk(value)}
                             />

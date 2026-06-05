@@ -227,8 +227,10 @@ function UpdatePartnerFinancialProfile() {
                             <CriticalControl
                             is_suspicious={data.is_suspicious || false}
                             is_blacklisted={data.is_blacklisted || false}
+                            is_offshore={data.is_offshore || false}
                             onChangeIsSuspicious={(value) => handleChangeField("is_suspicious",value)}
                             onChangeIsBlacklisted={(value) => handleChangeField("is_blacklisted",value)}
+                            onChangeIsOffshore={(value) => handleChangeField("is_offshore",value)}
                             />
                         </Stack>
                     </Paper>

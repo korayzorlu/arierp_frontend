@@ -84,6 +84,10 @@ function Incomes(props) {
                             control={<AriCheckBox name="belirsiz" checked={props.income_types.includes("belirsiz")} onChange={handleChange} />}
                             label="Belirsiz Kaynak"
                             />
+                            {/* <FormControlLabel
+                            control={<AriCheckBox name="yok" checked={props.income_types.includes("yok")} onChange={handleChange} />}
+                            label="Gelir Yok"
+                            /> */}
                             <FormControlLabel
                             control={<AriCheckBox name="diger" checked={props.income_types.includes("diger")} onChange={handleChange} />}
                             label="Diğer"
