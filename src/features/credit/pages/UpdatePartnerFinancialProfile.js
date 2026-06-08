@@ -19,6 +19,7 @@ import PepControl from '../components/PepControl';
 import PaymentInfo from '../components/PaymentInfo';
 import CriticalControl from '../components/CriticalControl';
 import PaymentPerformance from '../components/PaymentPerformance';
+import PartnerInformationDocuments from '../components/PartnerInformationDocuments';
 
 function UpdatePartnerFinancialProfile() {
     const {user} = useSelector((store) => store.auth);
@@ -77,6 +78,20 @@ function UpdatePartnerFinancialProfile() {
             </Grid>
 
             <Grid container spacing={1}>
+
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <PartnerInformationDocuments
+                            partner_information_documents={data.partner_information_documents || []}
+                            partner_uuid={data.partner ? data.partner.id : null}
+                            uuid={uuid}
+                            handleReload={fetchData}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -92,6 +107,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
+
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -116,9 +132,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
-            </Grid>
 
-            <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -141,6 +155,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
+
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2, height:'100%'}} square>
                         <Stack spacing={2}>
@@ -153,9 +168,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
-            </Grid>
 
-            <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -172,6 +185,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
+
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -196,9 +210,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
-            </Grid>
 
-            <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -211,6 +223,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
+
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -235,9 +248,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
-            </Grid>
 
-            <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -260,6 +271,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
+
                 <Grid size={{xs:12,sm:6}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
@@ -279,6 +291,7 @@ function UpdatePartnerFinancialProfile() {
                         </Stack>
                     </Paper>
                 </Grid>
+
             </Grid>
 
         </Stack>

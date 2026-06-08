@@ -15,10 +15,12 @@ const initialState = {
     comprehensiveWarningNoticeDialog: false,
     contractPaymentDialog: false,
     deleteDialog: false,
+    deleteDocumentDialog: false,
     dialog: false,
     exportDialog: false,
     finmaksTransactionNameDialog: false,
     importDialog: false,
+    importDocumentDialog: false,
     installmentDialog: false,
     leaseDialog: false,
     leaseNoteDialog: false,
@@ -182,6 +184,12 @@ const notificationSlice = createSlice({
         setColumnHeaderDateDialog: (state,action) => {
             state.columnHeaderDateDialog = action.payload;
         },
+        setImportDocumentDialog: (state,action) => {
+            state.importDocumentDialog = action.payload;
+        },
+        setDeleteDocumentDialog: (state,action) => {
+            state.deleteDocumentDialog = action.payload;
+        },
         setModal: (state,action) => {
             state.modal = action.payload;
         },
@@ -251,6 +259,8 @@ export const {
     setColumnHeaderWarningDialog,
     setColumnHeaderInfoDialog,
     setColumnHeaderDateDialog,
+    setImportDocumentDialog,
+    setDeleteDocumentDialog
 
 } = notificationSlice.actions;
 export default notificationSlice.reducer;
