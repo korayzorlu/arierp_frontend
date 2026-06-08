@@ -83,8 +83,11 @@ function UpdatePartnerFinancialProfile() {
                             <Incomes
                             income_types={data.income_types || []}
                             other_income={data.other_income || ""}
+                            income_amount={data.income_amount || 0}
+                            customer_type={data.customer_type || ""}
                             onChangeIncomes={(value) => handleChangeField("income_types",value)}
                             onChangeOtherIncome={(value) => handleChangeField("other_income",value)}
+                            onChangeIncomeAmount={(value) => handleChangeField("income_amount",value)}
                             />
                         </Stack>
                     </Paper>
@@ -120,12 +123,14 @@ function UpdatePartnerFinancialProfile() {
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
                             <Assets
+                            bank_deposit_amount={data.bank_deposit_amount || 0}
                             real_estate_assets={data.real_estate_assets || 0}
                             vehicle_assets={data.vehicle_assets || 0}
                             bank_deposit_assets={data.bank_deposit_assets || ""}
                             investment_assets={data.investment_assets || ""}
                             other_assets_amount={data.other_assets_amount || ""}
                             other_assets_description={data.other_assets_description || ""}
+                            onChangeBankDepositAmount={(value) => handleChangeField("bank_deposit_amount",value)}
                             onChangeRealEstateAssets={(value) => handleChangeField("real_estate_assets",value)}
                             onChangeVehicleAssets={(value) => handleChangeField("vehicle_assets",value)}
                             onChangeBankDepositAssets={(value) => handleChangeField("bank_deposit_assets",value)}
@@ -178,6 +183,7 @@ function UpdatePartnerFinancialProfile() {
                             is_foreign_partner={data.is_foreign_partner || false}
                             is_complex_partner={data.is_complex_partner || false}
                             company_type={data.company_type || ""}
+                            balance_sheet_and_capital_structure={data.balance_sheet_and_capital_structure || ""}
                             onChangeCompanyType={(value) => handleChangeField("company_type",value)}
                             onChangeIsForeignNationality={(value) => handleChangeField("is_foreign_nationality",value)}
                             onChangeIsEndBeneficiary={(value) => handleChangeField("is_end_beneficiary",value)}
@@ -185,6 +191,7 @@ function UpdatePartnerFinancialProfile() {
                             onChangeIsTransparency={(value) => handleChangeField("is_transparency",value)}
                             onChangeIsForeignPartner={(value) => handleChangeField("is_foreign_partner",value)}
                             onChangeIsComplexPartner={(value) => handleChangeField("is_complex_partner",value)}
+                            onChangeBalanceSheetAndCapitalStructure={(value) => handleChangeField("balance_sheet_and_capital_structure",value)}
                             />
                         </Stack>
                     </Paper>
@@ -211,9 +218,19 @@ function UpdatePartnerFinancialProfile() {
                             is_cash_payment={data.is_cash_payment || false}
                             is_balloon_payment={data.is_balloon_payment || false}
                             remitter_type={data.remitter_type || ""}
+                            vpos_type={data.vpos_type || ""}
+                            is_institutional_payment={data.is_institutional_payment || false}
+                            is_correspondent_bank={data.is_correspondent_bank || false}
+                            is_payment_institution={data.is_payment_institution || false}
+                            is_cek_senet_payment={data.is_cek_senet_payment || false}
                             onChangeIsCashPayment={(value) => handleChangeField("is_cash_payment",value)}
                             onChangeIsBalloonPayment={(value) => handleChangeField("is_balloon_payment",value)}
                             onChangeRemitterType={(value) => handleChangeField("remitter_type",value)}
+                            onChangeVposType={(value) => handleChangeField("vpos_type",value)}
+                            onChangeIsInstitutionalPayment={(value) => handleChangeField("is_institutional_payment",value)}
+                            onChangeIsCorrespondentBank={(value) => handleChangeField("is_correspondent_bank",value)}
+                            onChangeIsPaymentInstitution={(value) => handleChangeField("is_payment_institution",value)}
+                            onChangeIsCekSenetPayment={(value) => handleChangeField("is_cek_senet_payment",value)}
                             />
                         </Stack>
                     </Paper>
@@ -228,9 +245,17 @@ function UpdatePartnerFinancialProfile() {
                             is_suspicious={data.is_suspicious || false}
                             is_blacklisted={data.is_blacklisted || false}
                             is_offshore={data.is_offshore || false}
+                            is_low_tax={data.is_low_tax || false}
+                            is_complex_structure={data.is_complex_structure || false}
+                            is_tax_haven={data.is_tax_haven || false}
+                            is_high_risk_country={data.is_high_risk_country || false}
                             onChangeIsSuspicious={(value) => handleChangeField("is_suspicious",value)}
                             onChangeIsBlacklisted={(value) => handleChangeField("is_blacklisted",value)}
                             onChangeIsOffshore={(value) => handleChangeField("is_offshore",value)}
+                            onChangeIsLowTax={(value) => handleChangeField("is_low_tax",value)}
+                            onChangeIsComplexStructure={(value) => handleChangeField("is_complex_structure",value)}
+                            onChangeIsTaxHaven={(value) => handleChangeField("is_tax_haven",value)}
+                            onChangeIsHighRiskCountry={(value) => handleChangeField("is_high_risk_country",value)}
                             />
                         </Stack>
                     </Paper>

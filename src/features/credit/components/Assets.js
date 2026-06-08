@@ -43,6 +43,18 @@ function Assets(props) {
             </Grid> */}
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
+                    <NumberField
+                    label="Banka Mevduatı (TRY)"
+                    size="small"
+                    min={0}
+                    max={999999999}
+                    value={props.bank_deposit_amount}
+                    onChange={(e) => props.onChangeBankDepositAmount(e.target.value ? e.target.value : 0)}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:12}}>
                     <FormControl variant="outlined" size="small" fullWidth>
                         <InputLabel id="select-is-admin-label" shrink>
                             Taşınmazlar

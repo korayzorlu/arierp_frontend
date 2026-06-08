@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Title from './Title';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import Block from './Block';
+import NumberField from 'component/input/NumberField';
 
 function Incomes(props) {
     const [diger, setDiger] = useState(false)
@@ -49,72 +50,93 @@ function Incomes(props) {
 
     return (
         <Block text="Gelir" icon={<MonetizationOnIcon />}>
-            <Grid container spacing={2}>
-                <Grid size={{xs:12,sm:4}}>
-                    {/* <Autocomplete
-                    options={income_types}
-                    renderInput={(params) => <TextField {...params} label="Gelir Türü" />}
-                    fullWidth
-                    size='small'
-                    /> */}
-                    <FormControl component="fieldset" variant="standard">
-                        <FormLabel component="legend">Gelir Türü</FormLabel>
-                        <FormGroup>
-                            <FormControlLabel
-                            control={<AriCheckBox name="maas" checked={props.income_types.includes("maas")} onChange={handleChange} />}
-                            label="Maaş"
-                            />
-                            <FormControlLabel
-                            control={<AriCheckBox name="ticari" checked={props.income_types.includes("ticari")} onChange={handleChange} />}
-                            label="Ticari Kazanç"
-                            />
-                            <FormControlLabel
-                            control={<AriCheckBox name="kira" checked={props.income_types.includes("kira")} onChange={handleChange} />}
-                            label="Kira Geliri"
-                            />
-                            <FormControlLabel
-                            control={<AriCheckBox name="yatirim" checked={props.income_types.includes("yatirim")} onChange={handleChange} />}
-                            label="Yatırım Geliri"
-                            />
-                            <FormControlLabel
-                            control={<AriCheckBox name="kripto" checked={props.income_types.includes("kripto")} onChange={handleChange} />}
-                            label="Kripto Kazancı"
-                            />
-                            <FormControlLabel
-                            control={<AriCheckBox name="belirsiz" checked={props.income_types.includes("belirsiz")} onChange={handleChange} />}
-                            label="Belirsiz Kaynak"
-                            />
-                            {/* <FormControlLabel
-                            control={<AriCheckBox name="yok" checked={props.income_types.includes("yok")} onChange={handleChange} />}
-                            label="Gelir Yok"
-                            /> */}
-                            <FormControlLabel
-                            control={<AriCheckBox name="diger" checked={props.income_types.includes("diger")} onChange={handleChange} />}
-                            label="Diğer"
-                            />
-                        </FormGroup>
-                    </FormControl>
+            <Stack spacing={2}>
+                {
+                    props.customer_type === 'bireysel'
+                    ?
+                        <Grid container spacing={2}>
+                            <Grid size={{xs:12,sm:12}}>
+                                <NumberField
+                                label="Toplam Hane Halkı Geliri"
+                                size="small"
+                                min={0}
+                                max={999999999999}
+                                value={props.income_amount}
+                                onChange={(e) => props.onChangeIncomeAmount(e.target.value ? e.target.value : 0)}
+                                />
+                            </Grid>
+                        </Grid>
+                    :
+                        null
+                }
+                <Grid container spacing={2}>
+                    <Grid size={{xs:12,sm:4}}>
+                        {/* <Autocomplete
+                        options={income_types}
+                        renderInput={(params) => <TextField {...params} label="Gelir Türü" />}
+                        fullWidth
+                        size='small'
+                        /> */}
+                        <FormControl component="fieldset" variant="standard">
+                            <FormLabel component="legend">Gelir Türü</FormLabel>
+                            <FormGroup>
+                                <FormControlLabel
+                                control={<AriCheckBox name="maas" checked={props.income_types.includes("maas")} onChange={handleChange} />}
+                                label="Maaş"
+                                />
+                                <FormControlLabel
+                                control={<AriCheckBox name="ticari" checked={props.income_types.includes("ticari")} onChange={handleChange} />}
+                                label="Ticari Kazanç"
+                                />
+                                <FormControlLabel
+                                control={<AriCheckBox name="kira" checked={props.income_types.includes("kira")} onChange={handleChange} />}
+                                label="Kira Geliri"
+                                />
+                                <FormControlLabel
+                                control={<AriCheckBox name="yatirim" checked={props.income_types.includes("yatirim")} onChange={handleChange} />}
+                                label="Yatırım Geliri"
+                                />
+                                <FormControlLabel
+                                control={<AriCheckBox name="kripto" checked={props.income_types.includes("kripto")} onChange={handleChange} />}
+                                label="Kripto Kazancı"
+                                />
+                                <FormControlLabel
+                                control={<AriCheckBox name="belirsiz" checked={props.income_types.includes("belirsiz")} onChange={handleChange} />}
+                                label="Belirsiz Kaynak"
+                                />
+                                {/* <FormControlLabel
+                                control={<AriCheckBox name="yok" checked={props.income_types.includes("yok")} onChange={handleChange} />}
+                                label="Gelir Yok"
+                                /> */}
+                                <FormControlLabel
+                                control={<AriCheckBox name="diger" checked={props.income_types.includes("diger")} onChange={handleChange} />}
+                                label="Diğer"
+                                />
+                            </FormGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid size={{xs:12,sm:8}}>
+                        <FormControl component="fieldset" variant="standard" fullWidth>
+                            <FormLabel component="legend">Diğer Gelir Bilgileri</FormLabel>
+                            <FormGroup>
+                                <TextField
+                                type="text"
+                                size="small"
+                                variant='outlined'
+                                value={props.other_income}
+                                onChange={(e) => props.onChangeOtherIncome(e.target.value)}
+                                disabled={props.income_types.includes("diger") ? false : true}
+                                multiline
+                                rows={7}
+                                fullWidth
+                                />
+                            </FormGroup>
+                        </FormControl>
+                        
+                    </Grid>
                 </Grid>
-                <Grid size={{xs:12,sm:8}}>
-                    <FormControl component="fieldset" variant="standard" fullWidth>
-                        <FormLabel component="legend">Diğer Gelir Bilgileri</FormLabel>
-                        <FormGroup>
-                            <TextField
-                            type="text"
-                            size="small"
-                            variant='outlined'
-                            value={props.other_income}
-                            onChange={(e) => props.onChangeOtherIncome(e.target.value)}
-                            disabled={props.income_types.includes("diger") ? false : true}
-                            multiline
-                            rows={7}
-                            fullWidth
-                            />
-                        </FormGroup>
-                    </FormControl>
-                    
-                </Grid>
-            </Grid>
+            </Stack>
+            
         </Block>
     )
 }

@@ -62,6 +62,28 @@ function CustomerInfo(props) {
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
+                                <FormControl variant="outlined" size="small" fullWidth>
+                                    <InputLabel shrink>
+                                        Bilanço ve Sermaye Yapısı Uygunluğu
+                                    </InputLabel>
+                                    <Select
+                                    value={props.balance_sheet_and_capital_structure}
+                                    onChange={(event) => props.onChangeBalanceSheetAndCapitalStructure(event.target.value)}
+                                    label="Bilanço ve Sermaye Yapısı Uygunluğu"
+                                    inputProps={{ sx: { fontSize: 14 } }}
+                                    notched
+                                    fullWidth
+                                    size='small'
+                                    displayEmpty
+                                    >
+                                        <MenuItem value="uygun">Uygun</MenuItem>
+                                        <MenuItem value="uygun_degil">Uygun Değil</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={2}>
+                            <Grid size={{xs:12,sm:12}}>
                                 <AndroidSwitch
                                 label="Şeffaf"
                                 checked={props.is_transparency}

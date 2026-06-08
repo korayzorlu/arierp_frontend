@@ -36,6 +36,42 @@ function CriticalControl(props) {
                     />
                 </Grid>
             </Grid>
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:12}}>
+                    <AndroidSwitch
+                    label="Düşük vergi"
+                    checked={props.is_low_tax}
+                    onChange={(value) => props.onChangeIsLowTax(value)}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:12}}>
+                    <AndroidSwitch
+                    label="Karmaşık yapı"
+                    checked={props.is_complex_structure}
+                    onChange={(value) => props.onChangeIsComplexStructure(value)}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:12}}>
+                    <AndroidSwitch
+                    label="Vergi cenneti"
+                    checked={props.is_tax_haven}
+                    onChange={(value) => props.onChangeIsTaxHaven(value)}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid size={{xs:12,sm:12}}>
+                    <AndroidSwitch
+                    label="Yaptırım listesine yakın ülkeler"
+                    checked={props.is_high_risk_country}
+                    onChange={(value) => props.onChangeIsHighRiskCountry(value)}
+                    />
+                </Grid>
+            </Grid>
         </Block>
     )
 }
