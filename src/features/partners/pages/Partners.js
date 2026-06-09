@@ -82,7 +82,8 @@ function Partners() {
         { field: 'crmCode', headerName: 'CRM Kodu', width: 90, align: 'right', headerAlign: 'right' },
         { field: 'tcVknNo', headerName: 'TC/VKN No', width: 120, align: 'right', headerAlign: 'right' },
         { field: 'sgk_job', headerName: 'Meslek', width: 220 },
-        { field: 'sgk_job_code', headerName: 'Meslek Kodu', width: 90 },
+        { field: 'sgk_job_code', headerName: 'Meslek Kodu', width: 120 },
+        { field: 'nace_code', headerName: 'NACE Kodu', width: 120 },
         { field: 'kep', headerName: 'Kep Adresi', width: 220 },
         { field: 'is_turkkep', headerName: 'Kep Var mı?', width: 100,
             renderCell: (params) => (
