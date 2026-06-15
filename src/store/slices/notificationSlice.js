@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { set } from "lodash";
 import { Alert as MDBAlert} from 'mdb-ui-kit';
 
 const initialState = {
     addBankActivityLeaseDialog: false,
     addPartnerAdvanceActivityLeaseDialog: false,
+    agentDialog: false,
     alert: { color: "", icon: "", text: "" },
     alertt: { status: "", text: "" },
     callDialog: false,
@@ -84,6 +86,9 @@ const notificationSlice = createSlice({
         },
         setDialog: (state,action) => {
             state.dialog = action.payload;
+        },
+        setAgentDialog: (state,action) => {
+            state.agentDialog = action.payload;
         },
         setDeleteDialog: (state,action) => {
             state.deleteDialog = action.payload;
@@ -223,6 +228,7 @@ export const {
     setOpenAlert,
     clearAler,
     setDialog,
+    setAgentDialog,
     setDeleteDialog,
     setImportDialog,
     setExportDialog,

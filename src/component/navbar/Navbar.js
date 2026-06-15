@@ -15,9 +15,10 @@ import User from './User';
 import ExportProcesses from './ExportProcesses';
 import Langs from './Langs';
 import MenuIcon from '@mui/icons-material/Menu';
+import Agent from './Agent';
 
 function Navbar() {
-    const {dark,logo} = useSelector((store) => store.auth);
+    const {dark,logo,user} = useSelector((store) => store.auth);
     const {collapse,toggle} = useSelector((store) => store.sidebar);
     //const {progress} = useSelector((store) => store.process);
     const {importProcesses,exportProcesses,isProgress} = useSelector((store) => store.process);
@@ -76,6 +77,13 @@ function Navbar() {
                         <ExportProcesses exportProcesses={exportProcesses}/>
                         <Companies/>
                         {/* <Langs/> */}
+                        {
+                            user.username === "korayzorlu"
+                            ?
+                                <Agent></Agent>
+                            :
+                                null
+                        }
                         <Notifications/>
                         <User></User>
                     </div>

@@ -162,6 +162,7 @@ import ToWarnedRiskPartnersPage from './features/risk/pages/ToWarnedRiskPartners
 import KepMonitorings from 'features/operation/pages/KepMonitorings';
 import PartnerFinancialProfiles from 'features/credit/pages/PartnerFinancialProfiles';
 import UpdatePartnerFinancialProfile from 'features/credit/pages/UpdatePartnerFinancialProfile';
+import Agent from 'features/agent/pages/Agent';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -259,6 +260,7 @@ function App() {
                   <Route index element={<Dashboard></Dashboard>}></Route>
                   <Route path='profile/:username' element={<Profile></Profile>}></Route>
                   <Route path='notification' element={<Notification></Notification>}></Route>
+                  <Route path='agent' element={<Agent></Agent>}></Route>
 
                   <Route path='settings' element={<Settings></Settings>}>
                     <Route path='auth' element={<AuthSettingsLinks></AuthSettingsLinks>}></Route>
