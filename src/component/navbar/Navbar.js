@@ -78,7 +78,7 @@ function Navbar() {
                         <Companies/>
                         {/* <Langs/> */}
                         {
-                            user.username === "korayzorlu"
+                            user.username === "korayzorlu" || user.username === "koray.zorlu" 
                             ?
                                 <Agent></Agent>
                             :

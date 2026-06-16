@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setAlert, setMessageDialog, setSendSMSDialog, setagentDialog, setThirdPersonStatusDialog, setAgentDialog } from 'store/slices/notificationSlice';
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack, TextField, Typography } from '@mui/material';
@@ -30,11 +30,39 @@ function AgentDialog({...props}) {
 
     const dispatch = useDispatch();
 
+    const [disabled, setDisabled] = useState(true);
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileText, setSelectedFileText] = useState(null);
+    const [lfUsername, setLfUsername] = useState(null);
+    const [lfPassword, setLfPassword] = useState(null);
+
+    useEffect(() => {
+        if(props.needLF){
+            if(selectedFile && lfUsername && lfPassword && lfUsername !== "" && lfPassword !== ""){
+                setDisabled(false);
+            }
+            else{
+                setDisabled(true);
+            }
+        }
+        else{
+            if(selectedFile){
+                setDisabled(false);
+            }
+            else{
+                setDisabled(true);
+            }
+        }
+        
+    }, [selectedFile,lfUsername,lfPassword]);
+    
 
     const handleClose = () => {
         dispatch(setAgentDialog(false));
+        setSelectedFile(null);
+        setSelectedFileText(null);
+        setLfUsername(null);
+        setLfPassword(null);
     };
 
     const handleSubmit = async (status) => {
@@ -92,7 +120,12 @@ function AgentDialog({...props}) {
         
         try {
             const formData = new FormData();
-            const jsonData = JSON.stringify({ companyId: activeCompany.companyId, agentName: props.agentName });
+            const jsonData = JSON.stringify({
+                companyId: activeCompany.companyId,
+                agentName: props.agentName,
+                ...(lfUsername && { lf_username: lfUsername }),
+                ...(lfPassword && { lf_password: lfPassword })
+            });
             formData.append("data", jsonData);
 
             if (selectedFile) {
@@ -165,6 +198,32 @@ function AgentDialog({...props}) {
                             {selectedFileText || "Dosya Seç"}
                             <VissuallyHiddenInput onChange={handleSelectFile} accept=".xlsx"/>
                         </Button>
+                        {
+                            props.needLF
+                            ?
+                                <>
+                                    <TextField
+                                    type="text"
+                                    size="small"
+                                    label={"Leaseflex Kullanıcı Adı"}
+                                    variant='outlined'
+                                    value={lfUsername}
+                                    onChange={(e) => setLfUsername(e.target.value)}
+                                    fullWidth
+                                    />
+                                    <TextField
+                                    type="password"
+                                    size="small"
+                                    label={"Leaseflex Şifre"}
+                                    variant='outlined'
+                                    value={lfPassword}
+                                    onChange={(e) => setLfPassword(e.target.value)}
+                                    fullWidth
+                                    />
+                                </>
+                            :
+                                null
+                        }
                     </Stack>
                     
                 </DialogContentText>
@@ -176,7 +235,7 @@ function AgentDialog({...props}) {
                 color="opposite"
                 onClick={handleImport}
                 endIcon={<PlayArrowIcon />}
-                disabled={!selectedFile}
+                disabled={disabled}
                 >
                     Başlat
                 </Button>

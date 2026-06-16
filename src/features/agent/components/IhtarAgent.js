@@ -17,6 +17,7 @@ function IhtarAgent(props) {
         props.onChangeProps('title', 'İhtar Çekme');
         props.onChangeProps('templateName', 'ihtar-cekilecekler.xlsx');
         props.onChangeProps('agentName', 'ihtar_cekme');
+        props.onChangeProps('needLF', true);
         dispatch(setAgentDialog(true));
     }
 

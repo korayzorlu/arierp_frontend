@@ -107,7 +107,7 @@ function ThirdPersons() {
                                         variant='contained'
                                         color="mars"
                                         icon={<InfoIcon />}
-                                        label="Müşteri Olarak Bildirildi"
+                                        label={`Müşteri Olarak Bildirildi ${params.row.customer_sender ? `@${params.row.customer_sender}` : ''}`}
                                         size='small'
                                         />
                                     </Grid>
