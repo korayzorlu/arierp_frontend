@@ -77,13 +77,14 @@ function Navbar() {
                         <ExportProcesses exportProcesses={exportProcesses}/>
                         <Companies/>
                         {/* <Langs/> */}
-                        {
+                        {/* {
                             user.username === "korayzorlu" || user.username === "koray.zorlu" 
                             ?
                                 <Agent></Agent>
                             :
                                 null
-                        }
+                        } */}
+                        <Agent></Agent>
                         <Notifications/>
                         <User></User>
                     </div>

@@ -6,11 +6,14 @@ import { PlayArrowIcon } from 'icons'
 import Dialog from 'component/feedback/Dialog'
 import UploadFileIcon from 'component/icon/UploadFileIcon'
 import FilePresentIcon from 'component/icon/FilePresentIcon'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setAgentDialog } from 'store/slices/notificationSlice'
 import AgentDialog from './AgentDialog'
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
 function IhtarAgent(props) {
+    const {agentTasks,agentRunning} = useSelector((store) => store.agentTask);
+
     const dispatch = useDispatch();
 
     const handleRun = () => {
@@ -36,11 +39,14 @@ function IhtarAgent(props) {
                         variant="contained"
                         color="opposite"
                         onClick={handleRun}
-                        endIcon={<PlayArrowIcon/>}
+                        endIcon={agentRunning ? <HourglassTopIcon /> : <PlayArrowIcon/>}
                         size='small'
+                        disabled={agentRunning}
                         fullWidth
                         >
-                            Çalıştır
+                            {
+                                agentRunning ? "Çalışıyor" : "Çalıştır"
+                            }
                         </Button>
                     </Grid>
                 </Grid>

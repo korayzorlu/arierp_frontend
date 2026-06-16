@@ -3,6 +3,7 @@ import { fetchNotifications, send_notification, setAlert, setUnreadNotifications
 import { fetchExportProcess, fetchImportProcess, setExportProgress, setImportProgress } from "./processSlice";
 import { fetchPartners } from "./partners/partnerSlice";
 import { fetchObjects } from "./common/commonSlice";
+import { setAgentRunning } from "./agent/agentTaskSlice";
 
 const initialState = {
     
@@ -49,6 +50,8 @@ export const connectWebsocket = (dispatch,getState) => {
             dispatch(fetchNotifications()).unwrap();
             dispatch(send_notification(message));
             dispatch(setUnreadNotifications(1));
+        }else if(type === "send_agent_status"){
+            dispatch(setAgentRunning(message.running));
         }else if(type === "send_alert"){
             dispatch(setAlert({status:message.status,text:message.message}));
         }else if(type === "send_import_process_percent"){

@@ -72,6 +72,7 @@ import emailReducer from './slices/communication/emailSlice';
 import kepMonitoringReducer from './slices/operation/kepMonitoringSlice';
 import partnerFinancialProfileReducer from './slices/partners/partnerFinancialProfileSlice';
 import sgkJobReducer from './slices/partners/sgkJobSlice';
+import agentTaskReducer from './slices/agent/agentTaskSlice';
 
 let navigate;
 
@@ -154,6 +155,7 @@ export const store = configureStore({
         kepMonitoring: kepMonitoringReducer,
         partnerFinancialProfile: partnerFinancialProfileReducer,
         sgkJob: sgkJobReducer,
+        agentTask: agentTaskReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

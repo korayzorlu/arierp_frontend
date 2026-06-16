@@ -19,6 +19,7 @@ import VissuallyHiddenInput from 'component/input/VissuallyHiddenInput';
 import axios from 'axios';
 import NetworkIntelligenceIcon from 'component/icon/NetworkIntelligenceIcon';
 import FilePresentIcon from 'component/icon/FilePresentIcon';
+import { fetchAgentTasks } from 'store/slices/agent/agentTaskSlice';
 
 function AgentDialog({...props}) {
     const {dark} = useSelector((store) => store.auth);
@@ -27,6 +28,7 @@ function AgentDialog({...props}) {
     const {partnerInformation} = useSelector((store) => store.partner);
     const {smss,smssCount,smssParams,smssLoading} = useSelector((store) => store.sms);
     const {thirdPersonsParams} = useSelector((store) => store.thirdPerson);
+    const {agentTasks,agentTasksCount,agentTasksParams,agentTasksLoading} = useSelector((store) => store.agentTask);
 
     const dispatch = useDispatch();
 
