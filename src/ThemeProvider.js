@@ -92,7 +92,7 @@ const commonTheme = {
         },
         steelplate: {
             main: '#6E767A',
-            contrastText: '#000',
+            contrastText: '#fff',
         },
         whitehole: {
             main: '#fff',

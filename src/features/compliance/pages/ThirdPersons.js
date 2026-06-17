@@ -31,6 +31,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 
 function ThirdPersons() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -69,6 +70,8 @@ function ThirdPersons() {
                 return { color: "error", icon: <DoDisturbAltIcon />, label: "Yasaklı" };
             case "need_document":
                 return { color: "info", icon: <HourglassBottomIcon />, label: "Belge/Kimlik Gerekli" };
+            case "collection_denied":
+                return { color: "steelplate", icon: <DoDisturbOnIcon />, label: "Tahsilat Reddedildi" };
             default:
                 return { color: "primary", icon: <CheckIcon />, label: "Bilinmiyor" };
         }
@@ -156,8 +159,10 @@ function ThirdPersons() {
                             endIcon={<ArrowOutwardIcon />}
                             size='small'
                             onClick={() => {
-                                dispatch(setThirdPersonStatusDialog(true));
-                                setSelectedRow(params.row);
+                                if(user.authorization === 'Kredi Tahsis'){
+                                    dispatch(setThirdPersonStatusDialog(true));
+                                    setSelectedRow(params.row);
+                                }
                             }}
                             >
                                 Kontrol Et ve Güncelle
@@ -192,6 +197,7 @@ function ThirdPersons() {
                     { value: 'cleared', label: 'Temiz' },
                     { value: 'need_document', label: 'Belge/Kimlik Gerekiyor' },
                     { value: 'flagged', label: 'Yasaklı/Şüpheli' },
+                    { value: 'collection_denied', label: 'Tahsilat Reddedildi' },
                 ]}
                 />
             )
@@ -211,6 +217,7 @@ function ThirdPersons() {
                         }
                         setSelectedRow(params.row);
                     }}
+                    disabled={params.row.status === "flagged" || params.row.status === "collection_denied"}
                     />
                 </Stack>
             ),
@@ -262,6 +269,7 @@ function ThirdPersons() {
                                         dispatch(setThirdPersonDocumentDialog(true));
                                         setSelectedRow(params.row);
                                     }}
+                                    disabled={params.row.status !== "need_document"}
                                     >
                                         Belge Ekle
                                     </Button>

@@ -14,6 +14,7 @@ const initialState = {
     columnHeaderDateDialog: false,
     columnHeaderInfoDialog: false,
     columnHeaderWarningDialog: false,
+    committeeFormDialog: false,
     comprehensiveWarningNoticeDialog: false,
     contractPaymentDialog: false,
     deleteDialog: false,
@@ -153,6 +154,9 @@ const notificationSlice = createSlice({
         setTerminationWarningNoticeDialog: (state,action) => {
             state.terminationWarningNoticeDialog = action.payload;
         },
+        setCommitteeFormDialog: (state,action) => {
+            state.committeeFormDialog = action.payload;
+        },
         setPurchaseDocumentDialog: (state,action) => {
             state.purchaseDocumentDialog = action.payload;
         },
@@ -252,6 +256,7 @@ export const {
     setWarningNoticeDialog,
     setComprehensiveWarningNoticeDialog,
     setTerminationWarningNoticeDialog,
+    setCommitteeFormDialog,
     setPurchaseDocumentDialog,
     setThirdPersonStatusDialog,
     setThirdPersonCustomerDialog,

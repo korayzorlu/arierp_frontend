@@ -11,6 +11,7 @@ import { fetchThirdPersons, setThirdPersonsLoading, updateThirdPersonStatus } fr
 import RuleIcon from '@mui/icons-material/Rule';
 import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 
 function ThirdPersonStatusDialog({...props}) {
 
@@ -73,6 +74,15 @@ function ThirdPersonStatusDialog({...props}) {
                         autoFocus
                         >
                             Yasaklı
+                        </Button>
+                        <Button
+                        variant="contained"
+                        color="steelplate"
+                        onClick={() => handleSubmit("collection_denied")}
+                        startIcon={<DoDisturbOnIcon/>}
+                        autoFocus
+                        >
+                            Tahsilat Ret
                         </Button>
                     </Stack>
                     

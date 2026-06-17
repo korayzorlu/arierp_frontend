@@ -24,6 +24,7 @@ import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 
 function randomId(length = 8) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -207,6 +208,8 @@ function Collections() {
                 return { color: "error", icon: <DoDisturbAltIcon />, label: "Yasaklı" };
             case "need_document":
                 return { color: "info", icon: <HourglassBottomIcon />, label: "Belge/Kimlik Gerekli" };
+            case "collection_denied":
+                return { color: "steelplate", icon: <DoDisturbOnIcon />, label: "Tahsilat Reddedildi" };
             default:
                 return { color: "primary", icon: <CheckIcon />, label: "Bilinmiyor" };
         }

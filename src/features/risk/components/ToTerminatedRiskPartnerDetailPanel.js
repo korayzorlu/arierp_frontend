@@ -2,12 +2,12 @@ import { useGridApiRef } from '@mui/x-data-grid';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
-import { setAlert, setComprehensiveWarningNoticeDialog, setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTerminationWarningNoticeDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
+import { setAlert, setCommitteeFormDialog, setComprehensiveWarningNoticeDialog, setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTerminationWarningNoticeDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
 import { Box, Button, Grid, IconButton, Stack } from '@mui/material';
 import ListTable from 'component/table/ListTable';
 import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
-import { fetchComprehensiveWarningNoticeInformation, fetchContractPaymentsInLease, fetchTerminationWarningNoticeInformation, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
+import { fetchCommitteeFormInformation, fetchComprehensiveWarningNoticeInformation, fetchContractPaymentsInLease, fetchTerminationWarningNoticeInformation, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
 import PaidIcon from '@mui/icons-material/Paid';
 import ContractPaymentDialog from 'component/dialog/ContractPaymentDialog';
 import { cellProgress } from 'component/progress/CellProgress';
@@ -26,6 +26,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Dialog from 'component/feedback/Dialog';
 import { EmailIcon } from 'icons';
 import { fetchToTerminatedRiskPartners, setWarningNoticeContract, setWarningNoticeUuid } from 'store/slices/leasing/riskPartnerSlice';
+import CommitteeFormDialog from 'component/dialog/CommitteeFormDialog';
 
 function ToTerminatedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases,project} = props;
@@ -44,6 +45,7 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
     const [selectedRows, setSelectedRows] = useState([]);
     const isFirstSelection = useRef(true);
     const [fileUuid, setFileUuid] = useState({})
+    const [fileUuidCF, setFileUuidCF] = useState({})
     const [fileContract, setFileContract] = useState({})
     const [rowSelectionModel, setRowSelectionModel] = useState({
         type: 'include',
@@ -169,6 +171,19 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
                     null
             )
         },
+        // { field: 'cf', headerName: 'Komite Formu', flex: 2, renderCell: (params) => (
+        //         params.row.status === "İhtar Çekildi"
+        //         ?
+        //             <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+        //                 <TableButton
+        //                 icon={<FeedIcon/>}
+        //                 onClick={() => {handleCommitteeFormDialog(params.row.id,params.row.contract);createFileCF(params.row.id,params.row.contract)}}
+        //                 />
+        //             </Stack>
+        //         :
+        //             null
+        //     )
+        // },
         // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
         //         params.value
         //         ?
@@ -216,6 +231,26 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         }
     };
 
+    const createFileCF = async (uuid,contract) => {
+        dispatch(setDialog(false));
+        try {
+            const response = await axios.post('/risk/create_committee_form_status/',
+                {
+                    uuid,
+                },
+                {
+                    responseType: "blob",
+                    withCredentials: true
+                }
+            );
+            dispatch(fetchCommitteeFormInformation({activeCompany,contract:contract}));
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
+    };
+
     const handleWarningNoticeDialog = async (uuid,contract) => {
         dispatch(setWarningNoticeUuid(uuid));
         dispatch(setWarningNoticeContract(contract));
@@ -228,6 +263,13 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         setFileContract(contract);
         dispatch(fetchTerminationWarningNoticeInformation({activeCompany,contract:contract}));
         dispatch(setTerminationWarningNoticeDialog(true));
+    };
+
+    const handleCommitteeFormDialog = async (uuid,contract) => {
+        setFileUuidCF(uuid);
+        setFileContract(contract);
+        dispatch(fetchCommitteeFormInformation({activeCompany,contract:contract}));
+        dispatch(setCommitteeFormDialog(true));
     };
 
     const sendEmail = async () => {
@@ -323,6 +365,10 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
             fileUuid={fileUuid}
             fileContract={fileContract}
             edit={true}
+            />
+            <CommitteeFormDialog
+            fileUuid={fileUuidCF}
+            fileContract={fileContract}
             />
             <TradeTransactionDialog/>
             <Dialog
