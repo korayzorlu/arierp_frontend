@@ -356,11 +356,11 @@ export const updateTerminationWarningNotice = createAsyncThunk('auth/updateTermi
     }
 });
 
-export const fetchCommitteeFormInformation = createAsyncThunk('auth/fetchCommitteeFormInformation', async ({activeCompany,contract},{rejectWithValue}) => {
+export const fetchCommitteeFormInformation = createAsyncThunk('auth/fetchCommitteeFormInformation', async ({activeCompany,uuid},{rejectWithValue}) => {
     try {
         const response = await axios.post(`/contracts/committee_form_information/`, {
             active_company:activeCompany.id,
-            contract:contract
+            uuid:uuid
         },{ withCredentials: true, });
         return response.data;
     } catch (error) {

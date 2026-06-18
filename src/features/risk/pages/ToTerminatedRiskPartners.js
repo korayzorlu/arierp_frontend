@@ -357,7 +357,7 @@ function ToTerminatedRiskPartners() {
                 //detailPanelExpandedRowIds={detailPanelExpandedRowIds}
                 //onDetailPanelExpandedRowIdsChange={(newExpandedRowIds) => {setDetailPanelExpandedRowIds(new Set(newExpandedRowIds));dispatch(fetchRiskPartners({activeCompany,params:toTerminatedRiskPartnersParams}));}}
                 getDetailPanelHeight={() => "auto"}
-                getDetailPanelContent={(params) => {return(<ToTerminatedRiskPartnerDetailPanel uuid={params.row.uuid} riskPartnerLeases={params.row.leases.leases}  project={project} risk_status="to_terminated"></ToTerminatedRiskPartnerDetailPanel>)}}
+                getDetailPanelContent={(params) => {return(<ToTerminatedRiskPartnerDetailPanel uuid={params.row.id} partner_name={params.row.name} partner_crm_code={params.row.crm_code} riskPartnerLeases={params.row.leases.leases}  project={project} risk_status="to_terminated"></ToTerminatedRiskPartnerDetailPanel>)}}
                 />
             </Grid>
             <DeleteDialog

@@ -20,7 +20,6 @@ function CommitteeFormDialog(props) {
     const dispatch = useDispatch();
 
     const [data, setData] = useState({uuid:"",paid_amount:"0,00",deduction_amount:"0,00"})
-    
 
     useEffect(() => {
         setData(data => ({...data, uuid: committeeFormInformation.uuid}))
@@ -32,25 +31,26 @@ function CommitteeFormDialog(props) {
 
     const handleSubmit = async () => {
         await dispatch(updateCommitteeForm({data})).unwrap();
-        dispatch(fetchCommitteeFormInformation({activeCompany,contract:fileContract}));
+        dispatch(fetchCommitteeFormInformation({activeCompany,uuid:props.partner}));
     }
 
-    const getFile = async (uuid,contract) => {
+    const getFile = async () => {
         dispatch(setDialog(false));
         try {
             const response = await axios.post('/risk/get_committee_form/',
                 {
-                    uuid: uuid,
+                    uuid: props.partner,
                 },
                 {
                     responseType: "blob",
                     withCredentials: true
                 }
             );
-            console.log(response.headers)
+
             const a = document.createElement("a");
             a.href = URL.createObjectURL(response.data);
-            a.download = `${contract}.docx`;
+            const normalizedName = props.partner_name.toLowerCase().replace(/\s+/g, '_');
+            a.download = `${normalizedName}-${props.partner_crm_code}-komite-formu.docx`;
             a.click();
             URL.revokeObjectURL(a.href);
         } catch (error) {
@@ -80,7 +80,7 @@ function CommitteeFormDialog(props) {
         aria-describedby="alert-dialog-description"
         elevation={3}
         variant="outlined"
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth
         >
             

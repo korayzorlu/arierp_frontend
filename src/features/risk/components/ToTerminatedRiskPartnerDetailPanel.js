@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPartnerInformation } from 'store/slices/partners/partnerSlice';
 import { setAlert, setCommitteeFormDialog, setComprehensiveWarningNoticeDialog, setContractPaymentDialog, setDialog, setInstallmentDialog, setPartnerDialog, setTerminationWarningNoticeDialog, setTradeTransactionDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import { fetchInstallmentInformation, setInstallmentsLoading } from 'store/slices/leasing/installmentSlice';
-import { Box, Button, Grid, IconButton, Stack } from '@mui/material';
+import { Box, Button, Grid, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Stack } from '@mui/material';
 import ListTable from 'component/table/ListTable';
 import { setLeasesParams } from 'store/slices/leasing/leaseSlice';
 import { fetchCommitteeFormInformation, fetchComprehensiveWarningNoticeInformation, fetchContractPaymentsInLease, fetchTerminationWarningNoticeInformation, fetchWarningNoticeInformation } from 'store/slices/contracts/contractSlice';
@@ -27,6 +27,7 @@ import Dialog from 'component/feedback/Dialog';
 import { EmailIcon } from 'icons';
 import { fetchToTerminatedRiskPartners, setWarningNoticeContract, setWarningNoticeUuid } from 'store/slices/leasing/riskPartnerSlice';
 import CommitteeFormDialog from 'component/dialog/CommitteeFormDialog';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function ToTerminatedRiskPartnerDetailPanel(props) {
     const {uuid, riskPartnerLeases,project} = props;
@@ -51,6 +52,14 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         type: 'include',
         ids: new Set(),
     });
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         let allSelectedRows = [];
@@ -171,19 +180,19 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
                     null
             )
         },
-        // { field: 'cf', headerName: 'Komite Formu', flex: 2, renderCell: (params) => (
-        //         params.row.status === "İhtar Çekildi"
-        //         ?
-        //             <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-        //                 <TableButton
-        //                 icon={<FeedIcon/>}
-        //                 onClick={() => {handleCommitteeFormDialog(params.row.id,params.row.contract);createFileCF(params.row.id,params.row.contract)}}
-        //                 />
-        //             </Stack>
-        //         :
-        //             null
-        //     )
-        // },
+        { field: 'cf', headerName: 'Komite Formu', flex: 2, renderCell: (params) => (
+                params.row.status === "İhtar Çekildi"
+                ?
+                    <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                        <TableButton
+                        icon={<FeedIcon/>}
+                        onClick={() => {handleCommitteeFormDialog(params.row.id,params.row.contract);createFileCF(params.row.id,params.row.contract)}}
+                        />
+                    </Stack>
+                :
+                    null
+            )
+        },
         // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
         //         params.value
         //         ?
@@ -231,19 +240,22 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         }
     };
 
-    const createFileCF = async (uuid,contract) => {
+    const createFileCF = async () => {
         dispatch(setDialog(false));
+        
         try {
             const response = await axios.post('/risk/create_committee_form_status/',
-                {
-                    uuid,
+                {   
+                    uuid: props.uuid,
+                    uuids: rowSelectionModel.type === 'exclude'
+                        ? apiRef.current.getAllRowIds().filter(id => !rowSelectionModel.ids.has(id))
+                        : Array.from(rowSelectionModel.ids),
                 },
                 {
-                    responseType: "blob",
                     withCredentials: true
                 }
             );
-            dispatch(fetchCommitteeFormInformation({activeCompany,contract:contract}));
+            dispatch(fetchCommitteeFormInformation({activeCompany,uuid:props.uuid}));
         } catch (error) {
             dispatch(setAlert({status:'error',text:error.message}));
         } finally {
@@ -265,10 +277,8 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
         dispatch(setTerminationWarningNoticeDialog(true));
     };
 
-    const handleCommitteeFormDialog = async (uuid,contract) => {
-        setFileUuidCF(uuid);
-        setFileContract(contract);
-        dispatch(fetchCommitteeFormInformation({activeCompany,contract:contract}));
+    const handleCommitteeFormDialog = async () => {
+        dispatch(fetchCommitteeFormInformation({activeCompany,uuid:props.uuid}));
         dispatch(setCommitteeFormDialog(true));
     };
 
@@ -311,7 +321,39 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
             loading={leasesLoading}
             customFiltersLeft={
                 <>
-                    {
+                    <IconButton
+                    aria-controls={open ? 'table-settings-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open}
+                    onClick={handleClick}
+                    color="opposite"
+                    size='small'
+                    sx={{mt:1,mb:1}}
+                    >
+                        <SettingsIcon />
+                    </IconButton>
+                    <Menu
+                    id="table-settings-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    >   
+                        <MenuItem
+                        onClick={() => {handleCommitteeFormDialog();createFileCF();setAnchorEl(null);}}
+                        disabled={rowSelectionModel.ids.size > 0 || rowSelectionModel.type === 'exclude' ? false : true}
+                        >
+                            <ListItemIcon><FeedIcon/></ListItemIcon>
+                            <ListItemText>Komite Formu Oluştur</ListItemText>
+                        </MenuItem>
+                        <MenuItem
+                        onClick={() => {dispatch(setDialog(true));setAnchorEl(null);}}
+                        disabled={rowSelectionModel.ids.size > 0 || rowSelectionModel.type === 'exclude' ? false : true}
+                        >
+                            <ListItemIcon><EmailIcon/></ListItemIcon>
+                            <ListItemText>E-mail Gönder</ListItemText>
+                        </MenuItem>
+                    </Menu>             
+                    {/* {
                         rowSelectionModel.ids.size > 0 || rowSelectionModel.type === 'exclude'
                         ?
                             <Button
@@ -326,7 +368,7 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
                             </Button>
                         :
                         null
-                    } 
+                    } */}
                 </>
             }
             setParams={(value) => dispatch(setLeasesParams(value))}
@@ -367,8 +409,9 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
             edit={true}
             />
             <CommitteeFormDialog
-            fileUuid={fileUuidCF}
-            fileContract={fileContract}
+            partner={props.uuid}
+            partner_name={props.partner_name}
+            partner_crm_code={props.partner_crm_code}
             />
             <TradeTransactionDialog/>
             <Dialog
