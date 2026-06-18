@@ -180,19 +180,19 @@ function ToTerminatedRiskPartnerDetailPanel(props) {
                     null
             )
         },
-        { field: 'cf', headerName: 'Komite Formu', flex: 2, renderCell: (params) => (
-                params.row.status === "İhtar Çekildi"
-                ?
-                    <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
-                        <TableButton
-                        icon={<FeedIcon/>}
-                        onClick={() => {handleCommitteeFormDialog(params.row.id,params.row.contract);createFileCF(params.row.id,params.row.contract)}}
-                        />
-                    </Stack>
-                :
-                    null
-            )
-        },
+        // { field: 'cf', headerName: 'Komite Formu', flex: 2, renderCell: (params) => (
+        //         params.row.status === "İhtar Çekildi"
+        //         ?
+        //             <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+        //                 <TableButton
+        //                 icon={<FeedIcon/>}
+        //                 onClick={() => {handleCommitteeFormDialog(params.row.id,params.row.contract);createFileCF(params.row.id,params.row.contract)}}
+        //                 />
+        //             </Stack>
+        //         :
+        //             null
+        //     )
+        // },
         // { field: 'is_kdv_diff', headerName: 'KDV Durumu', flex:2, renderCell: (params) => (
         //         params.value
         //         ?
