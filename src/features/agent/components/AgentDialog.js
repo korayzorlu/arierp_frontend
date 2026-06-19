@@ -83,6 +83,7 @@ function AgentDialog({...props}) {
         try {
             const response = await axios.get('/agent/agent_template',
                 {
+                    params: { templateName: props.templateName },
                     responseType: "blob",
                     withCredentials: true
                 }

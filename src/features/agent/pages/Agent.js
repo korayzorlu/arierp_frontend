@@ -6,6 +6,7 @@ import NetworkIntelligenceIcon from 'component/icon/NetworkIntelligenceIcon';
 import IhtarAgent from '../components/IhtarAgent';
 import AgentDialog from '../components/AgentDialog';
 import { fetchAgentTasks, setAgentRunning } from 'store/slices/agent/agentTaskSlice';
+import FaturaAgent from '../components/FaturaAgent';
 
 
 function Agent() {
@@ -48,7 +49,11 @@ function Agent() {
                 <Grid size={{xs:12,sm:4}}>
                     <IhtarAgent
                     onChangeProps={handleChangeProps}
-                    
+                    />
+                </Grid>
+                <Grid size={{xs:12,sm:4}}>
+                    <FaturaAgent
+                    onChangeProps={handleChangeProps}
                     />
                 </Grid>
             </Grid>
