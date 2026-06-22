@@ -11,24 +11,24 @@ import { setAgentDialog } from 'store/slices/notificationSlice'
 import AgentDialog from './AgentDialog'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
-function IhtarAgent(props) {
+function EFaturaAgent(props) {
     const {agentTasks,agentRunning} = useSelector((store) => store.agentTask);
 
     const dispatch = useDispatch();
 
     const handleRun = () => {
-        props.onChangeProps('title', 'İhtar Çekme');
-        props.onChangeProps('templateName', 'ihtar-cekilecekler.xlsx');
-        props.onChangeProps('agentName', 'ihtar_cekme');
+        props.onChangeProps('title', 'E-Fatura Kesme');
+        props.onChangeProps('templateName', 'e-fatura-kesilecekler.xlsx');
+        props.onChangeProps('agentName', 'e_fatura_kesme');
         props.onChangeProps('needLF', true);
         dispatch(setAgentDialog(true));
     }
 
     return (
-        <Block text="İhtar Çekme" icon={<NetworkIntelligenceIcon />} chipLabel="Kredi Risk İzleme" chipColor="mars">
+        <Block text="E-Fatura Kesme" icon={<NetworkIntelligenceIcon />}  chipLabel="Muhasebe" chipColor="success">
             <Stack spacing={2}>
                 <Typography variant='body2' sx={{color: 'text.secondary'}}>
-                    Leaseflex üzerinde yapılan ihtar çekme işlemini otomatikleştirir.
+                    Leaseflex üzerinde yapılan e-fatura kesme işlemini otomatikleştirir.
                 </Typography>
                 <Typography variant='body2' sx={{color: 'text.secondary'}}>
                     Çalıştır butonu ile sözleşme listesinin yer aldığı excel dosyasını yükleyerek işlemi başlatabilirsiniz.
@@ -55,4 +55,4 @@ function IhtarAgent(props) {
     )
 }
 
-export default IhtarAgent
+export default EFaturaAgent

@@ -1,4 +1,4 @@
-import { Divider, Grid, IconButton, Paper, Stack } from '@mui/material'
+import { Chip, Divider, Grid, IconButton, Paper, Stack } from '@mui/material'
 import React from 'react'
 import Title from './Title'
 
@@ -7,10 +7,10 @@ function Block(props) {
         <Paper elevation={0} sx={{p:2,height:'100%'}} square>
             <Stack spacing={2}>
                 <Grid container spacing={2}>
-                    <Grid size={{xs:6,sm:10}}>
+                    <Grid size={{xs:6,sm:6}}>
                         <Title text={props.text} icon={props.icon} />
                     </Grid>
-                    <Grid size={{xs:6,sm:2}} sx={{display:'flex',justifyContent:'flex-end',alignItems:'center'}}>
+                    <Grid size={{xs:6,sm:4}} sx={{display:'flex',justifyContent:'flex-end',alignItems:'center'}} offset={{xs:0,sm:'auto'}}>
                         {
                             props.rightButton
                             ?
@@ -24,6 +24,7 @@ function Block(props) {
                             :
                                 null
                         }
+                        <Chip variant='contained' color={props.chipColor} label={props.chipLabel} size='small'/>
                     </Grid>
                     
                 </Grid>

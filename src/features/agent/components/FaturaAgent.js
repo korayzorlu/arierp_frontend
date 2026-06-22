@@ -25,7 +25,7 @@ function FaturaAgent(props) {
     }
 
     return (
-        <Block text="Fatura Kesme" icon={<NetworkIntelligenceIcon />}>
+        <Block text="Fatura Kesme" icon={<NetworkIntelligenceIcon />}  chipLabel="Muhasebe" chipColor="success">
             <Stack spacing={2}>
                 <Typography variant='body2' sx={{color: 'text.secondary'}}>
                     Leaseflex üzerinde yapılan fatura kesme işlemini otomatikleştirir.
