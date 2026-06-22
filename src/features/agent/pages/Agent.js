@@ -9,6 +9,7 @@ import { fetchAgentTasks, setAgentRunning } from 'store/slices/agent/agentTaskSl
 import FaturaAgent from '../components/FaturaAgent';
 import EFaturaAgent from '../components/EFaturaAgent';
 import EFaturaIadeAgent from '../components/EFaturaIadeAgent';
+import TemerrutAgent from '../components/TemerrutAgent';
 
 
 function Agent() {
@@ -50,6 +51,11 @@ function Agent() {
             <Grid container spacing={1}>
                 <Grid size={{xs:12,sm:4}}>
                     <IhtarAgent
+                    onChangeProps={handleChangeProps}
+                    />
+                </Grid>
+                <Grid size={{xs:12,sm:4}}>
+                    <TemerrutAgent
                     onChangeProps={handleChangeProps}
                     />
                 </Grid>
