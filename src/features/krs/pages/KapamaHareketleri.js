@@ -41,7 +41,13 @@ function KapamaHareketleri() {
 
     const columns = [
         { field: 'contract', headerName: 'Sözleşme', width:160 },
-        { field: 'tarih', headerName: 'Tarih', width:160 },
+        { field: 'tarih', headerName: 'Tarih', width:160, type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
         { field: 'fatura_tutar', headerName: 'Fatura Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -66,7 +72,6 @@ function KapamaHareketleri() {
         { field: 'protokol', headerName: 'Protokol', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
-        
     ]
 
     return (

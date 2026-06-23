@@ -41,8 +41,20 @@ function KapamaDetaylari() {
 
     const columns = [
         { field: 'contract', headerName: 'Sözleşme', width:160 },
-        { field: 'odeme_tarihi', headerName: 'Ödeme Tarihi', width:160 },
-        { field: 'fatura_tarihi', headerName: 'Fatura Tarihi', width:160 },
+        { field: 'odeme_tarihi', headerName: 'Ödeme Tarihi', width:160, type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
+        { field: 'fatura_tarihi', headerName: 'Fatura Tarihi', width:160, type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
         { field: 'kapatilan_tutar', headerName: 'Kapatılan Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
