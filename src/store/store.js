@@ -73,6 +73,8 @@ import kepMonitoringReducer from './slices/operation/kepMonitoringSlice';
 import partnerFinancialProfileReducer from './slices/partners/partnerFinancialProfileSlice';
 import sgkJobReducer from './slices/partners/sgkJobSlice';
 import agentTaskReducer from './slices/agent/agentTaskSlice';
+import kapamaDetayReducer from './slices/krs/kapamaDetaySlice';
+import kapamaHareketiReducer from './slices/krs/kapamaHareketiSlice';
 
 let navigate;
 
@@ -156,6 +158,8 @@ export const store = configureStore({
         partnerFinancialProfile: partnerFinancialProfileReducer,
         sgkJob: sgkJobReducer,
         agentTask: agentTaskReducer,
+        kapamaDetay: kapamaDetayReducer,
+        kapamaHareketi: kapamaHareketiReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
