@@ -73,6 +73,7 @@ function ActiveActiveLeases() {
             )
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
+        { field: 'signature_date', headerName: 'Sözleşme Tarihi', renderHeaderFilter: () => null },
         { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },

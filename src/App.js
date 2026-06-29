@@ -165,6 +165,7 @@ import UpdatePartnerFinancialProfile from 'features/credit/pages/UpdatePartnerFi
 import Agent from 'features/agent/pages/Agent';
 import KapamaDetaylari from 'features/krs/pages/KapamaDetaylari';
 import KapamaHareketleri from 'features/krs/pages/KapamaHareketleri';
+import KrsReports from 'features/krs/pages/KrsReports';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -328,6 +329,7 @@ function App() {
                   <Route path='/partner-financial-profiles/update/:uuid' element={<UpdatePartnerFinancialProfile></UpdatePartnerFinancialProfile>}></Route>
                   <Route path='/kapama-detaylari' element={<KapamaDetaylari></KapamaDetaylari>}></Route>
                   <Route path='/kapama-hareketleri' element={<KapamaHareketleri></KapamaHareketleri>}></Route>
+                  <Route path='/krs-raporlari' element={<KrsReports></KrsReports>}></Route>
 
                   {/* operation */}
                   <Route path='/contract-in-suppliers' element={<ContractInSuppliers></ContractInSuppliers>}></Route>

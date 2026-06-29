@@ -75,6 +75,7 @@ import sgkJobReducer from './slices/partners/sgkJobSlice';
 import agentTaskReducer from './slices/agent/agentTaskSlice';
 import kapamaDetayReducer from './slices/krs/kapamaDetaySlice';
 import kapamaHareketiReducer from './slices/krs/kapamaHareketiSlice';
+import krsReportReducer from './slices/krs/krsReportSlice';
 
 let navigate;
 
@@ -160,6 +161,7 @@ export const store = configureStore({
         agentTask: agentTaskReducer,
         kapamaDetay: kapamaDetayReducer,
         kapamaHareketi: kapamaHareketiReducer,
+        krsReport: krsReportReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
