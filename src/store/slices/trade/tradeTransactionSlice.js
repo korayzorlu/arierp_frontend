@@ -14,6 +14,12 @@ const initialState = {
     tradeTransactionsLoading:false,
     tradeTransactionsInLease:[],
     tradeTransactionsInLeaseCode:0,
+    tradeTransactionsForCustomerInLease:[],
+    tradeTransactionsForCustomerInLeaseParams:{
+        start: 0 * 100,
+        end: (0 + 1) * 100,
+        format: 'datatables'
+    },
 }
 
 export const fetchTradeTransactions = createAsyncThunk('auth/fetchTradeTransactions', async ({activeCompany,serverModels=null,params=null}) => {
@@ -59,6 +65,11 @@ export const fetchTradeTransactionsInLease = createAsyncThunk('organization/fetc
     return response.data;
 });
 
+export const fetchTradeTransactionsForCustomerInLease = createAsyncThunk('organization/fetchTradeTransactionsForCustomerInLease', async ({activeCompany,lease_uuid,params,paginate}) => {
+    const response = await axios.get(`/trade/trade_transactions_for_customer_in_lease/?ac=${activeCompany.id}&lease_uuid=${lease_uuid}`, {withCredentials: true, params: {...params, paginate: paginate}});
+    return response.data;
+});
+
 const tradeTransactionSlice = createSlice({
     name:"tradeTransaction",
     initialState,
@@ -88,6 +99,12 @@ const tradeTransactionSlice = createSlice({
         setTradeTransactionsInLeaseCode: (state,action) => {
             state.tradeTransactionsInLeaseCode = action.payload;
         },
+        setTradeTransactionsForCustomerInLeaseParams: (state,action) => {
+            state.tradeTransactionsForCustomerInLeaseParams = {
+                ...state.tradeTransactionsForCustomerInLeaseParams,
+                ...action.payload
+            };
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -113,6 +130,17 @@ const tradeTransactionSlice = createSlice({
             .addCase(fetchTradeTransactionsInLease.rejected, (state,action) => {
                 state.tradeTransactionsLoading = false;
             })
+            //fetch trade transactions for customer in lease
+            .addCase(fetchTradeTransactionsForCustomerInLease.pending, (state) => {
+                state.tradeTransactionsLoading = true;
+            })
+            .addCase(fetchTradeTransactionsForCustomerInLease.fulfilled, (state,action) => {
+                state.tradeTransactionsForCustomerInLease = action.payload.data || action.payload;
+                state.tradeTransactionsLoading = false;
+            })
+            .addCase(fetchTradeTransactionsForCustomerInLease.rejected, (state,action) => {
+                state.tradeTransactionsLoading = false;
+            })
     },
   
 })
@@ -124,5 +152,6 @@ export const {
     deleteTradeTransactions,
     setTradeTransactionOverdues,
     setTradeTransactionsInLeaseCode,
+    setTradeTransactionsForCustomerInLeaseParams,
 } = tradeTransactionSlice.actions;
 export default tradeTransactionSlice.reducer;

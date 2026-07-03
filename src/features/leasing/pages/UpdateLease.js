@@ -16,6 +16,8 @@ import TradeTransactionsInLease from 'features/leasing/components/TradeTransacti
 import SettingsIcon from '@mui/icons-material/Settings';
 import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 import InvoicesInLease from '../components/InvoicesInLease';
+import TradeTransactionsForCustomerInLease from '../components/TradeTransactionsForCustomerInLease';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -271,10 +273,11 @@ function UpdateLease() {
                             scrollButtons="auto"
                             onChange={handleChangeTabValue}
                             >
-                                <Tab label="Ödeme Tablosu" value={0} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
-                                <Tab label="TAHSİLATLAR" value={1} icon={<PaidIcon/>} iconPosition="start"/>
-                                <Tab label="CARİ HESAP EKSTRESİ" value={2} icon={<ReceiptLongIcon/>} iconPosition="start"/>
-                                <Tab label="FATURALAR" value={3} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                <Tab label="ÖDEME TABLOSU" value={0} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
+                                <Tab label="ÖDEME EKSTRESİ" value={1} icon={<ReceiptIcon/>} iconPosition="start"/>
+                                <Tab label="TAHSİLATLAR" value={2} icon={<PaidIcon/>} iconPosition="start"/>
+                                <Tab label="CARİ HESAP EKSTRESİ" value={3} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                <Tab label="FATURALAR" value={4} icon={<ReceiptLongIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                     </Grid>
@@ -289,18 +292,25 @@ function UpdateLease() {
                     <TabPanel value={tabValue} index={1} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
-                                <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
+                                <TradeTransactionsForCustomerInLease lease_uuid={uuid}></TradeTransactionsForCustomerInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
                     <TabPanel value={tabValue} index={2} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
-                                <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
+                                <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
                     <TabPanel value={tabValue} index={3} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                        <Grid container spacing={2}>
+                            <Grid size={{xs:12,sm:12}}>
+                                <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={4} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={3}>
                             <Grid size={{xs:12,sm:12}}>
                                 <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>

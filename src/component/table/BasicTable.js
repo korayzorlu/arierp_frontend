@@ -143,9 +143,10 @@ function BasicTable(props) {
               },
             }}
             pageSizeOptions={[25, 50, 100]}
-            pagination
+            pagination={props.noPagination ? false : true}
             paginationModel={paginationModel}
             onPaginationModelChange={(model) => setPaginationModel(model)}
+            rowSpanning={props.rowSpanning ? true : false}
             loading={props.loading}
             checkboxSelection={props.checkboxSelection}
             disableRowSelectionOnClick={props.disableRowSelectionOnClick}

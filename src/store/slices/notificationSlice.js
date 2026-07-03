@@ -44,6 +44,7 @@ const initialState = {
     thirdPersonPaymentDetailDialog: false,
     thirdPersonStatusDialog: false,
     tradeTransactionDialog: false,
+    tradeTransactionForCustomerDialog: false,
     trialBalanceTransactionDialog: false,
     unreadNotifications: 0,
     userDialog: false,
@@ -144,6 +145,9 @@ const notificationSlice = createSlice({
         },
         setTradeTransactionDialog: (state,action) => {
             state.tradeTransactionDialog = action.payload;
+        },
+        setTradeTransactionForCustomerDialog: (state,action) => {
+            state.tradeTransactionForCustomerDialog = action.payload;
         },
         setWarningNoticeDialog: (state,action) => {
             state.warningNoticeDialog = action.payload;
@@ -271,7 +275,8 @@ export const {
     setColumnHeaderInfoDialog,
     setColumnHeaderDateDialog,
     setImportDocumentDialog,
-    setDeleteDocumentDialog
+    setDeleteDocumentDialog,
+    setTradeTransactionForCustomerDialog
 
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

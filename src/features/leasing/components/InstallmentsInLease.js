@@ -42,7 +42,7 @@ function InstallmentsInLease(props) {
 
     const userColumns = [
         { field: 'sequency', headerName: 'Sıra No', flex: 1, type: 'number' },
-        { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1,  type: 'number' },
+        { field: 'payment_date', headerName: 'Ödeme Tarihi', flex: 1 },
         { field: 'payment', headerName: 'Ödeme', flex: 1, type: 'number',
             valueGetter: (value) => value ? parseFloat(value) : 0,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
@@ -60,6 +60,87 @@ function InstallmentsInLease(props) {
             valueGetter: (value) => value ? parseFloat(value) : 0,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value),
         },
+        // { field: 'transactions', headerName: 'Tahsilat Tarihi', flex: 1,
+        //     renderCell: (params) => {
+        //         if (!params.row?.transactions) return null;
+        //         return (
+        //             params.row.transactions.map((transaction) => {
+        //                 const formattedAmount = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(transaction.amount);
+        //                 const formattedAppliedAmount = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(transaction.applied_amount);
+        //                 const formattedCurrency = transaction.currency ? transaction.currency === "TRY" ? "TL" : transaction.currency : params.row.currency;
+        //                 return (
+        //                     <Typography key={transaction.id} variant="body2" color="textSecondary">
+        //                         {transaction.due_date}
+        //                     </Typography>
+        //                 );
+        //             })
+        //         );
+        //     }
+        // },
+        // { field: 'tt', headerName: 'Tahsilat Tutarı', flex: 1,
+        //     renderCell: (params) => {
+        //         if (!params.row?.transactions) return null;
+        //         return (
+        //             params.row.transactions.map((transaction) => {
+        //                 const formattedAmount = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(transaction.amount);
+        //                 const formattedCurrency = transaction.currency ? transaction.currency === "TRY" ? "TL" : transaction.currency : params.row.currency;
+        //                 return (
+        //                     <Typography key={transaction.id} variant="body2" color="textSecondary">
+        //                         {formattedAmount} {formattedCurrency}
+        //                     </Typography>
+        //                 );
+        //             })
+        //         );
+        //     }
+        // },
+        // { field: 'ttt', headerName: 'Tahsilattan İşlenen Tutar', flex: 1,
+        //     renderCell: (params) => {
+        //         if (!params.row?.transactions) return null;
+        //         return (
+        //             params.row.transactions.map((transaction) => {
+        //                 const formattedAppliedAmount = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(transaction.applied_amount);
+        //                 const formattedCurrency = transaction.currency ? transaction.currency === "TRY" ? "TL" : transaction.currency : params.row.currency;
+        //                 return (
+        //                     <Typography key={transaction.id} variant="body2" color="textSecondary">
+        //                         {formattedAppliedAmount} {formattedCurrency}
+        //                     </Typography>
+        //                 );
+        //             })
+        //         );
+        //     }
+        // },
+        // { field: 'tttt', headerName: 'Tahsilattan Kalan Bakiye', flex: 1,
+        //     renderCell: (params) => {
+        //         if (!params.row?.transactions) return null;
+        //         return (
+        //             params.row.transactions.map((transaction) => {
+        //                 const formattedRemainingAmount = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(transaction.remaining_amount);
+        //                 const formattedCurrency = transaction.currency ? transaction.currency === "TRY" ? "TL" : transaction.currency : params.row.currency;
+        //                 return (
+        //                     <Typography key={transaction.id} variant="body2" color="textSecondary">
+        //                         {formattedRemainingAmount} {formattedCurrency}
+        //                     </Typography>
+        //                 );
+        //             })
+        //         );
+        //     }
+        // },
+        // { field: 'islenen_tutar', headerName: 'İşlenen Tutar', flex: 1, type: 'number',
+        //     valueGetter: (value) => value ? parseFloat(value) : 0,
+        //     renderCell: (params) => {
+        //         const value = params.row.islenen_tutar;
+        //         const formattedValue = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value);
+        //         return `+ ${formattedValue}`;
+        //     }
+        // },
+        // { field: 'bakiye', headerName: 'Bakiye', flex: 1, type: 'number',
+        //     valueGetter: (value) => value ? parseFloat(value) : 0,
+        //     renderCell: (params) => {
+        //         const value = params.row.bakiye;
+        //         const formattedValue = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value);
+        //         return `+ ${formattedValue}`;
+        //     }
+        // },
         { field: 'currency', headerName: 'Para Birimi', flex: 1,  type: 'number' },
         { field: 'type_display', headerName: 'Ödeme Tipi', flex: 1 },
     ]
