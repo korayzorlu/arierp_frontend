@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
-import { fetchTradeTransactionsForCustomerInLease } from 'store/slices/trade/tradeTransactionSlice';
+import { fetchTradeTransactionsForCustomerInLease, setTradeTransactionsLoading } from 'store/slices/trade/tradeTransactionSlice';
 import { Chip, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import ErrorIcon from '@mui/icons-material/Error';
+import CustomTableButton from 'component/table/CustomTableButton';
+import { setExportDialog } from 'store/slices/notificationSlice';
+import { fetchExportProcess } from 'store/slices/processSlice';
+import { DownloadIcon, RefreshIcon } from 'icons';
+import ExportDialog from 'component/feedback/ExportDialog';
 
 function TradeTransactionsForCustomerInLease(props) {
     const {lease_uuid,companyName} = props;
@@ -24,6 +29,7 @@ function TradeTransactionsForCustomerInLease(props) {
     const [openInviteDialog, setOpenInviteDialog] = useState(false);
     const [selectedUserEmail, setSelectedUserEmail] = useState(null);
     const [selectedUserCompanyId, setSelectedUserCompanyId] = useState(null)
+    const [exportURL, setExportURL] = useState("")
 
     
 
@@ -159,9 +165,24 @@ function TradeTransactionsForCustomerInLease(props) {
             checkboxSelection={false}
             disableRowSelectionOnClick={true}
             loading={tradeTransactionsLoading}
+            customButtons={
+                <>  
+                    <CustomTableButton
+                    title="Excel'e Aktar"
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/trade/export_trade_transactions_for_customer/`)}}
+                    icon={<DownloadIcon fontSize="small"/>}
+                    />
+                    <CustomTableButton
+                    title="Yenile"
+                    onClick={() => dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid})).unwrap()}
+                    icon={<RefreshIcon fontSize="small"/>}
+                    />
+                </>
+            }
             getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
             noPagination
             rowSpanning={true}
+            noDownloadButton
             // initialState={{
             //     aggregation: {
             //         model: {
@@ -172,6 +193,13 @@ function TradeTransactionsForCustomerInLease(props) {
             //         },
             //     },
             // }}
+            />
+            <ExportDialog
+            handleClose={() => dispatch(setExportDialog(false))}
+            exportURL={exportURL}
+            startEvent={() => dispatch(setTradeTransactionsLoading(true))}
+            finalEvent={() => {dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid}));dispatch(setTradeTransactionsLoading(false));}}
+            lease={lease_uuid}
             />
         </>
     )

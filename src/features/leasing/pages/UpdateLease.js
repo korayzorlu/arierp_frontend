@@ -18,6 +18,8 @@ import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSli
 import InvoicesInLease from '../components/InvoicesInLease';
 import TradeTransactionsForCustomerInLease from '../components/TradeTransactionsForCustomerInLease';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import Info from '../components/Info';
+import InfoIcon from '@mui/icons-material/Info';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -86,7 +88,7 @@ function UpdateLease() {
                 />
                 <Divider></Divider>
                 <Stack spacing={2}>
-                    <Grid container spacing={2}>
+                    {/* <Grid container spacing={2}>
                         <Grid size={{xs:12,sm:3}}>
                             <TextField
                             type="text"
@@ -185,7 +187,7 @@ function UpdateLease() {
                             size="small"
                             label={"Müşteri Baz Maliyet"}
                             variant='outlined'
-                            value={data.musteri_baz_maliyet}
+                            value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(data.musteri_baz_maliyet)}
                             disabled={false}
                             fullWidth
                             />
@@ -229,7 +231,7 @@ function UpdateLease() {
                             <TextField
                             type="text"
                             size="small"
-                            label={"Aktivasyon Tarihi"}
+                            label={"Aktifleştirilme Tarihi"}
                             variant='outlined'
                             value={data.activation_date}
                             disabled={false}
@@ -258,7 +260,7 @@ function UpdateLease() {
                             fullWidth
                             />
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                     <Grid
                     container
                     spacing={{xs:2,sm:0}}
@@ -273,44 +275,48 @@ function UpdateLease() {
                             scrollButtons="auto"
                             onChange={handleChangeTabValue}
                             >
-                                <Tab label="ÖDEME TABLOSU" value={0} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
-                                <Tab label="ÖDEME EKSTRESİ" value={1} icon={<ReceiptIcon/>} iconPosition="start"/>
-                                <Tab label="TAHSİLATLAR" value={2} icon={<PaidIcon/>} iconPosition="start"/>
-                                <Tab label="CARİ HESAP EKSTRESİ" value={3} icon={<ReceiptLongIcon/>} iconPosition="start"/>
-                                <Tab label="FATURALAR" value={4} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                <Tab label="BİLGİ" value={0} icon={<InfoIcon/>} iconPosition="start"/>
+                                <Tab label="TAKSİT TABLOSU" value={1} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
+                                <Tab label="ÖDEME EKSTRESİ" value={2} icon={<ReceiptIcon/>} iconPosition="start"/>
+                                <Tab label="TAHSİLATLAR" value={3} icon={<PaidIcon/>} iconPosition="start"/>
+                                <Tab label="CARİ HESAP EKSTRESİ" value={4} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                <Tab label="FATURALAR" value={5} icon={<ReceiptLongIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                     </Grid>
                     {/* <Divider></Divider> */}
-                    <TabPanel value={tabValue} index={0} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                    <TabPanel value={tabValue} index={0}>
+                        <Info data={data}></Info>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <InstallmentsInLease lease_id={uuid}></InstallmentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={1} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                    <TabPanel value={tabValue} index={2} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <TradeTransactionsForCustomerInLease lease_uuid={uuid}></TradeTransactionsForCustomerInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={2} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                    <TabPanel value={tabValue} index={3} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={3} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                    <TabPanel value={tabValue} index={4} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={2}>
                             <Grid size={{xs:12,sm:12}}>
                                 <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
                             </Grid>
                         </Grid>
                     </TabPanel>
-                    <TabPanel value={tabValue} index={4} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                    <TabPanel value={tabValue} index={5} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
                         <Grid container spacing={3}>
                             <Grid size={{xs:12,sm:12}}>
                                 <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>
