@@ -25,6 +25,9 @@ import { deletePartner, fetchPartner, ignorePartner, updatePartner } from '../..
 import PolicyIcon from '@mui/icons-material/Policy';
 import SecurityCheckTab from '../companies/SecurityCheckTab';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import ManagerSummaryTab from '../companies/ManagerSummaryTab';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 function UpdatePartner() {
     const {user} = useSelector((store) => store.auth);
@@ -114,6 +117,7 @@ function UpdatePartner() {
                                 {/* <Tab label="İletişim" value={2} icon={<CallIcon/>} iconPosition="start"/> */}
                                 <Tab label="Güvenlik Sorgulaması" value={3} icon={<PolicyIcon/>} iconPosition="start"/>
                                 {/* <Tab label="Cari Hesaplar" value={3} icon={<MonetizationOnIcon/>} iconPosition="start"/> */}
+                                <Tab label="Yönetici Özeti" value={4} icon={<QueryStatsIcon/>} iconPosition="start"/>
                             </Tabs>
                         </Grid>
                         <Grid>
@@ -218,6 +222,13 @@ function UpdatePartner() {
                         partnerUuid={uuid}
                         />
                     </TabPanel> */}
+                    <TabPanel value={tabValue} index={4}>
+                        <ManagerSummaryTab
+                        reliable={data.is_reliable_person}
+                        uuid={data.uuid}
+                        ignoreClick={handleIgnore}
+                        />
+                    </TabPanel>
                 </Stack>
             </Stack>
             

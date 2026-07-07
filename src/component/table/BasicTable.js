@@ -128,6 +128,7 @@ function BasicTable(props) {
                     title:props.title,
                     noToolbarButtons: props.noToolbarButtons,
                     apiRef: props.apiRef,
+                    noDownloadButton: props.noDownloadButton,
                 },
                 loadingOverlay: {
                   variant: 'linear-progress',
