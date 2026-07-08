@@ -12,7 +12,8 @@ import DownloadingIcon from '@mui/icons-material/Downloading';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { ReactComponent as ExcelIcon } from "../../images/icons/global/excel.svg";
-import { ReactComponent as XlsIcon } from "../../images/icons/global/xls.svg";
+import { ReactComponent as XlsIcon } from "images/icons/global/xls.svg";
+import { ReactComponent as DocxIcon } from "images/icons/global/docx.svg";
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
@@ -134,12 +135,18 @@ function ExportDialog(props) {
                     fullWidth
                     >
                         <DialogTitle id="alert-dialog-title">
-                            <XlsIcon height={32} width={32} /> Dışa Aktar
+                            { props.type === "manager_summary" ? <DocxIcon height={32} width={32} /> : <XlsIcon height={32} width={32} /> } Dışa Aktar
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">
                                 <Typography>
-                                    Tablodaki veriler excel dosyasında hazırlanarak dışa aktarılacaktır. Devam etmek istiyor musun?
+                                    {
+                                        props.type === "manager_summary"
+                                        ?
+                                            "Yönetici özet raporu word dosyasında hazırlanarak dışa aktarılacaktır. Devam etmek istiyor musun?"
+                                        :
+                                            "Tablodaki veriler excel dosyasında hazırlanarak dışa aktarılacaktır. Devam etmek istiyor musun?"
+                                    }
                                 </Typography>
                             </DialogContentText>
                         </DialogContent>

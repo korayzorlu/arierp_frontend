@@ -75,6 +75,7 @@ function ManagerSummaryTab(props) {
             </Grid>
 
             <ExportDialog
+            type="manager_summary"
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL={exportURL}
             startEvent={() => console.log("starting")}
