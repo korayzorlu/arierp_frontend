@@ -11,7 +11,7 @@ import ChangePartnerDialog from 'component/feedback/ChangePartnerDialog';
 import { setChangePartnerDialog } from 'store/slices/notificationSlice';
 import { useDispatch } from 'react-redux';
 
-function FormHeader(props) {
+function DetailHeader(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ function FormHeader(props) {
         spacing={0}
         >
             <Grid
-            size={4}
+            size={8}
             container
             sx={{
                 justifyContent: "flex-start",
@@ -46,17 +46,11 @@ function FormHeader(props) {
                             <ArrowBackIosNewIcon/>
                         </IconButton>
                 }
-            </Grid>
-            <Grid
-            size={4}
-            container
-            sx={{
-                justifyContent: "flex-center",
-                alignItems: "center",
-            }}
-            >
-                <Typography variant='body1' sx={{textAlign: 'center',width: '100%',color:'text.secondary'}}>
+                <Typography variant='body1' sx={{textAlign: 'left',fontWeight:'bold'}}>
                     {props.title || ""}
+                </Typography>
+                <Typography variant='body1' sx={{textAlign: 'left',color:'text.secondary'}}>
+                    &nbsp;- {props.subtitle || ""}
                 </Typography>
             </Grid>
             <Grid
@@ -159,4 +153,4 @@ function FormHeader(props) {
     )
 }
 
-export default FormHeader
+export default DetailHeader

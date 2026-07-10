@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
 import { fetchTradeTransactionsInLease } from 'store/slices/trade/tradeTransactionSlice';
-import { Typography } from '@mui/material';
+import { Grid, Paper, Stack, Typography } from '@mui/material';
 
 function TradeTransactionsInLease(props) {
     const {lease_uuid,companyName} = props;
@@ -171,25 +171,32 @@ function TradeTransactionsInLease(props) {
 
     return (
         <>
-            <BasicTable
-            rows={rowsWithBalance}
-            columns={userColumns}
-            getRowId={(row) => row.uuid}
-            checkboxSelection={false}
-            disableRowSelectionOnClick={true}
-            loading={tradeTransactionsLoading}
-            getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
-            // initialState={{
-            //     aggregation: {
-            //         model: {
-            //             debit_amount: 'sum',
-            //             credit_amount: 'sum',
-            //             local_debit_amount: 'sum',
-            //             local_credit_amount: 'sum',
-            //         },
-            //     },
-            // }}
-            />
+            <Stack spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <BasicTable
+                        rows={rowsWithBalance}
+                        columns={userColumns}
+                        getRowId={(row) => row.uuid}
+                        checkboxSelection={false}
+                        disableRowSelectionOnClick={true}
+                        loading={tradeTransactionsLoading}
+                        getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
+                        // initialState={{
+                        //     aggregation: {
+                        //         model: {
+                        //             debit_amount: 'sum',
+                        //             credit_amount: 'sum',
+                        //             local_debit_amount: 'sum',
+                        //             local_credit_amount: 'sum',
+                        //         },
+                        //     },
+                        // }}
+                        />
+                    </Paper>
+                </Grid>
+            </Stack>
+            
         </>
     )
 }

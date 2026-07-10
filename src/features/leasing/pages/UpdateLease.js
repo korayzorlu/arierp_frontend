@@ -20,6 +20,7 @@ import TradeTransactionsForCustomerInLease from '../components/TradeTransactions
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import Info from '../components/Info';
 import InfoIcon from '@mui/icons-material/Info';
+import DetailHeader from 'component/header/DetailHeader';
 
 function UpdateLease() {
     const {user} = useSelector((store) => store.auth);
@@ -75,267 +76,98 @@ function UpdateLease() {
     };
 
     return (
-        <Paper elevation={0} sx={{p:2}} square>
-            <Stack spacing={2}>
-                <FormHeader
-                title={`KİRA PLANI DETAY - ${data.code || ""}`}
-                loadingSave={disabled}
-                disabledSave={buttonDisabled}
-                onClickSave={() => handleSubmit()}
-                onClickSettings={() => {}}
-                uuid={uuid}
-                //onClickDelete={() => dispatch(setDialog(true))}
-                />
-                <Divider></Divider>
-                <Stack spacing={2}>
-                    {/* <Grid container spacing={2}>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Kira Planı Kodu"}
-                            variant='outlined'
-                            value={data.code}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Sözleşme No"}
-                            variant='outlined'
-                            value={data.contract}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Müşteri"}
-                            variant='outlined'
-                            value={data.partner}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Müşteri TC/VKN"}
-                            variant='outlined'
-                            value={data.partner_tc}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2}>
-                        <Grid size={{xs:12,sm:6}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Proje"}
-                            variant='outlined'
-                            value={data.item ? data.item.name : ""}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Blok"}
-                            variant='outlined'
-                            value={data.block}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Bağımsız Bölüm"}
-                            variant='outlined'
-                            value={data.unit}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2}>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Vade"}
-                            variant='outlined'
-                            value={data.vade}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Müşteri Baz Maliyet"}
-                            variant='outlined'
-                            value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(data.musteri_baz_maliyet)}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"IRR"}
-                            variant='outlined'
-                            value={data.irr}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Para Birimi"}
-                            variant='outlined'
-                            value={data.currency}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2}>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Finansman Kurum"}
-                            variant='outlined'
-                            value={data.finansman_kurum}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Aktifleştirilme Tarihi"}
-                            variant='outlined'
-                            value={data.activation_date}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Statü 1"}
-                            variant='outlined'
-                            value={data.lease_status}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                        <Grid size={{xs:12,sm:3}}>
-                            <TextField
-                            type="text"
-                            size="small"
-                            label={"Statü 2"}
-                            variant='outlined'
-                            value={data.status}
-                            disabled={false}
-                            fullWidth
-                            />
-                        </Grid>
-                    </Grid> */}
-                    <Grid
-                    container
-                    spacing={{xs:2,sm:0}}
-                    sx={{
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}>
-                        <Grid>
-                            <Tabs
-                            value={tabValue}
-                            variant='scrollable'
-                            scrollButtons="auto"
-                            onChange={handleChangeTabValue}
-                            >
-                                <Tab label="BİLGİ" value={0} icon={<InfoIcon/>} iconPosition="start"/>
-                                <Tab label="TAKSİT TABLOSU" value={1} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
-                                <Tab label="ÖDEME EKSTRESİ" value={2} icon={<ReceiptIcon/>} iconPosition="start"/>
-                                <Tab label="TAHSİLATLAR" value={3} icon={<PaidIcon/>} iconPosition="start"/>
-                                <Tab label="CARİ HESAP EKSTRESİ" value={4} icon={<ReceiptLongIcon/>} iconPosition="start"/>
-                                <Tab label="FATURALAR" value={5} icon={<ReceiptLongIcon/>} iconPosition="start"/>
-                            </Tabs>
-                        </Grid>
-                    </Grid>
-                    {/* <Divider></Divider> */}
-                    <TabPanel value={tabValue} index={0}>
-                        <Info data={data}></Info>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={1} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
-                        <Grid container spacing={2}>
-                            <Grid size={{xs:12,sm:12}}>
-                                <InstallmentsInLease lease_id={uuid}></InstallmentsInLease>
+        <>
+            <Stack spacing={1}>
+                <Paper elevation={0} sx={{p:2, /*backgroundColor: 'unset'*/}} square>
+                    <Stack spacing={2}>
+                        <DetailHeader
+                        title={`KİRA PLANI DETAY`}
+                        subtitle={data.code || ""}
+                        loadingSave={disabled}
+                        disabledSave={buttonDisabled}
+                        onClickSave={() => handleSubmit()}
+                        onClickSettings={() => {}}
+                        uuid={uuid}
+                        //onClickDelete={() => dispatch(setDialog(true))}
+                        />
+                        {/* <Divider></Divider> */}
+                        <Stack spacing={2}>
+                            <Grid
+                            container
+                            spacing={{xs:2,sm:0}}
+                            sx={{
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}>
+                                <Grid>
+                                    <Tabs
+                                    value={tabValue}
+                                    variant='scrollable'
+                                    scrollButtons="auto"
+                                    onChange={handleChangeTabValue}
+                                    >
+                                        <Tab label="BİLGİ" value={0} icon={<InfoIcon/>} iconPosition="start"/>
+                                        <Tab label="TAKSİT TABLOSU" value={1} icon={<FormatListNumberedIcon/>} iconPosition="start"/>
+                                        <Tab label="ÖDEME EKSTRESİ" value={2} icon={<ReceiptIcon/>} iconPosition="start"/>
+                                        <Tab label="TAHSİLATLAR" value={3} icon={<PaidIcon/>} iconPosition="start"/>
+                                        <Tab label="CARİ HESAP EKSTRESİ" value={4} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                        <Tab label="FATURALAR" value={5} icon={<ReceiptLongIcon/>} iconPosition="start"/>
+                                    </Tabs>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={2} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
-                        <Grid container spacing={2}>
-                            <Grid size={{xs:12,sm:12}}>
-                                <TradeTransactionsForCustomerInLease lease_uuid={uuid}></TradeTransactionsForCustomerInLease>
-                            </Grid>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={3} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
-                        <Grid container spacing={2}>
-                            <Grid size={{xs:12,sm:12}}>
-                                <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
-                            </Grid>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={4} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
-                        <Grid container spacing={2}>
-                            <Grid size={{xs:12,sm:12}}>
-                                <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
-                            </Grid>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={5} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
-                        <Grid container spacing={3}>
-                            <Grid size={{xs:12,sm:12}}>
-                                <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>
-                            </Grid>
-                        </Grid>
-                    </TabPanel>
-                    
-                </Stack>
+                            {/* <Divider></Divider> */}
+                            
+                            
+                            
+                            
+                            
+                            {/* <TabPanel value={tabValue} index={5} sx={{"& .MuiBox-root": { mt: "0 !important" }, mt: "0 !important"}}>
+                                <Grid container spacing={3}>
+                                    <Grid size={{xs:12,sm:12}}>
+                                        <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>
+                                    </Grid>
+                                </Grid>
+                            </TabPanel> */}
+                            
+                        </Stack>
+                    </Stack>
+                    <Dialog
+                    title="Delete invoice"
+                    onClickText="Delete"
+                    onClickColor="error"
+                    dismissText="Cancel"
+                    onClick={handleDelete}
+                    >
+                        Are you sure you want to delete this invoice? You cant't undo this action.
+                    </Dialog>
+                </Paper>
+
+                <TabPanel value={tabValue} index={0}>
+                    <Info data={data}></Info>
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={1}>
+                    <InstallmentsInLease lease_id={uuid}></InstallmentsInLease>
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={2}>
+                    <TradeTransactionsForCustomerInLease lease_uuid={uuid}></TradeTransactionsForCustomerInLease>
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={3}>
+                    <ContractPaymentsInLease contract_uuid={data.contract_uuid}></ContractPaymentsInLease>
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={4}>
+                    <TradeTransactionsInLease lease_uuid={uuid}></TradeTransactionsInLease>
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={5}>
+                    <InvoicesInLease lease_uuid={uuid}></InvoicesInLease>
+                </TabPanel>
             </Stack>
-            <Dialog
-            title="Delete invoice"
-            onClickText="Delete"
-            onClickColor="error"
-            dismissText="Cancel"
-            onClick={handleDelete}
-            >
-                Are you sure you want to delete this invoice? You cant't undo this action.
-            </Dialog>
-        </Paper>
+            
+        </>
     )
 }
 

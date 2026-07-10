@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchInstallmentsInLease } from 'store/slices/leasing/leaseSlice';
 import BasicTable from 'component/table/BasicTable';
-import { Typography } from '@mui/material';
+import { Grid, Paper, Stack, Typography } from '@mui/material';
 import { fetchInstallmentInformation } from 'store/slices/leasing/installmentSlice';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
 
@@ -147,25 +147,31 @@ function InstallmentsInLease(props) {
 
     return (
          <>
-            <BasicTable
-            rows={installmentInformation}
-            columns={userColumns}
-            getRowId={(row) => row.id}
-            checkboxSelection={false}
-            disableRowSelectionOnClick={true}
-            loading={installmentsLoading}
-            getRowClassName={(params) => params.row.type !== '1' ? `table-row-${dark ? "cream" : "celticglow"}` : ''}
-            apiRef={apiRef}
-            initialState={{
-                aggregation: {
-                    model: {
-                        amount: 'sum',
-                        payment: 'sum',
-                        vat_amount: 'sum',
-                    },
-                },
-            }}
-            />
+            <Stack spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <BasicTable
+                        rows={installmentInformation}
+                        columns={userColumns}
+                        getRowId={(row) => row.id}
+                        checkboxSelection={false}
+                        disableRowSelectionOnClick={true}
+                        loading={installmentsLoading}
+                        getRowClassName={(params) => params.row.type !== '1' ? `table-row-${dark ? "cream" : "celticglow"}` : ''}
+                        apiRef={apiRef}
+                        initialState={{
+                            aggregation: {
+                                model: {
+                                    amount: 'sum',
+                                    payment: 'sum',
+                                    vat_amount: 'sum',
+                                },
+                            },
+                        }}
+                        />
+                    </Paper>
+                </Grid>
+            </Stack>
         </>
     )
 }

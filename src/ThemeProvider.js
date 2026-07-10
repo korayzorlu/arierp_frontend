@@ -263,7 +263,7 @@ export const ThemeProvider = ({ children }) => {
                     root: {
                         "&.Mui-selected": {
                             color: "#000",
-                            //fontWeight: "bold",
+                            fontWeight: "bold",
                         },
                     },
                 },
@@ -274,6 +274,20 @@ export const ThemeProvider = ({ children }) => {
                         backgroundColor: "#000",
                         //display: "none",
                     },
+                },
+            },
+            MuiInputBase: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-disabled::before":{
+                            borderBottom: "1px solid rgba(0, 0, 0, 0.2)!important",
+                        },
+                    },
+                    input: {
+                        "&.Mui-disabled":{
+                            WebkitTextFillColor: "#000",
+                        },
+                    }
                 },
             },
         },
@@ -362,7 +376,7 @@ export const ThemeProvider = ({ children }) => {
                     root: {
                         "&.Mui-selected": {
                             color: "#fff",
-                            //fontWeight: "bold",
+                            fontWeight: "bold",
                         },
                     },
                 },
@@ -373,6 +387,20 @@ export const ThemeProvider = ({ children }) => {
                         backgroundColor: "#fff",
                         //display: "none",
                     },
+                },
+            },
+            MuiInputBase: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-disabled::before":{
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.2)!important",
+                        },
+                    },
+                    input: {
+                        "&.Mui-disabled":{
+                            WebkitTextFillColor: "#fff",
+                        },
+                    }
                 },
             },
         },

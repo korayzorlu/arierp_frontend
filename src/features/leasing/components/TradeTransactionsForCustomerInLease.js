@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
 import { fetchTradeTransactionsForCustomerInLease, setTradeTransactionsLoading } from 'store/slices/trade/tradeTransactionSlice';
-import { Chip, Typography } from '@mui/material';
+import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -158,49 +158,56 @@ function TradeTransactionsForCustomerInLease(props) {
 
     return (
         <>
-            <BasicTable
-            rows={rowsWithBalance}
-            columns={userColumns}
-            getRowId={(row) => row.uuid}
-            checkboxSelection={false}
-            disableRowSelectionOnClick={true}
-            loading={tradeTransactionsLoading}
-            customButtons={
-                <>  
-                    <CustomTableButton
-                    title="Excel'e Aktar"
-                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/trade/export_trade_transactions_for_customer/`)}}
-                    icon={<DownloadIcon fontSize="small"/>}
-                    />
-                    <CustomTableButton
-                    title="Yenile"
-                    onClick={() => dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid})).unwrap()}
-                    icon={<RefreshIcon fontSize="small"/>}
-                    />
-                </>
-            }
-            getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
-            noPagination
-            rowSpanning={true}
-            noDownloadButton
-            // initialState={{
-            //     aggregation: {
-            //         model: {
-            //             debit_amount: 'sum',
-            //             credit_amount: 'sum',
-            //             local_debit_amount: 'sum',
-            //             local_credit_amount: 'sum',
-            //         },
-            //     },
-            // }}
-            />
-            <ExportDialog
-            handleClose={() => dispatch(setExportDialog(false))}
-            exportURL={exportURL}
-            startEvent={() => dispatch(setTradeTransactionsLoading(true))}
-            finalEvent={() => {dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid}));dispatch(setTradeTransactionsLoading(false));}}
-            lease={lease_uuid}
-            />
+            <Stack spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <BasicTable
+                        rows={rowsWithBalance}
+                        columns={userColumns}
+                        getRowId={(row) => row.uuid}
+                        checkboxSelection={false}
+                        disableRowSelectionOnClick={true}
+                        loading={tradeTransactionsLoading}
+                        customButtons={
+                            <>  
+                                <CustomTableButton
+                                title="Excel'e Aktar"
+                                onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/trade/export_trade_transactions_for_customer/`)}}
+                                icon={<DownloadIcon fontSize="small"/>}
+                                />
+                                <CustomTableButton
+                                title="Yenile"
+                                onClick={() => dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid})).unwrap()}
+                                icon={<RefreshIcon fontSize="small"/>}
+                                />
+                            </>
+                        }
+                        getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
+                        noPagination
+                        rowSpanning={true}
+                        noDownloadButton
+                        // initialState={{
+                        //     aggregation: {
+                        //         model: {
+                        //             debit_amount: 'sum',
+                        //             credit_amount: 'sum',
+                        //             local_debit_amount: 'sum',
+                        //             local_credit_amount: 'sum',
+                        //         },
+                        //     },
+                        // }}
+                        />
+                        <ExportDialog
+                        handleClose={() => dispatch(setExportDialog(false))}
+                        exportURL={exportURL}
+                        startEvent={() => dispatch(setTradeTransactionsLoading(true))}
+                        finalEvent={() => {dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid}));dispatch(setTradeTransactionsLoading(false));}}
+                        lease={lease_uuid}
+                        />
+                    </Paper>
+                </Grid>
+            </Stack>
+            
         </>
     )
 }

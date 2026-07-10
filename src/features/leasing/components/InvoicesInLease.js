@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
-import { Typography } from '@mui/material';
+import { Grid, Paper, Stack, Typography } from '@mui/material';
 import { fetchInvoices, resetInvoicesParams } from 'store/slices/accounting/invoiceSlice';
 
 function InvoicesInLease(props) {
@@ -45,22 +45,29 @@ function InvoicesInLease(props) {
 
     return (
         <>
-            <BasicTable
-            rows={invoices}
-            columns={userColumns}
-            getRowId={(row) => row.uuid}
-            checkboxSelection={false}
-            disableRowSelectionOnClick={true}
-            loading={invoicesLoading}
-            getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
-            initialState={{
-                aggregation: {
-                    model: {
-                        amount: 'sum',
-                    },
-                },
-            }}
-            />
+            <Stack spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <BasicTable
+                        rows={invoices}
+                        columns={userColumns}
+                        getRowId={(row) => row.uuid}
+                        checkboxSelection={false}
+                        disableRowSelectionOnClick={true}
+                        loading={invoicesLoading}
+                        getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
+                        initialState={{
+                            aggregation: {
+                                model: {
+                                    amount: 'sum',
+                                },
+                            },
+                        }}
+                        />
+                    </Paper>
+                </Grid>
+            </Stack>
+            
         </>
     )
 }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
 import { fetchContractPaymentsInLease } from 'store/slices/contracts/contractSlice';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
+import { Grid, Paper, Stack } from '@mui/material';
 
 function ContractPaymentsInLease(props) {
     const {contract_uuid,companyName} = props;
@@ -73,25 +74,32 @@ function ContractPaymentsInLease(props) {
 
     return (
         <>
-            <BasicTable
-            rows={contractPaymentsInLease}
-            columns={userColumns}
-            getRowId={(row) => row.id}
-            checkboxSelection={false}
-            disableRowSelectionOnClick={true}
-            loading={contractPaymentsLoading}
-            apiRef={apiRef}
-            initialState={{
-                aggregation: {
-                    model: {
-                        debit_amount: 'sum',
-                        credit_amount: 'sum',
-                        local_debit_amount: 'sum',
-                        local_credit_amount: 'sum',
-                    },
-                },
-            }}
-            />
+            <Stack spacing={1}>
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <BasicTable
+                        rows={contractPaymentsInLease}
+                        columns={userColumns}
+                        getRowId={(row) => row.id}
+                        checkboxSelection={false}
+                        disableRowSelectionOnClick={true}
+                        loading={contractPaymentsLoading}
+                        apiRef={apiRef}
+                        initialState={{
+                            aggregation: {
+                                model: {
+                                    debit_amount: 'sum',
+                                    credit_amount: 'sum',
+                                    local_debit_amount: 'sum',
+                                    local_credit_amount: 'sum',
+                                },
+                            },
+                        }}
+                        />
+                    </Paper>
+                </Grid>
+            </Stack>
+            
         </>
     )
 }
