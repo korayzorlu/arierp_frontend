@@ -56,7 +56,8 @@ function ActiveActiveLeases() {
                 
             )
         },
-        { field: 'contract', headerName: 'Sözleşme Kodu' },
+        { field: 'contract', headerName: 'Sözleşme No', width:120 },
+        { field: 'contract_id', headerName: 'Sözleşme ID', width:120 },
         { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
                 params.row.partner_special
                 ?
@@ -73,8 +74,20 @@ function ActiveActiveLeases() {
             )
         },
         { field: 'partner_tc', headerName: 'Müşteri TC/VKN', width:160 },
-        { field: 'signature_date', headerName: 'Sözleşme Tarihi', renderHeaderFilter: () => null },
-        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', renderHeaderFilter: () => null },
+        { field: 'signature_date', headerName: 'Sözleşme Tarihi', type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+         },
+        { field: 'activation_date', headerName: 'Aktifleştirme Tarihi', type: 'date',
+            valueGetter: (value) => {
+                if (!value) return null;
+                const [day, month, year] = value.split('.');
+                return new Date(year, month - 1, day);
+            }
+        },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
