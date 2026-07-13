@@ -38,8 +38,8 @@ function UpdateLease() {
     const [data, setData] = useState({uuid})
 
     const fetchData = async () => {
-        await dispatch(fetchCountries()).unwrap();
-        await dispatch(fetchCurrencies()).unwrap();
+        // await dispatch(fetchCountries()).unwrap();
+        // await dispatch(fetchCurrencies()).unwrap();
         const response = await dispatch(fetchLease({activeCompany,params:{uuid,project}})).unwrap();
         //await dispatch(fetchContractPaymentsInLease({activeCompany,contract_id})).unwrap();
         setData(response);
