@@ -85,7 +85,7 @@ function UpdateLease() {
                         subtitle={data.code || ""}
                         loadingSave={disabled}
                         disabledSave={buttonDisabled}
-                        onClickSave={() => handleSubmit()}
+                        onClickSave={() => console.log("save")}
                         onClickSettings={() => {}}
                         uuid={uuid}
                         //onClickDelete={() => dispatch(setDialog(true))}
