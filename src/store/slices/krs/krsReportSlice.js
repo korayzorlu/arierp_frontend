@@ -28,6 +28,28 @@ export const fetchKrsReports = createAsyncThunk('auth/fetchKrsReports', async ({
     }
 });
 
+export const createKrsReport = createAsyncThunk('auth/createKrsReport', async ({activeCompany,data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/krs/create_krs_report/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return null
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 const krsReportSlice = createSlice({
     name:"krsReport",
     initialState,

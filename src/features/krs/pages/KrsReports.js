@@ -1,7 +1,7 @@
 import React, { startTransition, useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchKrsReports, fetchProjects, setKrsReportsLoading, setKrsReportsParams } from 'store/slices/krs/krsReportSlice';
-import { setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { createKrsReport, fetchKrsReports, fetchProjects, setKrsReportsLoading, setKrsReportsParams } from 'store/slices/krs/krsReportSlice';
+import { setAlert, setDeleteDialog, setDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -11,7 +11,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
 import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid } from '@mui/material';
+import { Button, Chip, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
@@ -19,6 +19,8 @@ import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import CurrencyFilter from 'component/table/filter/CurrencyFilter';
 import RiskFilter from 'component/table/filter/RiskFilter';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import axios from 'axios';
 
 function KrsReports() {
     const {user} = useSelector((store) => store.auth);
@@ -41,6 +43,7 @@ function KrsReports() {
 
     const columns = [
         { field: 'contract', headerName: 'Sözleşme', width:160 },
+        { field: 'contract_id', headerName: 'Sözleşme ID', width:160 },
         { field: 'kayit_turu', headerName: 'Kayıt Türü', width:160 },
         { field: 'versiyon', headerName: 'Versiyon', width:160 },
         { field: 'uye_kodu', headerName: 'Üye Kodu', width:160 },
@@ -49,6 +52,39 @@ function KrsReports() {
         { field: 'hesap_numarasi', headerName: 'Hesap Numarası', width:160 },
         
     ]
+
+    const handleCreateReport = async () => {
+        dispatch(setKrsReportsLoading(true));
+        await dispatch(createKrsReport({data:{company_uuid: activeCompany.id}})).unwrap();
+        dispatch(fetchKrsReports({activeCompany,params:{...krsReportsParams,project}}));
+        dispatch(setKrsReportsLoading(false));
+    };
+
+    const getFile = async () => {
+        try {
+            const response = await axios.post('/krs/get_krs_report_document/',
+                {
+                    company_uuid: activeCompany.id,
+                },
+                {
+                    responseType: "blob",
+                    withCredentials: true
+                }
+            );
+            console.log(response)
+            const disposition = response.headers.get('Content-Disposition');
+            const filename = disposition?.match(/filename="?(.+?)"?$/)?.[1];
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(response.data);
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        } catch (error) {
+            dispatch(setAlert({status:'error',text:error.message}));
+        } finally {
+
+        }
+    };
 
     return (
         <PanelContent>
@@ -70,6 +106,29 @@ function KrsReports() {
                     onClick={() => dispatch(fetchKrsReports({activeCompany,params:krsReportsParams})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
+                </>
+            }
+            customFiltersLeft={
+                <>
+                    <Button
+                    variant='contained'
+                    color='mars'
+                    endIcon={<PlayCircleFilledWhiteIcon/>}
+                    size='small'
+                    sx={{mr: 2}}
+                    onClick={handleCreateReport}
+                    >
+                        Rapor Oluştur
+                    </Button>
+                    <Button
+                    variant='contained'
+                    color='ari'
+                    endIcon={<DownloadIcon/>}
+                    size='small'
+                    onClick={getFile}
+                    >
+                        Rapor İndir
+                    </Button>
                 </>
             }
             rowCount={krsReportsCount}
