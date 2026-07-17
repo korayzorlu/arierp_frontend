@@ -10,8 +10,8 @@ import DeleteDialog from 'component/feedback/DeleteDialog';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
-import { useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, Grid } from '@mui/material';
+import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
+import { Chip, Grid, Stack } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
@@ -48,12 +48,26 @@ function ActiveActiveLeases() {
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
                 <Link
-                to={`/leasing/update/${params.row.uuid}/${params.row.contract_id}/`}
+                to={`/leasing/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}
                 </Link>
                 
+            )
+        },
+        { field: 'old_leases', headerName: 'Versiyonlar', width:120, renderCell: (params) => (
+                params.value.map((item) => (
+                    <Stack key={item.id} spacing={1}>
+                        <Link
+                        to={`/leasing/update/${item.id}/`}
+                        style={{textDecoration:"underline"}}
+                        >
+                            {item.code}
+                        </Link>
+                    </Stack>
+
+                ))
             )
         },
         { field: 'contract', headerName: 'Sözleşme No', width:120 },
@@ -226,6 +240,12 @@ function ActiveActiveLeases() {
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}
+            autoRowHeight
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                    py: 1,
+                },
+            }}
             initialState={{
                 pinnedColumns: {left: ['code']}
             }}

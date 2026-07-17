@@ -81,7 +81,7 @@ function TitleDeedInvoiceControls() {
     const columns = [
         { field: 'code', headerName: 'Kira Planı', width:120, editable: true, renderCell: (params) => (
                 <Link
-                to={`/leasing/update/${params.row.uuid}/${params.row.contract_id}/`}
+                to={`/leasing/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
                 >
                     {params.value}

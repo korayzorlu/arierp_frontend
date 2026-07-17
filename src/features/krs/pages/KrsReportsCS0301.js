@@ -1,6 +1,6 @@
 import React, { startTransition, useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { createKrsReport, fetchKrsReports, fetchProjects, setKrsReportsLoading, setKrsReportsParams } from 'store/slices/krs/krsReportSlice';
+import { createKrsReport, fetchKrsReports, fetchKrsReportsCS0301, fetchProjects, setKrsReportsCS0301Params, setKrsReportsLoading, setKrsReportsParams } from 'store/slices/krs/krsReportSlice';
 import { setAlert, setDeleteDialog, setDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
@@ -10,7 +10,7 @@ import DeleteDialog from 'component/feedback/DeleteDialog';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
-import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
+import { useGridApiRef } from '@mui/x-data-grid-premium';
 import { Button, Chip, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
@@ -22,10 +22,10 @@ import RiskFilter from 'component/table/filter/RiskFilter';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import axios from 'axios';
 
-function KrsReports() {
+function KrsReportsCS0301() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {krsReports,krsReportsCount,krsReportsParams,krsReportsLoading} = useSelector((store) => store.krsReport);
+    const {krsReportsCS0301,krsReportsCS0301Count,krsReportsCS0301Params,krsReportsCS0301Loading} = useSelector((store) => store.krsReport);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -37,21 +37,37 @@ function KrsReports() {
 
     useEffect(() => {
         startTransition(() => {
-            dispatch(fetchKrsReports({activeCompany,params:{...krsReportsParams,project}}));
+            dispatch(fetchKrsReportsCS0301({activeCompany,params:{...krsReportsCS0301Params,project}}));
         });
-    }, [activeCompany,krsReportsParams,dispatch]);
+    }, [activeCompany,krsReportsCS0301Params,dispatch]);
 
     const columns = [
-        { field: 'satir', headerName: 'Satır', flex:1, renderCell: (params) => (
-            <span style={{ whiteSpace: 'pre' }}>{params.value}</span>
-        ) },
+        { field: 'kayit_turu', headerName: 'Kayıt Türü', width:160 },
+        { field: 'versiyon', headerName: 'Versiyon', width:160 },
+        { field: 'uye_kodu', headerName: 'Üye Kodu', width:160 },
+        { field: 'portfoy_kodu', headerName: 'Portföy Kodu', width:160 },
+        { field: 'portfoy_alt_kodu', headerName: 'Portföy Alt Kodu', width:160 },
+        { field: 'hesap_numarasi', headerName: 'Hesap Numarası', width:160 },
+        { field: 'hesap_sahibinin_numarasi', headerName: 'Hesap Sahibinin Numarası', width:160 },
+        { field: 'ozel_talimat_gostergesi', headerName: 'Özel Talimat Göstergesi', width:160 },
+        { field: 'adres_tipi', headerName: 'Adres Tipi', width:160 },
+        { field: 'simdiki_onceki_adres_gostergesi', headerName: 'Şimdiki/Önceki Adres Göstergesi', width:160 },
+        { field: 'adrese_tasindigi_tarih', headerName: 'Adrese Taşındığı Tarih', width:160 },
+        { field: 'adresten_ayrildigi_tarih', headerName: 'Adresten Ayrıldığı Tarih', width:160 },
+        { field: 'satir_1', headerName: 'Satır 1', width:300 },
+        { field: 'satir_2', headerName: 'Satır 2', width:300 },
+        { field: 'satir_3', headerName: 'Satır 3', width:300 },
+        { field: 'satir_4', headerName: 'Satır 4', width:300 },
+        { field: 'posta_kodu', headerName: 'Posta Kodu', width:160 },
+
+
         
     ]
 
     const handleCreateReport = async () => {
         dispatch(setKrsReportsLoading(true));
         await dispatch(createKrsReport({data:{company_uuid: activeCompany.id}})).unwrap();
-        dispatch(fetchKrsReports({activeCompany,params:{...krsReportsParams,project}}));
+        dispatch(fetchKrsReportsCS0301({activeCompany,params:{...krsReportsCS0301Params,project}}));
         dispatch(setKrsReportsLoading(false));
     };
 
@@ -85,10 +101,10 @@ function KrsReports() {
         <PanelContent>
             <ListTableServer
             title="Krs Raporları"
-            rows={krsReports}
+            rows={krsReportsCS0301}
             columns={columns}
             getRowId={(row) => row.uuid}
-            loading={krsReportsLoading}
+            loading={krsReportsCS0301Loading}
             customButtons={
                 <>  
                     {/* <CustomTableButton
@@ -98,47 +114,18 @@ function KrsReports() {
                     /> */}
                     <CustomTableButton
                     title="Yenile"
-                    onClick={() => dispatch(fetchKrsReports({activeCompany,params:krsReportsParams})).unwrap()}
+                    onClick={() => dispatch(fetchKrsReportsCS0301({activeCompany,params:krsReportsCS0301Params})).unwrap()}
                     icon={<RefreshIcon fontSize="small"/>}
                     />
                 </>
             }
-            customFiltersLeft={
-                <>
-                    <Button
-                    variant='contained'
-                    color='mars'
-                    endIcon={<PlayCircleFilledWhiteIcon/>}
-                    size='small'
-                    sx={{mr: 2}}
-                    onClick={handleCreateReport}
-                    >
-                        Rapor Oluştur
-                    </Button>
-                    <Button
-                    variant='contained'
-                    color='ari'
-                    endIcon={<DownloadIcon/>}
-                    size='small'
-                    onClick={getFile}
-                    >
-                        Rapor İndir
-                    </Button>
-                </>
-            }
-            rowCount={krsReportsCount}
+            rowCount={krsReportsCS0301Count}
             // checkboxSelection
-            setParams={(value) => dispatch(setKrsReportsParams(value))}
+            setParams={(value) => dispatch(setKrsReportsCS0301Params(value))}
             // //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}
-            autoRowHeight
-            sx={{
-                [`& .${gridClasses.cell}`]: {
-                    py: 1,
-                },
-            }}
             initialState={{
                 pinnedColumns: {left: ['code']}
             }}
@@ -147,11 +134,11 @@ function KrsReports() {
             handleClose={() => dispatch(setExportDialog(false))}
             exportURL={exportURL}
             startEvent={() => dispatch(setKrsReportsLoading(true))}
-            finalEvent={() => {dispatch(fetchKrsReports({activeCompany,params:krsReportsParams}));dispatch(setKrsReportsLoading(false));}}
+            finalEvent={() => {dispatch(fetchKrsReportsCS0301({activeCompany,params:krsReportsCS0301Params}));dispatch(setKrsReportsLoading(false));}}
             status={status}
             />
         </PanelContent>
     )
 }
 
-export default KrsReports
+export default KrsReportsCS0301

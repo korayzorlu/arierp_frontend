@@ -46,6 +46,17 @@ function FinanceInfo(props) {
                         <TextField
                         type="text"
                         size="small"
+                        label={"Operasyon Baz Maliyet"}
+                        variant='standard'
+                        value={props.operasyon_baz_maliyet}
+                        disabled
+                        fullWidth
+                        />
+                    </Grid>
+                    <Grid size={{xs:12,sm:3}}>
+                        <TextField
+                        type="text"
+                        size="small"
                         label={"IRR"}
                         variant='standard'
                         value={props.irr}

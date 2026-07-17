@@ -60,6 +60,7 @@ function Info(props) {
                         <Stack spacing={2}>
                             <FinanceInfo
                             musteri_baz_maliyet={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.musteri_baz_maliyet)}
+                            operasyon_baz_maliyet={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.operasyon_baz_maliyet)}
                             irr={props.data.irr}
                             currency={props.data.currency}
                             finansman_kurum={props.data.finansman_kurum}

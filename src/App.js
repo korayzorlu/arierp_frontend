@@ -166,6 +166,11 @@ import Agent from 'features/agent/pages/Agent';
 import KapamaDetaylari from 'features/krs/pages/KapamaDetaylari';
 import KapamaHareketleri from 'features/krs/pages/KapamaHareketleri';
 import KrsReports from 'features/krs/pages/KrsReports';
+import KrsReportsCS0000 from 'features/krs/pages/KrsReportsCS0000';
+import KrsReportsCS0100 from 'features/krs/pages/KrsReportsCS0100';
+import KrsReportsCS0200 from 'features/krs/pages/KrsReportsCS0200';
+import KrsReportsCS0301 from 'features/krs/pages/KrsReportsCS0301';
+import KrsReportsCS9999 from 'features/krs/pages/KrsReportsCS9999';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -310,7 +315,7 @@ function App() {
 
                   <Route path='/leases' element={<Leases></Leases>}></Route>
                   <Route path='/leasing/add-lease' element={<AddLease></AddLease>}></Route>
-                  <Route path='/leasing/update/:uuid/:contract_id' element={<UpdateLease></UpdateLease>}></Route>
+                  <Route path='/leasing/update/:uuid' element={<UpdateLease></UpdateLease>}></Route>
                   <Route path='/active-leases' element={<ActiveLeases></ActiveLeases>}></Route>
                   <Route path='/under-review-leases' element={<UnderReviewLeases></UnderReviewLeases>}></Route>
                   <Route path='/installments' element={<Installment></Installment>}></Route>
@@ -330,6 +335,11 @@ function App() {
                   <Route path='/kapama-detaylari' element={<KapamaDetaylari></KapamaDetaylari>}></Route>
                   <Route path='/kapama-hareketleri' element={<KapamaHareketleri></KapamaHareketleri>}></Route>
                   <Route path='/krs-raporlari' element={<KrsReports></KrsReports>}></Route>
+                  <Route path='/krs-reports-cs0000' element={<KrsReportsCS0000></KrsReportsCS0000>}></Route>
+                  <Route path='/krs-reports-cs0100' element={<KrsReportsCS0100></KrsReportsCS0100>}></Route>
+                  <Route path='/krs-reports-cs0200' element={<KrsReportsCS0200></KrsReportsCS0200>}></Route>
+                  <Route path='/krs-reports-cs0301' element={<KrsReportsCS0301></KrsReportsCS0301>}></Route>
+                  <Route path='/krs-reports-cs9999' element={<KrsReportsCS9999></KrsReportsCS9999>}></Route>
 
                   {/* operation */}
                   <Route path='/contract-in-suppliers' element={<ContractInSuppliers></ContractInSuppliers>}></Route>
