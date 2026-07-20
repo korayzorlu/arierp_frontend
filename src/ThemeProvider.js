@@ -290,6 +290,15 @@ export const ThemeProvider = ({ children }) => {
                     }
                 },
             },
+            MuiFormLabel: {
+                styleOverrides: {
+                    root: {
+                        "&.Mui-disabled":{
+                            color: "rgba(0, 0, 0, 0.5)",
+                        },
+                    },
+                },
+            },
         },
     },trTR)
     const muiDarkTheme = () => createTheme({

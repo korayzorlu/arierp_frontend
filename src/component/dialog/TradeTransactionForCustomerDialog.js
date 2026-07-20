@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setTradeTransactionDialog, setMessageDialog, setTradeTransactionForCustomerDialog } from '../../store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
-import { Button, Chip, DialogActions, DialogContent, DialogContentText, Stack, Typography } from '@mui/material';
+import { Button, Chip, DialogActions, DialogContent, DialogContentText, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import BasicTable from '../table/BasicTable';
 import { fetchTradeTransactionsInLease } from '../../store/slices/trade/tradeTransactionSlice';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -28,7 +28,7 @@ function TradeTransactionForCustomerDialog(props) {
 
     const rowsWithBalance = [];
     let newIndex = 0;
-    tradeTransactionsForCustomerInLease.map((row, index) => {
+    (tradeTransactionsForCustomerInLease.transactions || []).map((row, index) => {
         const prevRow = newIndex > 0 ? rowsWithBalance[newIndex - 1] : null;
         if((prevRow && prevRow.posting_group_name !== row.posting_group_name && !prevRow.is_total)){
             rowsWithBalance.push({
@@ -51,7 +51,7 @@ function TradeTransactionForCustomerDialog(props) {
         }
         newIndex += 1;
         rowsWithBalance.push({...row, is_total: false});
-        if(index + 1 === tradeTransactionsForCustomerInLease.length){
+        if(index + 1 === tradeTransactionsForCustomerInLease.transactions.length){
             rowsWithBalance.push({
                 is_total: true,
                 uuid: row.uuid + newIndex,
@@ -145,6 +145,18 @@ function TradeTransactionForCustomerDialog(props) {
 
     ]
 
+    function createData(key, amount) {
+        return { key, amount };
+    }
+
+    const summary_rows = [
+        createData('Vadesi Gelen Toplam Taksit Bakiyesi', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.vadesi_gelen_toplam_taksit_tutari)),
+        createData('Yapılan Toplam Ödeme', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.yapilan_toplam_odeme_tutari)),
+        createData('Borç Virman Kaydı', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_borc_tutari)),
+        createData('Alacak Virman Kaydı', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_alacak_tutari)),
+        createData('Toplam Bakiye', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.toplam_bakiye)),
+    ];
+
     return (
         <MUIDialog
         open={tradeTransactionForCustomerDialog}
@@ -205,6 +217,29 @@ function TradeTransactionForCustomerDialog(props) {
                             // }}
                             />
                         </>
+                        <Grid container spacing={4}>
+                            <Grid size={{xs:12,sm:4}}>
+                                <TableContainer>
+                                    <Table aria-label="simple table">
+                                        <TableBody>
+                                        {summary_rows.map((row) => (
+                                            <TableRow
+                                            key={row.key}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                            <TableCell component="th" scope="row" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
+                                                {row.key}
+                                            </TableCell>
+                                            <TableCell align="right" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
+                                                {row.amount}
+                                            </TableCell>
+                                            </TableRow>
+                                        ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Grid>
+                        </Grid>
                     </Stack>
                 </DialogContentText>
             </DialogContent>

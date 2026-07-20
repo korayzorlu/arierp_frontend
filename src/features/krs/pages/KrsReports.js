@@ -42,7 +42,7 @@ function KrsReports() {
     }, [activeCompany,krsReportsParams,dispatch]);
 
     const columns = [
-        { field: 'satir', headerName: 'Satır', flex:1, renderCell: (params) => (
+        { field: 'satir', headerName: 'Satır', width:2000, renderCell: (params) => (
             <span style={{ whiteSpace: 'pre' }}>{params.value}</span>
         ) },
         

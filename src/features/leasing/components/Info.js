@@ -11,6 +11,7 @@ import CustomerInfo from './Info/CustomerInfo';
 import ProjectInfo from './Info/ProjectInfo';
 import FinanceInfo from './Info/FinanceInfo';
 import StatusInfo from './Info/StatusInfo';
+import RiskInfo from './Info/RiskInfo';
 
 function Info(props) {
 
@@ -69,6 +70,17 @@ function Info(props) {
                             devir_bedeli_amount={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.devir_bedeli_amount)}
                             paid_amount={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.paid_amount)}
                             finansman_kurum={props.data.finansman_kurum}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <RiskInfo
+                            overdue_amount={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.overdue_amount)}
+                            overdue_days={props.data.overdue_days}
                             />
                         </Stack>
                     </Paper>
