@@ -35,6 +35,19 @@ function FinanceInfo(props) {
                         <TextField
                         type="text"
                         size="small"
+                        label={"Para Birimi"}
+                        variant='standard'
+                        value={props.currency}
+                        disabled
+                        fullWidth
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={4}>
+                    <Grid size={{xs:12,sm:3}}>
+                        <TextField
+                        type="text"
+                        size="small"
                         label={"Müşteri Baz Maliyet"}
                         variant='standard'
                         value={props.musteri_baz_maliyet}
@@ -57,9 +70,9 @@ function FinanceInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"IRR"}
+                        label={"KDV"}
                         variant='standard'
-                        value={props.irr}
+                        value={props.vat}
                         disabled
                         fullWidth
                         />
@@ -68,9 +81,55 @@ function FinanceInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"Para Birimi"}
+                        label={"IRR"}
                         variant='standard'
-                        value={props.currency}
+                        value={props.irr}
+                        disabled
+                        fullWidth
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={4}>
+                    <Grid size={{xs:12,sm:3}}>
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Peşinat Tutarı"}
+                        variant='standard'
+                        value={props.pesinat_amount}
+                        disabled
+                        fullWidth
+                        />
+                    </Grid>
+                    <Grid size={{xs:12,sm:3}}>
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Kira Tutarı"}
+                        variant='standard'
+                        value={props.kira_amount}
+                        disabled
+                        fullWidth
+                        />
+                    </Grid>
+                    <Grid size={{xs:12,sm:3}}>
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Devir Bedeli Tutarı"}
+                        variant='standard'
+                        value={props.devir_bedeli_amount}
+                        disabled
+                        fullWidth
+                        />
+                    </Grid>
+                    <Grid size={{xs:12,sm:3}}>
+                        <TextField
+                        type="text"
+                        size="small"
+                        label={"Toplam Ödenen Tutar"}
+                        variant='standard'
+                        value={props.paid_amount}
                         disabled
                         fullWidth
                         />

@@ -113,6 +113,7 @@ function TradeTransactionsInLease(props) {
         { field: 'due_date', headerName: 'Tarih', type:'number', width: 100, sortable: false },
         //{ field: 'record_date', headerName: 'Kayıt Tarihi', flex: 1.5, sortable: false },
         { field: 'posting_group_name', headerName: 'İşlem Grubu', width: 180, sortable: false },
+        { field: 'posting_type_name', headerName: 'İşlem Tipi', width: 180, sortable: false },
         { field: 'document_no', headerName: 'Belge No', flex: 1, sortable: false },
         { field: 'description', headerName: 'Açıklama', width: 400, sortable: false,
             cellClassName: (params) => {return params.row.amount_type === '1' ? 'negative-cell' : '';}
