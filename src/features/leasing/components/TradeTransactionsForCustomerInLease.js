@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
 import { fetchTradeTransactionsForCustomerInLease, setTradeTransactionsLoading } from 'store/slices/trade/tradeTransactionSlice';
-import { Chip, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Chip, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -158,6 +158,18 @@ function TradeTransactionsForCustomerInLease(props) {
 
     ]
 
+    function createData(key, amount) {
+        return { key, amount };
+    }
+
+    const summary_rows = [
+        createData('Vadesi Gelen Toplam Taksit Bakiyesi', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.vadesi_gelen_toplam_taksit_tutari)),
+        createData('Yapılan Toplam Ödeme', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.yapilan_toplam_odeme_tutari)),
+        createData('Borç Virman Kaydı', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_borc_tutari)),
+        createData('Alacak Virman Kaydı', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_alacak_tutari)),
+        createData('Toplam Bakiye', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.toplam_bakiye)),
+    ];
+
     return (
         <>
             <Stack spacing={1}>
@@ -213,7 +225,31 @@ function TradeTransactionsForCustomerInLease(props) {
                         <Block text="ÖZET" color={red[700]} noDivider>
                             <Stack spacing={2}>
                                 <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:3}}>
+                                    <Grid size={{xs:12,sm:4}}>
+                                        <TableContainer>
+                                            <Table aria-label="simple table">
+                                                <TableBody>
+                                                {summary_rows.map((row) => (
+                                                    <TableRow
+                                                    key={row.key}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                    <TableCell component="th" scope="row" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
+                                                        {row.key}
+                                                    </TableCell>
+                                                    <TableCell align="right" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
+                                                        {row.amount}
+                                                    </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </Grid>
+                                </Grid>
+                                
+                                {/* <Grid container spacing={4}>
+                                    <Grid size={{xs:12,sm:2}}>
                                         <TextField
                                         type="text"
                                         size="small"
@@ -224,11 +260,13 @@ function TradeTransactionsForCustomerInLease(props) {
                                         fullWidth
                                         />
                                     </Grid>
-                                    <Grid size={{xs:12,sm:3}}>
+                                </Grid>
+                                <Grid container spacing={4}>
+                                    <Grid size={{xs:12,sm:2}}>
                                         <TextField
                                         type="text"
                                         size="small"
-                                        label={"Yapılan Toplam Ödeme Tutarı"}
+                                        label={"Yapılan Toplam Ödeme"}
                                         variant='standard'
                                         value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.yapilan_toplam_odeme_tutari)}
                                         disabled
@@ -236,6 +274,45 @@ function TradeTransactionsForCustomerInLease(props) {
                                         />
                                     </Grid>
                                 </Grid>
+                                <Grid container spacing={4}>
+                                    <Grid size={{xs:12,sm:2}}>
+                                        <TextField
+                                        type="text"
+                                        size="small"
+                                        label={"Borç Virman Kaydı"}
+                                        variant='standard'
+                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_borc_tutari)}
+                                        disabled
+                                        fullWidth
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid container spacing={4}>
+                                    <Grid size={{xs:12,sm:2}}>
+                                        <TextField
+                                        type="text"
+                                        size="small"
+                                        label={"Alacak Virman Kaydı"}
+                                        variant='standard'
+                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_alacak_tutari)}
+                                        disabled
+                                        fullWidth
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid container spacing={4}>
+                                    <Grid size={{xs:12,sm:2}}>
+                                        <TextField
+                                        type="text"
+                                        size="small"
+                                        label={"Toplam Bakiye"}
+                                        variant='standard'
+                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.toplam_bakiye)}
+                                        disabled
+                                        fullWidth
+                                        />
+                                    </Grid>
+                                </Grid> */}
                             </Stack>
                         </Block>
                     </Paper>
