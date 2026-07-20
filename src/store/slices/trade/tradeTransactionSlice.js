@@ -14,7 +14,7 @@ const initialState = {
     tradeTransactionsLoading:false,
     tradeTransactionsInLease:[],
     tradeTransactionsInLeaseCode:0,
-    tradeTransactionsForCustomerInLease:[],
+    tradeTransactionsForCustomerInLease:{transactions:[]},
     tradeTransactionsForCustomerInLeaseParams:{
         start: 0 * 100,
         end: (0 + 1) * 100,

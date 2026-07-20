@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BasicTable from 'component/table/BasicTable';
 import { fetchTradeTransactionsForCustomerInLease, setTradeTransactionsLoading } from 'store/slices/trade/tradeTransactionSlice';
-import { Chip, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Chip, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -11,6 +11,8 @@ import { setExportDialog } from 'store/slices/notificationSlice';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import { DownloadIcon, RefreshIcon } from 'icons';
 import ExportDialog from 'component/feedback/ExportDialog';
+import { red } from '@mui/material/colors';
+import Block from './Block';
 
 function TradeTransactionsForCustomerInLease(props) {
     const {lease_uuid,companyName} = props;
@@ -39,7 +41,7 @@ function TradeTransactionsForCustomerInLease(props) {
 
     const rowsWithBalance = [];
     let newIndex = 0;
-    tradeTransactionsForCustomerInLease.map((row, index) => {
+    (tradeTransactionsForCustomerInLease.transactions || []).map((row, index) => {
         const prevRow = newIndex > 0 ? rowsWithBalance[newIndex - 1] : null;
         if((prevRow && prevRow.posting_group_name !== row.posting_group_name && !prevRow.is_total)){
             rowsWithBalance.push({
@@ -62,7 +64,7 @@ function TradeTransactionsForCustomerInLease(props) {
         }
         newIndex += 1;
         rowsWithBalance.push({...row, is_total: false});
-        if(index + 1 === tradeTransactionsForCustomerInLease.length){
+        if(index + 1 === tradeTransactionsForCustomerInLease.transactions.length){
             rowsWithBalance.push({
                 is_total: true,
                 uuid: row.uuid + newIndex,
@@ -159,7 +161,7 @@ function TradeTransactionsForCustomerInLease(props) {
     return (
         <>
             <Stack spacing={1}>
-                <Grid size={{xs:12,sm:6}}>
+                <Grid size={{xs:12,sm:12}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <BasicTable
                         rows={rowsWithBalance}
@@ -204,6 +206,38 @@ function TradeTransactionsForCustomerInLease(props) {
                         finalEvent={() => {dispatch(fetchTradeTransactionsForCustomerInLease({activeCompany,lease_uuid}));dispatch(setTradeTransactionsLoading(false));}}
                         lease={lease_uuid}
                         />
+                    </Paper>
+                </Grid>
+                <Grid size={{xs:12,sm:12}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Block text="ÖZET" color={red[700]} noDivider>
+                            <Stack spacing={2}>
+                                <Grid container spacing={4}>
+                                    <Grid size={{xs:12,sm:3}}>
+                                        <TextField
+                                        type="text"
+                                        size="small"
+                                        label={"Vadesi Gelen Toplam Taksit Bakiyesi"}
+                                        variant='standard'
+                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.vadesi_gelen_toplam_taksit_tutari)}
+                                        disabled
+                                        fullWidth
+                                        />
+                                    </Grid>
+                                    <Grid size={{xs:12,sm:3}}>
+                                        <TextField
+                                        type="text"
+                                        size="small"
+                                        label={"Yapılan Toplam Ödeme Tutarı"}
+                                        variant='standard'
+                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.yapilan_toplam_odeme_tutari)}
+                                        disabled
+                                        fullWidth
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Stack>
+                        </Block>
                     </Paper>
                 </Grid>
             </Stack>
