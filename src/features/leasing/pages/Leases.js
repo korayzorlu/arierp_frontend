@@ -53,6 +53,7 @@ function Leases() {
             )
         },
         { field: 'contract', headerName: 'Sözleşme Kodu' },
+        { field: 'contract_id', headerName: 'Sözleşme ID', width:120 },
         { field: 'partner', headerName: 'Müşteri', width:280, renderCell: (params) => (
                 params.row.partner_special
                 ?

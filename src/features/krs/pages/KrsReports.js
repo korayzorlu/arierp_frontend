@@ -21,6 +21,9 @@ import CurrencyFilter from 'component/table/filter/CurrencyFilter';
 import RiskFilter from 'component/table/filter/RiskFilter';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import axios from 'axios';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+
 
 function KrsReports() {
     const {user} = useSelector((store) => store.auth);
@@ -34,6 +37,7 @@ function KrsReports() {
     const [exportURL, setExportURL] = useState("")
     const [status, setStatus] = useState("all")
     const [overdueStatus, setOverdueStatus] = useState("all")
+    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
 
     useEffect(() => {
         startTransition(() => {
@@ -50,7 +54,7 @@ function KrsReports() {
 
     const handleCreateReport = async () => {
         dispatch(setKrsReportsLoading(true));
-        await dispatch(createKrsReport({data:{company_uuid: activeCompany.id}})).unwrap();
+        await dispatch(createKrsReport({data:{company_uuid: activeCompany.id, date:date}})).unwrap();
         dispatch(fetchKrsReports({activeCompany,params:{...krsReportsParams,project}}));
         dispatch(setKrsReportsLoading(false));
     };
@@ -81,6 +85,14 @@ function KrsReports() {
         }
     };
 
+    const today = dayjs();
+    const firstDayOfYear = dayjs().startOf('year');
+
+    const handleDateRangeChange = async (newValue) => {
+        const date = newValue ? dayjs(newValue).format('YYYY-MM-DD') : null;
+        setDate(date);
+    }
+
     return (
         <PanelContent>
             <ListTableServer
@@ -104,7 +116,16 @@ function KrsReports() {
                 </>
             }
             customFiltersLeft={
-                <>
+                <>  
+                    <DatePicker
+                    defaultValue={today}
+                    onAccept={handleDateRangeChange}
+                    format='DD.MM.YYYY'
+                    slotProps={{
+                        textField: { size: 'small'},
+                    }}
+                    sx={{mr:2}}
+                    />
                     <Button
                     variant='contained'
                     color='mars'
