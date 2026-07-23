@@ -5,7 +5,7 @@ import { fetchWarnedRiskPartners, setWarnedRiskPartnersLoading, setWarnedRiskPar
 import { setCallDialog, setExportDialog, setMessageDialog, setPartnerDialog, setPartnerNoteDialog, setSendEmailDialog, setSendSMSDialog, setWarningNoticeDialog } from 'store/slices/notificationSlice';
 import axios from 'axios';
 import PanelContent from 'component/panel/PanelContent';
-import { Badge, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import { Badge, Button, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { fetchExportProcess, fetchImportProcess } from 'store/slices/processSlice';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -32,6 +32,7 @@ import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import TableButton from 'component/button/TableButton';
 import EmailIcon from '@mui/icons-material/Email';
 import SendEmailDialog from 'component/dialog/SendEmailDialog';
+import CachedIcon from '@mui/icons-material/Cached';
 
 function WarnedRiskPartners() {
     const {dark} = useSelector((store) => store.auth);
@@ -312,6 +313,16 @@ function WarnedRiskPartners() {
                 }
                 customFilters={
                 <>  
+                    {/* <Button
+                    variant='contained'
+                    color='mars'
+                    endIcon={<CachedIcon/>}
+                    size='small'
+                    sx={{mr: 2}}
+                    onClick={() => console.log("test3")}
+                    >
+                        İhtar Tarihlerini Güncelle
+                    </Button> */}
                     {/* <AndroidSwitch
                     label="100'den Büyük Olanlar"
                     checked={biggerThan100SwitchPosition}

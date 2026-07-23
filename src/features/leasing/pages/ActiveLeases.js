@@ -166,8 +166,8 @@ function ActiveActiveLeases() {
                 />
             )
         },
-        { field: 'risk_status', headerName: 'Risk Durumu', width:200,renderHeaderFilter: (params) => (<RiskFilter {...params}/>)},
         { field: 'currency', headerName: 'PB', renderHeaderFilter: (params) => (<CurrencyFilter {...params}/>)},
+        { field: 'risk_status', headerName: 'Risk Durumu', width:200,renderHeaderFilter: (params) => (<RiskFilter {...params}/>)},
         { field: 'overdue_days', headerName: 'Gecikme Süresi', width:120, type: 'number', renderHeaderFilter: () => null, renderCell: (params) => (
                 params.row.overdue_amount > 0
                 ?

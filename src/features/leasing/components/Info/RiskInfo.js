@@ -36,9 +36,9 @@ function RiskInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"Gecikme Süresi (Gün)"}
+                        label={"Gecikme Durumu"}
                         variant='standard'
-                        value={props.overdue_days}
+                        value={props.overdue_days === 0 ? "Gecikme Yok" : `${props.overdue_days} gün gecikmede`}
                         disabled
                         fullWidth
                         />
@@ -49,7 +49,7 @@ function RiskInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"Gecikme Tutarı"}
+                        label={"Güncel Bakiye"}
                         variant='standard'
                         value={props.overdue_amount}
                         disabled
