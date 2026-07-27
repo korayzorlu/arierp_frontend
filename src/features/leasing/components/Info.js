@@ -12,6 +12,7 @@ import ProjectInfo from './Info/ProjectInfo';
 import FinanceInfo from './Info/FinanceInfo';
 import StatusInfo from './Info/StatusInfo';
 import RiskInfo from './Info/RiskInfo';
+import KurDegerlemesiInfo from './Info/KurDegerlemesiInfo';
 
 function Info(props) {
 
@@ -81,6 +82,23 @@ function Info(props) {
                             <RiskInfo
                             overdue_amount={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.overdue_amount)}
                             overdue_days={props.data.overdue_days}
+                            />
+                        </Stack>
+                    </Paper>
+                </Grid>
+
+                <Grid size={{xs:12,sm:6}}>
+                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                        <Stack spacing={2}>
+                            <KurDegerlemesiInfo
+                            overdue_amount={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.overdue_amount)}
+                            odenmesi_gereken_yerel={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.odenmesi_gereken_yerel)}
+                            odenmesi_gereken_usd={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.odenmesi_gereken_usd)}
+                            odenen_yerel={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.odenen_yerel)}
+                            odenen_usd={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.odenen_usd)}
+                            geciken_usd={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.geciken_usd)}
+                            geciken_odenmesi_gereken_usd={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.geciken_odenmesi_gereken_usd)}
+                            kur_kaybi={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(props.data.kur_kaybi)}
                             />
                         </Stack>
                     </Paper>
