@@ -158,6 +158,7 @@ function KrsReports() {
             sx={{
                 [`& .${gridClasses.cell}`]: {
                     py: 1,
+                    fontVariantNumeric: 'tabular-nums'
                 },
             }}
             initialState={{
