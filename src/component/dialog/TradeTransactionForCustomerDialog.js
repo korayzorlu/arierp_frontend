@@ -2,16 +2,19 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setTradeTransactionDialog, setMessageDialog, setTradeTransactionForCustomerDialog } from '../../store/slices/notificationSlice';
 import MUIDialog from '@mui/material/Dialog';
-import { Button, Chip, DialogActions, DialogContent, DialogContentText, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Button, Chip, DialogActions, DialogContent, DialogContentText, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import BasicTable from '../table/BasicTable';
 import { fetchTradeTransactionsInLease } from '../../store/slices/trade/tradeTransactionSlice';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import ErrorIcon from '@mui/icons-material/Error';
+import Block from 'features/leasing/components/Block';
+import { BarPlot, ChartsContainer, ChartsLegend, ChartsTooltip, ChartsXAxis, ChartsYAxis, LinePlot, MarkPlot } from '@mui/x-charts';
 
 function TradeTransactionForCustomerDialog(props) {
     const {user} = props;
 
+    const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {tradeTransactionForCustomerDialog} = useSelector((store) => store.notification);
     const {tradeTransactionsLoading,tradeTransactionsForCustomerInLease,tradeTransactionsForCustomerInLeaseCode} = useSelector((store) => store.tradeTransaction);
@@ -157,6 +160,16 @@ function TradeTransactionForCustomerDialog(props) {
         createData('Toplam Bakiye', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.toplam_bakiye)),
     ];
 
+    const xLabels = rowsWithBalance.map(r => r.date ? `${r.date} ${r.description}` : (r.description ? r.description : ''));
+    const maxLabelLength = xLabels.reduce((max, l) => Math.max(max, l ? l.length : 0), 0);
+    // Labels are rotated -60deg at fontSize 10; project char length onto the vertical axis to size the axis area.
+    const xAxisHeight = Math.min(300, Math.max(80, Math.round(maxLabelLength * 5.5 * Math.sin(Math.PI / 3) + 40)));
+    const maxBal = Math.max(...rowsWithBalance.map(r => r.balances.balance));
+
+    const zamanindaMarks = rowsWithBalance.map(r => (r.applied_status === 'Ödendi' && r.overdue_days === 0) ? r.balances.balance + maxBal * 0.06 : null);
+    const gecikmeliMarks = rowsWithBalance.map(r => (r.applied_status === 'Ödendi' && r.overdue_days !== 0) ? r.balances.balance + maxBal * 0.06 : null);
+    const odenmediMarks  = rowsWithBalance.map(r => (r.applied_status !== 'Ödendi' && r.transaction_type === "installment")  ? r.balances.balance + maxBal * 0.06 : null);
+
     return (
         <MUIDialog
         open={tradeTransactionForCustomerDialog}
@@ -172,51 +185,53 @@ function TradeTransactionForCustomerDialog(props) {
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
-                        <>
-                            <BasicTable
-                            title={
-                                `
-                                ${
-                                    tradeTransactionsForCustomerInLease
-                                    ?
-                                        tradeTransactionsForCustomerInLease.length > 0
+                        <Grid size={{xs:12,sm:12}}>
+                            <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                                <BasicTable
+                                title={
+                                    `
+                                    ${
+                                        tradeTransactionsForCustomerInLease
                                         ?
-                                            tradeTransactionsForCustomerInLease[0]["lease"]
-                                        : ""
-                                    :
-                                        ""
+                                            tradeTransactionsForCustomerInLease.length > 0
+                                            ?
+                                                tradeTransactionsForCustomerInLease[0]["lease"]
+                                            : ""
+                                        :
+                                            ""
+                                    }
+                                    `
                                 }
-                                `
-                            }
-                            rows={rowsWithBalance}
-                            columns={columns}
-                            
-                            getRowId={(row) => row.uuid}
-                            checkboxSelection={false}
-                            disableRowSelectionOnClick={true}
-                            loading={tradeTransactionsLoading}
-                            getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
-                            noPagination
-                            rowSpanning={true}
+                                rows={rowsWithBalance}
+                                columns={columns}
+                                
+                                getRowId={(row) => row.uuid}
+                                checkboxSelection={false}
+                                disableRowSelectionOnClick={true}
+                                loading={tradeTransactionsLoading}
+                                getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
+                                noPagination
+                                rowSpanning={true}
 
-                            // getRowId={(row) => row.uuid}
-                            // checkboxSelection={false}
-                            // disableRowSelectionOnClick={true}
-                            // loading={tradeTransactionsLoading}
-                            // getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
+                                // getRowId={(row) => row.uuid}
+                                // checkboxSelection={false}
+                                // disableRowSelectionOnClick={true}
+                                // loading={tradeTransactionsLoading}
+                                // getRowClassName={(params) => `super-app-theme--${params.row.is_total ? "today" : ""}`}
 
-                            // initialState={{
-                            //     aggregation: {
-                            //         model: {
-                            //             debit_amount: 'sum',
-                            //             credit_amount: 'sum',
-                            //             local_debit_amount: 'sum',
-                            //             local_credit_amount: 'sum',
-                            //         },
-                            //     },
-                            // }}
-                            />
-                        </>
+                                // initialState={{
+                                //     aggregation: {
+                                //         model: {
+                                //             debit_amount: 'sum',
+                                //             credit_amount: 'sum',
+                                //             local_debit_amount: 'sum',
+                                //             local_credit_amount: 'sum',
+                                //         },
+                                //     },
+                                // }}
+                                />
+                            </Paper>
+                        </Grid>
                         <Grid container spacing={4}>
                             <Grid size={{xs:12,sm:4}}>
                                 <TableContainer>
@@ -240,6 +255,94 @@ function TradeTransactionForCustomerDialog(props) {
                                 </TableContainer>
                             </Grid>
                         </Grid>
+                        <Grid size={{xs:12,sm:12}}>
+                            <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                                <Block text="GRAFİK" noDivider>
+                                    <Stack spacing={2}>
+                                        <Grid container spacing={2}>
+                                            <Grid size={{xs:12,sm:12}}>
+                                                <ChartsContainer
+                                                height={xAxisHeight + 420}
+                                                xAxis={[{ id: 'x', height: xAxisHeight, data: xLabels, scaleType: 'band' }]}
+                                                yAxis={[{id: 'y', width: 120, label: props.currency }]}
+                                                series={[
+                                                    {
+                                                        type: 'bar',
+                                                        data: rowsWithBalance.map(r => r.amount_type === '0' ? -r.amount : r.amount),
+                                                        label: 'İşlem Tutarı',
+                                                        colorGetter: ({ dataIndex }) => rowsWithBalance[dataIndex].amount_type === '0' ? '#1baf7a' : '#e34948',
+                                                    },
+                                                    {
+                                                        type: 'line',
+                                                        data: rowsWithBalance.map(r => r.balances.balance),
+                                                        label: 'Bakiye',
+                                                        showMark: true,
+                                                        color: dark ? '#fff' : '#000',
+                                                    },
+                                                    {
+                                                        type: 'line',
+                                                        id: 'zamaninda-odendi',
+                                                        data: zamanindaMarks,
+                                                        label: 'Zamaninda Ödendi',
+                                                        showMark: true,
+                                                        connectNulls: false,
+                                                        shape: 'triangle',
+                                                        color: '#1baf7a',
+                                                    },
+                                                    {
+                                                        type: 'line',
+                                                        id: 'gecikmeli-odendi',
+                                                        data: gecikmeliMarks,
+                                                        label: 'Gecikmeli Ödendi',
+                                                        showMark: true,
+                                                        connectNulls: false,
+                                                        shape: 'triangle',
+                                                        color: '#d4a017',
+                                                    },
+                                                    {
+                                                        type: 'line',
+                                                        id: 'odenmedi',
+                                                        data: odenmediMarks,
+                                                        label: 'Ödenmedi',
+                                                        showMark: true,
+                                                        connectNulls: false,
+                                                        shape: 'triangle',
+                                                        color: '#e34948',
+                                                    },
+                                                ]}
+                                                sx={{
+                                                    [`& .MuiLineChart-mark`]: {
+                                                        fill: dark ? '#fff' : '#000',
+                                                    },
+                                                    [`& .MuiMarkElement-series-zamaninda-odendi`]: {
+                                                        fill: '#1baf7a',
+                                                    },
+                                                    [`& .MuiMarkElement-series-odenmedi`]: {
+                                                        fill: '#e34948',
+                                                    },
+                                                    [`& .MuiMarkElement-series-gecikmeli-odendi`]: {
+                                                        fill: '#d4a017',
+                                                    },
+                                                    [`& .MuiLineElement-series-zamaninda-odendi, & .MuiLineElement-series-gecikmeli-odendi, & .MuiLineElement-series-odenmedi`]: {
+                                                        display: 'none',
+                                                    },
+                                                }}
+                                                >
+                                                <BarPlot />
+                                                <LinePlot />
+                                                <MarkPlot />
+                                                <ChartsXAxis axisId="x" tickLabelStyle={{ angle: -60, textAnchor: 'end', fontSize: 10 }} />
+                                                <ChartsYAxis axisId="y" />
+                                                <ChartsTooltip />
+                                                <ChartsLegend />
+                                                </ChartsContainer>
+                                            </Grid>
+                                        </Grid>
+                                    </Stack>
+                                </Block>
+                            </Paper>
+                        </Grid>
+
                     </Stack>
                 </DialogContentText>
             </DialogContent>

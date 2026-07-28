@@ -151,7 +151,7 @@ function UpdateLease() {
                 </TabPanel>
 
                 <TabPanel value={tabValue} index={2}>
-                    <TradeTransactionsForCustomerInLease lease_uuid={uuid}></TradeTransactionsForCustomerInLease>
+                    <TradeTransactionsForCustomerInLease lease_uuid={uuid} currency={data.currency}></TradeTransactionsForCustomerInLease>
                 </TabPanel>
 
                 <TabPanel value={tabValue} index={3}>

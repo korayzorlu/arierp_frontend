@@ -32,7 +32,7 @@ function KurKaybi(props) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     return (
-        <Block text="KUR KAYBI" icon={<CurrencyExchangeIcon/>} color={"opposite"} noDivider> 
+        <Block text="KUR KAYBI" icon={<CurrencyExchangeIcon/>} noDivider> 
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:12}}>

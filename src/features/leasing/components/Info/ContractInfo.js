@@ -27,7 +27,7 @@ function ContractInfo(props) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     return (
-        <Block text="SÖZLEŞME BİLGİLERİ" icon={<DescriptionIcon/>} color={"opposite"} noDivider> 
+        <Block text="SÖZLEŞME BİLGİLERİ" icon={<DescriptionIcon/>} noDivider> 
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:4}}>

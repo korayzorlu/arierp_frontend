@@ -13,11 +13,14 @@ import { DownloadIcon, RefreshIcon } from 'icons';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { red } from '@mui/material/colors';
 import Block from './Block';
+import { ChartsContainerPro } from '@mui/x-charts-pro/ChartsContainerPro';
+import { BarPlot, ChartsContainer, ChartsLegend, ChartsTooltip, ChartsXAxis, ChartsYAxis, LinePlot, MarkElement, markElementClasses, MarkPlot } from '@mui/x-charts';
+
 
 function TradeTransactionsForCustomerInLease(props) {
     const {lease_uuid,companyName} = props;
 
-    const {user} = useSelector((store) => store.auth);
+    const {user,dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {tradeTransactionsLoading,tradeTransactionsForCustomerInLease,tradeTransactionsForCustomerInLeaseParams} = useSelector((store) => store.tradeTransaction);
 
@@ -170,6 +173,16 @@ function TradeTransactionsForCustomerInLease(props) {
         createData('Toplam Bakiye', new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.toplam_bakiye)),
     ];
 
+    const xLabels = rowsWithBalance.map(r => r.date ? `${r.date} ${r.description}` : (r.description ? r.description : ''));
+    const maxLabelLength = xLabels.reduce((max, l) => Math.max(max, l ? l.length : 0), 0);
+    // Labels are rotated -60deg at fontSize 10; project char length onto the vertical axis to size the axis area.
+    const xAxisHeight = Math.min(300, Math.max(80, Math.round(maxLabelLength * 5.5 * Math.sin(Math.PI / 3) + 40)));
+    const maxBal = Math.max(...rowsWithBalance.map(r => r.balances.balance));
+
+    const zamanindaMarks = rowsWithBalance.map(r => (r.applied_status === 'Ödendi' && r.overdue_days === 0) ? r.balances.balance + maxBal * 0.06 : null);
+    const gecikmeliMarks = rowsWithBalance.map(r => (r.applied_status === 'Ödendi' && r.overdue_days !== 0) ? r.balances.balance + maxBal * 0.06 : null);
+    const odenmediMarks  = rowsWithBalance.map(r => (r.applied_status !== 'Ödendi' && r.transaction_type === "installment")  ? r.balances.balance + maxBal * 0.06 : null);
+
     return (
         <>
             <Stack spacing={1}>
@@ -220,103 +233,126 @@ function TradeTransactionsForCustomerInLease(props) {
                         />
                     </Paper>
                 </Grid>
-                <Grid size={{xs:12,sm:12}}>
-                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
-                        <Block text="ÖZET" color={red[700]} noDivider>
-                            <Stack spacing={2}>
-                                <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:4}}>
-                                        <TableContainer>
-                                            <Table aria-label="simple table">
-                                                <TableBody>
-                                                {summary_rows.map((row) => (
-                                                    <TableRow
-                                                    key={row.key}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                    >
-                                                    <TableCell component="th" scope="row" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
-                                                        {row.key}
-                                                    </TableCell>
-                                                    <TableCell align="right" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
-                                                        {row.amount}
-                                                    </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+
+                    <Grid size={{xs:12,sm:12}}>
+                        <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                            <Block text="ÖZET" noDivider>
+                                <Stack spacing={2}>
+                                    <Grid container spacing={4}>
+                                        <Grid size={{xs:12,sm:12}}>
+                                            <TableContainer>
+                                                <Table aria-label="simple table">
+                                                    <TableBody>
+                                                    {summary_rows.map((row) => (
+                                                        <TableRow
+                                                        key={row.key}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                        <TableCell component="th" scope="row" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
+                                                            {row.key}
+                                                        </TableCell>
+                                                        <TableCell align="right" sx={{fontWeight: row.key === "Toplam Bakiye" ? "bold" : "unset"}}>
+                                                            {row.amount}
+                                                        </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                                
-                                {/* <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:2}}>
-                                        <TextField
-                                        type="text"
-                                        size="small"
-                                        label={"Vadesi Gelen Toplam Taksit Bakiyesi"}
-                                        variant='standard'
-                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.vadesi_gelen_toplam_taksit_tutari)}
-                                        disabled
-                                        fullWidth
-                                        />
+                                </Stack>
+                            </Block>
+                        </Paper>
+                    </Grid>
+                    <Grid size={{xs:12,sm:12}}>
+                        <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                            <Block text="GRAFİK" noDivider>
+                                <Stack spacing={2}>
+                                    <Grid container spacing={2}>
+                                        <Grid size={{xs:12,sm:12}}>
+                                            <ChartsContainer
+                                            height={xAxisHeight + 420}
+                                            xAxis={[{ id: 'x', height: xAxisHeight, data: xLabels, scaleType: 'band' }]}
+                                            yAxis={[{id: 'y', width: 120, label: props.currency }]}
+                                            series={[
+                                                {
+                                                    type: 'bar',
+                                                    data: rowsWithBalance.map(r => r.amount_type === '0' ? -r.amount : r.amount),
+                                                    label: 'İşlem Tutarı',
+                                                    colorGetter: ({ dataIndex }) => rowsWithBalance[dataIndex].amount_type === '0' ? '#1baf7a' : '#e34948',
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    data: rowsWithBalance.map(r => r.balances.balance),
+                                                    label: 'Bakiye',
+                                                    showMark: true,
+                                                    color: dark ? '#fff' : '#000',
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    id: 'zamaninda-odendi',
+                                                    data: zamanindaMarks,
+                                                    label: 'Zamaninda Ödendi',
+                                                    showMark: true,
+                                                    connectNulls: false,
+                                                    shape: 'triangle',
+                                                    color: '#1baf7a',
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    id: 'gecikmeli-odendi',
+                                                    data: gecikmeliMarks,
+                                                    label: 'Gecikmeli Ödendi',
+                                                    showMark: true,
+                                                    connectNulls: false,
+                                                    shape: 'triangle',
+                                                    color: '#d4a017',
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    id: 'odenmedi',
+                                                    data: odenmediMarks,
+                                                    label: 'Ödenmedi',
+                                                    showMark: true,
+                                                    connectNulls: false,
+                                                    shape: 'triangle',
+                                                    color: '#e34948',
+                                                },
+                                            ]}
+                                            sx={{
+                                                [`& .MuiLineChart-mark`]: {
+                                                    fill: dark ? '#fff' : '#000',
+                                                },
+                                                [`& .MuiMarkElement-series-zamaninda-odendi`]: {
+                                                    fill: '#1baf7a',
+                                                },
+                                                [`& .MuiMarkElement-series-odenmedi`]: {
+                                                    fill: '#e34948',
+                                                },
+                                                [`& .MuiMarkElement-series-gecikmeli-odendi`]: {
+                                                    fill: '#d4a017',
+                                                },
+                                                [`& .MuiLineElement-series-zamaninda-odendi, & .MuiLineElement-series-gecikmeli-odendi, & .MuiLineElement-series-odenmedi`]: {
+                                                    display: 'none',
+                                                },
+                                            }}
+                                            >
+                                            <BarPlot />
+                                            <LinePlot />
+                                            <MarkPlot />
+                                            <ChartsXAxis axisId="x" tickLabelStyle={{ angle: -60, textAnchor: 'end', fontSize: 10 }} />
+                                            <ChartsYAxis axisId="y" />
+                                            <ChartsTooltip />
+                                            <ChartsLegend />
+                                            </ChartsContainer>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                                <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:2}}>
-                                        <TextField
-                                        type="text"
-                                        size="small"
-                                        label={"Yapılan Toplam Ödeme"}
-                                        variant='standard'
-                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.yapilan_toplam_odeme_tutari)}
-                                        disabled
-                                        fullWidth
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:2}}>
-                                        <TextField
-                                        type="text"
-                                        size="small"
-                                        label={"Borç Virman Kaydı"}
-                                        variant='standard'
-                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_borc_tutari)}
-                                        disabled
-                                        fullWidth
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:2}}>
-                                        <TextField
-                                        type="text"
-                                        size="small"
-                                        label={"Alacak Virman Kaydı"}
-                                        variant='standard'
-                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.virman_alacak_tutari)}
-                                        disabled
-                                        fullWidth
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={4}>
-                                    <Grid size={{xs:12,sm:2}}>
-                                        <TextField
-                                        type="text"
-                                        size="small"
-                                        label={"Toplam Bakiye"}
-                                        variant='standard'
-                                        value={new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(tradeTransactionsForCustomerInLease.toplam_bakiye)}
-                                        disabled
-                                        fullWidth
-                                        />
-                                    </Grid>
-                                </Grid> */}
-                            </Stack>
-                        </Block>
-                    </Paper>
-                </Grid>
+                                </Stack>
+                            </Block>
+                        </Paper>
+                    </Grid>
+            
             </Stack>
             
         </>

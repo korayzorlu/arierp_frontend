@@ -28,7 +28,7 @@ function ProjectInfo(props) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     return (
-        <Block text="PROJE" icon={<ApartmentIcon/>} color={"opposite"} noDivider> 
+        <Block text="PROJE" icon={<ApartmentIcon/>} noDivider> 
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:8}}>

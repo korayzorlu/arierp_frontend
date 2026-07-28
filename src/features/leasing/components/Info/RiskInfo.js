@@ -29,7 +29,7 @@ function RiskInfo(props) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     return (
-        <Block text="RİSK BİLGİLERİ" icon={<NotificationImportantIcon/>} color={"opposite"} noDivider> 
+        <Block text="RİSK BİLGİLERİ" icon={<NotificationImportantIcon/>} noDivider> 
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:3}}>
