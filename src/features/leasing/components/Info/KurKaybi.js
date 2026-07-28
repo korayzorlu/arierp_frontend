@@ -32,19 +32,20 @@ function KurKaybi(props) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     return (
-        <Block text="KUR KAYBI" icon={<CurrencyExchangeIcon/>} color={red[700]} noDivider> 
+        <Block text="KUR KAYBI" icon={<CurrencyExchangeIcon/>} color={"opposite"} noDivider> 
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:12}}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
                             <Gauge
+                            key={props.kur_kaybi_orani}
                             width={180}
                             height={180}
                             value={props.kur_kaybi_orani}
                             valueMin={0}
-                            valueMax={10} // ölçeği kendi eşiğinize göre ayarlayın (ör. max %10 kayıp)
-                            startAngle={-110}
-                            endAngle={110}
+                            valueMax={100} // ölçeği kendi eşiğinize göre ayarlayın (ör. max %10 kayıp)
+                            // startAngle={-110}
+                            // endAngle={110}
                             text={() => `%${(props.kur_kaybi_orani).toFixed(1)}`}
                             sx={{
                                 [`& .${gaugeClasses.valueText}`]: { fontSize: 28, fontWeight: 500 },
