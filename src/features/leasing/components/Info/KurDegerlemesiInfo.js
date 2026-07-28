@@ -21,6 +21,8 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { red } from '@mui/material/colors';
 import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import { Unstable_SankeyChart as SankeyChart } from '@mui/x-charts-pro/SankeyChart';
+import { Gauge, gaugeClasses } from '@mui/x-charts';
 
 function KurDegerlemesiInfo(props) {
     const {dark,lang} = useSelector((store) => store.auth);
@@ -30,7 +32,7 @@ function KurDegerlemesiInfo(props) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     return (
-        <Block text="KUR DEĞERLEMESİ" icon={<CurrencyExchangeIcon/>} color={red[700]} noDivider> 
+        <Block text="KUR KAYBI DEĞERLEMESİ" icon={<CurrencyExchangeIcon/>} color={red[700]} noDivider> 
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:3}}>
@@ -83,7 +85,7 @@ function KurDegerlemesiInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"B1 - Bugüne Kadar Ödenmesi Gereken USD Tutar(İşlem Tarihi Kuruna Göre)"}
+                        label={"B1 - Bugüne Kadar Ödenmesi Gereken USD Tutar"}
                         variant='standard'
                         value={props.odenmesi_gereken_usd}
                         disabled
@@ -94,7 +96,7 @@ function KurDegerlemesiInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"B2 - Bugüne Kadar Ödenen USD Tutar(İşlem Tarihi Kuruna Göre)"}
+                        label={"B2 - Bugüne Kadar Ödenen USD Tutar"}
                         variant='standard'
                         value={props.odenen_usd}
                         disabled
@@ -105,7 +107,7 @@ function KurDegerlemesiInfo(props) {
                         <TextField
                         type="text"
                         size="small"
-                        label={"B3 - Geciken USD Tutar(İşlem Tarihi Kuruna Göre) (B1-B2)"}
+                        label={"B3 - Geciken USD Tutar (B1-B2)"}
                         variant='standard'
                         value={props.geciken_odenmesi_gereken_usd}
                         disabled
@@ -126,6 +128,35 @@ function KurDegerlemesiInfo(props) {
                         />
                     </Grid>
                 </Grid>
+                <Grid container spacing={4}>
+                    <Grid size={{xs:12,sm:12}}>
+                        <Typography variant='body2' color="text.secondary">
+                            Not: Kur kaybı, geciken ödemelerin güncel kur üzerinden hesaplanan değerleri ile işlem tarihi kuruna göre hesaplanan değerleri arasındaki farktır. Bu fark, geciken ödemelerin kur değişiminden kaynaklanan kaybını temsil eder. B alanları işlem tarihi kuruna göre hesaplanan değerleri, A alanları ise güncel kur üzerinden hesaplanan değerleri göstermektedir. Kur kaybı, B3 ve A4 arasındaki fark olarak hesaplanır ve geciken ödemelerin kur değişiminden kaynaklanan kaybını ifade eder.
+                        </Typography>
+                    </Grid>
+                </Grid>
+                {/* <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                    <Gauge
+                    width={180}
+                    height={180}
+                    value={props.kur_kaybi_orani}
+                    valueMin={0}
+                    valueMax={10} // ölçeği kendi eşiğinize göre ayarlayın (ör. max %10 kayıp)
+                    startAngle={-110}
+                    endAngle={110}
+                    text={() => `%${(props.kur_kaybi_orani).toFixed(1)}`}
+                    sx={{
+                        [`& .${gaugeClasses.valueText}`]: { fontSize: 28, fontWeight: 500 },
+                        [`& .${gaugeClasses.valueArc}`]: { fill: '#e34948' },
+                        [`& .${gaugeClasses.referenceArc}`]: { fill: '#e1e0d9' },
+                    }}
+                    />
+                    <div>
+                        <p style={{ fontSize: 13, color: 'text.secondary', margin: 0 }}>Geciken tutarın kur kaybı</p>
+                        <p style={{ fontSize: 20, fontWeight: 500, margin: '4px 0' }}>{props.kur_kaybi} USD</p>
+                        <p style={{ fontSize: 13, color: 'text.secondary', margin: 0 }}>{props.geciken_odenmesi_gereken_usd} USD üzerinden</p>
+                    </div>
+                </div> */}
             </Stack>
         </Block>
     )
