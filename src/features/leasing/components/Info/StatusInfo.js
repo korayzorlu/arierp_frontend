@@ -31,10 +31,22 @@ function StatusInfo(props) {
             <Stack spacing={2}>
                 <Grid container spacing={4}>
                     <Grid size={{xs:12,sm:1}}>
-                        <Chip label={props.lease_status} color="mars" size='small' />
+                        {
+                            props.lease_status
+                            ?
+                                <Chip label={props.lease_status} color="mars" size='small' />
+                            :
+                                <Chip label="Bilinmiyor" color="smoke" size='small' disabled/>
+                        }
                     </Grid>
                     <Grid size={{xs:12,sm:1}}>
-                        <Chip label={props.status} color="smoke" size='small' />
+                        {
+                            props.status
+                            ?
+                                <Chip label={props.status} color="smoke" size='small' />
+                            :
+                                <Chip label="Bilinmiyor" color="smoke" size='small' disabled/>
+                        }
                     </Grid>
                 </Grid>
             </Stack>
