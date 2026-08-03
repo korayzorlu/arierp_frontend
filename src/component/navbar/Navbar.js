@@ -16,6 +16,7 @@ import ExportProcesses from './ExportProcesses';
 import Langs from './Langs';
 import MenuIcon from '@mui/icons-material/Menu';
 import Agent from './Agent';
+import Emlak from './Emlak';
 
 function Navbar() {
     const {dark,logo,user} = useSelector((store) => store.auth);
@@ -84,6 +85,7 @@ function Navbar() {
                             :
                                 null
                         } */}
+                        {/* <Emlak></Emlak> */}
                         <Agent></Agent>
                         <Notifications/>
                         <User></User>

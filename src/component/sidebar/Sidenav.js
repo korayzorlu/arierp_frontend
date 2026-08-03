@@ -5,11 +5,16 @@ import "./Sidebar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMenuItems } from "../../store/slices/subscriptionsSlice";
 import { setSidebar } from "../../store/slices/sidebarSlice";
-
+import { Typography } from "@mui/material";
+import EmlakIcon from 'component/icon/EmlakIcon';
+import { text } from "@fortawesome/fontawesome-svg-core";
+import EmlakIconSmall from "component/icon/EmlakIconSmall";
 
 //import { ReactComponent as DataIcon } from '../../images/icons/sidebar/light/database-filled.svg';
 
 function Sidenav() {
+    const [emlakHovered, setEmlakHovered] = useState(false);
+    const {dark} = useSelector((store) => store.auth);
     const {collapse,toggle,mobile} = useSelector((store) => store.sidebar);
     const {menuItems} = useSelector((store) => store.subscriptions);
 
@@ -70,7 +75,6 @@ function Sidenav() {
 
     const handleClick = (event) => {
         navigate(event.currentTarget.name)
-       
     };
 
     const handleToggle = () => {
@@ -196,14 +200,45 @@ function Sidenav() {
                             </MenuItem>
                         )
                     }
-                    
                     return <></>
-                    
                 })
             }
-            
 
+            <MenuItem
+            name="ari-leasing-emlak"
+            component={<Link to="https://arileasing.com.tr/leasing-hesaplama/" target="_blank"></Link>}
+            icon={<EmlakIconSmall color="opposite" />}
+            >
+                Arı Leasing Emlak
+            </MenuItem>
+            
             </Menu>
+            {/* <Menu>
+                <MenuItem
+                name="ari-leasing-emlak"
+                component={<Link to="https://arileasing.com.tr/leasing-hesaplama/" target="_blank"></Link>}
+                icon={<EmlakIconSmall color="opposite" />}
+                >
+                    Arı Leasing Emlak
+                </MenuItem>
+            </Menu> */}
+            {/* <Menu
+            rootStyles={{display:'flex', justifyContent:'center', alignItems:'center', marginTop:'auto'}}
+            >
+                <Link
+                to="https://arileasing.com.tr/leasing-hesaplama/"
+                target="_blank"
+                onMouseEnter={() => setEmlakHovered(true)}
+                onMouseLeave={() => setEmlakHovered(false)}
+                >
+                    <EmlakIconSmall
+                    color={dark ? (emlakHovered ? "ari" : "silvercoin") : (emlakHovered ? "smoke" : "ari")}
+                    sx={{ fontSize: '3rem', transition: 'color 0.2s' }}
+                    />
+                </Link>
+                
+            </Menu> */}
+            
         </Sidebar>
         
     );
