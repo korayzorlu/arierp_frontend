@@ -23,40 +23,41 @@ function Sidenav() {
     const dispatch = useDispatch();
 
     const icons = {
-        account: require("../../images/icons/sidebar/light/account_balance_wallet-filled.svg").ReactComponent,
-        accounting: require("../../images/icons/sidebar/light/calculate-filled.svg").ReactComponent,
-        article: require("../../images/icons/sidebar/light/article_shortcut-filled.svg").ReactComponent,
-        badge: require("../../images/icons/sidebar/light/badge-filled.svg").ReactComponent,
-        box: require("../../images/icons/sidebar/light/box-filled.svg").ReactComponent,
-        chat: require("../../images/icons/sidebar/light/chat-filled.svg").ReactComponent,
-        checkbook: require("../../images/icons/sidebar/light/checkbook-filled.svg").ReactComponent,
-        contract: require("../../images/icons/sidebar/light/contract-filled.svg").ReactComponent,
-        cottage: require("../../images/icons/sidebar/light/cottage-filled.svg").ReactComponent,
-        data_loss_prevention: require("../../images/icons/sidebar/light/data_loss_prevention-filled.svg").ReactComponent,
-        dashboard: require("../../images/icons/sidebar/light/dashboard-filled.svg").ReactComponent,
-        database: require("../../images/icons/sidebar/light/database-filled.svg").ReactComponent,
-        description: require("../../images/icons/sidebar/light/description-filled.svg").ReactComponent,
-        handshake: require("../../images/icons/sidebar/light/handshake.svg").ReactComponent,
-        home: require("../../images/icons/sidebar/light/home-work.svg").ReactComponent,
-        home_work: require("../../images/icons/sidebar/light/home_work-filled.svg").ReactComponent,
-        hub: require("../../images/icons/sidebar/light/hub-filled.svg").ReactComponent,
-        in_home_mode: require("../../images/icons/sidebar/light/in_home_mode-filled.svg").ReactComponent,
-        inventory: require("../../images/icons/sidebar/light/inventory-filled.svg").ReactComponent,
-        invoice: require("../../images/icons/sidebar/light/request_page-filled.svg").ReactComponent,
-        mail: require("../../images/icons/sidebar/light/mail-filled.svg").ReactComponent,
-        organization: require("../../images/icons/sidebar/light/home-filled.svg").ReactComponent,
-        paid: require("../../images/icons/sidebar/light/paid-filled.svg").ReactComponent,
-        payment: require("../../images/icons/sidebar/light/payments-filled.svg").ReactComponent,
-        policy: require("../../images/icons/sidebar/light/policy-filled.svg").ReactComponent,
-        price_change: require("../../images/icons/sidebar/light/price_change-filled.svg").ReactComponent,
-        real_estate_agent: require("../../images/icons/sidebar/light/real_estate_agent-filled.svg").ReactComponent,
-        receipt: require("../../images/icons/sidebar/light/receipt_long.svg").ReactComponent,
-        report: require("../../images/icons/sidebar/light/report-filled.svg").ReactComponent,
-        tree: require("../../images/icons/sidebar/light/account_tree-filled.svg").ReactComponent,
-        unknown: require("../../images/icons/sidebar/light/unknown_document-filled.svg").ReactComponent, 
+        account: require("images/icons/sidebar/light/account_balance_wallet-filled.svg").ReactComponent,
+        accounting: require("images/icons/sidebar/light/calculate-filled.svg").ReactComponent,
+        article: require("images/icons/sidebar/light/article_shortcut-filled.svg").ReactComponent,
+        badge: require("images/icons/sidebar/light/badge-filled.svg").ReactComponent,
+        box: require("images/icons/sidebar/light/box-filled.svg").ReactComponent,
+        chat: require("images/icons/sidebar/light/chat-filled.svg").ReactComponent,
+        checkbook: require("images/icons/sidebar/light/checkbook-filled.svg").ReactComponent,
+        contract: require("images/icons/sidebar/light/contract-filled.svg").ReactComponent,
+        cottage: require("images/icons/sidebar/light/cottage-filled.svg").ReactComponent,
+        data_loss_prevention: require("images/icons/sidebar/light/data_loss_prevention-filled.svg").ReactComponent,
+        dashboard: require("images/icons/sidebar/light/dashboard-filled.svg").ReactComponent,
+        database: require("images/icons/sidebar/light/database-filled.svg").ReactComponent,
+        description: require("images/icons/sidebar/light/description-filled.svg").ReactComponent,
+        emlak: EmlakIconSmall,
+        handshake: require("images/icons/sidebar/light/handshake.svg").ReactComponent,
+        home: require("images/icons/sidebar/light/home-work.svg").ReactComponent,
+        home_work: require("images/icons/sidebar/light/home_work-filled.svg").ReactComponent,
+        hub: require("images/icons/sidebar/light/hub-filled.svg").ReactComponent,
+        in_home_mode: require("images/icons/sidebar/light/in_home_mode-filled.svg").ReactComponent,
+        inventory: require("images/icons/sidebar/light/inventory-filled.svg").ReactComponent,
+        invoice: require("images/icons/sidebar/light/request_page-filled.svg").ReactComponent,
+        mail: require("images/icons/sidebar/light/mail-filled.svg").ReactComponent,
+        organization: require("images/icons/sidebar/light/home-filled.svg").ReactComponent,
+        paid: require("images/icons/sidebar/light/paid-filled.svg").ReactComponent,
+        payment: require("images/icons/sidebar/light/payments-filled.svg").ReactComponent,
+        policy: require("images/icons/sidebar/light/policy-filled.svg").ReactComponent,
+        price_change: require("images/icons/sidebar/light/price_change-filled.svg").ReactComponent,
+        real_estate_agent: require("images/icons/sidebar/light/real_estate_agent-filled.svg").ReactComponent,
+        receipt: require("images/icons/sidebar/light/receipt_long.svg").ReactComponent,
+        report: require("images/icons/sidebar/light/report-filled.svg").ReactComponent,
+        tree: require("images/icons/sidebar/light/account_tree-filled.svg").ReactComponent,
+        unknown: require("images/icons/sidebar/light/unknown_document-filled.svg").ReactComponent, 
     };
 
-    const DefaultIcon = require("../../images/icons/sidebar/light/dashboard-filled.svg").ReactComponent;
+    const DefaultIcon = require("images/icons/sidebar/light/dashboard-filled.svg").ReactComponent;
 
     const getIconComponent = (iconName) => {
         const IconComponent = icons[iconName] || DefaultIcon;
@@ -165,7 +166,7 @@ function Sidenav() {
                                                 key={index}
                                                 className={location.pathname.startsWith(item.route) ? "active" : ""}
                                                 name={item.label}
-                                                component={<Link to={item.route}></Link>}
+                                                component={<Link to={item.route} target={item.label === "Leasing Hesaplama" ? "_blank" : undefined}></Link>}
                                                 //icon={getIconComponent(item.icon)}
                                                 >
                                                     {item.label}
@@ -204,13 +205,13 @@ function Sidenav() {
                 })
             }
 
-            <MenuItem
+            {/* <MenuItem
             name="ari-leasing-emlak"
             component={<Link to="https://arileasing.com.tr/leasing-hesaplama/" target="_blank"></Link>}
-            icon={<EmlakIconSmall color="opposite" />}
+            icon={getIconComponent("emlak")}
             >
                 Arı Leasing Emlak
-            </MenuItem>
+            </MenuItem> */}
             
             </Menu>
             {/* <Menu>
