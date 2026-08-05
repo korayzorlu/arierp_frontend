@@ -171,6 +171,7 @@ import KrsReportsCS0100 from 'features/krs/pages/KrsReportsCS0100';
 import KrsReportsCS0200 from 'features/krs/pages/KrsReportsCS0200';
 import KrsReportsCS0301 from 'features/krs/pages/KrsReportsCS0301';
 import KrsReportsCS9999 from 'features/krs/pages/KrsReportsCS9999';
+import RealEstateAgents from 'features/emlak/pages/RealEstateAgents';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -432,6 +433,9 @@ function App() {
                   <Route path='/banka-hareketleri' element={<BankaHareketleri></BankaHareketleri>}></Route>
                   <Route path='/banka-tahsilatlari' element={<BankaTahsilatlari></BankaTahsilatlari>}></Route>
                   <Route path='/banka--tahsilatlari-odoo' element={<BankaTahsilatlariOdoo></BankaTahsilatlariOdoo>}></Route>
+
+                  {/* emlak */}
+                  <Route path='/real-estate-agents' element={<RealEstateAgents></RealEstateAgents>}></Route>
 
                   <Route path='auth' element={<Dashboard></Dashboard>}>
                     <Route path='login'></Route>

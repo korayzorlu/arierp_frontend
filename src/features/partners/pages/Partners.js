@@ -3,13 +3,13 @@ import React, { useEffect, useState, useTransition } from 'react'
 import PanelContent from 'component/panel/PanelContent';
 import CustomTableButton from 'component/table/CustomTableButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPartners, setPartnersLoading, setPartnersParams } from '../../../store/slices/partners/partnerSlice';
+import { fetchPartnerInformation, fetchPartnerNotes, fetchPartners, setPartnersLoading, setPartnersParams } from '../../../store/slices/partners/partnerSlice';
 import { Link } from 'react-router-dom';
-import { setAlert, setDeleteDialog, setDialog, setExportDialog, setImportDialog } from '../../../store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setDialog, setExportDialog, setImportDialog, setPartnerNoteDialog } from '../../../store/slices/notificationSlice';
 import ImportDialog from 'component/feedback/ImportDialog';
 import DeleteDialog from 'component/feedback/DeleteDialog';
 import { fetchExportProcess, fetchImportProcess } from '../../../store/slices/processSlice';
-import { Chip, Stack } from '@mui/material';
+import { Badge, Chip, Grid, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import PeopleIcon from '@mui/icons-material/People';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -21,11 +21,14 @@ import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
 import { gridClasses } from '@mui/x-data-grid-premium';
+import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import TableButton from 'component/button/TableButton';
+import { NoteAltIcon } from 'icons';
 
 function Partners() {
-    const {user} = useSelector((store) => store.auth);
+    const {user,dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {partners,partnersCount,partnersParams,partnersLoading} = useSelector((store) => store.partner);
+    const {partners,partnersCount,partnersParams,partnersLoading,partnerNotesParams} = useSelector((store) => store.partner);
 
     const dispatch = useDispatch();
 
@@ -68,7 +71,7 @@ function Partners() {
                 </Stack>
             ) 
         },
-        { field: 'name', headerName: 'İsim', width: 400, editable: true, renderCell: (params) => (
+        { field: 'name', headerName: 'İsim', width: 360, editable: true, renderCell: (params) => (
                 <Link
                 to={`/partners/update/${params.row.uuid}/`}
                 style={{textDecoration:"underline"}}
@@ -81,9 +84,9 @@ function Partners() {
         { field: 'customerCode', headerName: 'Müşteri Kodu', width: 100, align: 'right', headerAlign: 'right' },
         { field: 'crmCode', headerName: 'CRM Kodu', width: 90, align: 'right', headerAlign: 'right' },
         { field: 'tcVknNo', headerName: 'TC/VKN No', width: 120, align: 'right', headerAlign: 'right' },
-        { field: 'sgk_job', headerName: 'Meslek', width: 220 },
-        { field: 'sgk_job_code', headerName: 'Meslek Kodu', width: 120 },
-        { field: 'nace_code', headerName: 'NACE Kodu', width: 120 },
+        { field: 'sgk_job', headerName: 'Meslek', width: 180 },
+        { field: 'sgk_job_code', headerName: 'Meslek Kodu', width: 100 },
+        { field: 'nace_code', headerName: 'NACE Kodu', width: 100 },
         { field: 'kep', headerName: 'Kep Adresi', width: 220 },
         { field: 'is_turkkep', headerName: 'Kep Var mı?', width: 100,
             renderCell: (params) => (
@@ -104,7 +107,40 @@ function Partners() {
                 ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
                 />
             )
-         },
+        },
+        { field: 'partner_notes', headerName: '', width: 180,
+            renderCell: (params) => (
+                <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
+                    <Grid container spacing={1} sx={{width:'100%'}}>
+                        <Grid size={{xs:8, sm:8}}>
+                            <TableButton
+                            text="Notlar"
+                            color="celticglow"
+                            icon={<NoteAltIcon/>}
+                            onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.id,crm_code:params.row.crmCode})}}
+                            />
+                        </Grid>
+                        <Grid size={{xs:4, sm:4}}>
+                            <Badge badgeContent={params.row.partner_note_count} color={dark ? 'frostedbirch' : 'silvercoin'}></Badge>
+                        </Grid>
+                    </Grid>
+                        
+                </Stack>
+            ),
+            renderHeaderFilter: (params) => (
+                <SelectHeaderFilter
+                {...params}
+                label="Seç"
+                externalValue="all"
+                isServer
+                options={[
+                    { value: 'all', label: 'Tümü' },
+                    { value: 'true', label: 'Not Olanlar' },
+                    { value: 'false', label: 'Not Olmayanlar' },
+                ].sort((a, b) => a.label.localeCompare(b.label, 'tr'))}
+                />
+            )
+        },
         // { field: 'address', headerName: 'Adres', flex: 4, renderCell: (params) => (
         //     <>
         //         {params.value} {params.row.address2}
@@ -138,6 +174,12 @@ function Partners() {
         } catch (error) {
             //dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
         };
+    };
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
     };
 
     return (
@@ -235,6 +277,7 @@ function Partners() {
             startEvent={() => dispatch(setPartnersLoading(true))}
             finalEvent={() => {dispatch(fetchPartners({activeCompany}));dispatch(setPartnersLoading(false));}}
             />
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

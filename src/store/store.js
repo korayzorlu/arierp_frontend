@@ -76,6 +76,7 @@ import agentTaskReducer from './slices/agent/agentTaskSlice';
 import kapamaDetayReducer from './slices/krs/kapamaDetaySlice';
 import kapamaHareketiReducer from './slices/krs/kapamaHareketiSlice';
 import krsReportReducer from './slices/krs/krsReportSlice';
+import realEstateAgentReducer from './slices/emlak/realEstateAgentSlice';
 
 let navigate;
 
@@ -162,6 +163,7 @@ export const store = configureStore({
         kapamaDetay: kapamaDetayReducer,
         kapamaHareketi: kapamaHareketiReducer,
         krsReport: krsReportReducer,
+        realEstateAgent: realEstateAgentReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
