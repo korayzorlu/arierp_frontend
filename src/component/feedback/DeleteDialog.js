@@ -7,9 +7,10 @@ import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import { setAlert, setDeleteDialog } from '../../store/slices/notificationSlice';
 import axios from 'axios';
 import { setPartnersLoading } from '../../store/slices/partners/partnerSlice';
+import { DeleteIcon } from 'icons';
 
 function DeleteDialog(props) {
-    const {children,open,modelName,deleteURL,selectedItems,closeEvent,startEvent,finalEvent} = props;
+    const {children,open,modelName,deleteURL,selectedItems,closeEvent,startEvent,finalEvent,apiRef} = props;
     const {activeCompany} = useSelector((store) => store.organization);
     const {deleteDialog} = useSelector((store) => store.notification);
 
@@ -29,15 +30,26 @@ function DeleteDialog(props) {
         };
         dispatch(setDeleteDialog(false));
         dispatch(setAlert({status:"info",text:"Removing items.."}));
-        
+
         try {
 
             const response = await axios.post(deleteURL,
                 {
-                    uuids : Array.from(selectedItems).map(item => item.uuid) || []
+                    uuids : (
+                        Array.from(selectedItems).map(item => item.uuid).length > 0
+                        ?
+                            Array.from(selectedItems).map(item => item.uuid)
+                        :
+                            selectedItems.type === 'exclude'
+                                ?
+                                    apiRef.current.getAllRowIds()
+                                :
+                                    Array.from(selectedItems.ids)
+                    ) || []
                 },
                 { withCredentials: true},
             );
+            dispatch(setAlert({status:response.data.status,text:response.data.message}));
         } catch (error) {
             dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
         } finally {
@@ -58,7 +70,7 @@ function DeleteDialog(props) {
         variant="outlined"
         >
             <DialogTitle id="alert-dialog-title">
-                Delete company
+                <DeleteIcon/> Sil
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -67,7 +79,15 @@ function DeleteDialog(props) {
             </DialogContent>
             <DialogActions className=''>
                 <Button color="neutral" onClick={handleClose}>Vazgeç</Button>
-                <Button variant="outlined" color="error" onClick={handleDelete} autoFocus>Sil</Button>
+                <Button
+                variant="contained"
+                color="error"
+                onClick={handleDelete}
+                endIcon={<DeleteIcon/>}
+                autoFocus
+                >
+                    Sil
+                </Button>
             </DialogActions>
         </MUIDialog>
     )

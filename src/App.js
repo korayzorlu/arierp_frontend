@@ -172,6 +172,7 @@ import KrsReportsCS0200 from 'features/krs/pages/KrsReportsCS0200';
 import KrsReportsCS0301 from 'features/krs/pages/KrsReportsCS0301';
 import KrsReportsCS9999 from 'features/krs/pages/KrsReportsCS9999';
 import RealEstateAgents from 'features/emlak/pages/RealEstateAgents';
+import WhsatsappMessages from 'features/emlak/pages/WhatsappMessages';
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -436,6 +437,7 @@ function App() {
 
                   {/* emlak */}
                   <Route path='/real-estate-agents' element={<RealEstateAgents></RealEstateAgents>}></Route>
+                  <Route path='/whatsapp-messages' element={<Suspense fallback={<></>}><WhsatsappMessages></WhsatsappMessages></Suspense>}></Route>
 
                   <Route path='auth' element={<Dashboard></Dashboard>}>
                     <Route path='login'></Route>

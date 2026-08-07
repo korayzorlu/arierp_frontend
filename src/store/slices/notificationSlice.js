@@ -6,6 +6,7 @@ import { Alert as MDBAlert} from 'mdb-ui-kit';
 const initialState = {
     addBankActivityLeaseDialog: false,
     addPartnerAdvanceActivityLeaseDialog: false,
+    addWhatsappMessageDialog: false,
     agentDialog: false,
     alert: { color: "", icon: "", text: "" },
     alertt: { status: "", text: "" },
@@ -212,6 +213,9 @@ const notificationSlice = createSlice({
         },
         setUnreadNotifications: (state,action) => {
             state.unreadNotifications = action.payload;
+        },
+        setAddWhatsappMessageDialog: (state,action) => {
+            state.addWhatsappMessageDialog = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -276,7 +280,8 @@ export const {
     setColumnHeaderDateDialog,
     setImportDocumentDialog,
     setDeleteDocumentDialog,
-    setTradeTransactionForCustomerDialog
+    setTradeTransactionForCustomerDialog,
+    setAddWhatsappMessageDialog
 
 } = notificationSlice.actions;
 export default notificationSlice.reducer;
