@@ -30,6 +30,9 @@ function VPosTransactions() {
     const columns = [
         { field: 'process_date', headerName: 'İşlem Tarihi', width: 150 },
         { field: 'musteri_tipi', headerName: 'Müşteri Tipi', width: 120 },
+        { field: 'ad', headerName: 'Ad', width: 200 },
+        { field: 'soyad', headerName: 'Soyad', width: 200 },
+        { field: 'contract_code', headerName: 'Kira Planı', width: 160 },
         { field: 'paid_amount', headerName: 'Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
@@ -45,11 +48,11 @@ function VPosTransactions() {
             loading={vposTransactionsLoading}
             customButtons={
                 <>  
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="Excel'e Aktar"
                     onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/leasing/export_active_leases/`)}}
                     icon={<DownloadIcon fontSize="small"/>}
-                    />
+                    /> */}
                     <CustomTableButton
                     title="Yenile"
                     onClick={() => dispatch(fetchVPosTransactions({activeCompany,params:vposTransactionsParams})).unwrap()}
@@ -62,7 +65,7 @@ function VPosTransactions() {
             setParams={(value) => dispatch(setVPosTransactionsParams(value))}
             //getRowClassName={(params) => `super-app-theme--${params.row.overdue_amount > 0 ? "overdue" : ""}`}
             headerFilters={true}
-            noDownloadButton
+            //noDownloadButton
             apiRef={apiRef}
             />
             <ExportDialog
