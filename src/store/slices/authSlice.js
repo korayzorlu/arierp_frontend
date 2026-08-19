@@ -1,6 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { setIdleWarningDialog } from "./notificationSlice";
 
 const rawTheme = Cookies.get("theme");
 const theme = rawTheme === "dark" || rawTheme === "light" ? rawTheme : "light";
@@ -62,13 +63,14 @@ export const changeTheme = createAsyncThunk('auth/changeTheme', async (darkTerm,
     }
 });
 
-export const loginAuth = createAsyncThunk('auth/loginAuth', async ({email, password, remember},{ rejectWithValue }) => {
+export const loginAuth = createAsyncThunk('auth/loginAuth', async ({email, password, remember},{ rejectWithValue,dispatch }) => {
     try {
         const response = await axios.post('/users/login/', { 
             email:email,
             password:password,
             remember:remember
         },{ withCredentials: true, });
+        dispatch(setIdleWarningDialog(false));
         return response.data;
     } catch (error) {
         return rejectWithValue({
