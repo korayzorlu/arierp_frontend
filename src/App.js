@@ -224,7 +224,9 @@ function App() {
     onIdle: () => dispatch(setIdleWarningDialog(true)),
     onLogout: async () => {
       dispatch(setIdleWarningDialog(false));
-      await dispatch(logoutAuth()).unwrap();
+      try {
+        await dispatch(logoutAuth()).unwrap();
+      } catch (error) { }
       navigate('/auth/login');
     },
   });
