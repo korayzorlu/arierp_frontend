@@ -78,6 +78,7 @@ import kapamaHareketiReducer from './slices/krs/kapamaHareketiSlice';
 import krsReportReducer from './slices/krs/krsReportSlice';
 import realEstateAgentReducer from './slices/emlak/realEstateAgentSlice';
 import whsatsappMessageReducer from './slices/emlak/whatsappMessageSlice';
+import partnerScoreReducer from './slices/partners/partnerScoreSlice';
 
 let navigate;
 
@@ -166,6 +167,7 @@ export const store = configureStore({
         krsReport: krsReportReducer,
         realEstateAgent: realEstateAgentReducer,
         whatsappMessage: whsatsappMessageReducer,
+        partnerScore: partnerScoreReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

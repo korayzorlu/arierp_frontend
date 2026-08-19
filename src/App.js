@@ -1,7 +1,7 @@
 //deneme
 
 import './App.css';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Landing from './features/layout/pages/Landing.js';
 import Panel from './features/layout/pages/Panel.js';
@@ -26,7 +26,7 @@ import PersonalSettings from './features/settings/auth/pages/PersonalSettings.js
 import EmailSettings from './features/settings/auth/pages/EmailSettings.js';
 import ForgotPassword from './features/auth/pages/ForgotPassword.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser, fetchTheme, fetchCSRFToken, setLoading } from './store/slices/authSlice.js';
+import { fetchUser, fetchTheme, fetchCSRFToken, setLoading, logoutAuth } from './store/slices/authSlice.js';
 import { checkMobile, setResize } from './store/slices/sidebarSlice.js';
 import AddCompany from './features/organization/pages/AddCompany.js';
 import UpdateCompany from './features/organization/pages/UpdateCompany.js';
@@ -81,7 +81,7 @@ import AddSector from './features/partners/pages/AddSector.js';
 import UpdateSector from './features/partners/pages/UpdateSector.js';
 import Contracts from './features/contracts/pages/Contracts.js';
 import Leases from './features/leasing/pages/Leases.js';
-import { setAlert } from './store/slices/notificationSlice.js';
+import { setAlert, setIdleWarningDialog } from './store/slices/notificationSlice.js';
 import QuickQuotations from './features/quotations/pages/QuickQuotations.js';
 import Quotations from './features/quotations/pages/Quotations.js';
 import Installment from './features/leasing/pages/Installment.js';
@@ -173,6 +173,11 @@ import KrsReportsCS0301 from 'features/krs/pages/KrsReportsCS0301';
 import KrsReportsCS9999 from 'features/krs/pages/KrsReportsCS9999';
 import RealEstateAgents from 'features/emlak/pages/RealEstateAgents';
 import WhsatsappMessages from 'features/emlak/pages/WhatsappMessages';
+import PartnerScores from 'features/credit/pages/PartnerScores';
+import IdleWarningModal from 'component/dialog/IdleWarningModal';
+import useIdleTimer from 'hooks/useIdleTimer';
+import IdleWarningDialog from 'component/dialog/IdleWarningDialog';
+
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
 LicenseInfo.setLicenseKey(process.env.REACT_APP_MUI_LICENSE_KEY);
@@ -182,6 +187,9 @@ export const NumberContext = React.createContext();
 function App() {
   axios.defaults.baseURL = process.env.REACT_APP_API_URL;
   const { user, status, theme, dark, loading } = useSelector((store) => store.auth);
+  const {idleWarningDialog} = useSelector((store) => store.notification);
+
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -210,6 +218,20 @@ function App() {
     fetchData();
 
   }, [dispatch]);
+
+  //session control
+  const { forceReset } = useIdleTimer({
+    onIdle: () => dispatch(setIdleWarningDialog(true)),
+    onLogout: async () => {
+      dispatch(setIdleWarningDialog(false));
+      await dispatch(logoutAuth()).unwrap();
+      navigate('/auth/login');
+    },
+  });
+
+  const handleDialogClose = () => {
+    forceReset();
+  };
 
   //sidebar collapse
   useEffect(() => {
@@ -255,6 +277,7 @@ function App() {
       <EmailVerify></EmailVerify>
     </ThemeProvider>
   );
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -334,6 +357,7 @@ function App() {
                   {/* credit */}
                   <Route path='/partner-financial-profiles' element={<PartnerFinancialProfiles></PartnerFinancialProfiles>}></Route>
                   <Route path='/partner-financial-profiles/update/:uuid' element={<UpdatePartnerFinancialProfile></UpdatePartnerFinancialProfile>}></Route>
+                  <Route path='/partner-scores' element={<PartnerScores></PartnerScores>}></Route>
                   <Route path='/kapama-detaylari' element={<KapamaDetaylari></KapamaDetaylari>}></Route>
                   <Route path='/kapama-hareketleri' element={<KapamaHareketleri></KapamaHareketleri>}></Route>
                   <Route path='/krs-raporlari' element={<KrsReports></KrsReports>}></Route>
@@ -449,6 +473,7 @@ function App() {
                 <Route path='*' element={<WrongPath></WrongPath>}></Route>
 
               </Routes>
+              
             </>
             :
             <>
@@ -468,7 +493,7 @@ function App() {
               </Routes>
             </>
           }
-
+          <IdleWarningDialog open={idleWarningDialog} onClose={handleDialogClose} />
         </div>
 
       </ThemeProvider>

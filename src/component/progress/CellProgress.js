@@ -1,10 +1,12 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import { useGridApiContext } from '@mui/x-data-grid';
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled, useTheme } from '@mui/material/styles';
 import Slider, { sliderClasses } from '@mui/material/Slider';
 import Tooltip from '@mui/material/Tooltip';
 import { debounce } from '@mui/material/utils';
+import { green, lime, orange, red, yellow } from '@mui/material/colors';
+import { useSelector } from 'react-redux';
 
 const Center = styled('div')({
   height: '100%',
@@ -42,10 +44,23 @@ const Bar = styled('div')({
   },
 });
 
+const BarRisk = styled('div')(({ barColors }) => ({
+  height: '100%',
+  '&.low': {
+    backgroundColor: barColors.low,
+  },
+  '&.medium': {
+    backgroundColor: barColors.medium,
+  },
+  '&.high': {
+    backgroundColor: barColors.high,
+  },
+}));
+
 const ProgressBar = React.memo(function ProgressBar(props) {
   const { value } = props;
   const valueInPercent = value;
-
+  
   return (
     <Element>
       <Value>{`% ${valueInPercent.toLocaleString()}`}</Value>
@@ -56,6 +71,55 @@ const ProgressBar = React.memo(function ProgressBar(props) {
           high: valueInPercent > 70,
         })}
         style={{ maxWidth: `${valueInPercent}%` }}
+      />
+    </Element>
+  );
+});
+
+const RiskBar = React.memo(function RiskBar(props) {
+  const { value } = props;
+  const valueInPercent = value;
+  const {dark} = useSelector((store) => store.auth);
+  let text;
+  if( valueInPercent < 40 ){
+    text = "Düşük Risk";
+  }else if( valueInPercent >= 40 && valueInPercent <= 70 ){
+    text = "Orta Risk";
+  }else if( valueInPercent > 70 ){
+    text = "Yüksek Risk";
+  }else{
+    text = "Bilinmiyor";
+  }
+
+  const barColors = (dark) => {
+    switch (dark) {
+      case true:
+        return {
+          low: green[600],
+          medium: orange[800],
+          high: red[900],
+        };
+      default:
+        return {
+          low: green[500],
+          medium: yellow[600],
+          high: red[500],
+        };
+    }
+  };
+
+  return (
+    <Element>
+      {/* <Value>{`${valueInPercent.toLocaleString()}`}</Value> */}
+      <Value>{`${text}`}</Value>
+      <BarRisk
+        className={clsx({
+          low: valueInPercent < 40,
+          medium: valueInPercent >= 40 && valueInPercent <= 70,
+          high: valueInPercent > 70,
+        })}
+        style={{ maxWidth: `${valueInPercent}%` }}
+        barColors={barColors(dark)}
       />
     </Element>
   );
@@ -158,6 +222,18 @@ function EditProgress(props) {
       valueLabelDisplay="auto"
       valueLabelFormat={(newValue) => `${(newValue * 100).toLocaleString()} %`}
     />
+  );
+}
+
+export function cellRiskBar(params) {
+  if (params.value == null) {
+    return '';
+  }
+
+  return (
+    <Center>
+      <RiskBar value={params.value} />
+    </Center>
   );
 }
 

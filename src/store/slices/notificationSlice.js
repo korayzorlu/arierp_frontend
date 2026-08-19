@@ -23,6 +23,7 @@ const initialState = {
     dialog: false,
     exportDialog: false,
     finmaksTransactionNameDialog: false,
+    idleWarningDialog: false,
     importDialog: false,
     importDocumentDialog: false,
     installmentDialog: false,
@@ -216,6 +217,9 @@ const notificationSlice = createSlice({
         },
         setAddWhatsappMessageDialog: (state,action) => {
             state.addWhatsappMessageDialog = action.payload;
+        },
+        setIdleWarningDialog: (state,action) => {
+            state.idleWarningDialog = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -281,7 +285,8 @@ export const {
     setImportDocumentDialog,
     setDeleteDocumentDialog,
     setTradeTransactionForCustomerDialog,
-    setAddWhatsappMessageDialog
+    setAddWhatsappMessageDialog,
+    setIdleWarningDialog
 
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

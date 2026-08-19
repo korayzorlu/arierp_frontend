@@ -48,12 +48,9 @@ function Transactions(props) {
                         fullWidth
                         size='small'
                         >
-                            <MenuItem value="0">0</MenuItem>
-                            <MenuItem value="1">1-20</MenuItem>
-                            <MenuItem value="2">21-50</MenuItem>
-                            <MenuItem value="3">51-100</MenuItem>
-                            <MenuItem value="4">101-500</MenuItem>
-                            <MenuItem value="5">500+</MenuItem>
+                            <MenuItem value="0_2">0-2</MenuItem>
+                            <MenuItem value="3_4">3-4</MenuItem>
+                            <MenuItem value="5_above">5 ve üzeri</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
