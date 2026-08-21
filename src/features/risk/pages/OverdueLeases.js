@@ -21,6 +21,7 @@ import { Chip, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from
 import StarIcon from '@mui/icons-material/Star';
 import ExportDialog from 'component/feedback/ExportDialog';
 import DownloadIcon from '@mui/icons-material/Download';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 function OverdueLeases() {
     const {user} = useSelector((store) => store.auth);
@@ -148,12 +149,13 @@ function OverdueLeases() {
                     onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL("/risk/export_overdue_leases/")}}
                     icon={<DownloadIcon fontSize="small"/>}
                     />
-
-                    {/* <CustomTableButton
+                    <CustomTableButton
                     title="İçe Aktar"
-                    onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess());console.log(Array.from(apiRef.current.getSelectedRows().values()))}}
-                    icon={<UploadFileIcon fontSize="small"/>}
+                    onClick={() => {dispatch(setImportDialog(true));dispatch(fetchImportProcess())}}
+                    icon={<FileUploadIcon fontSize="small"/>}
                     />
+
+                    {/* 
 
                     <CustomTableButton
                     title="Yeni"
@@ -233,8 +235,7 @@ function OverdueLeases() {
             />
             <ImportDialog
             handleClose={() => dispatch(setImportDialog(false))}
-            templateURL="/leasing/leases_template"
-            importURL="/leasing/import_leases/"
+            importURL="/risk/import_overdue_leases/"
             startEvent={() => dispatch(setLeasesLoading(true))}
             finalEvent={() => {dispatch(fetchLeases({activeCompany}));dispatch(setLeasesLoading(false));}}
             >

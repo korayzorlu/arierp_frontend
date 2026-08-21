@@ -99,7 +99,7 @@ function ExportDialog(props) {
                     fullWidth
                     >   
                         <DialogTitle id="alert-dialog-title">
-                            Excel dosyasından öğeleri içe aktar
+                            { props.type === "manager_summary" ? <DocxIcon height={32} width={32} /> : <XlsIcon height={32} width={32} /> } Dışa Aktar
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">
@@ -111,7 +111,7 @@ function ExportDialog(props) {
                                 <Row>
                                     <Col>
                                         <Typography>
-                                            Başka bir içe aktarma işlemi devam ediyor. Lütfen bitmesini bekleyin ve tekrar deneyin.
+                                            Başka bir dışa aktarma işlemi devam ediyor. Lütfen bitmesini bekleyin ve tekrar deneyin.
                                         </Typography>
                                     </Col>
                                 </Row>

@@ -16,6 +16,9 @@ import MUIDialog from '@mui/material/Dialog';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { ReactComponent as XlsIcon } from "images/icons/global/xls.svg";
+import { ReactComponent as DocxIcon } from "images/icons/global/docx.svg";
+import { PlayArrowIcon } from 'icons';
 
 function ImportDialog(props) {
     const {children,templateURL,importURL,startEvent,finalEvent,closeEvent,fileName} = props;
@@ -172,28 +175,36 @@ function ImportDialog(props) {
                     variant="outlined"
                     >
                         <DialogTitle id="alert-dialog-title">
-                            Excel dosyasından öğeleri içe aktar
+                            { props.type === "manager_summary" ? <DocxIcon height={32} width={32} /> : <XlsIcon height={32} width={32} /> } İçe aktar
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description" component="div">
+                                {
+                                    templateURL
+                                    ?
+                                        <>
+                                            <Row className="mb-3">
+                                                <Col>
+                                                    <Button
+                                                    variant='contained'
+                                                    color='mars'
+                                                    startIcon={<CloudDownloadIcon/>}
+                                                    onClick={fetchTemplate}
+                                                    fullWidth
+                                                    >
+                                                        Şablon İndir
+                                                    </Button>
+                                                </Col>
+                                            </Row>
+                                        </>
+                                    :
+                                        null
+                                }
                                 <Row className="mb-3">
                                     <Col>
                                         <Typography>
-                                            Şablon indirebilir veya bir dosya seçip yükleyebilirsin.
+                                            Excel dosyasındaki veriler içe aktarılarak tablodaki verileri güncellenecektir.
                                         </Typography>
-                                    </Col>
-                                </Row>
-                                <Row className="mb-3">
-                                    <Col>
-                                        <Button
-                                        variant='contained'
-                                        color='mars'
-                                        startIcon={<CloudDownloadIcon/>}
-                                        onClick={fetchTemplate}
-                                        fullWidth
-                                        >
-                                            Şablon İndir
-                                        </Button>
                                     </Col>
                                 </Row>
                                 <Row>
@@ -216,7 +227,7 @@ function ImportDialog(props) {
                         </DialogContent>
                         <DialogActions className=''>
                             <Button variant="text" color="neutral" onClick={handleClose}>Vazgeç</Button>
-                            <Button variant="outlined" color="primary" onClick={handleImport} autoFocus>Başlat</Button>
+                            <Button variant="contained" color="opposite" onClick={handleImport} endIcon={<PlayArrowIcon/>} autoFocus>Başlat</Button>
                         </DialogActions>
                     </MUIDialog>
                 )
