@@ -53,7 +53,9 @@ function AddWhatsappMessageDialog(props) {
 
     const handleDateRangeChange = async (newValue) => {
         const meet_date = newValue ? dayjs(newValue).format('YYYY-MM-DD') : null;
+        const online_meet_date = newValue ? dayjs(newValue).format('YYYY-MM-DD') : null;
         handleChangeField("meet_date", meet_date);
+        handleChangeField("online_meet_date", online_meet_date);
     }
 
     return (
