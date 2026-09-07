@@ -158,6 +158,7 @@ const initialState = {
         format: 'datatables'
     },
     terminatedLeasesLoading:false,
+    terminatedLeaseProjects:[],
     //exchanged leases
     exchangedLeases:[],
     exchangedLeasesCount:0,
@@ -1227,6 +1228,7 @@ const riskPartnerSlice = createSlice({
             })
             .addCase(fetchTerminatedLeases.fulfilled, (state,action) => {
                 state.terminatedLeases = action.payload.data || action.payload;
+                state.terminatedLeaseProjects = action.payload.projects || [];
                 state.terminatedLeasesCount = action.payload.recordsTotal || 0;
                 state.terminatedLeasesLoading = false
             })
