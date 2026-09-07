@@ -152,7 +152,7 @@ function TerminatedLeases() {
                 <>  
                     <CustomTableButton
                     title="Excel'e Aktar"
-                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/leasing/export_active_leases/`)}}
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/risk/export_terminated_leases/`)}}
                     icon={<DownloadIcon fontSize="small"/>}
                     />
                     <CustomTableButton
