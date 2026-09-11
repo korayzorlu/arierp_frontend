@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTerminatedLeases, setTerminatedLeasesLoading, setTerminatedLeasesParams } from 'store/slices/leasing/riskPartnerSlice';
-import { setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { fetchTerminatedLeases, setTerminatedLeasesLoading, setTerminatedLeasesParams, updateTerminatedDate } from 'store/slices/leasing/riskPartnerSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -10,7 +10,7 @@ import DeleteDialog from 'component/feedback/DeleteDialog';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
-import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
+import { gridClasses, GridRowEditStopReasons, useGridApiRef } from '@mui/x-data-grid-premium';
 import { Chip, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
@@ -29,12 +29,11 @@ function TerminatedLeases() {
 
     const [isPending, startTransition] = useTransition();
 
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [switchDisabled, setSwitchDisabled] = useState(false);
-    const [switchPosition, setSwitchPosition] = useState(false);
-    const [project, setProject] = useState("kizilbuk")
     const [exportURL, setExportURL] = useState("")
     const [status, setStatus] = useState("all")
+
+    const [rows, setRows] = useState(terminatedLeases);
+    const [rowModesModel, setRowModesModel] = useState({});
 
     useEffect(() => {
         startTransition(() => {
@@ -115,12 +114,13 @@ function TerminatedLeases() {
                 />
             )
         },
-        { field: 'terminated_date', headerName: 'Fesih Tarihi', width:120, type:'date',
-            valueGetter: (value) => {
-                if (!value) return null;
-                const [day, month, year] = value.split('.');
-                return new Date(year, month - 1, day);
-            }
+        { field: 'terminated_date', headerName: 'Fesih Tarihi', width:120, 
+            editable: true,
+            // valueGetter: (value) => {
+            //     if (!value) return null;
+            //     const [day, month, year] = value.split('.');
+            //     return new Date(year, month - 1, day);
+            // }
          },
         { field: 'last_refund_date', headerName: 'Son İade Tarihi', width:120, type:'date',
             valueGetter: (value) => {
@@ -135,9 +135,37 @@ function TerminatedLeases() {
         { field: 'r', headerName: 'PB', width: 90, renderCell: (params) => params.row.refund.currency },
     ]
 
-    const changeProject = (newValue) => {
-        setProject(newValue);
-        dispatch(setTerminatedLeasesParams({project:newValue}));
+    const handleRowEditStop = (params, event) => {
+        if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+            event.defaultMuiPrevented = true;
+        }
+    };
+
+    const processRowUpdate = async (newRow) => {
+        // Validate the terminated_date format (DD.MM.YYYY)
+        const dateFormatRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+        if (!dateFormatRegex.test(newRow.terminated_date)) {
+            dispatch(setAlert({status:"error",text:"Geçersiz tarih formatı:', newRow.terminated_date, '- Beklenen format: GG.AA.YYYY (örn: 27.08.2026)"}));
+            return newRow
+        }
+        
+        await dispatch(updateTerminatedDate({data:newRow})).unwrap();
+
+        const response = await dispatch(fetchTerminatedLeases({activeCompany,params:terminatedLeasesParams})).unwrap();
+
+        // const updatedRow = { ...newRow, isNew: false };
+        // setRows((prevRows) =>
+        //     prevRows.map((row) => (row.id === newRow.id ? updatedRow : row)),
+        // );
+
+        setRows(response.data)
+        const updatedRow = response.data.find((row) => row.id === newRow.id);
+        
+        return updatedRow;
+    };
+
+    const handleChangeTerminatedDate = (newValue) => {
+        console.log(newValue);
     };
 
     return (
@@ -164,6 +192,11 @@ function TerminatedLeases() {
             }
             rowCount={terminatedLeasesCount}
             setParams={(value) => dispatch(setTerminatedLeasesParams(value))}
+            editMode="row"
+            rowModesModel={rowModesModel}
+            onRowModesModelChange={setRowModesModel}
+            onRowEditStop={handleRowEditStop}
+            processRowUpdate={processRowUpdate}
             headerFilters={true}
             noDownloadButton
             apiRef={apiRef}

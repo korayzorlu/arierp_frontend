@@ -470,6 +470,30 @@ export const fetchTerminatedLeases = createAsyncThunk('auth/fetchTerminatedLease
     }
 });
 
+export const updateTerminatedDate = createAsyncThunk('auth/updateTerminatedDate', async ({data=null},{dispatch}) => {
+    dispatch(setIsProgress(true));
+    try {
+        const response = await axios.post(`/risk/update_terminated_date/`,
+            data,
+            { 
+                withCredentials: true
+            },
+        );
+        dispatch(setAlert({status:response.data.status,text:response.data.message}))
+        console.log(response)
+        return response.data.status;
+    } catch (error) {
+        if(error.response.data){
+            dispatch(setAlert({status:error.response.data.status,text:error.response.data.message}));
+        }else{
+            dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
+        };
+        return error.response.data.status;
+    } finally {
+        dispatch(setIsProgress(false));
+    }
+});
+
 export const fetchExchangedLeases = createAsyncThunk('auth/fetchExchangedLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/exchanged_leases/?ac=${activeCompany.id}`,

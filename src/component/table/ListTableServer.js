@@ -11,62 +11,6 @@ import { trTR } from '@mui/x-data-grid/locales';
 import AriCheckBox from 'component/checkbox/AriCheckBox';
 
 function ListTableServer(props) {
-  const {
-    height,
-    rows,
-    columns,
-    getRowId,
-    loading,
-    customButtons,
-    hiddenColumns,
-    checkboxSelection,
-    disableRowSelectionOnClick,
-    pageModel,
-    onRowSelectionModelChange,
-    rowCount,
-    setParams,
-    resetParams,
-    apiRef,
-    hideFooter,
-    noOverlay,
-    density,
-    autoRowHeight,
-    title,
-    backButton,
-    getRowClassName,
-    sx,
-    excelExportOptions,
-    excelOptions,
-    customFilters,
-    customFiltersLeft,
-    headerFilters,
-    onCellClick,
-    autoHeight,
-    initialState,
-    rowSpanning,
-    showCellVerticalBorder,
-    showColumnVerticalBorder,
-    rowSelectionModel,
-    onProcessRowUpdateError,
-    isRowSelected,
-    keepNonExistentRowsSelected,
-    noAllSelect,
-    groupingColDef,
-    getDetailPanelContent,
-    getDetailPanelHeight,
-    detailPanelExpandedRowIds,
-    onDetailPanelExpandedRowIdsChange,
-    processRowUpdate,
-    disableMultipleRowSelection,
-    noDownloadButton,
-    disableVirtualization,
-    autoPageSize,
-    pageSizeOptions,
-    pageSize,
-    cellSelection,
-    warnings
-  } = props;
-
   const {dark,lang} = useSelector((store) => store.auth);
   const {mobile} = useSelector((store) => store.sidebar);
 
@@ -74,33 +18,33 @@ function ListTableServer(props) {
 
   const [isPending, startTransition] = useTransition();
 
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: pageSize || 50 })
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: props.pageSize || 50 })
 
   useEffect(() => {
-    if (pageSize !== undefined) {
-      setPaginationModel(prev => ({ ...prev, pageSize }));
+    if (props.pageSize !== undefined) {
+      setPaginationModel(prev => ({ ...prev, pageSize: props.pageSize }));
     }
-  }, [pageSize]);
+  }, [props.pageSize]);
 
   const [filterParams, setFilterParams] = useState({});
   const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] });
 
   const [sortModel, setSortModel] = useState([]);
 
-  const debouncedSetParams = useCallback(debounce(setParams, 700), []);
+  const debouncedSetParams = useCallback(debounce(props.setParams, 700), []);
   const debouncedSetFilterParams = useCallback(debounce(setFilterParams, 600), []);
 
   const handlePaginationModelChange = (model) => {
     setPaginationModel(model);
     //dispatch(setPartnersParams({start:model.page * model.pageSize,end:(model.page+1) * model.pageSize}));
-    setParams({start:model.page * model.pageSize,end:(model.page+1) * model.pageSize})
+    props.setParams({start:model.page * model.pageSize,end:(model.page+1) * model.pageSize})
   };
 
   const handleSortModelChange = (model) => {
     setSortModel(model);
 
     if(model.length > 0){
-      setParams({"ordering":model.sort === "asc" ? model[0].field : `-${model[0].field}`});
+      props.setParams({"ordering":model.sort === "asc" ? model[0].field : `-${model[0].field}`});
     }
     
 
@@ -119,7 +63,7 @@ function ListTableServer(props) {
     //       ''
     //   }
     // ));
-    setParams(
+    props.setParams(
       {
         ordering:model.length
         ?
@@ -160,7 +104,7 @@ function ListTableServer(props) {
           });
           if (isCodeLike) {
             //console.log("2-1-1-1");
-            setParams({ "search[value]": item.value });
+            props.setParams({ "search[value]": item.value });
           } else {
             //console.log("2-1-1-2");
             debouncedSetParams({ [item.field]: item.value });
@@ -169,10 +113,10 @@ function ListTableServer(props) {
           //console.log("2-1-2");
           if (isCodeLike) {
             //console.log("2-1-2-1");
-            setParams({ "search[value]": "" });
+            props.setParams({ "search[value]": "" });
           } else {
             //console.log("2-1-2-2");
-            setParams({ [item.field]: "" });
+            props.setParams({ [item.field]: "" });
             //setFilterParams(() => {Object.keys(filterParams).forEach(key => {filterParams[key] = ""})})
             setFilterParams(prev => Object.keys(prev).reduce((acc, key) => { acc[key] = ""; return acc; }, {}));
             const emptyParams = Object.keys(filterParams).reduce((acc, key) => {
@@ -250,12 +194,12 @@ function ListTableServer(props) {
   })), []);
 
   return (
-    <TableContent height={height} onKeyDown={handleKeyDown}>
+    <TableContent height={props.height} onKeyDown={handleKeyDown}>
       <StyledDataGridPremium
       slots={{
         toolbar: MUIToolbar,
         baseCheckbox: AriCheckBox,
-        ...(noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
+        ...(props.noOverlay ? {} : { noRowsOverlay: NoRowsOverlay }),
         //aiAssistantPanel: GridAiAssistantPanel,
         headerFilterMenu: null,
         headerFilterCell: DataGrid.HeaderFilterCell,
@@ -264,20 +208,20 @@ function ListTableServer(props) {
       slotProps={{
           toolbar: {
               showQuickFilter: true,
-              children: customButtons,
-              title: title,
-              backButton: backButton,
-              excelOptions: excelOptions,
-              customFilters: customFilters,
-              customFiltersLeft: customFiltersLeft,
-              apiRef: apiRef,
+              children: props.customButtons,
+              title: props.title,
+              backButton: props.backButton,
+              excelOptions: props.excelOptions,
+              customFilters: props.customFilters,
+              customFiltersLeft: props.customFiltersLeft,
+              apiRef: props.apiRef,
               quickFilterProps: {
                 quickFilterParser: (searchInput) => searchInput.split(',').map((value) => value.trim()),
                 quickFilterFormatter: (quickFilterValues) => quickFilterValues.join(', '),
                 debounceMs: 200,
               },
-              noDownloadButton: noDownloadButton,
-              warnings: warnings,
+              noDownloadButton: props.noDownloadButton,
+              warnings: props.warnings,
           },
           // loadingOverlay: {
           //   variant: 'linear-progress',
@@ -288,54 +232,54 @@ function ListTableServer(props) {
             InputComponentProps: { label: "Filter" }
           },
         }}
-      columns={columns}
-      rows={rows}
-      getRowId={getRowId || ((row) => row.uuid)}
+      columns={props.columns}
+      rows={props.rows}
+      getRowId={props.getRowId || ((row) => row.uuid)}
       initialState={{
-        ...initialState,
-        pinnedColumns: mobile ? { left: [] } : initialState?.pinnedColumns,
+        ...props.initialState,
+        pinnedColumns: mobile ? { left: [] } : props.initialState?.pinnedColumns,
         columns: {
-          columnVisibilityModel: hiddenColumns,
+          columnVisibilityModel: props.hiddenColumns,
         },
       }}
-      pageSizeOptions={pageSizeOptions || [25, 50, 100]}
+      pageSizeOptions={props.pageSizeOptions || [25, 50, 100]}
       pagination
       paginationModel={paginationModel}
-      autoPageSize={autoPageSize} 
+      autoPageSize={props.autoPageSize} 
       //onPaginationModelChange={(model) => setPaginationModel(model)}
       paginationMode="server"
       sortingMode="server"
       filterMode="server"
-      filterModel={filterModel}   
-      headerFilters={headerFilters}
+      filterModel={props.filterModel}   
+      headerFilters={props.headerFilters}
       disableColumnFilter
       onPaginationModelChange={(model) => handlePaginationModelChange(model)}
-      sortModel={sortModel}
+      sortModel={props.sortModel}
       onSortModelChange={(model) => handleSortModelChange(model)}
       onFilterModelChange={(model) => handleFilterModelChange(model)}
-      rowCount={rowCount}
-      loading={loading}
-      checkboxSelection={checkboxSelection}
-      disableRowSelectionOnClick={disableRowSelectionOnClick}
-      rowSelectionModel={rowSelectionModel}
-      onRowSelectionModelChange={onRowSelectionModelChange}
-      isRowSelected={isRowSelected}
-      keepNonExistentRowsSelected={keepNonExistentRowsSelected}
-      disableMultipleRowSelection={disableMultipleRowSelection}
-      apiRef={apiRef}
-      hideFooter={hideFooter}
-      autoHeight={autoHeight}
-      getRowHeight={() => autoRowHeight ? 'auto' : 'false'}
-      getRowClassName = {getRowClassName}
+      rowCount={props.rowCount}
+      loading={props.loading}
+      checkboxSelection={props.checkboxSelection}
+      disableRowSelectionOnClick={props.disableRowSelectionOnClick}
+      rowSelectionModel={props.rowSelectionModel}
+      onRowSelectionModelChange={props.onRowSelectionModelChange}
+      isRowSelected={props.isRowSelected}
+      keepNonExistentRowsSelected={props.keepNonExistentRowsSelected}
+      disableMultipleRowSelection={props.disableMultipleRowSelection}
+      apiRef={props.apiRef}
+      hideFooter={props.hideFooter}
+      autoHeight={props.autoHeight}
+      getRowHeight={() => props.autoRowHeight ? 'auto' : 'false'}
+      getRowClassName = {props.getRowClassName}
       sx={{
-          ...sx,
+          ...props.sx,
           [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
             outline: 'none',
           },
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
               outline: 'none',
           },
-          '--DataGrid-overlayHeight': `${noOverlay ? "unset" : "50vh"}`,
+          '--DataGrid-overlayHeight': `${props.noOverlay ? "unset" : "50vh"}`,
           [`.${gridClasses['columnHeader--filter']}`]: { px: 1 },
           '& .MuiDataGrid-columnHeader': {
             '& .MuiDataGrid-columnHeaderTitleContainer': {
@@ -358,7 +302,7 @@ function ListTableServer(props) {
               }
             : {}
           ),
-          ...(noAllSelect
+          ...(props.noAllSelect
             ? {
                 '& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer': {
                   display: 'none'
@@ -369,8 +313,8 @@ function ListTableServer(props) {
       }}
       //aiAssistant
       //onPrompt={processPrompt}
-      excelExportOptions={excelExportOptions}
-      cellSelection={cellSelection}
+      excelExportOptions={props.excelExportOptions}
+      cellSelection={props.cellSelection}
       ignoreDiacritics
       localeText={{
         ...trTR.components.MuiDataGrid.defaultProps.localeText,
@@ -378,19 +322,19 @@ function ListTableServer(props) {
         filterPanelInputLabel: "Filtrele", // Global label değişimi
         filterPanelInputPlaceholder: "Aramak için yazın...",
       }}
-      onCellClick={onCellClick}
-      rowSpanning={rowSpanning}
-      showCellVerticalBorder={showCellVerticalBorder}
-      showColumnVerticalBorder={showColumnVerticalBorder}
-      onProcessRowUpdateError={onProcessRowUpdateError}
-      groupingColDef={groupingColDef}
-      getDetailPanelContent={getDetailPanelContent}
-      getDetailPanelHeight={getDetailPanelHeight}
-      detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-      onDetailPanelExpandedRowIdsChange={onDetailPanelExpandedRowIdsChange}
-      processRowUpdate={processRowUpdate}
-      density={density}
-      disableVirtualization={disableVirtualization}
+      onCellClick={props.onCellClick}
+      rowSpanning={props.rowSpanning}
+      showCellVerticalBorder={props.showCellVerticalBorder}
+      showColumnVerticalBorder={props.showColumnVerticalBorder}
+      onProcessRowUpdateError={props.onProcessRowUpdateError}
+      groupingColDef={props.groupingColDef}
+      getDetailPanelContent={props.getDetailPanelContent}
+      getDetailPanelHeight={props.getDetailPanelHeight}
+      detailPanelExpandedRowIds={props.detailPanelExpandedRowIds}
+      onDetailPanelExpandedRowIdsChange={props.onDetailPanelExpandedRowIdsChange}
+      processRowUpdate={props.processRowUpdate}
+      density={props.density}
+      disableVirtualization={props.disableVirtualization}
       />
     </TableContent>
   )
