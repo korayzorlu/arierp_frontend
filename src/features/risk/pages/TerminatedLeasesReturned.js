@@ -118,13 +118,13 @@ function TerminatedLeasesReturned() {
             //     return new Date(year, month - 1, day);
             // }
          },
-        { field: 'last_refund_date', headerName: 'Son İade Tarihi', width:120, type:'date',
+        { field: 'refund_date', headerName: 'İade Tarihi', width:120, type:'date',
             valueGetter: (value) => {
                 if (!value) return null;
                 const [day, month, year] = value.split('.');
                 return new Date(year, month - 1, day);
             }
-         },
+        },
         { field: 'refund', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
         },
@@ -134,7 +134,7 @@ function TerminatedLeasesReturned() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Feshedilen Kira Planları İade Listesi"
+            title="Fesih İadesi Yapılan Kira Planları Listesi"
             rows={terminatedLeasesReturned}
             columns={columns}
             getRowId={(row) => row.id}
@@ -143,7 +143,7 @@ function TerminatedLeasesReturned() {
                 <>  
                     <CustomTableButton
                     title="Excel'e Aktar"
-                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/risk/export_terminated_leases/`)}}
+                    onClick={() => {dispatch(setExportDialog(true));dispatch(fetchExportProcess());setExportURL(`/risk/export_terminated_leases_returned/`)}}
                     icon={<DownloadIcon fontSize="small"/>}
                     />
                     <CustomTableButton
