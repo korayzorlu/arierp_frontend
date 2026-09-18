@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTerminatedLeasesReturned, setTerminatedLeasesReturnedLoading, setTerminatedLeasesReturnedParams, updateTerminatedDate } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setPartnerNoteDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -11,18 +11,22 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
 import { gridClasses, GridRowEditStopReasons, useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
+import { Badge, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import TableButton from 'component/button/TableButton';
+import { NoteAltIcon } from 'icons';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 
 function TerminatedLeasesReturned() {
-    const {user} = useSelector((store) => store.auth);
+    const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {terminatedLeasesReturned,terminatedLeasesReturnedCount,terminatedLeasesReturnedParams,terminatedLeasesReturnedLoading,terminatedLeaseReturnedProjects} = useSelector((store) => store.riskPartner);
+    const {partnerNotesParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -37,6 +41,12 @@ function TerminatedLeasesReturned() {
             dispatch(fetchTerminatedLeasesReturned({activeCompany,params:terminatedLeasesReturnedParams}));
         });
     }, [activeCompany,terminatedLeasesReturnedParams,dispatch]);
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
@@ -129,6 +139,25 @@ function TerminatedLeasesReturned() {
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
         },
         { field: 'r', headerName: 'PB', width: 90, renderCell: (params) => params.row.refund.currency },
+        { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
+                <Grid container spacing={1} sx={{width:'100%'}}>
+                    <Grid size={{xs:8, sm:8}}>
+                        <TableButton
+                        text="Notlar"
+                        color="celticglow"
+                        icon={<NoteAltIcon/>}
+                        onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.partner_id,crm_code:params.row.partner_crm_code})}}
+                        />
+                    </Grid>
+                    <Grid size={{xs:4, sm:4}}>
+                        <Badge badgeContent={params.row.partner_note_count} color={dark ? 'frostedbirch' : 'silvercoin'}></Badge>
+                    </Grid>
+                </Grid>
+                    
+            </Stack>
+            )
+        },
     ]
 
     return (
@@ -173,6 +202,7 @@ function TerminatedLeasesReturned() {
             finalEvent={() => {dispatch(fetchTerminatedLeasesReturned({activeCompany,params:terminatedLeasesReturnedParams}));dispatch(setTerminatedLeasesReturnedLoading(false));}}
             status={status}
             />
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }
