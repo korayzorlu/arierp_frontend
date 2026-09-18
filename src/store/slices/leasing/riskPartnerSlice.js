@@ -1310,8 +1310,8 @@ const riskPartnerSlice = createSlice({
             })
             .addCase(fetchTerminatedLeasesReturned.fulfilled, (state,action) => {
                 state.terminatedLeasesReturned = action.payload.data || action.payload;
-                state.terminatedLeaseProjects = action.payload.projects || [];
-                state.terminatedLeasesCount = action.payload.recordsTotal || 0;
+                state.terminatedLeaseReturnedProjects = action.payload.projects || [];
+                state.terminatedLeasesReturnedCount = action.payload.recordsTotal || 0;
                 state.terminatedLeasesReturnedLoading = false
             })
             .addCase(fetchTerminatedLeasesReturned.rejected, (state,action) => {

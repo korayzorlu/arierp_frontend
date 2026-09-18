@@ -22,7 +22,7 @@ import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
 function TerminatedLeasesReturned() {
     const {user} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
-    const {terminatedLeasesReturned,terminatedLeasesReturnedCount,terminatedLeasesReturnedParams,terminatedLeasesReturnedLoading,terminatedLeaseProjects} = useSelector((store) => store.riskPartner);
+    const {terminatedLeasesReturned,terminatedLeasesReturnedCount,terminatedLeasesReturnedParams,terminatedLeasesReturnedLoading,terminatedLeaseReturnedProjects} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -78,7 +78,7 @@ function TerminatedLeasesReturned() {
                 multiple
                 options={[
                     //...projects.map((item) => ({ label: item.item__stock_name, value: item.item__uuid }))
-                    ...[...new Set(terminatedLeaseProjects.map((item) => item.item__stock_name))].map((name) => ({ label: name, value: name }))
+                    ...[...new Set(terminatedLeaseReturnedProjects.map((item) => item.item__stock_name))].map((name) => ({ label: name, value: name }))
                 ]}
                 />
             )

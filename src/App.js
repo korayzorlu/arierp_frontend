@@ -418,7 +418,7 @@ function App() {
                   <Route path='/amount-debit-transaction' element={<AmountDebitTransactions></AmountDebitTransactions>}></Route>
                   <Route path='/sent-sms' element={<SMSs></SMSs>}></Route>
                   <Route path='/terminated-leases' element={<TerminatedLeases></TerminatedLeases>}></Route>
-                  <Route path='/terminated-leases-returned' element={<TerminatedLeasesReturned></TerminatedLeasesReturned>}></Route>
+                  <Route path='/returned-terminated-leases' element={<TerminatedLeasesReturned></TerminatedLeasesReturned>}></Route>
                   <Route path='/exchanged-leases' element={<ExchangedLeases></ExchangedLeases>}></Route>
                   <Route path='/tufe-exchanged-leases' element={<TufeExchangedLeases></TufeExchangedLeases>}></Route>
 
