@@ -39,6 +39,7 @@ const initialState = {
     purchaseDocumentDialog: false,
     sendEmailDialog: false,
     sendSMSDialog: false,
+    sendWhatsappMessageDialog: false,
     terminationWarningNoticeDialog: false,
     thirdPersonCustomerDialog: false,
     thirdPersonDialog: false,
@@ -218,6 +219,9 @@ const notificationSlice = createSlice({
         setAddWhatsappMessageDialog: (state,action) => {
             state.addWhatsappMessageDialog = action.payload;
         },
+        setSendWhatsappMessageDialog: (state,action) => {
+            state.sendWhatsappMessageDialog = action.payload;
+        },
         setIdleWarningDialog: (state,action) => {
             state.idleWarningDialog = action.payload;
         }
@@ -286,6 +290,7 @@ export const {
     setDeleteDocumentDialog,
     setTradeTransactionForCustomerDialog,
     setAddWhatsappMessageDialog,
+    setSendWhatsappMessageDialog,
     setIdleWarningDialog
 
 } = notificationSlice.actions;

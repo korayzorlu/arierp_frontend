@@ -10,10 +10,11 @@ import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
 import { Typography } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddWhatsappMessageDialog from '../components/AddWhatsappMessageDialog';
-import { setAddWhatsappMessageDialog, setDeleteDialog } from 'store/slices/notificationSlice';
+import { setAddWhatsappMessageDialog, setDeleteDialog, setSendWhatsappMessageDialog } from 'store/slices/notificationSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialog from 'component/feedback/DeleteDialog';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import SendWhatsappMessageDialog from '../components/SendWhatsappMessageDialog';
 
 const WHATSAPP_MESSAGE = 'merhaba test';
 
@@ -39,11 +40,22 @@ function WhatsappMessages() {
     }, [activeCompany,whatsappMessagesParams,dispatch]);
 
     const columns = [
-        { field: 'text', headerName: 'Mesaj', flex:1, renderCell: (params) => (
+        // { field: 'text', headerName: 'Mesaj', flex:1, renderCell: (params) => (
+        //     <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', py: 1 }}>
+        //         {params.value}
+        //     </Typography>
+        // ) },
+        { field: 'real_estate_agent', headerName: 'Emlak Danışmanı', width: 300 },
+        { field: 'phone_number_1', headerName: 'Telefon Numarası', width: 200 },
+        { field: 'amount', headerName: 'Tutar', width: 150 },
+        { field: 'ilan_no', headerName: 'İlan No', width: 150 },
+        { field: 'text', headerName: 'Mesaj', flex: 1, renderCell: (params) => (
             <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', py: 1 }}>
                 {params.value}
             </Typography>
         ) },
+        { field: 'is_sent', headerName: 'Gönderildi', width: 150 },
+        { field: 'status', headerName: 'Durum', width: 150 },
     ]
 
     return (
@@ -67,7 +79,7 @@ function WhatsappMessages() {
                     icon={<DeleteIcon fontSize="small"/>}
                     disabled={rowSelectionModel.ids.size > 0 || rowSelectionModel.type === 'exclude' ? false : true}
                     />
-                    <CustomTableButton
+                    {/* <CustomTableButton
                     title="Whatsapp Mesajı Gönder"
                     onClick={() => {
                         const selectedRow = rowSelectionModel.type === 'exclude'
@@ -80,6 +92,12 @@ function WhatsappMessages() {
                     }}
                     icon={<WhatsAppIcon fontSize="small"/>}
                     disabled={rowSelectionModel.ids.size > 0 && rowSelectionModel.ids.size < 2 ? false : true}
+                    /> */}
+                    <CustomTableButton
+                    title="Whatsapp Mesajı Gönder"
+                    onClick={() => dispatch(setSendWhatsappMessageDialog(true))}
+                    icon={<WhatsAppIcon fontSize="small"/>}
+                    disabled={rowSelectionModel.ids.size > 0 ? false : true}
                     />
                     <CustomTableButton
                     title="Yenile"
@@ -108,6 +126,9 @@ function WhatsappMessages() {
             }}
             />
             <AddWhatsappMessageDialog/>
+            <SendWhatsappMessageDialog
+            uuids={rowSelectionModel.ids ? Array.from(rowSelectionModel.ids) : []}
+            />
             <DeleteDialog
             deleteURL={'/emlak/delete_whatsapp_message/'}
             selectedItems={rowSelectionModel}

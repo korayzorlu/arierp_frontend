@@ -159,6 +159,16 @@ const initialState = {
     },
     terminatedLeasesLoading:false,
     terminatedLeaseProjects:[],
+    //terminated leases returned
+    terminatedLeasesReturned:[],
+    terminatedLeasesReturnedCount:0,
+    terminatedLeasesReturnedParams:{
+        start: 0 * 50,
+        end: (0 + 1) * 50,
+        format: 'datatables'
+    },
+    terminatedLeasesReturnedLoading:false,
+    terminatedLeaseReturnedProjects:[],
     //exchanged leases
     exchangedLeases:[],
     exchangedLeasesCount:0,
@@ -458,6 +468,21 @@ export const fetchNeedsToTerminatedRiskPartners = createAsyncThunk('auth/fetchNe
 export const fetchTerminatedLeases = createAsyncThunk('auth/fetchTerminatedLeases', async ({activeCompany,serverModels=null,params=null}) => {
     try {
         const response = await axios.get(`/risk/terminated_leases/?ac=${activeCompany.id}`,
+            {   
+                params : params,
+                headers: {"X-Requested-With": "XMLHttpRequest"}
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+});
+
+export const fetchTerminatedLeasesReturned = createAsyncThunk('auth/fetchTerminatedLeasesReturned', async ({activeCompany,serverModels=null,params=null}) => {
+    try {
+        const response = await axios.get(`/risk/terminated_leases_returned/?ac=${activeCompany.id}`,
             {   
                 params : params,
                 headers: {"X-Requested-With": "XMLHttpRequest"}
@@ -945,6 +970,26 @@ const riskPartnerSlice = createSlice({
         deleteTerminatedLeases: (state,action) => {
             state.terminatedLeases = [];
         },
+        //terminated leases returned
+        setTerminatedLeasesReturnedLoading: (state,action) => {
+            state.terminatedLeasesReturnedLoading = action.payload; 
+        },
+        setTerminatedLeasesReturnedParams: (state,action) => {
+            state.terminatedLeasesReturnedParams = {
+                ...state.terminatedLeasesReturnedParams,
+                ...action.payload
+            };
+        },
+        resetTerminatedLeasesReturnedParams: (state,action) => {
+            state.terminatedLeasesReturnedParams = {
+                start: 0 * 50,
+                end: (0 + 1) * 50,
+                format: 'datatables'
+            };
+        },
+        deleteTerminatedLeasesReturned: (state,action) => {
+            state.terminatedLeasesReturned = [];
+        },
         //exchanged leases
         setExchangedLeasesLoading: (state,action) => {
             state.exchangedLeasesLoading = action.payload;
@@ -1259,6 +1304,19 @@ const riskPartnerSlice = createSlice({
             .addCase(fetchTerminatedLeases.rejected, (state,action) => {
                 state.terminatedLeasesLoading = false
             })
+            //terminated leases returned
+            .addCase(fetchTerminatedLeasesReturned.pending, (state) => {
+                state.terminatedLeasesReturnedLoading = true
+            })
+            .addCase(fetchTerminatedLeasesReturned.fulfilled, (state,action) => {
+                state.terminatedLeasesReturned = action.payload.data || action.payload;
+                state.terminatedLeaseProjects = action.payload.projects || [];
+                state.terminatedLeasesCount = action.payload.recordsTotal || 0;
+                state.terminatedLeasesReturnedLoading = false
+            })
+            .addCase(fetchTerminatedLeasesReturned.rejected, (state,action) => {
+                state.terminatedLeasesReturnedLoading = false
+            })
             //exchanged leases
             .addCase(fetchExchangedLeases.pending, (state) => {
                 state.exchangedLeasesLoading = true
@@ -1412,6 +1470,11 @@ export const {
     setTerminatedLeasesParams,
     resetTerminatedLeasesParams,
     deleteTerminatedLeases,
+
+    setTerminatedLeasesReturnedLoading,
+    setTerminatedLeasesReturnedParams,
+    resetTerminatedLeasesReturnedParams,
+    deleteTerminatedLeasesReturned,
 
     setExchangedLeasesLoading,
     setExchangedLeasesParams,

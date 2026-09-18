@@ -177,6 +177,7 @@ import PartnerScores from 'features/credit/pages/PartnerScores';
 import IdleWarningModal from 'component/dialog/IdleWarningModal';
 import useIdleTimer from 'hooks/useIdleTimer';
 import IdleWarningDialog from 'component/dialog/IdleWarningDialog';
+import TerminatedLeasesReturned from 'features/risk/pages/TerminatedLeasesReturned';
 
 //const BankAccountBalances = lazy(() => import('features/finance/pages/BankAccountBalances'));
 
@@ -417,6 +418,7 @@ function App() {
                   <Route path='/amount-debit-transaction' element={<AmountDebitTransactions></AmountDebitTransactions>}></Route>
                   <Route path='/sent-sms' element={<SMSs></SMSs>}></Route>
                   <Route path='/terminated-leases' element={<TerminatedLeases></TerminatedLeases>}></Route>
+                  <Route path='/terminated-leases-returned' element={<TerminatedLeasesReturned></TerminatedLeasesReturned>}></Route>
                   <Route path='/exchanged-leases' element={<ExchangedLeases></ExchangedLeases>}></Route>
                   <Route path='/tufe-exchanged-leases' element={<TufeExchangedLeases></TufeExchangedLeases>}></Route>
 
