@@ -135,7 +135,7 @@ function TerminatedLeasesReturned() {
                 return new Date(year, month - 1, day);
             }
         },
-        { field: 'refund', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+        { field: 'refund', headerName: 'İade Edilen Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
             renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
         },
         { field: 'r', headerName: 'PB', width: 90, renderCell: (params) => params.row.refund.currency },
