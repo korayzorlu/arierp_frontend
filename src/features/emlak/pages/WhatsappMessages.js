@@ -7,7 +7,7 @@ import CustomTableButton from 'component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import 'static/css/Installments.css';
 import { gridClasses, useGridApiRef } from '@mui/x-data-grid-premium';
-import { Typography } from '@mui/material';
+import { Chip, Typography } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddWhatsappMessageDialog from '../components/AddWhatsappMessageDialog';
 import { setAddWhatsappMessageDialog, setDeleteDialog, setSendWhatsappMessageDialog } from 'store/slices/notificationSlice';
@@ -15,6 +15,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialog from 'component/feedback/DeleteDialog';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import SendWhatsappMessageDialog from '../components/SendWhatsappMessageDialog';
+
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 
 const WHATSAPP_MESSAGE = 'merhaba test';
 
@@ -54,8 +57,14 @@ function WhatsappMessages() {
                 {params.value}
             </Typography>
         ) },
-        { field: 'is_sent', headerName: 'Gönderildi', width: 150 },
-        { field: 'status', headerName: 'Durum', width: 150 },
+        { field: 'is_sent', headerName: 'Gönderildi', width: 150, renderCell: (params) => (
+                params.value ?
+                    <Chip variant='contained' color="success" icon={<CheckCircleIcon />} label="Gönderildi" size='small'/>
+                :
+                    <Chip variant='contained' color="error" icon={<ErrorIcon />} label="Gönderilmedi" size='small'/>
+            )
+        },
+        // { field: 'status', headerName: 'Durum', width: 150 },
     ]
 
     return (

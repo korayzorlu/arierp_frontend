@@ -123,7 +123,7 @@ function AddWhatsappMessageDialog(props) {
                         disabled={false}
                         fullWidth
                         />
-                        <DatePicker
+                        {/* <DatePicker
                         label="Sinpaş Plaza Toplantı Tarihi"
                         defaultValue={today}
                         onAccept={handleDateRangeChange}
@@ -132,17 +132,7 @@ function AddWhatsappMessageDialog(props) {
                             textField: { size: 'small'},
                         }}
                         sx={{mr:2}}
-                        />
-                        <DatePicker
-                        label="MS Teams Toplantı Tarihi"
-                        defaultValue={today}
-                        onAccept={handleOnlineDateRangeChange}
-                        format='DD.MM.YYYY'
-                        slotProps={{
-                            textField: { size: 'small'},
-                        }}
-                        sx={{mr:2}}
-                        />
+                        /> */}
                         
                     </Stack>
                     {/* <Stack spacing={2} sx={{mt:2}} justifyContent="center">
