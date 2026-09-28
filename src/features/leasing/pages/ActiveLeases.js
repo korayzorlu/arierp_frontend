@@ -102,6 +102,7 @@ function ActiveActiveLeases() {
                 return new Date(year, month - 1, day);
             }
         },
+        { field: 'departure_date', headerName: 'Satış Ofisinden Geliş Tarihi', width:180 },
         //{ field: 'quotation', headerName: 'Teklif No' },
         //{ field: 'kof', headerName: 'KOF No' },
         //{ field: 'item', headerName: 'Proje', width:280 },
