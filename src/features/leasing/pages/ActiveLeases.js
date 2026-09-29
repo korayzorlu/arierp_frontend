@@ -144,6 +144,7 @@ function ActiveActiveLeases() {
         },
         { field: 'block', headerName: 'Blok' },
         { field: 'unit', headerName: 'Bağımsız Bölüm' },
+        { field: 'period', headerName: 'Dönem' },
         { field: 'bbsn', headerName: 'BBSN', width:140 },
         { field: 'crm_bbsn', headerName: 'CRM BBSN', width:140 },
         //{ field: 'vade', headerName: 'Vade', type: 'number' },
