@@ -48,7 +48,7 @@ function UpdateLease() {
     
     useEffect(() => {
         fetchData();
-    }, [activeCompany])
+    }, [activeCompany, uuid])
 
     const handleChangeTabValue = (event, newTabValue) => {
         setTabValue(newTabValue);
@@ -74,6 +74,8 @@ function UpdateLease() {
         setData(data => ({...data, [field]:value}));
         setButtonDisabled(false);
     };
+
+    
 
     return (
         <>

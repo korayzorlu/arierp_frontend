@@ -23,12 +23,9 @@ function Transactions(props) {
                         fullWidth
                         size='small'
                         >
-                            <MenuItem value="0">0,00 TRY</MenuItem>
-                            <MenuItem value="1">1,00 - 100.000,00 TRY</MenuItem>
-                            <MenuItem value="2">100.001,00 - 500.000,00 TRY</MenuItem>
-                            <MenuItem value="3">500.001,00 - 2.000.000,00 TRY</MenuItem>
-                            <MenuItem value="4">2.000.001,00 - 10.000.000,00 TRY</MenuItem>
-                            <MenuItem value="5">10.000.001,00+ TRY</MenuItem>
+                            <MenuItem value="10m_less">10 Milyon TL'den az</MenuItem>
+                            <MenuItem value="10m_15m">10 Milyon - 15 Milyon TL</MenuItem>
+                            <MenuItem value="15m_above">15 Milyon TL'den fazla</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -48,9 +45,9 @@ function Transactions(props) {
                         fullWidth
                         size='small'
                         >
-                            <MenuItem value="0_2">0-2</MenuItem>
-                            <MenuItem value="3_4">3-4</MenuItem>
-                            <MenuItem value="5_above">5 ve üzeri</MenuItem>
+                            <MenuItem value="3_less">3'ten az</MenuItem>
+                            <MenuItem value="3_5">3-5</MenuItem>
+                            <MenuItem value="5_above">5'ten fazla</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

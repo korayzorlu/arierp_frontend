@@ -14,24 +14,40 @@ import StatusInfo from './Info/StatusInfo';
 import RiskInfo from './Info/RiskInfo';
 import KurDegerlemesiInfo from './Info/KurDegerlemesiInfo';
 import KurKaybi from './Info/KurKaybi';
+import HistoryInfo from './Info/HistoryInfo';
 
 function Info(props) {
 
     return (
          <>
             <Stack spacing={1}>
-                <Grid size={{xs:12,sm:12}}>
-                    <Paper elevation={0} sx={{p:2,height:'100%'}} square>
-                        <Stack spacing={2}>
-                            <ContractInfo
-                            code={props.data.code}
-                            contract={props.data.contract}
-                            vade={props.data.vade}
-                            activation_date={props.data.activation_date}
-                            />
-                        </Stack>
-                    </Paper>
+                <Grid container spacing={1}>
+                    <Grid size={{xs:12,sm:9}}>
+                        <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                            <Stack spacing={2}>
+                                <ContractInfo
+                                code={props.data.code}
+                                contract={props.data.contract}
+                                vade={props.data.vade}
+                                activation_date={props.data.activation_date}
+                                />
+                            </Stack>
+                        </Paper>
+                    </Grid>
+                    <Grid size={{xs:12,sm:3}}>
+                        <Paper elevation={0} sx={{p:2,height:'100%'}} square>
+                            <Stack spacing={2}>
+                                <HistoryInfo
+                                contract_history={props.data.contract_history}
+                                code={props.data.code}
+                                uuid={props.data.uuid}
+                                contract={props.data.contract}
+                                />
+                            </Stack>
+                        </Paper>
+                    </Grid>
                 </Grid>
+                
 
                 <Grid size={{xs:12,sm:12}}>
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
@@ -129,6 +145,8 @@ function Info(props) {
                         </Stack>
                     </Paper>
                 </Grid>
+
+                
   
             </Stack>
             

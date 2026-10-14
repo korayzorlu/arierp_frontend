@@ -15,6 +15,7 @@ function PaymentPerformance(props) {
                     label="İhtar var"
                     checked={props.is_warning_notice}
                     onChange={(value) => props.onChangeIsWarningNotice(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>
@@ -24,6 +25,7 @@ function PaymentPerformance(props) {
                     label="Gecikme var"
                     checked={props.is_delayed}
                     onChange={(value) => props.onChangeIsDelayed(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>

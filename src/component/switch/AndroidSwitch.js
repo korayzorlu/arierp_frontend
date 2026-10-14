@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
 function AndroidSwitch(props) {
-    const {children,className,checked,label,onChange,disabled} = props;
+    const {children,className,checked,label,onChange,disabled,readOnly} = props;
 
     const {dark} = useSelector((store) => store.auth);
 
@@ -52,11 +52,14 @@ function AndroidSwitch(props) {
     return (
         <FormControlLabel
         className={className}
+        // readOnly: disabled gibi tıklanamaz ama görünümü soluklaşmaz
+        sx={readOnly ? { pointerEvents: 'none' } : undefined}
         control={
             <Android12Switch
             //defaultChecked={defaultChecked}
-            checked={checked} onChange={(e) => onChange(e.target.checked)}
+            checked={checked} onChange={(e) => !readOnly && onChange && onChange(e.target.checked)}
             disabled={disabled}
+            inputProps={readOnly ? { tabIndex: -1, 'aria-readonly': true } : undefined}
             />
         }
         label={label || ""}

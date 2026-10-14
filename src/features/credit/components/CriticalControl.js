@@ -22,8 +22,9 @@ function CriticalControl(props) {
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
                     label="Yasaklı listesinde"
-                    checked={props.is_blacklisted}
-                    onChange={(value) => props.onChangeIsBlacklisted(value)}
+                    checked={!props.is_reliable_person}
+                    //onChange={(value) => props.onChangeIsBlacklisted(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>
@@ -32,11 +33,12 @@ function CriticalControl(props) {
                     <AndroidSwitch
                     label="Offshore bağlantılı yerler"
                     checked={props.is_offshore}
-                    onChange={(value) => props.onChangeIsOffshore(value)}
+                    //onChange={(value) => props.onChangeIsOffshore(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
                     label="Düşük vergi"
@@ -44,7 +46,7 @@ function CriticalControl(props) {
                     onChange={(value) => props.onChangeIsLowTax(value)}
                     />
                 </Grid>
-            </Grid>
+            </Grid> */}
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
@@ -68,7 +70,8 @@ function CriticalControl(props) {
                     <AndroidSwitch
                     label="Yaptırım listesine yakın ülkeler"
                     checked={props.is_high_risk_country}
-                    onChange={(value) => props.onChangeIsHighRiskCountry(value)}
+                    //onChange={(value) => props.onChangeIsHighRiskCountry(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>

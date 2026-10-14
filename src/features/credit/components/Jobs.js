@@ -11,11 +11,20 @@ function Jobs(props) {
         <Block text="Meslek" icon={<WorkIcon />}>
             <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:12}}>
-                    <SgkJobSelect
+                    {/* <SgkJobSelect
                     label="Meslek"
                     emptyValue={true}
                     value={props.sgk_job}
                     onChange={(value) => props.onChangeSgkJob(value)}
+                    /> */}
+                    <TextField
+                    type="text"
+                    size="small"
+                    variant='outlined'
+                    value={props.sgk_job}
+                    onChange={(e) => props.onChangeSgkJob(e.target.value)}
+                    fullWidth
+                    disabled
                     />
                 </Grid>
             </Grid>

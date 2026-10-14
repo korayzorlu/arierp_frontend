@@ -67,6 +67,7 @@ function PartnerFinancialProfiles() {
             renderCell: (params) => params.row.partner.crm_code
         },
         { field: 'completion_rate', headerName: 'Profil Tamamlama Oranı', width: 180, type: 'number', renderCell: cellProgress, renderHeaderFilter: () => null },
+        { field: 'last_signature_date', headerName: 'Son Sözleşme Tarihi', width: 300,},
     ]
 
     return (

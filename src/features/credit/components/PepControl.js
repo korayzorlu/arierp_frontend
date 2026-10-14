@@ -14,7 +14,8 @@ function PepControl(props) {
                     <AndroidSwitch
                     label="Pep grubu mu?"
                     checked={props.is_pep}
-                    onChange={(value) => props.onChangeIsPep(value)}
+                    //onChange={(value) => props.onChangeIsPep(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>
@@ -22,8 +23,9 @@ function PepControl(props) {
                 <Grid size={{xs:12,sm:12}}>
                     <AndroidSwitch
                     label="Olumsuz haber var mı?"
-                    checked={props.is_negative_news}
-                    onChange={(value) => props.onChangeIsNegativeNews(value)}
+                    checked={!props.is_reliable_person}
+                    //onChange={(value) => props.onChangeIsReliablePerson(value)}
+                    readOnly
                     />
                 </Grid>
             </Grid>

@@ -112,7 +112,8 @@ function UpdatePartnerFinancialProfile() {
                     <Paper elevation={0} sx={{p:2,height:'100%'}} square>
                         <Stack spacing={2}>
                             <Jobs
-                            sgk_job={data.sgk_job || 0}
+                            sgk_job={data.sgk_job || ""}
+                            salaried_title={data.salaried_title || ""}
                             institution={data.institution || ""}
                             position={data.position || ""}
                             real_estate_assets={data.real_estate_assets || "0"}
@@ -128,6 +129,7 @@ function UpdatePartnerFinancialProfile() {
                             onChangeBankDepositAssets={(value) => handleChangeField("bank_deposit_assets",value)}
                             onChangeInvestmentAssets={(value) => handleChangeField("investment_assets",value)}
                             onChangeOtherAssets={(value) => handleChangeField("other_assets",value)}
+                            onChangeSalariedTitle={(value) => handleChangeField("salaried_title",value)}
                             />
                         </Stack>
                     </Paper>
@@ -162,8 +164,11 @@ function UpdatePartnerFinancialProfile() {
                             <FundSources
                             fund_sources={data.fund_sources || []}
                             other_fund_source={data.other_fund_source || ""}
+                            fund_amount={data.fund_amount || 0}
+                            customer_type={data.customer_type || ""}
                             onChangeFundSources={(value) => handleChangeField("fund_sources",value)}
                             onChangeOtherFundSource={(value) => handleChangeField("other_fund_source",value)}
+                            onChangeFundAmount={(value) => handleChangeField("fund_amount",value)}
                             />
                         </Stack>
                     </Paper>
@@ -217,8 +222,10 @@ function UpdatePartnerFinancialProfile() {
                             <PepControl
                             is_pep={data.is_pep || false}
                             is_negative_news={data.is_negative_news || false}
+                            is_reliable_person={data.is_reliable_person || false}
                             onChangeIsPep={(value) => handleChangeField("is_pep",value)}
                             onChangeIsNegativeNews={(value) => handleChangeField("is_negative_news",value)}
+                            onChangeIsReliablePerson={(value) => handleChangeField("is_reliable_person",value)}
                             />
                         </Stack>
                     </Paper>
@@ -260,6 +267,7 @@ function UpdatePartnerFinancialProfile() {
                             is_complex_structure={data.is_complex_structure || false}
                             is_tax_haven={data.is_tax_haven || false}
                             is_high_risk_country={data.is_high_risk_country || false}
+                            is_reliable_person={data.is_reliable_person || false}
                             onChangeIsSuspicious={(value) => handleChangeField("is_suspicious",value)}
                             onChangeIsBlacklisted={(value) => handleChangeField("is_blacklisted",value)}
                             onChangeIsOffshore={(value) => handleChangeField("is_offshore",value)}
