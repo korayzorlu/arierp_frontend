@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTerminatedLeases, setTerminatedLeasesLoading, setTerminatedLeasesParams, updateTerminatedDate } from 'store/slices/leasing/riskPartnerSlice';
-import { setAlert, setDeleteDialog, setExportDialog, setImportDialog } from 'store/slices/notificationSlice';
+import { setAlert, setDeleteDialog, setExportDialog, setImportDialog, setPartnerNoteDialog } from 'store/slices/notificationSlice';
 import PanelContent from 'component/panel/PanelContent';
 import ListTableServer from 'component/table/ListTableServer';
 import CustomTableButton from 'component/table/CustomTableButton';
@@ -11,18 +11,22 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { Link } from 'react-router-dom';
 import 'static/css/Installments.css';
 import { gridClasses, GridRowEditStopReasons, useGridApiRef } from '@mui/x-data-grid-premium';
-import { Chip, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
+import { Badge, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import PartnerNoteDialog from 'component/dialog/PartnerNoteDialog';
+import TableButton from 'component/button/TableButton';
+import { NoteAltIcon } from 'icons';
+import { fetchPartnerInformation, fetchPartnerNotes } from 'store/slices/partners/partnerSlice';
 
 function TerminatedLeases() {
-    const {user} = useSelector((store) => store.auth);
+    const {dark} = useSelector((store) => store.auth);
     const {activeCompany} = useSelector((store) => store.organization);
     const {terminatedLeases,terminatedLeasesCount,terminatedLeasesParams,terminatedLeasesLoading,terminatedLeaseProjects} = useSelector((store) => store.riskPartner);
+    const {partnerNotesParams} = useSelector((store) => store.riskPartner);
 
     const dispatch = useDispatch();
     const apiRef = useGridApiRef();
@@ -40,6 +44,12 @@ function TerminatedLeases() {
             dispatch(fetchTerminatedLeases({activeCompany,params:terminatedLeasesParams}));
         });
     }, [activeCompany,terminatedLeasesParams,dispatch]);
+
+    const handlePartnerNoteDialog = async ({partner_id,crm_code}) => {
+        await dispatch(fetchPartnerNotes({activeCompany,params:{...partnerNotesParams,partner_id}})).unwrap();
+        await dispatch(fetchPartnerInformation(crm_code)).unwrap();
+        dispatch(setPartnerNoteDialog(true));
+    };
 
     const columns = [
         { field: 'code', headerName: 'Kira Planı Kodu', width:120, editable: true, renderCell: (params) => (
@@ -129,10 +139,38 @@ function TerminatedLeases() {
                 return new Date(year, month - 1, day);
             }
          },
-        { field: 'refund', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
+        // { field: 'refund', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
+        // },
+        { field: 'refund_amount', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'r', headerName: 'PB', width: 90, renderCell: (params) => params.row.refund.currency },
+        { field: 'refunded_amount', headerName: 'İade Edilen Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'remaining_amount', headerName: 'Kalan İade Tutarı', width: 140, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'currency', headerName: 'PB', width: 90, renderCell: (params) => params.row.currency },
+        { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
+            <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
+                <Grid container spacing={1} sx={{width:'100%'}}>
+                    <Grid size={{xs:8, sm:8}}>
+                        <TableButton
+                        text="Notlar"
+                        color="celticglow"
+                        icon={<NoteAltIcon/>}
+                        onClick={()=>{handlePartnerNoteDialog({partner_id:params.row.partner_id,crm_code:params.row.partner_crm_code})}}
+                        />
+                    </Grid>
+                    <Grid size={{xs:4, sm:4}}>
+                        <Badge badgeContent={params.row.partner_note_count} color={dark ? 'frostedbirch' : 'silvercoin'}></Badge>
+                    </Grid>
+                </Grid>
+                    
+            </Stack>
+            )
+        },
     ]
 
     const handleRowEditStop = (params, event) => {
@@ -230,6 +268,7 @@ function TerminatedLeases() {
             startEvent={() => dispatch(setTerminatedLeasesLoading(true))}
             finalEvent={() => {dispatch(fetchTerminatedLeases({activeCompany}));dispatch(setTerminatedLeasesLoading(false));}}
             />
+            <PartnerNoteDialog/>
         </PanelContent>
     )
 }

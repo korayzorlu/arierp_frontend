@@ -135,10 +135,19 @@ function TerminatedLeasesReturned() {
                 return new Date(year, month - 1, day);
             }
         },
-        { field: 'refund', headerName: 'İade Edilen Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
-            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
+        // { field: 'refund', headerName: 'İade Edilen Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+        //     renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value.amount)
+        // },
+        { field: 'refund_amount', headerName: 'İade Edilecek Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
         },
-        { field: 'r', headerName: 'PB', width: 90, renderCell: (params) => params.row.refund.currency },
+        { field: 'refunded_amount', headerName: 'İade Edilen Tutar', width: 140, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'remaining_amount', headerName: 'Kalan İade Tutarı', width: 140, type: 'number', renderHeaderFilter: () => null, 
+            renderCell: (params) =>  new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(params.value)
+        },
+        { field: 'currency', headerName: 'PB', width: 90, renderCell: (params) => params.row.currency },
         { field: 'partner_notes', headerName: '', width: 180, renderHeaderFilter: () => null, renderCell: (params) => (
             <Stack direction="row" spacing={4} sx={{alignItems: "center",height:'100%',}}>
                 <Grid container spacing={1} sx={{width:'100%'}}>
