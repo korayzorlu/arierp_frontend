@@ -11,6 +11,11 @@ import DownloadIcon from '@mui/icons-material/Download';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ExportDialog from 'component/feedback/ExportDialog';
 import ImportDialog from 'component/feedback/ImportDialog';
+import { DoneAllIcon, DoneIcon, HourglassBottomIcon, PriorityHighIcon } from 'icons';
+import { Chip } from '@mui/material';
+import BlockIcon from '@mui/icons-material/Block';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import PendingIcon from '@mui/icons-material/Pending';
 
 function VPosTransactions() {
     const {activeCompany} = useSelector((store) => store.organization);
@@ -27,15 +32,50 @@ function VPosTransactions() {
         });
     }, [activeCompany,vposTransactionsParams,dispatch]);
 
+    const getStatusParams = (status) => {
+        switch (status) {
+            case "pending":
+                return { color: "info", icon: <PendingIcon />, label: "Beklemede" };
+            case "sending":
+                return { color: "warning", icon: <HourglassBottomIcon />, label: "Leaseflex'e Gönderiliyor" };
+            case "sent":
+                return { color: "success", icon: <DoneAllIcon />, label: "Leaseflex'e Gönderildi" };
+            case "rejected":
+                return { color: "error", icon: <BlockIcon />, label: "Reddedildi" };
+            case "invalid":
+                return { color: "error", icon: <BlockIcon />, label: "Geçersiz" };
+            case "unknown":
+                return { color: "primary", icon: <QuestionMarkIcon />, label: "Bilinmiyor" };
+            default:
+                return { color: "primary", icon: <QuestionMarkIcon />, label: "Bilinmiyor" };
+        }
+    };
+
     const columns = [
         { field: 'process_date', headerName: 'İşlem Tarihi', width: 150 },
-        { field: 'musteri_tipi', headerName: 'Müşteri Tipi', width: 120 },
+        { field: 'ext_transaction_id', headerName: 'İşlem ID', width: 160 },
+        { field: 'status', headerName: 'Durum', width: 200,
+            renderCell: (params) => (
+                <Chip
+                key={params.row.uuid}
+                variant='contained'
+                color={getStatusParams(params.value).color}
+                icon={getStatusParams(params.value).icon}
+                label={getStatusParams(params.value).label}
+                size='small'
+                sx={{border:'none'}}
+                />
+            )
+        },
         { field: 'ad', headerName: 'Ad', width: 200 },
         { field: 'soyad', headerName: 'Soyad', width: 200 },
-        { field: 'contract_code', headerName: 'Kira Planı', width: 160 },
+        { field: 'contract_code', headerName: 'Kira Planı', width: 90 },
         { field: 'paid_amount', headerName: 'Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
         },
+        { field: 'currency', headerName: 'PB', width: 90 },
+        { field: 'response_message', headerName: 'Yanıt Mesajı', width: 200 },
+        { field: 'last_error', headerName: 'Hata Mesajı', width: 200 },
     ]
 
     return (

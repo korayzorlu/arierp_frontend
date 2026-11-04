@@ -73,7 +73,7 @@ function PartnerScores() {
     return (
         <PanelContent>
             <ListTableServer
-            title="Müşteri Mali Profil Listesi"
+            title="Müşteri Skorlama Listesi"
             rows={partnerScores}
             columns={columns}
             getRowId={(row) => row.uuid}
