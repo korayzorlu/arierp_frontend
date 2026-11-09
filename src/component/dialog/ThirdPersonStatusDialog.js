@@ -7,7 +7,7 @@ import SmsIcon from '@mui/icons-material/Sms';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { sendSMS, setSMSsLoading } from 'store/slices/communication/smsSlice';
 import SendIcon from '@mui/icons-material/Send';
-import { fetchThirdPersons, setThirdPersonsLoading, updateThirdPersonStatus } from 'store/slices/compliance/thirdPersonSlice';
+import { fetchThirdPersons, fetchVPosThirdPersons, setThirdPersonsLoading, updateThirdPersonStatus, updateVPosThirdPersonStatus } from 'store/slices/compliance/thirdPersonSlice';
 import RuleIcon from '@mui/icons-material/Rule';
 import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
@@ -34,8 +34,15 @@ function ThirdPersonStatusDialog({...props}) {
         };
         dispatch(setThirdPersonStatusDialog(false));
 
-        await dispatch(updateThirdPersonStatus({data:{uuid:props.row.id,status}})).unwrap();
-        await dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap();
+        if(props.vpos){
+            await dispatch(updateVPosThirdPersonStatus({data:{uuid:props.row.id,status}})).unwrap();
+            await dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap();
+        }
+        else{
+            await dispatch(updateThirdPersonStatus({data:{uuid:props.row.id,status}})).unwrap();
+            await dispatch(fetchVPosThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap();
+        }
+        
         dispatch(setThirdPersonsLoading(false));
         
     };

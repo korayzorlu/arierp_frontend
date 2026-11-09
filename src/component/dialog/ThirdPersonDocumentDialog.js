@@ -75,8 +75,9 @@ function ThirdPersonDocumentDialog({...props}) {
             if (selectedFile) {
                 formData.append("file", selectedFile);
             };
-
-            const response = await axios.post('/compliance/import_third_person_document/',
+            
+            const URL = props.vpos ? '/compliance/import_vpos_third_person_document/' : '/compliance/import_third_person_document/';
+            const response = await axios.post(URL,
                 formData,
                 {   
                     headers: {

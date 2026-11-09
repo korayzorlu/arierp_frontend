@@ -21,6 +21,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { fetchBankAccountTransaction, fetchBankAccountTransactions } from 'store/slices/finance/bankAccountTransactionSlice';
 import ThirdPersonPaymentAccordion from 'component/surfaces/ThirdPersonPaymentAccordion';
 import SubtitlesOffIcon from '@mui/icons-material/SubtitlesOff';
+import VPosThirdPersonPaymentAccordion from 'component/surfaces/VPosThirdPersonPaymentAccordion';
 
 function ThirdPersonPaymentDetailDialog({...props}) {
     const {dark} = useSelector((store) => store.auth);
@@ -55,29 +56,37 @@ function ThirdPersonPaymentDetailDialog({...props}) {
                 <DialogContentText id="alert-dialog-description">
                     <Stack spacing={2}>
                         {   
-                            props.row.finmaks_transactions
+                            props.row.is_vpos === false
                             ?
-                                props.row.finmaks_transactions.length > 0
-                                ?   
-                                    props.row.finmaks_transactions.map((transaction) => (
-                                        <ThirdPersonPaymentAccordion obj={transaction}/>
-                                    ))
-                                :
-                                    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
-                                        <Grid spacing={1} size={{xs:12,sm:12}}>
-                                            <Stack spacing={2}>
-                                                {/* <AddPartnerNoteAccordion/> */}
-                                                <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
-                                                    <SubtitlesOffIcon sx={{fontSize:'64px',color:'text.secondary'}}></SubtitlesOffIcon>
-                                                </Typography>
-                                                <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
-                                                    Ödeme kaydı bulunmamaktadır.
-                                                </Typography>
-                                            </Stack>
+                                props.row.finmaks_transactions
+                                ?
+                                    props.row.finmaks_transactions.length > 0
+                                    ?   
+                                        props.row.finmaks_transactions.map((transaction) => (
+                                            <ThirdPersonPaymentAccordion obj={transaction}/>
+                                        ))
+                                    :
+                                        <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '200px' }}>
+                                            <Grid spacing={1} size={{xs:12,sm:12}}>
+                                                <Stack spacing={2}>
+                                                    {/* <AddPartnerNoteAccordion/> */}
+                                                    <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
+                                                        <SubtitlesOffIcon sx={{fontSize:'64px',color:'text.secondary'}}></SubtitlesOffIcon>
+                                                    </Typography>
+                                                    <Typography variant='body2' sx={{color:'text.secondary',textAlign:'center'}}>
+                                                        Ödeme kaydı bulunmamaktadır.
+                                                    </Typography>
+                                                </Stack>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                :
+                                        null
                             :
-                                    null
+                                props.row.vpos_transaction
+                                ?
+                                    <VPosThirdPersonPaymentAccordion obj={props.row.vpos_transaction}/>
+                                :
+                                        null
                                 
                         }
                         {/* {

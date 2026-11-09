@@ -33,6 +33,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { fetchImportProcess } from 'store/slices/processSlice';
 import ImportDialog from 'component/feedback/ImportDialog';
+import { gridClasses } from '@mui/x-data-grid-premium';
 
 function VposThirdPersons() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -75,7 +76,7 @@ function VposThirdPersons() {
                             params.row.status === "need_document" && !params.row.is_customer_sent //&& (!params.row.tc_vkn_no || params.row.tc_vkn_no === '')
                             ?
                                 <Button
-                                key={params.value.id}
+                                key={params.row.id}
                                 variant='text'
                                 color="opposite"
                                 size='small'
@@ -85,34 +86,33 @@ function VposThirdPersons() {
                                 }}
                                 sx={{textAlign: 'left', pl:0,pr:0}}
                                 >
-                                    {params.value}
+                                    {params.row.vpos_transaction.name}
                                 </Button>
                             :
                                 params.row.is_customer_sent && params.row.status !== "cleared"
                                 ?
                                     <Stack spacing={2}>
                                         <Grid container>
-                                            {params.value}
+                                            {params.row.vpos_transaction.name}
                                         </Grid>
                                         <Grid container>
                                             <Chip
                                             variant='contained'
                                             color="mars"
                                             icon={<InfoIcon />}
-                                            label="Müşteri Olarak Bildirildi"
+                                            label={`Müşteri Olarak Bildirildi ${params.row.customer_sender ? `@${params.row.customer_sender}` : ''}`}
                                             size='small'
                                             />
                                         </Grid>
                                         
                                     </Stack>
                                 :
-                                    params.value
+                                    params.row.vpos_transaction.name
                         }
                         
                     </Stack>
                 ),
             },
-            { field: 'tc_vkn_no', headerName: 'Kart No', width: 140 },
             { field: 'finmaks_transactions', headerName: 'Ödeme Detayı', width: 160, renderHeaderFilter: () => null,
                 renderCell: (params) => (
                     <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
@@ -185,6 +185,7 @@ function VposThirdPersons() {
                     />
                 )
             },
+            { field: 'updated_date', headerName: 'Son Güncelleme', width: 120 },
             { field: 'is_email_sent', headerName: 'Email Gönderildi mi?', width: 200, 
                 renderCell: (params) => (
                     <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
@@ -285,6 +286,12 @@ function VposThirdPersons() {
                 </>
             }
             rowCount={vPosThirdPersonsCount}
+            autoRowHeight
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                    py: 1,
+                },
+            }}
             //checkboxSelection
             disableRowSelectionOnClick
             setParams={(value) => dispatch(setVPosThirdPersonsParams(value))}
@@ -295,10 +302,12 @@ function VposThirdPersons() {
             />
             <ThirdPersonStatusDialog
             row={selectedRow}
+            vpos
             />
             <ThirdPersonDocumentDialog
             row={selectedRow}
             finalEvent={() => dispatch(fetchVPosThirdPersons({activeCompany,params:vPosThirdPersonsParams})).unwrap()}
+            vpos
             />
             <ThirdPersonPaymentDetailDialog
             row={selectedRow}
