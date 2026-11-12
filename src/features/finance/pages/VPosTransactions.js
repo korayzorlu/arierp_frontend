@@ -53,7 +53,7 @@ function VPosTransactions() {
 
     const columns = [
         { field: 'process_date', headerName: 'İşlem Tarihi', width: 150 },
-        { field: 'ext_transaction_id', headerName: 'İşlem ID', width: 160 },
+        { field: 'ext_transaction_id', headerName: 'İşlem ID', width: 160,cellClassName: 'textRight' },
         { field: 'status', headerName: 'Durum', width: 200,
             renderCell: (params) => (
                 <Chip
