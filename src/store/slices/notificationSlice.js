@@ -44,6 +44,7 @@ const initialState = {
     thirdPersonCustomerDialog: false,
     thirdPersonDialog: false,
     thirdPersonDocumentDialog: false,
+    thirdPersonFormDocumentDialog: false,
     thirdPersonPaymentDetailDialog: false,
     thirdPersonStatusDialog: false,
     tradeTransactionDialog: false,
@@ -176,6 +177,9 @@ const notificationSlice = createSlice({
         setThirdPersonDocumentDialog: (state,action) => {
             state.thirdPersonDocumentDialog = action.payload;
         },
+        setThirdPersonFormDocumentDialog: (state,action) => {
+            state.thirdPersonFormDocumentDialog = action.payload;
+        },
         setThirdPersonPaymentDetailDialog: (state,action) => {
             state.thirdPersonPaymentDetailDialog = action.payload;
         },
@@ -277,6 +281,7 @@ export const {
     setThirdPersonStatusDialog,
     setThirdPersonCustomerDialog,
     setThirdPersonDocumentDialog,
+    setThirdPersonFormDocumentDialog,
     setThirdPersonPaymentDetailDialog,
     setThirdPersonDialog,
     setTrialBalanceTransactionDialog,

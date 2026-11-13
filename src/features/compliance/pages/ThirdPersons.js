@@ -13,7 +13,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { Link } from 'react-router-dom';
 import SelectHeaderFilter from 'component/table/SelectHeaderFilter';
 import ThirdPersonStatusDialog from 'component/dialog/ThirdPersonStatusDialog';
-import { setExportDialog, setThirdPersonCustomerDialog, setThirdPersonDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
+import { setExportDialog, setThirdPersonCustomerDialog, setThirdPersonDocumentDialog, setThirdPersonFormDocumentDialog, setThirdPersonPaymentDetailDialog, setThirdPersonStatusDialog } from 'store/slices/notificationSlice';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import ThirdPersonDetailPanel from '../components/ThirdPersonDetailPanel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -32,6 +32,7 @@ import ExportDialog from 'component/feedback/ExportDialog';
 import { fetchExportProcess } from 'store/slices/processSlice';
 import DownloadIcon from '@mui/icons-material/Download';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
+import ThirdPersonFormDocumentDialog from 'component/dialog/ThirdPersonDocumentFormDialog';
 
 function ThirdPersons() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -279,6 +280,45 @@ function ThirdPersons() {
                 </Stack>
             )
         },
+        { field: 'third_person_form_documents', headerName: 'Form', renderHeaderFilter: () => null, flex: 1,
+            renderCell: (params) => (
+                <Stack direction="row" spacing={1} sx={{alignItems: "center",height:'100%',}}>
+                    {
+                        dayjs(params.row.created_date, "DD.MM.YYYY HH:mm").isBefore(dayjs("22.11.2025 15:40", "DD.MM.YYYY HH:mm")) && params.row.tc_vkn_no !== "21836517036"
+                        ?
+                            null
+                        :     
+                            params.value.length > 0
+                            ?   
+                                <>
+                                    <Link to={`${process.env.REACT_APP_BACKEND_URL}${params.value[0].url}`} target="_blank" component="a" sx={{ textDecoration: 'underline' }}>
+                                        <IconButton
+                                        color='opposite'
+                                        size='small'
+                                        >
+                                            <AttachFileRoundedIcon />
+                                        </IconButton>
+                                    </Link>
+                                    {params.value[0].label}
+                                </>
+                            :   
+                                <Button
+                                key={params.row.id}
+                                variant='contained'
+                                color={dark ? 'silvercoin' : 'ari'}
+                                endIcon={<CloudUploadIcon />}
+                                size='small'
+                                onClick={() => {
+                                    dispatch(setThirdPersonFormDocumentDialog(true));
+                                    setSelectedRow(params.row);
+                                }}
+                                >
+                                    Form Ekle
+                                </Button>
+                    }
+                </Stack>
+            )
+        },
     ]
 
     const handleCheckboxChange = (event) => {
@@ -338,6 +378,10 @@ function ThirdPersons() {
             row={selectedRow}
             />
             <ThirdPersonDocumentDialog
+            row={selectedRow}
+            finalEvent={() => dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap()}
+            />
+            <ThirdPersonFormDocumentDialog
             row={selectedRow}
             finalEvent={() => dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap()}
             />

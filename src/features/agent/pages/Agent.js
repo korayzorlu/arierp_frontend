@@ -10,6 +10,7 @@ import FaturaAgent from '../components/FaturaAgent';
 import EFaturaAgent from '../components/EFaturaAgent';
 import EFaturaIadeAgent from '../components/EFaturaIadeAgent';
 import TemerrutAgent from '../components/TemerrutAgent';
+import SatinAlmaBelgeGirisAgent from '../components/SatinAlmaBelgeGirisAgent';
 
 
 function Agent() {
@@ -71,6 +72,11 @@ function Agent() {
                 </Grid>
                 <Grid size={{xs:12,sm:4}}>
                     <EFaturaIadeAgent
+                    onChangeProps={handleChangeProps}
+                    />
+                </Grid>
+                <Grid size={{xs:12,sm:4}}>
+                    <SatinAlmaBelgeGirisAgent
                     onChangeProps={handleChangeProps}
                     />
                 </Grid>
