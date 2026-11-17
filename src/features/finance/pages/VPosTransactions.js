@@ -67,8 +67,9 @@ function VPosTransactions() {
                 />
             )
         },
-        { field: 'ad', headerName: 'Ad', width: 200 },
-        { field: 'soyad', headerName: 'Soyad', width: 200 },
+        { field: 'kart_sahibi_ad_soyad', headerName: 'Ödemeyi Yapan', width: 200 },
+        { field: 'ad', headerName: 'Müşteri Adı', width: 200 },
+        { field: 'soyad', headerName: 'Müşteri Soyadı', width: 200 },
         { field: 'contract_code', headerName: 'Kira Planı', width: 90 },
         { field: 'paid_amount', headerName: 'Tutar', width:160, type: 'number', renderHeaderFilter: () => null,
             valueFormatter: (value) => new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2,maximumFractionDigits: 2,}).format(value)
