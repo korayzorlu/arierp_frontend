@@ -7,7 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useDispatch, useSelector } from 'react-redux';
 import PanelContent from '../../../component/panel/PanelContent';
 import ListTableServer from '../../../component/table/ListTableServer';
-import { fetchThirdPersons, fetchVPosThirdPersons, setVPosThirdPersonsLoading, setVPosThirdPersonsParams, updateThirdPerson, updateThirdPersonDowngrade, updateThirdPersonIsEmailSent } from '../../../store/slices/compliance/thirdPersonSlice';
+import { fetchThirdPersons, fetchVPosThirdPersons, setVPosThirdPersonsLoading, setVPosThirdPersonsParams, updateThirdPerson, updateThirdPersonDowngrade, updateThirdPersonIsEmailSent, updateVPosThirdPerson, updateVPosThirdPersonDowngrade } from '../../../store/slices/compliance/thirdPersonSlice';
 import { useGridApiRef } from '@mui/x-data-grid';
 import CustomTableButton from '../../../component/table/CustomTableButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -35,6 +35,7 @@ import { fetchImportProcess } from 'store/slices/processSlice';
 import ImportDialog from 'component/feedback/ImportDialog';
 import { gridClasses } from '@mui/x-data-grid-premium';
 import ThirdPersonFormDocumentDialog from 'component/dialog/ThirdPersonDocumentFormDialog';
+import ThirdPersonCustomerDialog from '../components/ThirdPersonCustomerDialog';
 
 function VposThirdPersons() {
     const {dark,user} = useSelector((store) => store.auth);
@@ -193,11 +194,11 @@ function VposThirdPersons() {
                         <Checkbox
                         checked={params.value ? true : false}
                         onChange={(event) => {
-                            dispatch(updateThirdPersonIsEmailSent({data:{id: params.row.id, is_email_sent: event.target.checked}}));
+                            dispatch(updateThirdPersonIsEmailSent({data:{id: params.row.id, is_email_sent: event.target.checked,vpos:true}}));
                             if(event.target.checked){
-                                dispatch(updateThirdPerson({id: params.row.id}));
+                                dispatch(updateVPosThirdPerson({id: params.row.id}));
                             }else{
-                                dispatch(updateThirdPersonDowngrade({id: params.row.id}));
+                                dispatch(updateVPosThirdPersonDowngrade({id: params.row.id}));
                             }
                             setSelectedRow(params.row);
                         }}
@@ -341,6 +342,10 @@ function VposThirdPersons() {
             getDetailPanelContent={(params) => {return(<ThirdPersonDetailPanel uuid={params.row.uuid} thirdPersonResults={params.row.results}></ThirdPersonDetailPanel>)}}
             />
             <ThirdPersonStatusDialog
+            row={selectedRow}
+            vpos
+            />
+            <ThirdPersonCustomerDialog
             row={selectedRow}
             vpos
             />

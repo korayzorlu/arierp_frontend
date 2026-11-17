@@ -7,7 +7,7 @@ import SmsIcon from '@mui/icons-material/Sms';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { sendSMS, setSMSsLoading } from 'store/slices/communication/smsSlice';
 import SendIcon from '@mui/icons-material/Send';
-import { fetchThirdPersons, setThirdPersonsLoading, updateThirdPersonIsCustomerSent, updateThirdPersonStatus } from 'store/slices/compliance/thirdPersonSlice';
+import { fetchThirdPersons, fetchVPosThirdPersons, setThirdPersonsLoading, updateThirdPersonIsCustomerSent, updateThirdPersonStatus } from 'store/slices/compliance/thirdPersonSlice';
 import RuleIcon from '@mui/icons-material/Rule';
 import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
@@ -35,7 +35,11 @@ function ThirdPersonCustomerDialog({...props}) {
         dispatch(setThirdPersonCustomerDialog(false));
 
         await dispatch(updateThirdPersonIsCustomerSent({data:{id: props.row.id}})).unwrap();
-        await dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap();
+        if (props.vpos) {
+            await dispatch(fetchVPosThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap();
+        }else{
+            await dispatch(fetchThirdPersons({activeCompany,params:thirdPersonsParams})).unwrap();
+        }
         dispatch(setThirdPersonsLoading(false));
         
     };

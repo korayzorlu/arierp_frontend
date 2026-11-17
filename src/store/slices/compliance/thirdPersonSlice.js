@@ -121,7 +121,11 @@ export const updateThirdPersonIsEmailSent = createAsyncThunk('auth/updateThirdPe
         }else{
             dispatch(setAlert({status:"error",text:"Sorry, something went wrong!"}));
         };
-        dispatch(updateThirdPersonDowngrade({id: data.id}));
+        if (data.vpos) {
+            dispatch(updateVPosThirdPersonDowngrade({id: data.id}));
+        } else {
+            dispatch(updateThirdPersonDowngrade({id: data.id}));
+        }
         return null
     } finally {
         dispatch(setIsProgress(false));
@@ -209,6 +213,21 @@ const thirdPersonSlice = createSlice({
             if (item) {
                 item.is_email_sent = false;
             }
+        },
+        //
+        updateVPosThirdPerson(state, action) {
+            const { id } = action.payload;
+            const item = state.vPosThirdPersons.find(obj => obj.id === id);
+            if (item) {
+                item.is_email_sent = true;
+            }
+        },
+        updateVPosThirdPersonDowngrade(state, action) {
+            const { id } = action.payload;
+            const item = state.vPosThirdPersons.find(obj => obj.id === id);
+            if (item) {
+                item.is_email_sent = false;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -254,6 +273,8 @@ export const {
     setScanning,
     setThirdPerson,
     updateThirdPerson,
-    updateThirdPersonDowngrade
+    updateThirdPersonDowngrade,
+    updateVPosThirdPerson,
+    updateVPosThirdPersonDowngrade
 } = thirdPersonSlice.actions;
 export default thirdPersonSlice.reducer;
